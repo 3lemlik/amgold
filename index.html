@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-10">
+<meta name="app-build" content="2026.11.19-12">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -574,6 +574,86 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
 .garrow{position:fixed;bottom:calc(8px + var(--sab));left:50%;transform:translateX(-50%);font-size:34px;color:var(--accent);animation:gbounce 1.2s infinite;text-shadow:0 0 18px var(--accent-glow)}
 @keyframes gbounce{50%{transform:translate(-50%,10px)}}
 .gdone{font:800 40px var(--fd);color:var(--ok);margin:10px 0}
+
+/* chart & drawing settings */
+.segw{display:flex;flex-wrap:wrap}
+.csrow{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.csrow small{color:var(--dim);font-size:12px}
+.cpk{width:30px;height:30px;border-radius:8px;position:relative;cursor:pointer;flex:none;box-shadow:0 0 0 1px var(--line2),inset 0 0 0 2px var(--panel)}
+.cpk input{opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
+.chk{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line2);flex:none;position:relative}
+.chk.on{background:var(--accent);border-color:var(--accent)}
+.chk.on::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid var(--accent-ink);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.sessrow{display:grid;grid-template-columns:22px minmax(0,1fr) 30px 66px 10px 66px;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.sessrow .inp{padding:7px 6px;font-size:14px}.sessrow .stime{text-align:center}
+.sessrow .sname{font-family:var(--fm);direction:ltr;text-align:left}
+.csw{display:flex;flex-wrap:wrap;gap:7px}
+.csw>button{width:28px;height:28px;border-radius:8px;box-shadow:0 0 0 1px var(--line2)}
+.csw>button.on{box-shadow:0 0 0 2px var(--ink)}
+.fibg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.fibg button{padding:7px 0;border-radius:8px;background:var(--panel2);border:1px solid var(--line2);font:700 12.5px var(--fm);color:var(--dim)}
+.fibg button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.shprev{width:100%;border-radius:12px;border:1px solid var(--line2);display:block;max-height:46vh;object-fit:contain;background:var(--panel2)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+
+/* ===== chat v2: صور، ملاحظات، تثبيت، محفوظة، بصمات ===== */
+.av img,.avp{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.av.ph{padding:0;overflow:hidden}
+.notes{display:flex;gap:14px;overflow-x:auto;padding:10px 4px 14px;scrollbar-width:none;flex:none;max-width:820px;width:100%;margin-inline:auto}
+.notes::-webkit-scrollbar{display:none}
+.nt-i{display:flex;flex-direction:column;align-items:center;gap:4px;flex:none;width:76px;cursor:pointer;position:relative;padding-top:44px}
+.nt-i .av{width:58px;height:58px;font-size:18px}
+.nt-i .nm{font-size:11.5px;color:var(--dim);max-width:72px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nt-b{position:absolute;top:0;left:50%;transform:translateX(-50%);width:max-content;max-width:100px;min-width:44px;padding:5px 9px;border-radius:14px;background:var(--panel2);border:1px solid var(--line2);font-size:11.5px;line-height:1.35;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.25);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;animation:ntf 4s ease-in-out infinite;animation-delay:var(--d,0s)}
+.nt-b::after{content:"";position:absolute;bottom:-5px;left:50%;width:8px;height:8px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2)}
+.nt-b.add{color:var(--faint)}
+@keyframes ntf{50%{transform:translate(-50%,-3px)}}
+.nt-edit{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:10px}
+.nt-edit textarea{width:100%;text-align:center;font-size:16px}
+.pinbar{position:absolute;top:70px;left:10px;right:10px;z-index:4;display:flex;align-items:center;gap:10px;padding:7px 12px;border-radius:16px;cursor:pointer;max-width:820px;margin-inline:auto}
+.pinbar .bar{width:3px;align-self:stretch;border-radius:3px;background:var(--accent)}
+.pinbar>.ic{color:var(--accent);width:18px}
+.pinbar .x{flex:1;min-width:0}
+.pinbar .t{font-size:12.5px;font-weight:800;color:var(--accent)}
+.pinbar .s{font-size:13.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pinbar .ib{width:30px;height:30px;background:none}
+.gchat.pinned #msgs{padding-top:126px}
+.sendb .s-mic{display:block}.sendb .s-send{display:none}
+.comp[data-has="1"] .sendb .s-send,.comp[data-rec="1"] .sendb .s-send{display:block}
+.comp[data-has="1"] .sendb .s-mic,.comp[data-rec="1"] .sendb .s-mic{display:none}
+.comp[data-rec="1"] .sendb{background:var(--accent);color:var(--accent-ink)}
+.rec{display:none;align-items:center;gap:8px;flex:1;padding:0 4px;height:40px;min-width:0}
+.comp[data-rec="1"] .rec{display:flex}
+.comp[data-rec="1"] textarea,.comp[data-rec="1"] .tb,.comp[data-rec="1"] .att{display:none}
+.rec .rd{width:10px;height:10px;border-radius:50%;background:var(--bad);animation:pulse 1s infinite;flex:none}
+.rec .num{font-size:15px;flex:none}
+.rec canvas{flex:1;min-width:0;height:30px}
+.rec .ib{width:38px;height:38px;background:none;color:var(--bad)}
+.voice{display:flex;align-items:center;gap:10px;min-width:210px;padding:3px 0 2px}
+.voice .pb{width:42px;height:42px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;flex:none}
+.m.out .voice .pb{background:var(--accent-ink);color:var(--accent)}
+.voice .pb svg{width:18px;height:18px;fill:currentColor;stroke:none}
+.voice .vx{flex:1;min-width:0}
+.voice .wv{display:flex;align-items:center;gap:2px;height:28px;cursor:pointer;direction:rtl}
+.voice .wv i{flex:1;max-width:4px;min-width:2px;border-radius:2px;background:currentColor;opacity:.3}
+.voice .wv i.p{opacity:1}
+.voice .vrow{display:flex;align-items:center;gap:8px;font-size:11.5px;opacity:.85;margin-top:1px}
+.voice .spd{font:700 11px var(--fm);padding:1px 6px;border-radius:7px;background:rgba(127,127,127,.2);color:inherit}
+.bub.vbub .meta{bottom:6px}
+.svd{font-size:11.5px;opacity:.75;margin-bottom:2px;display:flex;align-items:center;gap:4px}
+.svd svg{width:13px;height:13px}
+.phgate .av{width:120px;height:120px;font-size:34px;margin:0 auto 10px}
+.phgate{text-align:center}
+@media (max-width:900px){
+ #app[data-pg=chat] .gchat{position:fixed;left:0;right:0;top:var(--vvt,0px);height:var(--chh,100dvh);z-index:30;border-radius:0}
+ #app[data-kb] .bnav{display:none}
+ .pinbar{top:calc(64px + var(--sat))}
+ .gchat.pinned #msgs{padding-top:calc(118px + var(--sat))}
+}
+
+.seg2 button{display:flex;align-items:center;gap:5px}
+.seg2 .ic{width:17px;height:17px}
+@media (max-width:900px){.seg2 .tl{display:none}.seg2 button{padding:0 11px}}
 </style>
 </head>
 <body>
@@ -631,6 +711,11 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></symbol>
  <symbol id="i-addsq" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></symbol>
+ <symbol id="i-vp" viewBox="0 0 24 24"><path d="M4 3v18"/><path d="M4 6h6M4 9.5h11M4 13h15M4 16.5h9M4 20h4"/></symbol>
+ <symbol id="i-bm" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></symbol>
+ <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+ <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></symbol>
+ <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></symbol>
  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
  <symbol id="i-ul" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 21h16"/></symbol>
 </svg>
@@ -767,6 +852,7 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
      <button data-tool="hline" data-tip="خط أفقي"><svg class="ic"><use href="#i-hl"/></svg></button>
      <button data-tool="fib" data-tip="فيبوناتشي"><svg class="ic"><use href="#i-fib"/></svg></button>
      <button data-tool="rect" data-tip="منطقة"><svg class="ic"><use href="#i-rect"/></svg></button>
+     <button data-tool="vp" data-tip="بروفايل الحجم"><svg class="ic"><use href="#i-vp"/></svg></button>
      <button data-tool="long" data-tip="صفقة شراء"><svg class="ic"><use href="#i-long"/></svg></button>
      <button data-tool="short" data-tip="صفقة بيع"><svg class="ic"><use href="#i-short"/></svg></button>
      <button data-tool="text" data-tip="كتابة"><svg class="ic"><use href="#i-text"/></svg></button>
@@ -830,25 +916,27 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
    <div class="gchat" id="chatWrap">
     <div class="wall"></div>
     <div class="chead">
-     <div class="ch-av"><div class="av" id="chAv">👥</div></div>
+     <div class="ch-av" id="chAvW"><div class="av" id="chAv">👥</div></div>
      <div class="who gl hud"><div class="x"><div class="nm" id="chTitle">غرفة الطلاب</div><div class="st" id="chSub"></div></div></div>
      <div class="ch-l">
       <button class="gl pill back hide" id="chBack"><svg class="ic"><use href="#i-back"/></svg><span>رجوع</span></button>
       <button class="gl circ only-admin" id="chatLock" title="قفل الغرفة"></button>
-      <div class="gl seg2" id="chTabs"><button data-ct="room" class="on">الغرفة<b class="nbadge rmbadge hide"></b></button><button data-ct="dm">الخاص<b class="nbadge dmbadge hide"></b></button></div>
+      <div class="gl seg2" id="chTabs"><button data-ct="room" class="on" title="غرفة الطلاب"><svg class="ic"><use href="#i-users"/></svg><span class="tl">الغرفة</span><b class="nbadge rmbadge hide"></b></button><button data-ct="dm" title="الخاص"><svg class="ic"><use href="#i-chat"/></svg><span class="tl">الخاص</span><b class="nbadge dmbadge hide"></b></button><button data-ct="saved" title="المحفوظة"><svg class="ic"><use href="#i-bm"/></svg><span class="tl">المحفوظة</span></button></div>
      </div>
     </div>
+    <div class="pinbar gl hide" id="pinbar"><div class="bar"></div><svg class="ic"><use href="#i-pin"/></svg><div class="x"><div class="t">رسالة مثبّتة</div><div class="s" id="pinTxt"></div></div><button class="ib only-admin" id="unpin"><svg class="ic"><use href="#i-x"/></svg></button></div>
     <div id="dmList" class="dmlist hide"></div>
-    <div id="msgs"><div class="inner" id="msgInner"></div></div>
+    <div id="msgs"><div class="notes hide" id="notes"></div><div class="inner" id="msgInner"></div></div>
     <button class="fab gl" id="fab"><svg class="ic"><use href="#i-down"/></svg><span class="nbadge hide" id="fabN"></span></button>
-    <div class="comp" id="chatFoot" data-has="0">
+    <div class="comp" id="chatFoot" data-has="0" data-rec="0">
      <div class="emoji gl" id="emoji"></div>
      <div class="rbar gl hide" id="replyBar"><svg class="ic lead"><use href="#i-reply"/></svg><div class="x"><div class="t" id="rbName"></div><div class="s" id="rbText"></div></div><button class="ib" id="rbX"><svg class="ic"><use href="#i-x"/></svg></button></div>
      <div class="rbar gl hide" id="chImgPrev"><img alt=""><div class="x"><div class="t">صورة</div><div class="s">تگدر تكتب وصف ويّاها</div></div><button class="ib"><svg class="ic"><use href="#i-x"/></svg></button></div>
      <div class="cbar">
-      <button class="gl circ sendb" id="chatSend" title="إرسال"><svg class="ic"><use href="#i-send"/></svg></button>
+      <button class="gl circ sendb" id="chatSend" title="إرسال"><svg class="ic s-send"><use href="#i-send"/></svg><svg class="ic s-mic"><use href="#i-mic"/></svg></button>
       <div class="box gl hud">
        <textarea id="chatTx" rows="1" placeholder="اكتب رسالة…" maxlength="1000" enterkeyhint="send"></textarea>
+       <div class="rec"><button class="ib" id="recDel" title="إلغاء"><svg class="ic"><use href="#i-trash"/></svg></button><i class="rd"></i><span class="num" id="recT">0:00</span><canvas id="recWave"></canvas></div>
        <button class="ib tb" id="emoBtn" title="إيموجي"><svg class="ic"><use href="#i-smile"/></svg></button>
       </div>
       <label class="gl circ att" title="صورة"><svg class="ic"><use href="#i-img"/></svg><input type="file" accept="image/*" id="chImg" hidden></label>
@@ -945,7 +1033,8 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
      <div class="kv"><span>الاسم</span><b id="setNm"></b></div>
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv"><span>قاعدة البيانات</span><b id="setDb"></b></div>
-     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-10</span></div>
+     <button class="btn tint blk only-mem" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
+     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-12</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -984,7 +1073,12 @@ const GU = (() => {
     { k: 'lon', n: 'لندن', tz: 'Europe/London', a: 8, b: 17, col: '#b07cff' },
     { k: 'ny', n: 'نيويورك', tz: 'America/New_York', a: 8, b: 17, col: '#3ccf82' }
   ];
+  const srC = new Map();
   function sesRange(s, dayUTC) { // dayUTC = ms of 00:00 UTC for some date; returns [startMs,endMs] for that local date
+    const ck = s.k + dayUTC; if (srC.has(ck)) return srC.get(ck);
+    const r = sesRange0(s, dayUTC); if (srC.size > 4000) srC.clear(); srC.set(ck, r); return r;
+  }
+  function sesRange0(s, dayUTC) {
     const d = new Date(dayUTC);
     const g = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), s.a);
     const st = g - tzOff(s.tz, g) * 6e4;
@@ -1035,13 +1129,15 @@ class GoldChart {
     const s = getComputedStyle(document.documentElement), g = n => s.getPropertyValue(n).trim();
     const light = document.documentElement.dataset.theme === 'light', cs = this.cs || {};
     const BG = { black: light ? '#ffffff' : '#000000', navy: light ? '#f4f7fc' : '#0c1424', theme: g('--panel') || '#121319' };
-    this.th = { bg: BG[cs.bg] || BG.theme, line: g('--line') || 'rgba(255,255,255,.06)', line2: g('--line2'), ink: g('--ink') || '#eee', dim: g('--dim') || '#999', faint: g('--faint'), up: cs.up || g('--ok') || '#3ccf82', dn: cs.dn || g('--bad') || '#f2596a', acc: g('--accent') || '#e8b130', warn: g('--warn') || '#f2b03d', accInk: g('--accent-ink') || '#000', panel2: g('--panel2'), light: document.documentElement.dataset.theme === 'light' };
+    const bg = cs.bgMode === 'solid' && cs.bg1 ? cs.bg1 : cs.bgMode === 'grad' && cs.bg1 ? cs.bg1 : (BG[cs.bg] || BG.theme);
+    this.th = { bg, bg2: cs.bgMode === 'grad' ? (cs.bg2 || bg) : null, line: cs.gridCol || g('--line') || 'rgba(255,255,255,.06)', line2: g('--line2'), ink: g('--ink') || '#eee', dim: cs.txtCol || g('--dim') || '#999', faint: g('--faint'), up: cs.up || g('--ok') || '#3ccf82', dn: cs.dn || g('--bad') || '#f2596a', acc: g('--accent') || '#e8b130', warn: g('--warn') || '#f2b03d', accInk: g('--accent-ink') || '#000', panel2: g('--panel2'), light: document.documentElement.dataset.theme === 'light' };
+    this.th.upB = cs.upB || this.th.up; this.th.dnB = cs.dnB || this.th.dn; this.th.upO = cs.upO || this.th.up; this.th.dnO = cs.dnO || this.th.dn; this.th.upW = cs.upW || this.th.up; this.th.dnW = cs.dnW || this.th.dn;
     this.wrap.style.background = this.th.bg;
     this.dirty = true;
   }
   setCS(cs) { this.cs = Object.assign({}, this.cs, cs); this.readTheme(); this.calcEMA(); }
   resize() {
-    const r = { width: this.wrap.clientWidth, height: this.wrap.clientHeight }, d = window.devicePixelRatio || 1;
+    const r = { width: this.wrap.clientWidth, height: this.wrap.clientHeight }, d = Math.min(2, window.devicePixelRatio || 1);
     if (Math.abs(r.width - (this.W || 0)) < 1 && Math.abs(r.height - (this.H || 0)) < 1 && d === this.dpr) return;
     this.W = Math.max(50, r.width); this.H = Math.max(50, r.height); this.dpr = d;
     this.cv.width = Math.round(this.W * d); this.cv.height = Math.round(this.H * d);
@@ -1066,14 +1162,15 @@ class GoldChart {
   update(k) {
     const n = this.c.length; if (!n) return;
     const last = this.c[n - 1];
-    if (k.t === last.t) this.c[n - 1] = k;
+    if (k.t === last.t) { this.c[n - 1] = k; const now = Date.now(); if (now - (this._sesT || 0) > 1500) { this._sesT = now; this.calcSess(); } }
     else if (k.t > last.t) {
       const follow = this.right >= n - 1;
-      this.c.push(k); if (follow) this.right += 1; this.calcSR();
+      this.c.push(k); if (follow) this.right += 1; this.calcSR(); this.calcSess();
     } else return;
     this.calcEMA(); this.dirty = true;
   }
-  calc() { this.calcEMA(); this.calcSR(); }
+  calc() { this.calcEMA(); this.calcSR(); this.calcSess(); }
+  setSess(list, opt) { this.sess = list; this.sessOpt = opt || {}; this.calcSess(); this.dirty = true; }
   calcEMA() {
     const c = this.c;
     [20, 50, 200].forEach(p => {
@@ -1140,11 +1237,12 @@ class GoldChart {
   draw() {
     const x = this.ctx, d = this.dpr, T = this.th, pw = this.pw, ph = this.ph;
     x.setTransform(d, 0, 0, d, 0, 0);
-    x.fillStyle = T.bg; x.fillRect(0, 0, this.W, this.H);
+    if (T.bg2) { const gr = x.createLinearGradient(0, 0, 0, this.H); gr.addColorStop(0, T.bg); gr.addColorStop(1, T.bg2); this.bgFill = gr; } else this.bgFill = T.bg;
+    x.fillStyle = this.bgFill; x.fillRect(0, 0, this.W, this.H);
     if (!this.c.length) { x.fillStyle = T.dim; x.font = '600 14px Almarai, sans-serif'; x.textAlign = 'center'; x.direction = 'rtl'; x.fillText(this.cb.emptyText ? this.cb.emptyText() : 'جاري التحميل…', this.W / 2, this.H / 2); return; }
     this.range();
     x.save(); x.beginPath(); x.rect(0, 0, pw, ph); x.clip();
-    if (this.ind.ses && this.tf <= 36e5) this.drawSes();
+    if (this.ind.ses && this.tf <= 36e5) { if (this.sess && this.sess.length) this.drawSessKZ(); else this.drawSes(); }
     this.drawGrid();
     if (this.ind.sr) this.drawZones();
     if (this.ind.news && this.tf <= 144e5 && this.news.length) this.drawNews();
@@ -1163,13 +1261,13 @@ class GoldChart {
   }
   niceStep(r, n) { const raw = r / n, m = Math.pow(10, Math.floor(Math.log10(raw))), q = raw / m; return (q < 1.5 ? 1 : q < 3 ? 2 : q < 7 ? 5 : 10) * m; }
   drawGrid() {
-    const x = this.ctx, T = this.th; x.strokeStyle = T.line; x.lineWidth = 1;
-    if (this.cs.grid === false) x.strokeStyle = 'rgba(0,0,0,0)';
+    const x = this.ctx, T = this.th, cs = this.cs; x.strokeStyle = T.line; x.lineWidth = 1;
     const st = this.niceStep(this.hi - this.lo, Math.max(3, this.ph / 60)); this.pstep = st;
-    x.beginPath();
-    for (let p = Math.ceil(this.lo / st) * st; p <= this.hi; p += st) { const y = Math.round(this.yP(p)) + .5; x.moveTo(0, y); x.lineTo(this.pw, y); }
     this.tlabels = this.timeLabels();
-    this.tlabels.forEach(l => { const xx = Math.round(l.x) + .5; x.moveTo(xx, 0); x.lineTo(xx, this.ph); });
+    if (cs.grid === false) return;
+    x.beginPath();
+    if (cs.gridH !== false) for (let p = Math.ceil(this.lo / st) * st; p <= this.hi; p += st) { const y = Math.round(this.yP(p)) + .5; x.moveTo(0, y); x.lineTo(this.pw, y); }
+    if (cs.gridV !== false) this.tlabels.forEach(l => { const xx = Math.round(l.x) + .5; x.moveTo(xx, 0); x.lineTo(xx, this.ph); });
     x.stroke();
   }
   timeLabels() {
@@ -1221,19 +1319,16 @@ class GoldChart {
       for (let i = this.i0; i <= this.i1; i++) { const xx = this.xI(i), y = this.yP(this.c[i].c); i === this.i0 ? x.moveTo(xx, y) : x.lineTo(xx, y); }
       x.stroke(); x.lineTo(this.xI(this.i1), this.ph); x.lineTo(this.xI(this.i0), this.ph); x.closePath(); x.globalAlpha = .08; x.fillStyle = T.acc; x.fill(); x.globalAlpha = 1; return;
     }
-    const src = ty === 'ha' && this.ha.length === this.c.length ? this.ha : this.c;
+    const src = ty === 'ha' && this.ha.length === this.c.length ? this.ha : this.c, cs = this.cs;
+    const showB = cs.body !== false, showO = cs.border !== false, showW = cs.wick !== false;
     for (let i = this.i0; i <= this.i1; i++) {
-      const k = src[i], cx = Math.round(this.xI(i)), up = k.c >= k.o, col = up ? T.up : T.dn;
-      x.fillStyle = col;
+      const k = src[i], cx = Math.round(this.xI(i)), up = k.c >= k.o;
       const yh = this.yP(k.h), yl = this.yP(k.l), yo = this.yP(k.o), yc = this.yP(k.c);
       const top = Math.round(Math.min(yo, yc)), hh = Math.max(1, Math.round(Math.abs(yc - yo))), bx = cx - Math.floor(body / 2);
-      if (ty === 'hollow' && up && body > 2) {
-        x.fillRect(cx, Math.round(yh), 1, Math.max(0, top - Math.round(yh))); x.fillRect(cx, top + hh, 1, Math.max(0, Math.round(yl) - top - hh));
-        x.strokeStyle = col; x.lineWidth = 1; x.strokeRect(bx + .5, top + .5, body - 1, Math.max(1, hh - 1));
-      } else {
-        x.fillRect(cx, Math.round(yh), 1, Math.max(1, Math.round(yl - yh)));
-        x.fillRect(bx, top, body, hh);
-      }
+      if (showW) { x.fillStyle = up ? T.upW : T.dnW; x.fillRect(cx, Math.round(yh), 1, Math.max(0, top - Math.round(yh))); x.fillRect(cx, top + hh, 1, Math.max(0, Math.round(yl) - top - hh)); if (body <= 2) x.fillRect(cx, top, 1, hh); }
+      const hollow = ty === 'hollow' && up;
+      if (showB && !hollow) { x.fillStyle = up ? T.upB : T.dnB; x.fillRect(bx, top, body, hh); }
+      if ((showO || hollow) && body > 2) { x.strokeStyle = up ? T.upO : T.dnO; x.lineWidth = 1; x.strokeRect(bx + .5, top + .5, body - 1, Math.max(1, hh - 1)); }
     }
   }
   drawNews() {
@@ -1272,7 +1367,7 @@ class GoldChart {
   rr(x0, y0, w, h, r) { const x = this.ctx; x.beginPath(); x.moveTo(x0 + r, y0); x.arcTo(x0 + w, y0, x0 + w, y0 + h, r); x.arcTo(x0 + w, y0 + h, x0, y0 + h, r); x.arcTo(x0, y0 + h, x0, y0, r); x.arcTo(x0, y0, x0 + w, y0, r); x.closePath(); }
   drawAxes() {
     const x = this.ctx, T = this.th, pw = this.pw, ph = this.ph;
-    x.fillStyle = T.bg; x.fillRect(pw, 0, this.PA, this.H); x.fillRect(0, ph, this.W, this.TA);
+    x.fillStyle = this.bgFill || T.bg; x.fillRect(pw, 0, this.PA, this.H); x.fillRect(0, ph, this.W, this.TA);
     x.strokeStyle = T.line2 || T.line; x.beginPath(); x.moveTo(pw + .5, 0); x.lineTo(pw + .5, this.H); x.moveTo(0, ph + .5); x.lineTo(this.W, ph + .5); x.stroke();
     const st = this.pstep;
     for (let p = Math.ceil(this.lo / st) * st; p <= this.hi; p += st) { const y = this.yP(p); if (y < 8 || y > ph - 4) continue; this.txt(this.fmt(p), pw + this.PA / 2, y + 4, 'center', '500 10.5px "JetBrains Mono", monospace', T.dim); }
@@ -1311,20 +1406,28 @@ class GoldChart {
   P(pt) { return { x: this.X(pt.t), y: this.yP(pt.p) }; }
   drawD(d, teach, sel) {
     const x = this.ctx, T = this.th, col = d.color || (teach ? '#e8b130' : T.acc);
-    x.lineWidth = teach ? 1.6 : 1.8; x.strokeStyle = col; x.fillStyle = col;
-    if (teach) x.setLineDash([6, 4]);
+    const DASH = { dash: [7, 5], dot: [2, 4] };
+    x.lineWidth = d.w || (teach ? 1.6 : 1.8); x.strokeStyle = col; x.fillStyle = col;
+    x.setLineDash(DASH[d.dash] || (teach ? [6, 4] : []));
     const a = this.P(d.pts[0]), b = d.pts[1] ? this.P(d.pts[1]) : a;
     switch (d.type) {
-      case 'trend': x.beginPath(); x.moveTo(a.x, a.y); x.lineTo(b.x, b.y); x.stroke(); break;
-      case 'hline': x.beginPath(); x.moveTo(0, a.y); x.lineTo(this.pw, a.y); x.stroke(); break;
-      case 'rect': x.globalAlpha = .13; x.fillRect(a.x, a.y, b.x - a.x, b.y - a.y); x.globalAlpha = 1; x.strokeRect(a.x, a.y, b.x - a.x, b.y - a.y); break;
+      case 'trend': {
+        let A = a, B = b; const dx = b.x - a.x, dy = b.y - a.y;
+        if (Math.abs(dx) > .01) { const k = dy / dx; if (d.extR) { const xe = dx >= 0 ? this.pw : 0; B = { x: xe, y: a.y + k * (xe - a.x) }; } if (d.extL) { const xs = dx >= 0 ? 0 : this.pw; A = { x: xs, y: a.y + k * (xs - a.x) }; } }
+        x.beginPath(); x.moveTo(A.x, A.y); x.lineTo(B.x, B.y); x.stroke();
+        if (d.lbl !== false && d.showP) { x.setLineDash([]); this.txt(this.fmt(d.pts[1].p), b.x + 6, b.y - 4, 'left', '600 10.5px "JetBrains Mono", monospace', col); }
+        break;
+      }
+      case 'hline': x.beginPath(); x.moveTo(0, a.y); x.lineTo(this.pw, a.y); x.stroke(); if (d.text) { x.setLineDash([]); this.txt(d.text, 8, a.y - 5, 'left', '700 11px Almarai, sans-serif', col); } break;
+      case 'rect': x.globalAlpha = d.fa != null ? d.fa : .13; x.fillStyle = d.fill || col; x.fillRect(a.x, a.y, (d.extR ? this.pw : b.x) - a.x, b.y - a.y); x.globalAlpha = 1; x.strokeRect(a.x, a.y, (d.extR ? this.pw : b.x) - a.x, b.y - a.y); if (d.text) { x.setLineDash([]); this.txt(d.text, Math.min(a.x, b.x) + 6, Math.min(a.y, b.y) + 14, 'left', '700 11px Almarai, sans-serif', col); } break;
+      case 'vp': this.drawVP(d, a, b, sel); break;
       case 'fib': this.drawFib(d, a, b, col); break;
       case 'long': case 'short': this.drawPos(d, teach); break;
       case 'text': {
-        x.setLineDash([]); const s = d.text || ''; x.font = '700 13px Almarai, sans-serif'; const w = x.measureText(s).width + 14;
-        x.globalAlpha = .16; this.rr(a.x - 4, a.y - 16, w, 24, 6); x.fill(); x.globalAlpha = 1;
-        this.txt(s, a.x + 3, a.y + 1, 'left', '700 13px Almarai, sans-serif', col);
-        if (sel) { x.strokeStyle = col; this.rr(a.x - 4, a.y - 16, w, 24, 6); x.stroke(); }
+        x.setLineDash([]); const s = d.text || '', fs = d.fs || 13, F = `700 ${fs}px Almarai, sans-serif`; x.font = F; const w = x.measureText(s).width + 14, h = fs + 11;
+        if (d.bgOn !== false) { x.globalAlpha = .16; this.rr(a.x - 4, a.y - h + 8, w, h, 6); x.fill(); x.globalAlpha = 1; }
+        this.txt(s, a.x + 3, a.y + 1, 'left', F, col);
+        if (sel) { x.strokeStyle = col; this.rr(a.x - 4, a.y - h + 8, w, h, 6); x.stroke(); }
         break;
       }
       case 'measure': {
@@ -1346,18 +1449,19 @@ class GoldChart {
     if (teach && d.type !== 'text' && d.pts[0]) { this.txt('✦ ' + (d.by || 'الأستاذ'), a.x + 4, a.y - 6, 'left', '700 10px Almarai, sans-serif', col); }
     if (sel) this.handles(d).forEach(h => { x.fillStyle = T.bg; x.strokeStyle = col; x.lineWidth = 2; x.beginPath(); x.arc(h.x, h.y, 5.5, 0, 7); x.fill(); x.stroke(); });
   }
-  fibLv(d) { const p0 = d.pts[0].p, p1 = d.pts[1].p; return [0, .236, .382, .5, .618, .786, 1, 1.272, 1.618].map(l => ({ l, p: p1 + (p0 - p1) * l })); }
+  fibLv(d) { const p0 = d.pts[0].p, p1 = d.pts[1].p, on = d.lv || [0, .236, .382, .5, .618, .786, 1, 1.272, 1.618]; return on.slice().sort((a, b) => a - b).map(l => ({ l, p: p1 + (p0 - p1) * l })); }
   drawFib(d, a, b, col) {
     const x = this.ctx, xa = Math.min(a.x, b.x), cols = { 0: '#9aa0a6', .236: '#f2596a', .382: '#f2b03d', .5: '#3ccf82', .618: '#e8b130', .786: '#4aa3ff', 1: '#9aa0a6', 1.272: '#b07cff', 1.618: '#ec4899' };
     const lv = this.fibLv(d), dash = x.getLineDash();
     for (let k = 0; k < lv.length - 1; k++) {
       const y1 = this.yP(lv[k].p), y2 = this.yP(lv[k + 1].p), gold = lv[k].l === .5;
-      x.globalAlpha = gold ? .16 : .05; x.fillStyle = gold ? '#e8b130' : cols[lv[k + 1].l]; x.fillRect(xa, y1, this.pw - xa, y2 - y1);
+      if (d.fibFill === false) continue;
+      x.globalAlpha = gold ? .16 : .05; x.fillStyle = gold ? '#e8b130' : (cols[lv[k + 1].l] || '#999'); x.fillRect(xa, y1, (d.extR === false ? Math.max(a.x, b.x) : this.pw) - xa, y2 - y1);
     }
     x.globalAlpha = 1;
     lv.forEach(v => {
-      const y = this.yP(v.p); x.strokeStyle = cols[v.l]; x.lineWidth = v.l === .618 ? 1.8 : 1.1; x.beginPath(); x.moveTo(xa, y); x.lineTo(this.pw, y); x.stroke();
-      this.txt(v.l + '  ' + this.fmt(v.p), xa + 4, y - 3, 'left', '600 10.5px "JetBrains Mono", monospace', cols[v.l]);
+      const y = this.yP(v.p), lc = d.mono ? col : (cols[v.l] || col); x.strokeStyle = lc; x.lineWidth = (v.l === .618 ? 1.8 : 1.1) * ((d.w || 1.8) / 1.8); x.beginPath(); x.moveTo(xa, y); x.lineTo(d.extR === false ? Math.max(a.x, b.x) : this.pw, y); x.stroke();
+      if (d.lbl !== false) this.txt(v.l + (d.showP === false ? '' : '  ' + this.fmt(v.p)), xa + 4, y - 3, 'left', '600 10.5px "JetBrains Mono", monospace', lc);
     });
     x.strokeStyle = col; x.lineWidth = 1; x.setLineDash([4, 4]); x.beginPath(); x.moveTo(a.x, a.y); x.lineTo(b.x, b.y); x.stroke(); x.setLineDash(dash);
   }
@@ -1365,6 +1469,77 @@ class GoldChart {
     const e = C.pts[0], dd = Math.abs(C.pts[1].p - e.p) || e.p * .002, s = C.type === 'long' ? 1 : -1;
     const t1 = Math.max(C.pts[1].t, e.t + this.tf * 12);
     return [e, { t: t1, p: e.p + s * dd }, { t: t1, p: e.p - s * dd / 2 }];
+  }
+  calcVP(d) {
+    const t0 = Math.min(d.pts[0].t, d.pts[1].t), t1 = Math.max(d.pts[0].t, d.pts[1].t), n = this.c.length, last = this.c[n - 1];
+    const key = [t0, t1, d.rows || 24, d.va || 70, n, last && last.c, last && last.v].join('|'); if (d._vp && d._vp.key === key) return d._vp;
+    const i0 = Math.max(0, Math.ceil(this.iT(t0) - 1e-6)), i1 = Math.min(n - 1, Math.floor(this.iT(t1) + 1e-6)); if (i1 < i0) return null;
+    let lo = Infinity, hi = -Infinity; for (let i = i0; i <= i1; i++) { lo = Math.min(lo, this.c[i].l); hi = Math.max(hi, this.c[i].h); }
+    const R = d.rows || 24, step = (hi - lo) / R || 1, up = new Array(R).fill(0), dn = new Array(R).fill(0);
+    for (let i = i0; i <= i1; i++) {
+      const k = this.c[i], a = Math.max(0, Math.floor((k.l - lo) / step)), b = Math.min(R - 1, Math.floor((k.h - lo) / step)), share = (k.v || 1) / (b - a + 1);
+      for (let r = a; r <= b; r++) (k.c >= k.o ? up : dn)[r] += share;
+    }
+    const tot = up.map((u, r) => u + dn[r]); let poc = 0; tot.forEach((v, r) => { if (v > tot[poc]) poc = r; });
+    const sum = tot.reduce((s, v) => s + v, 0), target = sum * (d.va || 70) / 100; let a = poc, b = poc, acc = tot[poc];
+    while (acc < target && (a > 0 || b < R - 1)) { const na = a > 0 ? tot[a - 1] : -1, nb = b < R - 1 ? tot[b + 1] : -1; if (nb >= na) { b++; acc += tot[b]; } else { a--; acc += tot[a]; } }
+    return d._vp = { key, lo, hi, step, up, dn, tot, poc, vaL: a, vaH: b, max: Math.max(...tot) || 1 };
+  }
+  drawVP(d, a, b, sel) {
+    const x = this.ctx, v = this.calcVP(d); if (!v) return;
+    const xa = Math.min(a.x, b.x), xb = Math.max(a.x, b.x), W = Math.max(40, (xb - xa) * (d.wpct || 35) / 100);
+    const cu = d.cUp || '#4aa3ff', cd = d.cDn || '#e8b130';
+    x.setLineDash([]);
+    x.globalAlpha = .06; x.fillStyle = cu; x.fillRect(xa, this.yP(v.hi), xb - xa, this.yP(v.lo) - this.yP(v.hi)); x.globalAlpha = 1;
+    for (let r = 0; r < v.tot.length; r++) {
+      const y1 = this.yP(v.lo + (r + 1) * v.step), y2 = this.yP(v.lo + r * v.step), hh = Math.max(1, y2 - y1 - 1), inVA = r >= v.vaL && r <= v.vaH;
+      const wu = W * v.up[r] / v.max, wd = W * v.dn[r] / v.max;
+      x.globalAlpha = inVA ? .75 : .3; x.fillStyle = cu; x.fillRect(xa, y1, wu, hh); x.fillStyle = cd; x.fillRect(xa + wu, y1, wd, hh);
+    }
+    x.globalAlpha = 1;
+    const yp = this.yP(v.lo + (v.poc + .5) * v.step); x.strokeStyle = d.cPoc || '#f2596a'; x.lineWidth = 2; x.beginPath(); x.moveTo(xa, yp); x.lineTo(d.extPoc ? this.pw : xb, yp); x.stroke();
+    if (d.vaLines !== false) { x.lineWidth = 1; x.setLineDash([4, 3]); x.strokeStyle = cu; [v.lo + (v.vaH + 1) * v.step, v.lo + v.vaL * v.step].forEach(p => { const y = this.yP(p); x.beginPath(); x.moveTo(xa, y); x.lineTo(xb, y); x.stroke(); }); x.setLineDash([]); }
+    this.txt('POC ' + this.fmt(v.lo + (v.poc + .5) * v.step), xb + 4, yp + 4, 'left', '700 10px "JetBrains Mono", monospace', d.cPoc || '#f2596a');
+    if (sel) { x.strokeStyle = cu; x.lineWidth = 1; x.strokeRect(xa, this.yP(v.hi), xb - xa, this.yP(v.lo) - this.yP(v.hi)); }
+  }
+  // ===== جلسات مثل مؤشر KZP: صناديق + قمة وقاع الجلسة ممتدة لحد ما يضربها السعر
+  calcSess() {
+    const c = this.c, n = c.length; this.sessInst = [];
+    const S = (this.sess || []).filter(s => s.on); if (!S.length || !n || this.tf > 36e5) return;
+    if (!this._nym || this._nymN !== n || this._nym0 !== c[0].t) { this._nym = c.map(k => { const d = new Date(k.t + GU.tzOff('America/New_York', k.t) * 6e4); return d.getUTCHours() * 60 + d.getUTCMinutes(); }); this._nymN = n; this._nym0 = c[0].t; }
+    else { const k = c[n - 1], d = new Date(k.t + GU.tzOff('America/New_York', k.t) * 6e4); this._nym[n - 1] = d.getUTCHours() * 60 + d.getUTCMinutes(); }
+    const mm = s => { const [h, m] = String(s).split(':').map(Number); return (h || 0) * 60 + (m || 0); };
+    const lim = (this.sessOpt && this.sessOpt.limit) || 40;
+    S.forEach(s => {
+      const A = mm(s.a), B = mm(s.b), inS = m => A < B ? m >= A && m < B : (m >= A || m < B), out = []; let cur = null;
+      for (let i = 0; i < n; i++) {
+        if (inS(this._nym[i])) { if (cur && cur.i1 === i - 1 && i - cur.i0 < 1440) { cur.i1 = i; cur.hi = Math.max(cur.hi, c[i].h); cur.lo = Math.min(cur.lo, c[i].l); } else { cur = { s, i0: i, i1: i, hi: c[i].h, lo: c[i].l }; out.push(cur); } }
+      }
+      out.slice(-lim).forEach(o => {
+        o.eh = null; o.el = null;
+        for (let j = o.i1 + 1; j < n && (o.eh == null || o.el == null); j++) { if (o.eh == null && c[j].h >= o.hi) o.eh = j; if (o.el == null && c[j].l <= o.lo) o.el = j; }
+        this.sessInst.push(o);
+      });
+    });
+  }
+  drawSessKZ() {
+    const x = this.ctx, o2 = this.sessOpt || {}, n = this.c.length, bw = this.barW;
+    if (!this.sessInst) this.calcSess();
+    x.setLineDash([]);
+    this.sessInst.forEach(o => {
+      const col = o.s.col, xa = this.xI(o.i0) - bw / 2, xb = this.xI(o.i1) + bw / 2;
+      const yh = this.yP(o.hi), yl = this.yP(o.lo);
+      if (o2.lines !== false) {
+        [[o.hi, o.eh, 'High'], [o.lo, o.el, 'Low']].forEach(([p, e, nm]) => {
+          const xe = e != null ? this.xI(e) : this.pw; if (xe < 0 || xb > this.pw) return;
+          const y = Math.round(this.yP(p)) + .5; x.strokeStyle = col; x.globalAlpha = e != null ? .55 : .95; x.lineWidth = 1; x.beginPath(); x.moveTo(xb, y); x.lineTo(xe, y); x.stroke();
+          if (o2.labels !== false && e == null) { x.globalAlpha = 1; this.txt(o.s.n + ' ' + nm, Math.min(xe, this.pw) - 4, y - 4, 'right', '600 10px "JetBrains Mono", monospace', col); }
+        });
+        x.globalAlpha = 1;
+      }
+      if (xb < 0 || xa > this.pw) return;
+      if (o2.boxes !== false) { x.globalAlpha = o2.fa != null ? o2.fa : .22; x.fillStyle = col; x.fillRect(xa, yh, xb - xa, yl - yh); x.globalAlpha = .9; x.strokeStyle = col; x.lineWidth = 1; x.strokeRect(Math.round(xa) + .5, Math.round(yh) + .5, Math.round(xb - xa), Math.round(yl - yh)); x.globalAlpha = 1; }
+    });
   }
   drawPos(d, teach) {
     const x = this.ctx, T = this.th, [e, tp, sl] = d.pts.length < 3 ? this.posPts(d) : d.pts, xa = this.X(e.t), xb = Math.max(this.X(tp.t), xa + 60), ye = this.yP(e.p), yt = this.yP(tp.p), ys = this.yP(sl.p);
@@ -1395,12 +1570,13 @@ class GoldChart {
     for (let j = this.mine.length - 1; j >= 0; j--) {
       const d = this.mine[j], a = this.P(d.pts[0]), b = d.pts[1] ? this.P(d.pts[1]) : a; let ok = false;
       switch (d.type) {
-        case 'trend': ok = this.segD(px, py, a, b) <= R; break;
+        case 'trend': ok = this.segD(px, py, a, b) <= R || ((d.extR || d.extL) && Math.abs(b.x - a.x) > .01 && Math.abs(a.y + (b.y - a.y) / (b.x - a.x) * (px - a.x) - py) <= R && (d.extL || (px - a.x) * (b.x - a.x) >= 0) && (d.extR || (px - b.x) * (a.x - b.x) >= 0)); break;
         case 'hline': ok = Math.abs(py - a.y) <= R; break;
         case 'rect': ok = px >= Math.min(a.x, b.x) - R && px <= Math.max(a.x, b.x) + R && py >= Math.min(a.y, b.y) - R && py <= Math.max(a.y, b.y) + R; break;
         case 'fib': ok = px >= Math.min(a.x, b.x) - R && this.fibLv(d).some(v => Math.abs(this.yP(v.p) - py) <= R); break;
         case 'long': case 'short': { const hs = this.handles(d); const ys = [hs[1].y, hs[2].y]; ok = px >= hs[0].x - R && px <= hs[3].x + R && py >= Math.min(...ys) - R && py <= Math.max(...ys) + R; break; }
-        case 'text': { this.ctx.font = '700 13px Almarai, sans-serif'; const w = this.ctx.measureText(d.text || '').width + 14; ok = px >= a.x - 6 && px <= a.x + w && py >= a.y - 18 && py <= a.y + 10; break; }
+        case 'text': { const fs = d.fs || 13; this.ctx.font = `700 ${fs}px Almarai, sans-serif`; const w = this.ctx.measureText(d.text || '').width + 14; ok = px >= a.x - 6 && px <= a.x + w && py >= a.y - fs - 6 && py <= a.y + 10; break; }
+        case 'vp': { const xa = Math.min(a.x, b.x), xb = Math.max(a.x, b.x), v = d._vp; ok = px >= xa - R && px <= xb + R && v && py >= this.yP(v.hi) - R && py <= this.yP(v.lo) + R; break; }
       }
       if (ok) return { d, h: -1 };
     }
@@ -1459,7 +1635,13 @@ class GoldChart {
     this.right = Math.max(Math.min(this.right, n - 1 + vis * .8), 5);
     if (this.iX(0) < 30 && this.cb.onNeedMore) this.cb.onNeedMore();
   }
+  glide(v) {
+    cancelAnimationFrame(this.kin); let t0 = performance.now();
+    const step = t => { const dt = Math.min(40, t - t0); t0 = t; this.right += v * dt; v *= Math.pow(.94, dt / 16); this.clampV(); this.dirty = true; if (Math.abs(v) * this.barW > .02) this.kin = requestAnimationFrame(step); };
+    this.kin = requestAnimationFrame(step);
+  }
   down(id, p, touch) {
+    cancelAnimationFrame(this.kin);
     this.ptrs.set(id, p);
     if (this.ptrs.size === 2) {
       const [a, b] = [...this.ptrs.values()]; this.drag = null; clearTimeout(this.lpT);
@@ -1502,7 +1684,7 @@ class GoldChart {
     const D = this.drag;
     if (D && this.ptrs.has(id)) {
       if (D.k === 'cross') { this.cross = p; this.dirty = true; return; }
-      if (D.k === 'pan') { this.right = D.r - (p.x - D.sx) / this.barW; if (this.manualY) this.yO = D.yO + (p.y - D.sy) / this.ph * D.span; this.clampV(); }
+      if (D.k === 'pan') { this.right = D.r - (p.x - D.sx) / this.barW; if (this.manualY) this.yO = D.yO + (p.y - D.sy) / this.ph * D.span; this.clampV(); const now = performance.now(); (D.hist = D.hist || []).push({ t: now, r: this.right }); while (D.hist.length > 2 && now - D.hist[0].t > 90) D.hist.shift(); }
       else if (D.k === 'y') { this.manualY = true; this.yS = Math.max(.1, Math.min(10, D.yS * Math.exp((p.y - D.sy) * .006))); }
       else if (this.moved) {
         if (!D.pushed && !D.alert) { this.undoS.push(D.o.startsWith('[') ? JSON.stringify(this.mine) : JSON.stringify(this.mine)); D.pushed = true; }
@@ -1549,6 +1731,10 @@ class GoldChart {
     const D = this.drag; this.drag = null;
     if (D && D.k === 'cross') { this.cross = null; this.dirty = true; return; }
     if (D && (D.k === 'h' || D.k === 'b') && this.moved) { if (D.alert) this.cb.onAlerts && this.cb.onAlerts(this.alerts); else this.changed(); }
+    if (this.moved && D && D.k === 'pan' && D.hist && D.hist.length > 1) {
+      const h = D.hist, a = h[0], b = h[h.length - 1], dt = b.t - a.t;
+      if (dt > 0 && performance.now() - b.t < 60) { let v = (b.r - a.r) / dt; if (Math.abs(v) * this.barW > .25) this.glide(v); }
+    }
     if (!this.moved && D && D.k === 'pan') {
       const now = Date.now(); if (now - this.lastTap < 300) { this.resetView(); this.lastTap = 0; } else this.lastTap = now;
       if (touch && this.cb.onTap) this.cb.onTap();
@@ -1705,7 +1891,15 @@ const LocalDB = {
   async delDM(sid, id) { const a = L.get('amg_dm_' + sid, []).filter(m => m.id !== id); L.set('amg_dm_' + sid, a); this.dmcb && this.dmcb(a); },
   watchDMList(cb) { this.dlcb = cb; cb(L.get('amg_dmlist', [])); },
   async reactChat(id, R) { const a = L.get('amg_chat', []).map(m => m.id === id ? Object.assign(m, { reactions: R }) : m); L.set('amg_chat', a); this.ccb && this.ccb(a); },
-  async reactDM(sid, id, R) { const a = L.get('amg_dm_' + sid, []).map(m => m.id === id ? Object.assign(m, { reactions: R }) : m); L.set('amg_dm_' + sid, a); this.dmcb && this.dmcb(a); }
+  async reactDM(sid, id, R) { const a = L.get('amg_dm_' + sid, []).map(m => m.id === id ? Object.assign(m, { reactions: R }) : m); L.set('amg_dm_' + sid, a); this.dmcb && this.dmcb(a); },
+  watchProfiles(cb) { this.pfcb = cb; cb(L.get('amg_prof', {})); },
+  async setProfile(x) { const p = L.get('amg_prof', {}); p[ME.uid] = Object.assign({}, p[ME.uid], x); L.set('amg_prof', p); this.pfcb && this.pfcb(p); },
+  watchNotes(cb) { this.ntcb = cb; cb(L.get('amg_notes', [])); },
+  async setNote(x) { const a = L.get('amg_notes', []).filter(n => n.id !== ME.uid); a.push(Object.assign({ id: ME.uid }, x)); L.set('amg_notes', a); this.ntcb && this.ntcb(a); },
+  async delNote() { const a = L.get('amg_notes', []).filter(n => n.id !== ME.uid); L.set('amg_notes', a); this.ntcb && this.ntcb(a); },
+  watchSaved(cb) { this.svcb = cb; cb(L.get('amg_saved_' + ME.uid, [])); },
+  async saveMsg(m) { const a = L.get('amg_saved_' + ME.uid, []); m.id = uid(); a.push(m); L.set('amg_saved_' + ME.uid, a); this.svcb && this.svcb(a); },
+  async unsaveMsg(id) { const a = L.get('amg_saved_' + ME.uid, []).filter(m => m.id !== id); L.set('amg_saved_' + ME.uid, a); this.svcb && this.svcb(a); }
 };
 let fbApp, auth, fdb;
 const FireDB = {
@@ -1753,7 +1947,15 @@ const FireDB = {
   delDM(sid, id) { return fdb.collection('dm').doc(sid).collection('msgs').doc(id).delete(); },
   watchDMList(cb) { fdb.collection('dm').orderBy('at', 'desc').limit(200).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => { }); },
   reactChat(id, R) { return fdb.collection('chat').doc(id).update({ reactions: R }); },
-  reactDM(sid, id, R) { return fdb.collection('dm').doc(sid).collection('msgs').doc(id).update({ reactions: R }); }
+  reactDM(sid, id, R) { return fdb.collection('dm').doc(sid).collection('msgs').doc(id).update({ reactions: R }); },
+  watchProfiles(cb) { fdb.collection('profiles').onSnapshot(s => { const o = {}; s.docs.forEach(d => o[d.id] = d.data()); cb(o); }, () => cb({})); },
+  setProfile(x) { return fdb.collection('profiles').doc(ME.uid).set(x); },
+  watchNotes(cb) { fdb.collection('notes').onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => { }); },
+  setNote(x) { return fdb.collection('notes').doc(ME.uid).set(x); },
+  delNote() { return fdb.collection('notes').doc(ME.uid).delete(); },
+  watchSaved(cb) { fdb.collection('users').doc(ME.uid).collection('saved').orderBy('at', 'desc').limit(200).onSnapshot(s => cb(s.docs.map(d => Object.assign({}, d.data(), { id: d.id }))), () => { }); },
+  saveMsg(m) { return fdb.collection('users').doc(ME.uid).collection('saved').add(m); },
+  unsaveMsg(id) { return fdb.collection('users').doc(ME.uid).collection('saved').doc(id).delete(); }
 };
 const GuestDB = Object.assign({}, LocalDB, {
   kind: 'guest',
@@ -2017,7 +2219,7 @@ function initChart() {
   CH.fmt = p => fx(p + OFF());
   CH.ind = Object.assign(CH.ind, S.ind, { mag: S.mag });
   if (ME.role === 'guest') CH.ind.teach = false;
-  CH.setCS(S.cs || {});
+  CH.setCS(S.cs || {}); applySess();
   CH.alerts = ALERTS.filter(a => a.on);
   $('#magBtn').classList.toggle('on', S.mag);
   $('#tfs').innerHTML = TFS.map(t => `<button data-tf="${t[0]}">${t[1]}</button>`).join('');
@@ -2030,7 +2232,7 @@ function initChart() {
     if (a === 'mag') { S.mag = !S.mag; saveS(); CH.ind.mag = S.mag; b.classList.toggle('on', S.mag); $('#swMag').classList.toggle('on', S.mag); toast(S.mag ? 'المغناطيس شغّال' : 'المغناطيس طافي'); }
     if (a === 'undo') { if (!CH.undo()) toast('ماكو شي ترجعه'); }
     if (a === 'clear') ask('تمسح رسوماتك؟', 'كل الخطوط والفيبو اللي رسمتها راح تنمسح.', 'امسحها', true).then(ok => ok && CH.clearMine());
-    if (a === 'share') shareChart();
+    if (a === 'share') shareSheet();
   };
   $('#srcSeg').onclick = e => { const b = e.target.closest('[data-src]'); if (b) setSrc(b.dataset.src); };
   document.addEventListener('keydown', e => {
@@ -2057,7 +2259,7 @@ function selbar(d) {
     sb.innerHTML = `<span class="pill warn">🔔 <span class="num">${showP(d.p)}</span></span><button class="btn danger sm" data-sb="del">احذف</button>`;
   } else {
     const cols = ['#e8b130', '#4aa3ff', '#3ccf82', '#f2596a', '#b07cff', '#eceef2'];
-    sb.innerHTML = cols.map(c => `<button class="c ${d.color === c ? 'on' : ''}" style="background:${c}" data-sb="col" data-c="${c}"></button>`).join('') + (d.type === 'text' ? '<button class="btn tint sm" data-sb="edit">عدّل</button>' : '') + `<button class="btn danger sm" data-sb="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button>`;
+    sb.innerHTML = (['long', 'short', 'vp'].includes(d.type) ? '' : cols.map(c => `<button class="c ${d.color === c ? 'on' : ''}" style="background:${c}" data-sb="col" data-c="${c}"></button>`).join('')) + `<button class="btn tint sm" data-sb="set"><svg class="ic" style="width:16px;height:16px"><use href="#i-set"/></svg>إعدادات</button><button class="btn danger sm" data-sb="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button>`;
   }
   sb.classList.remove('hide');
   sb.onclick = e => {
@@ -2065,6 +2267,7 @@ function selbar(d) {
     if (b.dataset.sb === 'del') CH.deleteSel();
     if (b.dataset.sb === 'col') { CH.setSelColor(b.dataset.c); selbar(CH.sel); }
     if (b.dataset.sb === 'edit') askText('عدّل الكتابة', d.text).then(s => { if (s) CH.editText(d, s); });
+    if (b.dataset.sb === 'set') drawSheet(d);
   };
 }
 function setTeacher() {
@@ -2091,30 +2294,146 @@ function makeTV() {
   const q = new URLSearchParams({ symbol: 'OANDA:XAUUSD', interval: iv, theme: th, style: '1', locale: 'ar_AE', timezone: 'Asia/Baghdad', hidesidetoolbar: '0', saveimage: '0', withdateranges: '1', allow_symbol_change: '1' });
   $('#tvbox').innerHTML = `<iframe src="https://s.tradingview.com/widgetembed/?${q}" allowfullscreen allow="fullscreen"></iframe>`;
 }
-function csSheet() {
-  const UP = ['#3ccf82', '#26a69a', '#22c55e', '#4aa3ff', '#eceef2', '#e8b130'], DN = ['#f2596a', '#ef5350', '#ff7a1a', '#b07cff', '#5d636e', '#1b1d24'];
-  const light = document.documentElement.dataset.theme === 'light';
-  const body = () => { const c = S.cs; return `<h2>شكل الشارت<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
-   <div class="fld"><label>نوع الشموع</label><div class="seg" style="flex-wrap:wrap">${[['candle', 'شموع'], ['hollow', 'مفرّغة'], ['ha', 'هايكن آشي'], ['line', 'خط']].map(([k, n]) => `<button data-cty="${k}" class="${c.type === k ? 'on' : ''}">${n}</button>`).join('')}</div></div>
-   <div class="fld"><label>لون الشمعة الصاعدة</label><div class="csw">${UP.map(x => `<button data-cup="${x}" class="${(c.up || UP[0]) === x ? 'on' : ''}" style="background:${x}"></button>`).join('')}<label style="background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)"><input type="color" data-pk="up" value="${c.up || UP[0]}"></label></div></div>
-   <div class="fld"><label>لون الشمعة النازلة</label><div class="csw">${DN.map(x => `<button data-cdn="${x}" class="${(c.dn || DN[0]) === x ? 'on' : ''}" style="background:${x}"></button>`).join('')}<label style="background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)"><input type="color" data-pk="dn" value="${c.dn || DN[0]}"></label></div></div>
-   <div class="fld"><label>الخلفية</label><div class="seg">${[['theme', 'حسب الموقع'], ['black', light ? 'أبيض' : 'أسود'], ['navy', 'كحلي']].map(([k, n]) => `<button data-cbg="${k}" class="${c.bg === k ? 'on' : ''}">${n}</button>`).join('')}</div></div>
-   <button class="mi" data-cgr>خطوط الشبكة<span class="sw ${c.grid !== false ? 'on' : ''}"></span></button>
-   <button class="btn ghost blk" data-crs style="margin-top:8px">رجّع الألوان الأصلية</button>`; };
-  modal('<div id="csb"></div>', (m) => {
+/* ====== إعدادات الشارت مثل TradingView ====== */
+const DEF_SESS = [
+  { k: 'asia', n: 'ASIA', a: '20:00', b: '00:00', col: '#5b7bff', on: true },
+  { k: 'lndn', n: 'LNDN', a: '02:00', b: '05:00', col: '#e0707e', on: true },
+  { k: 'nyam', n: 'NYAM', a: '09:30', b: '11:00', col: '#43b394', on: true },
+  { k: 'nyl', n: 'NYL', a: '12:00', b: '13:00', col: '#e8b75a', on: true },
+  { k: 'nypm', n: 'NYPM', a: '13:30', b: '16:00', col: '#c77ddb', on: true },
+  { k: 'rth', n: 'RTH', a: '09:30', b: '16:00', col: '#8a8f99', on: false }
+];
+const DEF_SOPT = { boxes: true, lines: true, labels: true, limit: 40, fa: .22 };
+const CPAL = ['#3ccf82', '#26a69a', '#089981', '#4aa3ff', '#2962ff', '#b07cff', '#e8b130', '#ff9800', '#f2596a', '#f23645', '#eceef2', '#787b86', '#131722', '#000000', '#ffffff'];
+const cpk = (k, v, extra = '') => `<label class="cpk" style="background:${v}" ${extra}><input type="color" data-ck="${k}" value="${/^#[0-9a-f]{6}$/i.test(v) ? v : '#888888'}"></label>`;
+const segH = (k, opts, cur) => `<div class="seg segw">${opts.map(([v, n]) => `<button data-sk="${k}" data-sv='${JSON.stringify(v)}' class="${JSON.stringify(cur) === JSON.stringify(v) ? 'on' : ''}">${n}</button>`).join('')}</div>`;
+const swH = (k, on, label, sub) => `<button class="mi" data-tk="${k}">${label}${sub ? `<small>${sub}</small>` : ''}<span class="sw ${on ? 'on' : ''}"></span></button>`;
+function sessCfg() { return { list: S.sess || JSON.parse(JSON.stringify(DEF_SESS)), opt: Object.assign({}, DEF_SOPT, S.sessOpt || {}) }; }
+function applySess() { const c = sessCfg(); CH.setSess(c.list, c.opt); }
+function csSheet(tab0) {
+  let tab = tab0 || 'candles';
+  const T = CH.th, light = document.documentElement.dataset.theme === 'light';
+  const body = () => {
+    const c = S.cs || {}, ss = sessCfg();
+    const tabs = `<div class="seg segw" style="margin-bottom:14px">${[['candles', 'الشموع'], ['bg', 'الخلفية'], ['sess', 'الجلسات']].map(([k, n]) => `<button data-tab="${k}" class="${tab === k ? 'on' : ''}">${n}</button>`).join('')}</div>`;
+    let h = '';
+    if (tab === 'candles') {
+      h += `<div class="fld"><label>النوع</label>${segH('type', [['candle', 'شموع'], ['hollow', 'مفرّغة'], ['ha', 'هايكن آشي'], ['line', 'خط']], c.type || 'candle')}</div>`;
+      h += [['body', 'الجسم', 'upB', 'dnB'], ['border', 'الحدود', 'upO', 'dnO'], ['wick', 'الذيل', 'upW', 'dnW']].map(([k, n, u, d]) => `<div class="csrow"><button class="chk ${c[k] !== false ? 'on' : ''}" data-tk="${k}"></button><span>${n}</span><span class="sp"></span><small>صاعد</small>${cpk(u, c[u] || c.up || T.up)}<small>نازل</small>${cpk(d, c[d] || c.dn || T.dn)}</div>`).join('');
+      h += `<div class="faint" style="font-size:12px;margin-top:8px">نفس إعدادات TradingView: تگدر تطفي الجسم أو الحدود أو الذيل، وكل واحد بلونه.</div>`;
+    }
+    if (tab === 'bg') {
+      h += `<div class="fld"><label>الخلفية</label>${segH('bgMode', [['theme', 'حسب الموقع'], ['solid', 'لون واحد'], ['grad', 'تدرّج']], c.bgMode || 'theme')}</div>`;
+      if (c.bgMode === 'solid' || c.bgMode === 'grad') h += `<div class="csrow"><span>${c.bgMode === 'grad' ? 'فوگ' : 'اللون'}</span><span class="sp"></span>${cpk('bg1', c.bg1 || (light ? '#ffffff' : '#131722'))}${c.bgMode === 'grad' ? `<span>جوّه</span>${cpk('bg2', c.bg2 || (light ? '#eef1f6' : '#000000'))}` : ''}</div>`;
+      h += `<div class="csrow"><button class="chk ${c.gridV !== false ? 'on' : ''}" data-tk="gridV"></button><span>خطوط الشبكة العمودية</span></div>`;
+      h += `<div class="csrow"><button class="chk ${c.gridH !== false ? 'on' : ''}" data-tk="gridH"></button><span>خطوط الشبكة الأفقية</span><span class="sp"></span>${cpk('gridCol', c.gridCol || (light ? '#e6e9ef' : '#1e222d'))}</div>`;
+      h += `<div class="csrow"><span>لون أرقام المقياس</span><span class="sp"></span>${cpk('txtCol', c.txtCol || '#99a0ab')}</div>`;
+    }
+    if (tab === 'sess') {
+      h += `<div class="faint" style="font-size:12.5px;margin-bottom:10px">الأوقات بتوقيت نيويورك (مثل مؤشر KZP). قمة وقاع كل جلسة تبقى خط ممتد لحد ما يضربها السعر. تطلع على فريم الساعة وأصغر.</div>`;
+      h += ss.list.map((s, i) => `<div class="sessrow"><button class="chk ${s.on ? 'on' : ''}" data-si="${i}" data-sf="on"></button><input class="inp sname" value="${esc(s.n)}" data-si="${i}" data-sf="n" maxlength="8">${cpk('sess' + i, s.col)}<input class="inp stime num" type="text" inputmode="numeric" maxlength="5" placeholder="HH:MM" value="${s.a}" data-si="${i}" data-sf="a"><span class="faint">—</span><input class="inp stime num" type="text" inputmode="numeric" maxlength="5" placeholder="HH:MM" value="${s.b}" data-si="${i}" data-sf="b"></div>`).join('');
+      h += swH('s_boxes', ss.opt.boxes, 'صناديق الجلسات') + swH('s_lines', ss.opt.lines, 'خطوط القمة والقاع', 'تمتد لحد ما يضربها السعر') + swH('s_labels', ss.opt.labels, 'أسماء الخطوط');
+      h += `<div class="fld" style="margin-top:8px"><label>شفافية الصناديق</label><input type="range" min="5" max="60" value="${Math.round(ss.opt.fa * 100)}" data-sr="fa"></div>`;
+      h += `<div class="fld"><label>عدد الجلسات بالشارت</label>${segH('s_limit', [[10, '10'], [20, '20'], [40, '40'], [80, '80'], [150, '150']], ss.opt.limit)}</div>`;
+    }
+    return `<h2>إعدادات الشارت<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>${tabs}${h}<button class="btn ghost blk" data-reset style="margin-top:12px">رجّع ${tab === 'sess' ? 'الجلسات' : 'الألوان'} الأصلية</button>`;
+  };
+  modal('<div id="csb"></div>', m => {
     const box = m.querySelector('#csb'), draw = () => box.innerHTML = body(); draw();
-    const set = x => { S.cs = Object.assign({}, S.cs, x); saveS(); CH.setCS(S.cs); draw(); };
+    const setC = x => { S.cs = Object.assign({}, S.cs, x); saveS(); CH.setCS(S.cs); };
+    const setSO = x => { S.sessOpt = Object.assign({}, sessCfg().opt, x); saveS(); applySess(); };
+    const setSL = (i, x) => { const l = sessCfg().list; Object.assign(l[i], x); S.sess = l; saveS(); applySess(); };
     box.onclick = e => {
       const b = e.target.closest('button'); if (!b) return;
-      if (b.dataset.cty) set({ type: b.dataset.cty });
-      else if (b.dataset.cup) set({ up: b.dataset.cup });
-      else if (b.dataset.cdn) set({ dn: b.dataset.cdn });
-      else if (b.dataset.cbg) set({ bg: b.dataset.cbg });
-      else if (b.hasAttribute('data-cgr')) set({ grid: S.cs.grid === false });
-      else if (b.hasAttribute('data-crs')) set({ up: '', dn: '', type: 'candle', bg: 'theme', grid: true });
+      if (b.dataset.tab) { tab = b.dataset.tab; return draw(); }
+      if (b.dataset.sk) { const v = JSON.parse(b.dataset.sv), k = b.dataset.sk; if (k === 's_limit') setSO({ limit: v }); else setC({ [k]: v }); return draw(); }
+      if (b.dataset.tk) { const k = b.dataset.tk; if (k.startsWith('s_')) { const o = sessCfg().opt, kk = k.slice(2); setSO({ [kk]: !o[kk] }); } else setC({ [k]: (S.cs || {})[k] === false }); return draw(); }
+      if (b.dataset.si != null && b.dataset.sf === 'on') { const i = +b.dataset.si; setSL(i, { on: !sessCfg().list[i].on }); return draw(); }
+      if (b.hasAttribute('data-reset')) { if (tab === 'sess') { S.sess = JSON.parse(JSON.stringify(DEF_SESS)); S.sessOpt = Object.assign({}, DEF_SOPT); saveS(); applySess(); } else setC({ upB: '', dnB: '', upO: '', dnO: '', upW: '', dnW: '', up: '', dn: '', body: true, border: true, wick: true, bgMode: 'theme', bg1: '', bg2: '', gridV: true, gridH: true, gridCol: '', txtCol: '', type: 'candle' }); return draw(); }
     };
-    box.oninput = e => { const k = e.target.dataset.pk; if (k) { S.cs = Object.assign({}, S.cs, { [k]: e.target.value }); saveS(); CH.setCS(S.cs); } };
-    box.onchange = e => { if (e.target.dataset.pk) draw(); };
+    box.oninput = e => {
+      const t = e.target;
+      if (t.dataset.ck) { const k = t.dataset.ck; t.parentElement.style.background = t.value; if (k.startsWith('sess')) setSL(+k.slice(4), { col: t.value }); else setC({ [k]: t.value }); }
+      if (t.dataset.sr === 'fa') setSO({ fa: +t.value / 100 });
+    };
+    box.onchange = e => {
+      const t = e.target; if (t.dataset.si == null || !t.dataset.sf || t.dataset.sf === 'on') return;
+      if (t.dataset.sf === 'n') return setSL(+t.dataset.si, { n: t.value.trim().toUpperCase() || 'S' });
+      const m = t.value.trim().replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).match(/^(\d{1,2})[:.]?(\d{2})?$/);
+      if (!m || +m[1] > 23 || +(m[2] || 0) > 59) { toast('اكتب الوقت مثل 09:30', 'bad'); t.value = sessCfg().list[+t.dataset.si][t.dataset.sf]; return; }
+      t.value = String(+m[1]).padStart(2, '0') + ':' + (m[2] || '00'); setSL(+t.dataset.si, { [t.dataset.sf]: t.value });
+    };
+  });
+}
+/* ====== إعدادات أداة الرسم المحددة ====== */
+function drawSheet(d) {
+  const FIBS = [0, .236, .382, .5, .618, .786, 1, 1.272, 1.618, 2.618];
+  const nm = { trend: 'خط الترند', hline: 'الخط الأفقي', rect: 'المنطقة', fib: 'فيبوناتشي', text: 'الكتابة', vp: 'بروفايل الحجم', long: 'صفقة الشراء', short: 'صفقة البيع' }[d.type] || 'الأداة';
+  const body = () => {
+    let h = `<h2>إعدادات ${nm}<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>`;
+    if (!['long', 'short', 'vp'].includes(d.type)) {
+      h += `<div class="fld"><label>اللون</label><div class="csw">${CPAL.map(c => `<button data-dc="${c}" class="${d.color === c ? 'on' : ''}" style="background:${c}"></button>`).join('')}${cpk('color', d.color || CH.th.acc)}</div></div>`;
+      if (d.type !== 'text') h += `<div class="fld"><label>سمك الخط</label>${segH('w', [[1, '1'], [1.8, '2'], [2.6, '3'], [3.5, '4']], d.w || 1.8)}</div><div class="fld"><label>شكل الخط</label>${segH('dash', [['', 'متصل'], ['dash', 'متقطع'], ['dot', 'منقّط']], d.dash || '')}</div>`;
+    }
+    if (d.type === 'trend') h += swH('extL', d.extL, 'تمديد لليسار') + swH('extR', d.extR, 'تمديد لليمين') + swH('showP', d.showP, 'إظهار السعر على الطرف');
+    if (d.type === 'hline' || d.type === 'rect') h += `<div class="fld"><label>كتابة على الخط</label><input class="inp" data-df="text" value="${esc(d.text || '')}" placeholder="مثلاً: دعم قوي"></div>`;
+    if (d.type === 'rect') h += `<div class="fld"><label>شفافية التعبئة</label><input type="range" min="0" max="60" value="${Math.round((d.fa != null ? d.fa : .13) * 100)}" data-dr="fa"></div>` + swH('extR', d.extR, 'تمديد المنطقة لليمين');
+    if (d.type === 'fib') {
+      const on = d.lv || [0, .236, .382, .5, .618, .786, 1, 1.272, 1.618];
+      h += `<div class="fld"><label>المستويات</label><div class="fibg">${FIBS.map(l => `<button class="${on.includes(l) ? 'on' : ''}" data-fl="${l}">${l}</button>`).join('')}</div></div>`;
+      h += swH('fibFill', d.fibFill !== false, 'تعبئة بين المستويات') + swH('extR', d.extR !== false, 'تمديد المستويات لليمين') + swH('lbl', d.lbl !== false, 'إظهار المستويات') + swH('showP', d.showP !== false, 'إظهار الأسعار') + swH('mono', !!d.mono, 'لون واحد لكل المستويات');
+    }
+    if (d.type === 'text') h += `<div class="fld"><label>النص</label><input class="inp" data-df="text" value="${esc(d.text || '')}"></div><div class="fld"><label>حجم الخط</label>${segH('fs', [[11, 'صغير'], [13, 'عادي'], [16, 'وسط'], [20, 'كبير'], [26, 'كبير جداً']], d.fs || 13)}</div>` + swH('bgOn', d.bgOn !== false, 'خلفية للكتابة');
+    if (d.type === 'vp') {
+      h += `<div class="fld"><label>عدد الصفوف</label>${segH('rows', [[12, '12'], [24, '24'], [36, '36'], [48, '48'], [70, '70']], d.rows || 24)}</div>`;
+      h += `<div class="fld"><label>منطقة القيمة (Value Area)</label>${segH('va', [[60, '60%'], [68, '68%'], [70, '70%'], [80, '80%']], d.va || 70)}</div>`;
+      h += `<div class="fld"><label>عرض البروفايل</label>${segH('wpct', [[20, '20%'], [35, '35%'], [50, '50%'], [80, '80%']], d.wpct || 35)}</div>`;
+      h += `<div class="csrow"><span>حجم صاعد</span>${cpk('cUp', d.cUp || '#4aa3ff')}<span>نازل</span>${cpk('cDn', d.cDn || '#e8b130')}<span>POC</span>${cpk('cPoc', d.cPoc || '#f2596a')}</div>`;
+      h += swH('extPoc', !!d.extPoc, 'تمديد خط الـ POC لليمين') + swH('vaLines', d.vaLines !== false, 'خطوط أعلى وأدنى منطقة القيمة');
+    }
+    h += `<div class="row" style="margin-top:12px"><button class="btn ghost sp" data-close>تمام</button><button class="btn danger" data-ddel><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg>احذف</button></div>`;
+    return h;
+  };
+  modal('<div id="dsb"></div>', (m, close) => {
+    const box = m.querySelector('#dsb'), draw = () => box.innerHTML = body(); draw();
+    const set = x => { CH.pushUndo(); Object.assign(d, x); d._vp = null; CH.changed(); };
+    box.onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.dc) { set({ color: b.dataset.dc }); return draw(); }
+      if (b.dataset.sk) { set({ [b.dataset.sk]: JSON.parse(b.dataset.sv) }); return draw(); }
+      if (b.dataset.tk) { const k = b.dataset.tk, defOn = ['fibFill', 'lbl', 'showP', 'bgOn', 'vaLines'].includes(k) || (k === 'extR' && d.type === 'fib'); const cur = d[k] == null ? (k === 'showP' && d.type === 'trend' ? false : defOn) : d[k]; set({ [k]: !cur }); return draw(); }
+      if (b.dataset.fl) { const l = +b.dataset.fl, on = (d.lv || [0, .236, .382, .5, .618, .786, 1, 1.272, 1.618]).slice(), i = on.indexOf(l); if (i >= 0) on.splice(i, 1); else on.push(l); set({ lv: on }); return draw(); }
+      if (b.hasAttribute('data-ddel')) { CH.sel = d; CH.deleteSel(); close(); }
+    };
+    box.oninput = e => { const t = e.target; if (t.dataset.ck) { t.parentElement.style.background = t.value; set({ [t.dataset.ck]: t.value }); } if (t.dataset.dr === 'fa') set({ fa: +t.value / 100 }); };
+    box.onchange = e => { const t = e.target; if (t.dataset.df) set({ [t.dataset.df]: t.value.trim() }); };
+  });
+}
+/* ====== نشر التحليل من الشارت مباشرة ====== */
+function shareSheet() {
+  if (!CH.c.length) return toast('انتظر الشارت يتحمل');
+  const sel = CH.sel; CH.sel = null; selbar(null);
+  const img = CH.snapshot(), draw = JSON.parse(JSON.stringify(CH.mine)).map(d => { delete d._vp; return d; });
+  CH.sel = sel; CH.dirty = true;
+  const tfn = (TFS.find(t => t[0] === S.tf) || [])[1];
+  let type = 'analysis', pin = false, withDraw = true;
+  modal(`<h2>انشر التحليل<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
+   <img src="${img}" class="shprev" data-view>
+   <div class="row" style="margin:10px 0"><div class="seg" id="shType"><button data-t="analysis" class="on">تحليل</button><button data-t="post">منشور</button></div><span class="sp"></span><button class="btn ghost sm" id="shPin"><svg class="ic" style="width:16px;height:16px"><use href="#i-pin"/></svg>تثبيت</button></div>
+   <input class="inp" id="shTitle" value="تحليل الذهب — ${tfn} — ${dstr(Date.now())}" style="margin-bottom:8px">
+   <textarea class="inp" id="shText" placeholder="اكتب الشرح: الدخول، الهدف، الوقف، وشنو تتوقع…"></textarea>
+   ${draw.length ? `<button class="mi" id="shDraw" style="padding-inline:0">ارفق رسوماتي (${draw.length})<small>الطلاب يفتحونها على شارتهم بنفس المناطق</small><span class="sw on"></span></button>` : ''}
+   <button class="btn blk" id="shGo" style="margin-top:10px"><svg class="ic"><use href="#i-send"/></svg>انشر للطلاب</button>`, (m, close) => {
+    m.querySelector('#shType').onclick = e => { const b = e.target.closest('[data-t]'); if (!b) return; type = b.dataset.t; m.querySelectorAll('#shType button').forEach(x => x.classList.toggle('on', x === b)); };
+    m.querySelector('#shPin').onclick = e => { pin = !pin; e.currentTarget.className = 'btn sm ' + (pin ? 'tint' : 'ghost'); };
+    const dw = m.querySelector('#shDraw'); if (dw) dw.onclick = () => { withDraw = !withDraw; dw.querySelector('.sw').classList.toggle('on', withDraw); };
+    m.querySelector('#shGo').onclick = async () => {
+      const p = { type, title: m.querySelector('#shTitle').value.trim(), text: m.querySelector('#shText').value.trim(), imgs: [], snap: img, draw: withDraw && draw.length ? draw : null, tf: S.tf, pin, at: Date.now(), by: ME.name };
+      if (JSON.stringify(p).length > 980000) return toast('الصورة كبيرة، صغّر الشارت شوية', 'bad');
+      const b = m.querySelector('#shGo'); b.disabled = true;
+      try { await DB.addPost(p); DB.log('نشر تحليل من الشارت: ' + p.title); beep('ok'); toast('انتشر التحليل ✓', 'ok'); close(); }
+      catch (e) { toast('ما انتشر: ' + (e.message || 'خلل'), 'bad'); b.disabled = false; }
+    };
   });
 }
 function makeCal() {
@@ -2517,7 +2836,10 @@ function initNews() {
 
 }
 
-/* ====== chat — نفس فكرة AM CHAT: غرفة الطلاب + خاص ويا الأستاذ ====== */
+/* ====== chat — نفس فكرة AM CHAT: غرفة الطلاب + خاص + محفوظة + ملاحظات + بصمات ====== */
+let PROF = {}, profLoaded = false, NOTES = [], SAVED = [], AUD = null, REC = null, chRate = +L.get('amg_rate', 1) || 1;
+function avHTML(uid, name, size, cls = '') { const p = PROF[uid] && PROF[uid].photo; return `<span class="av ${p ? 'ph' : ''} ${cls}" style="--h:${hue(uid)};${size ? `width:${size}px;height:${size}px;font-size:${Math.round(size * .34)}px` : ''}">${p ? `<img src="${p}" alt="" draggable="false">` : esc(initials(name))}</span>`; }
+const adminUid = () => (Object.entries(PROF).find(([u, p]) => p.role === 'admin') || [])[0];
 let CHAT = [], DMMSG = [], DMLIST = [], lastSend = 0, chMode = 'room', dmPeer = null, dmUnsub = null, replyTo = null, chImgData = null, chRendered = new Set(), chInitial = true, fabN = 0;
 const REACT = { heart: '❤️', fire: '🔥', laugh: '😂', like: '👍', wow: '😮', clap: '👏' };
 const EMO = [['😀', '😀 😃 😄 😁 😆 😅 😂 🤣 😊 😇 🙂 🙃 😉 😌 😍 🥰 😘 😋 😛 😜 🤪 🤨 🧐 🤓 😎 🥳 😏 😒 😔 😟 🙁 😣 😫 😩 🥺 😢 😭 😤 😠 😡 🤯 😳 🥵 🥶 😱 😨 😰 😓 🤗 🤔 🤭 🤫 😶 😐 😑 😬 🙄 😮 😲 🥱 😴 🤤 😵 🤐 🥴 🤢 🤮 😷 🤒 🤕 😈 🤡 💀'],
@@ -2530,7 +2852,7 @@ const linkify = s => s.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_b
 const ico = n => `<svg class="ic"><use href="#i-${n}"/></svg>`;
 const seenK = k => 'amg_seen_' + k + '_' + (ME && ME.uid);
 const getSeen = k => L.get(seenK(k), 0), setSeen = k => L.set(seenK(k), Date.now());
-const curList = () => chMode === 'room' ? CHAT : DMMSG;
+const curList = () => chMode === 'room' ? CHAT : chMode === 'saved' ? SAVED : DMMSG;
 function chatSeenNow() { setSeen(chMode === 'room' ? 'room' : 'dm_' + (dmPeer && dmPeer.uid)); chatBadge(); }
 function chatBadge() {
   const onRoom = curPg === 'chat' && chMode === 'room';
@@ -2549,8 +2871,8 @@ function msgItems() {
   const same = (a, b) => a && b && a.uid === b.uid && dk(a.at) === dk(b.at) && Math.abs(b.at - a.at) < 300000;
   list.forEach((m, i) => {
     if (!prev || dk(prev.at) !== dk(m.at)) { const lab = dk(m.at) === new Date().toDateString() ? 'اليوم' : dk(m.at) === new Date(Date.now() - 864e5).toDateString() ? 'البارحة' : DAYS[new Date(m.at).getDay()] + ' ' + dstr(m.at); out.push({ key: 'd' + dk(m.at), sig: lab, html: `<div class="dsep">${lab}</div>` }); }
-    const next = list[i + 1], f = { first: !same(prev, m), last: !same(m, next), out: m.uid === ME.uid, group: chMode === 'room' };
-    out.push({ key: m.id, m, f, sig: [m.text, JSON.stringify(m.reactions || {}), f.first, f.last, (m.img || '').length].join('|') });
+    const next = list[i + 1], f = { first: !same(prev, m), last: !same(m, next), out: m.uid === ME.uid, group: chMode !== 'dm' };
+    out.push({ key: m.id, m, f, sig: [m.text, JSON.stringify(m.reactions || {}), f.first, f.last, (m.img || '').length, (m.voice || '').length, (PROF[m.uid] || {}).photo ? 1 : 0, CFG.pin && CFG.pin.id === m.id].join('|') });
     prev = m;
   });
   return out;
@@ -2563,13 +2885,15 @@ function msgHTML(m, f) {
   let inner = '';
   if (f.group && !f.out && f.first && !jumbo) inner += `<div class="from" style="--h:${hue(m.uid)}">${esc(m.name || '')}${m.role === 'admin' ? '<span class="tag">الأستاذ</span>' : ''}</div>`;
   if (m.reply) inner += `<span class="quote" data-jump="${esc(m.reply.id)}"><b>${esc(m.reply.uid === ME.uid ? 'إنت' : m.reply.name || '')}</b><span>${esc(m.reply.text || '📷 صورة')}</span></span>`;
+  if (m.savedFrom) inner += `<div class="svd">${ico('bm')} ${m.savedFrom === 'room' ? 'من غرفة الطلاب' : 'من الخاص'} · ${dstr(m.at)}</div>`;
   if (m.img) inner += `<img class="ph" src="${m.img}" data-view alt="" loading="lazy" draggable="false">`;
+  if (m.voice) inner += voiceHTML(m, f);
   if (m.text) inner += `<div class="txt">${linkify(esc(m.text))}${hasR ? '' : sp}</div>`;
   if (hasR) inner += `<div class="reacts">${Object.entries(m.reactions).filter(([k, a]) => a && a.length && REACT[k]).map(([k, a]) => `<button data-react="${k}" class="${a.includes(ME.uid) ? 'me' : ''}">${REACT[k]}${a.length > 1 ? `<span class="num">${a.length}</span>` : ''}</button>`).join('')}${sp}</div>`;
-  const meta = `<span class="meta"><span class="num">${tstr(m.at)}</span>${f.out ? ico('check2') : ''}</span>`;
+  const meta = `<span class="meta">${CFG.pin && CFG.pin.id === m.id && chMode === 'room' ? ico('pin') : ''}<span class="num">${tstr(m.at)}</span>${f.out ? ico('check2') : ''}</span>`;
   const media = !!m.img, only = media && !m.text && !hasR && !(f.group && !f.out && f.first) && !m.reply;
-  const av = f.group && !f.out ? `<span class="mav"><span class="av" style="--h:${hue(m.uid)}">${esc(initials(m.name))}</span></span>` : '';
-  return `<div class="${cls.join(' ')}" data-mid="${m.id}">${av}<div class="bub ${media ? 'media' : ''} ${only ? 'only' : ''} ${jumbo ? 'jumbo' : ''}">${inner}${meta}</div><span class="swipe-ic">${ico('reply')}</span></div>`;
+  const av = f.group && !f.out ? `<span class="mav">${avHTML(m.uid, m.name)}</span>` : '';
+  return `<div class="${cls.join(' ')}" data-mid="${m.id}">${av}<div class="bub ${media ? 'media' : ''} ${only ? 'only' : ''} ${jumbo ? 'jumbo' : ''} ${m.voice ? 'vbub' : ''}">${inner}${meta}</div><span class="swipe-ic">${ico('reply')}</span></div>`;
 }
 function renderMsgs() {
   const box = $('#msgs'), inner = $('#msgInner'); if (!box) return;
@@ -2586,25 +2910,29 @@ function renderMsgs() {
     delete old[it.key]; if (inner.children[i] !== el) inner.insertBefore(el, inner.children[i] || null);
   });
   Object.values(old).forEach(el => el.remove());
-  if (!items.length) inner.innerHTML = `<div class="dsep" style="position:static;margin:auto">${chMode === 'room' ? 'ماكو رسائل لحد الآن. ابدي السالفة 👋' : ME.role === 'admin' ? 'ابدي السالفة ويا الطالب' : 'هنا تسأل الأستاذ بالخاص، محد غيره يشوف 🔒'}</div>`;
+  if (!items.length) inner.innerHTML = `<div class="dsep" style="position:static;margin:auto">${chMode === 'room' ? 'ماكو رسائل لحد الآن. ابدي السالفة 👋' : chMode === 'saved' ? 'هنا تنحفظ الرسائل المهمة. اضغط مطوّل على أي رسالة ← حفظ 🔖' : ME.role === 'admin' ? 'ابدي السالفة ويا الطالب' : 'هنا تسأل الأستاذ بالخاص، محد غيره يشوف 🔒'}</div>`;
+  syncVoice();
   if (chInitial) { chInitial = false; box.scrollTop = box.scrollHeight; }
   else if (added) { if (atBottom || mine) box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' }); else { fabN += added; updFab(); } }
 }
 function updFab() { const box = $('#msgs'), far = box.scrollHeight - box.scrollTop - box.clientHeight > 300; $('#fab').classList.toggle('on', far); if (!far) fabN = 0; $('#fabN').textContent = fabN; $('#fabN').classList.toggle('hide', !fabN); }
 function chatHeader() {
   const dmList = ME.role === 'admin' && chMode === 'dm' && !dmPeer, inDm = ME.role === 'admin' && chMode === 'dm' && dmPeer;
-  $('#dmList').classList.toggle('hide', !dmList); $('#msgs').classList.toggle('hide', dmList); $('#chatFoot').classList.toggle('hide', dmList); $('#fab').classList.toggle('hide', dmList);
+  $('#dmList').classList.toggle('hide', !dmList); $('#msgs').classList.toggle('hide', dmList); $('#chatFoot').classList.toggle('hide', dmList || chMode === 'saved'); $('#fab').classList.toggle('hide', dmList);
+  $('#notes').classList.toggle('hide', chMode !== 'room'); renderPin(); renderNotes();
   $('#chBack').classList.toggle('hide', !inDm); $('#chTabs').classList.toggle('hide', !!inDm);
   $$('#chTabs button').forEach(b => b.classList.toggle('on', b.dataset.ct === chMode));
   const t = $('#chTitle'), s = $('#chSub'), av = $('#chAv');
-  if (chMode === 'room') { t.textContent = 'غرفة الطلاب'; s.textContent = CFG.chatOpen === false ? '🔒 مقفولة، بس الأستاذ يكتب' : 'طلاب الكورس ويا الأستاذ'; av.textContent = '👥'; av.style.removeProperty('--h'); }
-  else if (ME.role === 'admin') { if (dmPeer) { t.textContent = dmPeer.name; s.textContent = 'محادثة خاصة 🔒'; av.textContent = initials(dmPeer.name); } else { t.textContent = 'الخاص'; s.textContent = 'رسائل الطلاب إلك'; av.textContent = '✉'; } }
-  else { t.textContent = ADMIN_NAME; s.textContent = 'الأستاذ · محادثة خاصة 🔒'; av.textContent = initials(ADMIN_NAME); }
+  const avw = $('#chAvW'), setAv = (u, n) => { avw.innerHTML = avHTML(u, n); };
+  if (chMode === 'room') { t.textContent = 'غرفة الطلاب'; s.textContent = CFG.chatOpen === false ? '🔒 مقفولة، بس الأستاذ يكتب' : 'طلاب الكورس ويا الأستاذ'; avw.innerHTML = '<div class="av">👥</div>'; }
+  else if (chMode === 'saved') { t.textContent = 'المحفوظة'; s.textContent = 'رسائلك المهمة، بس إنت تشوفها'; avw.innerHTML = `<div class="av">${ico('bm')}</div>`; }
+  else if (ME.role === 'admin') { if (dmPeer) { t.textContent = dmPeer.name; s.textContent = 'محادثة خاصة 🔒'; setAv(dmPeer.uid, dmPeer.name); } else { t.textContent = 'الخاص'; s.textContent = 'رسائل الطلاب إلك'; avw.innerHTML = '<div class="av">✉</div>'; } }
+  else { t.textContent = ADMIN_NAME; s.textContent = 'الأستاذ · محادثة خاصة 🔒'; setAv(adminUid() || 'admin', ADMIN_NAME); }
   renderChatLock();
 }
 function renderDMList() {
   const el = $('#dmList'); if (!el) return;
-  el.innerHTML = DMLIST.length ? DMLIST.map(t => { const un = t.from === 'student' && t.at > getSeen('dm_' + t.id); return `<div class="dmi" data-dm="${t.id}" data-nm="${esc(t.name || '')}"><div class="av" style="--h:${hue(t.id)}">${esc(initials(t.name))}</div><div class="mn"><b>${esc(t.name || 'طالب')}</b><small>${t.from === 'admin' ? 'إنت: ' : ''}${esc((t.last || '').slice(0, 70))}</small></div><div class="dmr"><span class="num">${tstr(t.at)}</span>${un ? '<b class="nbadge">جديد</b>' : ''}</div></div>`; }).join('') : '<div class="dsep" style="position:static">ماكو رسائل خاصة لحد الآن</div>';
+  el.innerHTML = DMLIST.length ? DMLIST.map(t => { const un = t.from === 'student' && t.at > getSeen('dm_' + t.id); return `<div class="dmi" data-dm="${t.id}" data-nm="${esc(t.name || '')}">${avHTML(t.id, t.name, 50)}<div class="mn"><b>${esc(t.name || 'طالب')}</b><small>${t.from === 'admin' ? 'إنت: ' : ''}${esc((t.last || '').slice(0, 70))}</small></div><div class="dmr"><span class="num">${tstr(t.at)}</span>${un ? '<b class="nbadge">جديد</b>' : ''}</div></div>`; }).join('') : '<div class="dsep" style="position:static">ماكو رسائل خاصة لحد الآن</div>';
 }
 function resetView() { chRendered = new Set(); chInitial = true; fabN = 0; const i = $('#msgInner'); if (i) i.innerHTML = ''; }
 function openDM(uid2, name) {
@@ -2617,6 +2945,7 @@ function setChMode(m) {
   chMode = m; replyClear(); resetView();
   if (m === 'dm' && ME.role === 'admin') { if (dmUnsub) { try { dmUnsub(); } catch (e) { } dmUnsub = null; } dmPeer = null; DMMSG = []; renderDMList(); }
   if (m === 'dm' && ME.role === 'student') dmPeer = { uid: ME.uid, name: ME.name };
+  stopAudio();
   chatHeader(); renderMsgs(); if (curPg === 'chat') chatSeenNow();
 }
 function onChat(list) {
@@ -2652,10 +2981,12 @@ function holdMenu(el, m) {
   cl.style.cssText = `left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px`; H.appendChild(cl);
   const R = m.reactions || {}, rx = document.createElement('div'); rx.className = 'rx';
   rx.innerHTML = Object.entries(REACT).map(([k, e]) => `<button data-hr="${k}" class="${(R[k] || []).includes(ME.uid) ? 'me' : ''}">${e}</button>`).join(''); H.appendChild(rx);
-  const canDel = m.uid === ME.uid || ME.role === 'admin';
+  const canDel = chMode !== 'saved' && (m.uid === ME.uid || ME.role === 'admin');
   const it = (a, ic, t, dg) => `<button class="it ${dg ? 'dg' : ''}" data-ha="${a}"><span>${t}</span>${ico(ic)}</button>`;
   const mn = document.createElement('div'); mn.className = 'mn';
-  mn.innerHTML = it('reply', 'reply', 'رد') + (m.img ? it('open', 'eye', 'فتح الصورة') : '') + (m.text ? it('copy', 'copy', 'نسخ النص') : '') + (canDel ? '<div class="sep"></div>' + it('del', 'trash', 'حذف', 1) : '');
+  if (chMode === 'saved') mn.innerHTML = (m.img ? it('open', 'eye', 'فتح الصورة') : '') + (m.text ? it('copy', 'copy', 'نسخ النص') : '') + '<div class="sep"></div>' + it('unsave', 'trash', 'شيلها من المحفوظة', 1);
+  else mn.innerHTML = it('reply', 'reply', 'رد') + (m.img ? it('open', 'eye', 'فتح الصورة') : '') + (m.text ? it('copy', 'copy', 'نسخ النص') : '') + it('save', 'bm', 'حفظ بالمحفوظة') + (ME.role === 'admin' && chMode === 'room' ? it('pin', 'pin', CFG.pin && CFG.pin.id === m.id ? 'شيل التثبيت' : 'تثبيت للكل') : '') + (canDel ? '<div class="sep"></div>' + it('del', 'trash', 'حذف', 1) : '');
+  if (chMode === 'saved') rx.remove();
   H.appendChild(mn);
   const W = innerWidth, HH = innerHeight, pad = 12, rxH = rx.offsetHeight + 10, mnH = mn.offsetHeight + 10;
   let sc = 1; if (rxH + r.height + mnH > HH - 2 * pad) sc = Math.max(.35, (HH - 2 * pad - rxH - mnH) / r.height);
@@ -2673,6 +3004,9 @@ function holdMenu(el, m) {
     if (a === 'open') openViewer(m.img);
     if (a === 'copy') { try { await navigator.clipboard.writeText(m.text); toast('انسخ النص'); } catch (er) { toast('ما گدرت أنسخ', 'bad'); } }
     if (a === 'del') { if (await ask('تحذف الرسالة؟', 'راح تنحذف عند الكل.', 'احذف', true)) (chMode === 'room' ? DB.delChat(m.id) : DB.delDM(dmPeer.uid, m.id)).catch(() => toast('ما انحذفت', 'bad')); }
+    if (a === 'save') { const c = Object.assign({}, m, { savedFrom: chMode, savedAt: Date.now(), oid: m.id }); delete c.id; delete c.reactions; DB.saveMsg(c).then(() => toast('🔖 انحفظت بالمحفوظة', 'ok')).catch(() => toast('ما انحفظت', 'bad')); }
+    if (a === 'unsave') DB.unsaveMsg(m.id).then(() => toast('انشالت')).catch(() => toast('ما انشالت', 'bad'));
+    if (a === 'pin') { const on = CFG.pin && CFG.pin.id === m.id; DB.setConfig({ pin: on ? null : { id: m.id, name: m.name, text: m.text || (m.voice ? '🎤 بصمة' : '📷 صورة') } }).then(() => { toast(on ? 'انشال التثبيت' : '📌 انثبتت للكل'); }).catch(() => toast('ما انثبتت', 'bad')); }
   };
 }
 function closeHold() { const H = $('#hold'); if (!H || !H.classList.contains('on')) return; H.classList.remove('on'); const cl = H.querySelector('.clone'); if (cl) cl.style.transform = ''; setTimeout(() => { if (!H.classList.contains('on')) H.querySelectorAll('.clone,.rx,.mn').forEach(e => e.remove()); }, 260); }
@@ -2680,13 +3014,15 @@ function renderEmoji(tab = 0) { $('#emoji').innerHTML = `<div class="tabs">${EMO
 function initChat() {
   const tx = $('#chatTx'), box = $('#msgs'), comp = $('#chatFoot');
   const grow = () => { tx.style.height = '40px'; tx.style.height = Math.min(140, tx.scrollHeight) + 'px'; comp.dataset.has = tx.value.trim() || chImgData ? '1' : '0'; };
+  chGrow = grow;
   tx.addEventListener('input', grow);
   tx.addEventListener('focus', () => { if (matchMedia('(pointer:coarse)').matches) $('#emoji').classList.remove('on'); });
   const send = async () => {
-    const t = tx.value.trim(); if (!t && !chImgData) return;
+    if (REC) return recStop(true);
+    const t = tx.value.trim(); if (!t && !chImgData) return recStart();
     if (chMode === 'room' && CFG.chatOpen === false && ME.role !== 'admin') return toast('الغرفة مقفولة هسه', 'bad');
     if (chMode === 'dm' && !dmPeer) return;
-    if (Date.now() - lastSend < 350) return; lastSend = Date.now();
+    if (Date.now() - lastSend < 700) return; lastSend = Date.now();
     const m = { uid: ME.uid, name: ME.name, role: ME.role, text: t.slice(0, 1000), at: Date.now() };
     if (replyTo) m.reply = replyTo; if (chImgData) m.img = chImgData;
     tx.value = ''; replyClear(); chImgData = null; $('#chImgPrev').classList.add('hide'); grow();
@@ -2715,13 +3051,17 @@ function initChat() {
   $('#fab').onclick = () => { box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' }); fabN = 0; updFab(); };
   box.addEventListener('scroll', updFab, { passive: true });
   box.addEventListener('click', e => {
+    const pb = e.target.closest('[data-play]'); if (pb) return playVoice(pb.dataset.play);
+    const sp = e.target.closest('[data-speed]'); if (sp) { chRate = chRate === 1 ? 1.5 : chRate === 1.5 ? 2 : 1; L.set('amg_rate', chRate); if (AUD) AUD.a.playbackRate = chRate; return syncVoice(); }
+    const wv = e.target.closest('.wv'); if (wv) { const r = wv.getBoundingClientRect(); return playVoice(wv.closest('[data-voice]').dataset.voice, Math.max(0, Math.min(1, (r.right - e.clientX) / r.width))); }
+    const nt = e.target.closest('[data-note]'); if (nt) return nt.dataset.note === ME.uid ? noteSheet() : noteView(nt.dataset.note);
     const q = e.target.closest('[data-jump]'); if (q) return jumpTo(q.dataset.jump);
     const rb = e.target.closest('[data-react]'); if (rb) { const m = curList().find(x => x.id === rb.closest('.m').dataset.mid); if (m) toggleReact(m, rb.dataset.react); }
   });
   // ضغطة مطوّلة + سحب للرد (موبايل)، وكلك يمين/دبل كلك (حاسبة)
   let lp = null, swEl = null, sx = 0, sy = 0, sw = 0, longFired = false;
   box.addEventListener('touchstart', e => {
-    const el = e.target.closest('.m'); if (!el || e.target.closest('[data-react],[data-jump],a')) return; const t = e.touches[0]; sx = t.clientX; sy = t.clientY; sw = 0; swEl = null; longFired = false;
+    const el = e.target.closest('.m'); if (!el || e.target.closest('[data-react],[data-jump],a,.voice')) return; const t = e.touches[0]; sx = t.clientX; sy = t.clientY; sw = 0; swEl = null; longFired = false;
     el.classList.add('press');
     lp = setTimeout(() => { lp = null; longFired = true; el.classList.remove('press'); const m = curList().find(x => x.id === el.dataset.mid); if (m) holdMenu(el, m); }, 420);
     box._el = el;
@@ -2742,11 +3082,140 @@ function initChat() {
   box.addEventListener('dblclick', e => { if (matchMedia('(pointer:coarse)').matches) return; const el = e.target.closest('.m'); if (!el) return; const m = curList().find(x => x.id === el.dataset.mid); if (m) replySet(m); });
   $('#chatLock').onclick = async () => { const open = CFG.chatOpen !== false; try { await DB.setConfig({ chatOpen: !open }); CFG.chatOpen = !open; chatHeader(); DB.log(open ? 'قفل غرفة الطلاب' : 'فتح غرفة الطلاب'); toast(open ? '🔒 الطلاب ما يگدرون يكتبون بالغرفة هسه' : '🔓 الغرفة انفتحت'); } catch (e) { toast('ما تغيّر', 'bad'); } };
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHold(); });
+  $('#recDel').onclick = () => recStop(false);
+  $('#pinbar').onclick = e => { if (e.target.closest('#unpin')) { DB.setConfig({ pin: null }); return; } if (CFG.pin) jumpTo(CFG.pin.id); };
+  DB.watchSaved(l => { SAVED = l.map(x => Object.assign({}, x, { id: x.id })).sort((a, b) => a.at - b.at); if (chMode === 'saved') renderMsgs(); });
+  DB.watchNotes(l => { NOTES = l; renderNotes(); });
+  initKB();
   if (ME.role === 'admin') DB.watchDMList(l => { DMLIST = l; if (chMode === 'dm' && !dmPeer) renderDMList(); chatBadge(); });
   if (ME.role === 'student') openDM(ME.uid, ME.name);
   chMode = 'room'; chatHeader(); renderMsgs();
 }
 
+
+let chGrow = () => { };
+/* ---- البصمات الصوتية (مثل AM CHAT) ---- */
+const fmtDur = s => { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+function waveOf(m) { if (m.wave && m.wave.length) return m.wave; let h = hue(m.id || 'x') + 7; const a = []; for (let i = 0; i < 30; i++) { h = (h * 9301 + 49297) % 233280; a.push(25 + Math.round(h / 233280 * 75)); } return a; }
+function voiceHTML(m, f) { return `<div class="voice" data-voice="${m.id}"><button class="pb" data-play="${m.id}"><svg class="ic"><use href="#i-play"/></svg></button><div class="vx"><div class="wv">${waveOf(m).map(h => `<i style="height:${h}%"></i>`).join('')}</div><div class="vrow"><span class="du num">${fmtDur(m.dur)}</span><button class="spd num hide" data-speed>${chRate}x</button></div></div></div>`; }
+function stopAudio() { if (AUD) { try { AUD.a.pause(); } catch (e) { } cancelAnimationFrame(AUD.raf); AUD = null; } syncVoice(); }
+function syncVoice() {
+  $$('#msgInner .voice').forEach(v => {
+    const on = !!(AUD && AUD.mid === v.dataset.voice), a = on && AUD.a;
+    const use = v.querySelector('.pb use'), want = on && !a.paused ? '#i-pause' : '#i-play'; if (use.getAttribute('href') !== want) use.setAttribute('href', want);
+    const dur = on ? (isFinite(a.duration) && a.duration > 0 ? a.duration : AUD.dur) : 0, p = on && dur ? Math.min(1, a.currentTime / dur) : 0, bs = v.querySelectorAll('.wv i'), n = Math.round(p * bs.length);
+    bs.forEach((b, i) => b.classList.toggle('p', on && i < n));
+    const m = curList().find(x => x.id === v.dataset.voice); v.querySelector('.du').textContent = on ? fmtDur(a.currentTime) : fmtDur(m && m.dur);
+    const sp = v.querySelector('.spd'); sp.classList.toggle('hide', !on); sp.textContent = chRate + 'x';
+  });
+}
+function playVoice(mid, seek) {
+  const m = curList().find(x => x.id === mid); if (!m || !m.voice) return;
+  if (AUD && AUD.mid === mid) { const a = AUD.a; if (seek != null) { const d = isFinite(a.duration) && a.duration > 0 ? a.duration : AUD.dur; if (d) a.currentTime = seek * d; if (a.paused) a.play().catch(() => { }); } else if (a.paused) a.play().catch(() => { }); else a.pause(); syncVoice(); return; }
+  stopAudio();
+  const a = new Audio(m.voice); a.playbackRate = chRate; AUD = { mid, a, dur: m.dur || 0 };
+  a.onplay = a.onpause = () => syncVoice();
+  a.onended = () => { AUD = null; syncVoice(); };
+  a.onloadedmetadata = () => { if (seek != null) { const d = isFinite(a.duration) && a.duration > 0 ? a.duration : m.dur; if (d) a.currentTime = seek * d; } };
+  a.play().catch(() => toast('ما گدرت أشغّل البصمة', 'bad'));
+  const loop = () => { if (!AUD || AUD.a !== a) return; syncVoice(); AUD.raf = requestAnimationFrame(loop); }; loop();
+}
+async function recStart() {
+  if (REC) return;
+  if (chMode === 'room' && CFG.chatOpen === false && ME.role !== 'admin') return toast('الغرفة مقفولة هسه', 'bad');
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) return toast('جهازك ما يدعم تسجيل الصوت', 'bad');
+  let st; try { st = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); } catch (e) { return toast('لازم تسمح بالمايك حتى تسجّل', 'bad'); }
+  const mime = ['audio/mp4;codecs=mp4a.40.2', 'audio/mp4', 'audio/aac', 'audio/webm;codecs=opus', 'audio/webm'].find(t => { try { return MediaRecorder.isTypeSupported(t); } catch (e) { return false; } }) || '';
+  let rec; try { rec = new MediaRecorder(st, mime ? { mimeType: mime, audioBitsPerSecond: 24000 } : {}); } catch (e) { rec = new MediaRecorder(st); }
+  const ch = []; rec.ondataavailable = e => { if (e.data && e.data.size) ch.push(e.data); };
+  let ac, an; try { ac = new (window.AudioContext || window.webkitAudioContext)(); const src = ac.createMediaStreamSource(st); an = ac.createAnalyser(); an.fftSize = 1024; src.connect(an); } catch (e) { }
+  const R = REC = { rec, st, ch, ac, an, t0: Date.now(), peaks: [], send: false, mime: rec.mimeType || mime };
+  rec.onstop = () => finishRec(R); try { rec.start(); } catch (e) { finishRec(R); return toast('ما گدرت أبدي التسجيل', 'bad'); }
+  stopAudio(); navigator.vibrate && navigator.vibrate(15);
+  $('#chatFoot').dataset.rec = '1'; $('#recT').textContent = '0:00';
+  const buf = an ? new Uint8Array(an.fftSize) : null;
+  R.iv = setInterval(() => {
+    const s = (Date.now() - R.t0) / 1000; $('#recT').textContent = fmtDur(s); let lvl = .05;
+    if (an) { an.getByteTimeDomainData(buf); let sum = 0; for (let i = 0; i < buf.length; i++) { const v = (buf[i] - 128) / 128; sum += v * v; } lvl = Math.min(1, Math.sqrt(sum / buf.length) * 3.5); }
+    R.peaks.push(lvl); drawRecWave(R.peaks); if (s >= 180) { toast('وصلت الحد (3 دقايق)'); recStop(true); }
+  }, 70);
+}
+function drawRecWave(p) {
+  const c = $('#recWave'), w = c.clientWidth, h = c.clientHeight; if (!w || !h) return; const d = Math.min(2, devicePixelRatio || 1);
+  if (c.width !== Math.round(w * d)) { c.width = Math.round(w * d); c.height = Math.round(h * d); }
+  const x = c.getContext('2d'); x.setTransform(d, 0, 0, d, 0, 0); x.clearRect(0, 0, w, h); const n = Math.floor(w / 5), arr = p.slice(-n); x.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#e8b130';
+  arr.forEach((v, i) => { const bh = Math.max(3, v * h), X = (arr.length - 1 - i) * 5; x.globalAlpha = .45 + .55 * v; x.fillRect(X, (h - bh) / 2, 3, bh); });
+}
+function recStop(send) { const R = REC; if (!R) return; R.send = send; clearInterval(R.iv); try { if (R.rec.state !== 'inactive') R.rec.stop(); else finishRec(R); } catch (e) { finishRec(R); } }
+async function finishRec(R) {
+  if (R.done) return; R.done = 1; clearInterval(R.iv);
+  try { R.st.getTracks().forEach(t => t.stop()); } catch (e) { } try { R.ac && R.ac.close(); } catch (e) { }
+  if (REC === R) REC = null; $('#chatFoot').dataset.rec = '0'; chGrow();
+  const dur = (Date.now() - R.t0) / 1000;
+  if (!R.send) return; if (dur < 1) return toast('البصمة قصيرة، دوس وسجّل أكثر');
+  const blob = new Blob(R.ch, { type: R.mime || 'audio/mp4' }); if (blob.size > 700000) return toast('البصمة كبيرة، خليها أقصر', 'bad');
+  const data = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
+  const pk = R.peaks, wave = []; for (let i = 0; i < 30; i++) { const a = pk.slice(Math.floor(i * pk.length / 30), Math.floor((i + 1) * pk.length / 30)); wave.push(Math.max(12, Math.round(Math.min(1, (a.length ? Math.max(...a) : .05) * 1.2) * 100))); }
+  const m = { uid: ME.uid, name: ME.name, role: ME.role, text: '', voice: data, dur: Math.round(dur), wave, at: Date.now() };
+  if (replyTo) { m.reply = replyTo; replyClear(); }
+  try { if (chMode === 'room') await DB.sendChat(m); else await DB.sendDM(dmPeer.uid, m, { name: ME.role === 'admin' ? dmPeer.name : ME.name, last: '🎤 بصمة', at: m.at, from: ME.role }); }
+  catch (e) { toast('ما وصلت البصمة', 'bad'); }
+}
+/* ---- رسالة مثبتة ---- */
+function renderPin() {
+  const pb = $('#pinbar'), on = chMode === 'room' && CFG.pin && CFG.pin.id;
+  pb.classList.toggle('hide', !on); $('#chatWrap').classList.toggle('pinned', !!on);
+  if (on) $('#pinTxt').textContent = (CFG.pin.name ? CFG.pin.name + ': ' : '') + (CFG.pin.text || '');
+}
+/* ---- الملاحظات (24 ساعة فوگ الغرفة) ---- */
+function renderNotes() {
+  const box = $('#notes'); if (!box || !ME) return; const t = Date.now();
+  const mine = NOTES.find(n => n.id === ME.uid && n.exp > t), others = NOTES.filter(n => n.id !== ME.uid && n.exp > t).sort((a, b) => b.at - a.at);
+  let h = `<div class="nt-i" data-note="${ME.uid}"><div class="nt-b ${mine ? '' : 'add'}">${mine ? esc(mine.text) : 'شنو ببالك؟'}</div>${avHTML(ME.uid, ME.name, 58)}<span class="nm">${mine ? 'ملاحظتك' : 'ملاحظة جديدة'}</span></div>`;
+  h += others.map((n, i) => `<div class="nt-i" data-note="${n.id}" style="--d:${(i % 5) * .4}s"><div class="nt-b">${esc(n.text)}</div>${avHTML(n.id, n.name, 58)}<span class="nm">${esc((n.name || '').split(' ')[0])}</span></div>`).join('');
+  box.innerHTML = h;
+}
+function noteSheet() {
+  const mine = NOTES.find(n => n.id === ME.uid && n.exp > Date.now());
+  modal(`<h2>ملاحظتك<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2><div class="nt-edit">${avHTML(ME.uid, ME.name, 72)}<textarea class="inp" id="ntT" maxlength="60" rows="2" placeholder="شنو ببالك؟ مثلاً: اليوم أنتظر الذهب يوصل 3700">${esc(mine ? mine.text : '')}</textarea><small class="num faint" id="ntC">${mine ? mine.text.length : 0}/60</small></div><p class="faint" style="text-align:center;font-size:13px">تطلع لكل الطلاب فوگ الغرفة لمدة 24 ساعة</p><div class="row">${mine ? '<button class="btn danger" id="ntDel">احذف</button>' : ''}<button class="btn sp" id="ntGo"><svg class="ic"><use href="#i-send"/></svg>شارك</button></div>`, (m, close) => {
+    const ta = m.querySelector('#ntT'); ta.oninput = () => m.querySelector('#ntC').textContent = ta.value.length + '/60'; setTimeout(() => ta.focus(), 250);
+    m.querySelector('#ntGo').onclick = () => { const t = ta.value.trim(); if (!t) return toast('اكتب شي أول'); DB.setNote({ text: t, name: ME.name, at: Date.now(), exp: Date.now() + 864e5 }).then(() => toast('انتشرت ملاحظتك 💬', 'ok')).catch(() => toast('ما انتشرت', 'bad')); close(); };
+    const d = m.querySelector('#ntDel'); if (d) d.onclick = () => { DB.delNote().catch(() => { }); close(); };
+  });
+}
+function noteView(uid) {
+  const n = NOTES.find(x => x.id === uid); if (!n) return;
+  modal(`<div class="nt-edit" style="padding-top:4px">${avHTML(uid, n.name, 84)}<b style="font-family:var(--fd)">${esc(n.name)}</b><div class="card" style="font-size:16px;line-height:1.8;text-align:center;width:100%">${esc(n.text)}</div><small class="faint">${ago(n.at)}</small></div><button class="btn ghost blk" data-close style="margin-top:12px">زين</button>`);
+}
+/* ---- صورة الحساب (إجبارية للطالب) ---- */
+function cropSquare(file, size = 256) {
+  return new Promise((res, rej) => { const fr = new FileReader(); fr.onerror = rej; fr.onload = () => { const im = new Image(); im.onerror = rej; im.onload = () => { const s = Math.min(im.width, im.height), c = document.createElement('canvas'); c.width = c.height = size; c.getContext('2d').drawImage(im, (im.width - s) / 2, (im.height - s) / 2, s, s, 0, 0, size, size); res(c.toDataURL('image/jpeg', .82)); }; im.src = fr.result; }; fr.readAsDataURL(file); });
+}
+function photoSheet(force) {
+  let data = (PROF[ME.uid] || {}).photo || null;
+  const c = modal(`<div class="phgate"><h2 style="justify-content:center">${force ? 'ضيف صورتك' : 'صورتك'}</h2><p class="dim" style="font-size:14px">${force ? 'حتى تدخل للدردشة لازم تحط صورة إلك، حتى الأستاذ والطلاب يعرفوك.' : 'تطلع بالدردشة والملاحظات.'}</p><div id="phAv">${avHTML(ME.uid, ME.name, 120)}</div><label class="btn ghost blk" style="margin:6px 0 10px"><svg class="ic"><use href="#i-cam"/></svg>اختار صورة<input type="file" accept="image/*" id="phIn" hidden></label><button class="btn blk" id="phOk" ${data ? '' : 'disabled'}>احفظ</button>${force ? '' : '<button class="btn ghost blk" data-close style="margin-top:8px">رجوع</button>'}</div>`, (m, close) => {
+    m.querySelector('#phIn').onchange = async e => { const f = e.target.files[0]; if (!f) return; try { data = await cropSquare(f); m.querySelector('#phAv').innerHTML = `<span class="av ph" style="width:120px;height:120px;margin:0 auto 10px"><img src="${data}"></span>`; m.querySelector('#phOk').disabled = false; } catch (er) { toast('الصورة ما انقرت', 'bad'); } };
+    m.querySelector('#phOk').onclick = async () => { if (!data) return; m.querySelector('#phOk').disabled = true; try { await DB.setProfile({ name: ME.name, role: ME.role, photo: data, at: Date.now() }); PROF[ME.uid] = Object.assign({}, PROF[ME.uid], { photo: data }); toast('انحفظت صورتك ✓', 'ok'); close(); renderMsgs(); renderNotes(); chatHeader(); } catch (e) { toast('ما انحفظت', 'bad'); m.querySelector('#phOk').disabled = false; } };
+  });
+  if (force) { const ov = $$('.ov').pop(); ov && ov.addEventListener('click', e => e.stopImmediatePropagation(), true); ov.querySelector('.md').addEventListener('click', e => e.stopPropagation()); }
+  return c;
+}
+function needPhoto() { return ME && ME.role === 'student' && profLoaded && !(PROF[ME.uid] || {}).photo; }
+/* ---- الكيبورد بالايفون: الدردشة تلحگ الشاشة الظاهرة بدون قفزات ---- */
+function initKB() {
+  const vv = window.visualViewport, root = document.documentElement; if (!vv) return;
+  let raf = 0;
+  const upd = () => {
+    raf = 0; const kb = innerHeight - vv.height > 120 && document.activeElement && /TEXTAREA|INPUT/.test(document.activeElement.tagName);
+    $('#app').toggleAttribute('data-kb', !!kb);
+    const bn = $('#bnav'), bnH = !kb && bn && getComputedStyle(bn).display !== 'none' ? bn.getBoundingClientRect().height : 0;
+    root.style.setProperty('--vvt', vv.offsetTop + 'px'); root.style.setProperty('--chh', Math.round(vv.height - bnH) + 'px');
+    if (curPg === 'chat' && kb) { const b = $('#msgs'); if (b && b.scrollHeight - b.scrollTop - b.clientHeight < 200) b.scrollTop = b.scrollHeight; }
+  };
+  const q = () => { if (!raf) raf = requestAnimationFrame(upd); };
+  vv.addEventListener('resize', q); vv.addEventListener('scroll', q); window.addEventListener('focusin', () => setTimeout(q, 50)); window.addEventListener('focusout', () => setTimeout(q, 80)); upd();
+  $('#chatTx').addEventListener('focus', () => { if (matchMedia('(max-width:900px)').matches) setTimeout(() => window.scrollTo(0, 0), 30); });
+}
 /* ====== navigation ====== */
 let curPg = 'home';
 function anim(sel) { const p = $(sel); p.classList.remove('in'); $$('.card,.li', p).forEach((c, i) => c.style.setProperty('--i', Math.min(i, 12))); void p.offsetWidth; p.classList.add('in'); }
@@ -2768,6 +3237,8 @@ function go(pg) {
   if (pg === 'chat') { setTimeout(fitChat, 20); setTimeout(fitChat, 300); }
   if (pg !== 'chart' && $('#app').dataset.fs) toggleFS(false);
   if (pg === 'news') renderNews();
+  if (pg === 'chat' && needPhoto()) setTimeout(() => photoSheet(true), 200);
+  if (pg !== 'chat') { if (typeof REC !== 'undefined' && REC) recStop(false); stopAudio(); }
   if (pg === 'chat') { chatSeenNow(); setTimeout(() => { const l = $('#msgs'); if (l) l.scrollTop = l.scrollHeight; }, 30); }
   if (pg === 'home') renderSpark();
   $('.npanel') && $('.npanel').remove();
@@ -2795,6 +3266,7 @@ document.addEventListener('click', e => {
   if (k === 'more') moreSheet();
   if (k === 'ind') indSheet();
   if (k === 'cset') csSheet();
+  if (k === 'myphoto') photoSheet(false);
   if (k === 'fs') toggleFS();
   if (k === 'tvinfo') modal(`<h2>شلون ينحفظ رسمي؟<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
    <div class="dim" style="line-height:1.9;font-size:14px">TradingView ما يسمح يسجّلون دخول داخل الشارت اللي بالمواقع، لذلك الرسم هنا مؤقت ويروح من تطلع.<br><br>
@@ -2826,8 +3298,11 @@ function start() {
   setMode(S.mode); initChart(); initPosts(); initTools(); initSettings();
   if (ME.role === 'admin') { initStudents(); DB.watchStudents(l => { STUD = l; renderStud(); }); DB.watchLogs(l => { $('#logList').innerHTML = l.length ? l.slice(0, 20).map(x => `<div class="li"><div class="mn"><b style="font-weight:700;font-size:14px">${esc(x.t)}</b><small>${ago(x.at)} · ${esc(x.by || '')}</small></div></div>`).join('') : '<div class="empty">ماكو حركات</div>'; }); }
   DB.watchPosts(onPosts);
-  DB.watchConfig(c => { const old = CFG.newsUrl; CFG = c || {}; renderChatLock(); const si = $('#sNews'); if (si && document.activeElement !== si) si.value = CFG.newsUrl || ''; if (CFG.newsUrl !== old) loadNews(true); });
-  if (ME.role !== 'guest') DB.watchChat(onChat);
+  DB.watchConfig(c => { const old = CFG.newsUrl, oldPin = JSON.stringify(CFG.pin || null); CFG = c || {}; renderChatLock(); if (ME.role !== 'guest' && JSON.stringify(CFG.pin || null) !== oldPin) { renderPin(); renderMsgs(); } const si = $('#sNews'); if (si && document.activeElement !== si) si.value = CFG.newsUrl || ''; if (CFG.newsUrl !== old) loadNews(true); });
+  if (ME.role !== 'guest') {
+    DB.watchProfiles(p => { PROF = p || {}; const first = !profLoaded; profLoaded = true; if (ME.role === 'admin' && !PROF[ME.uid]) DB.setProfile({ name: ME.name, role: 'admin', photo: '', at: Date.now() }).catch(() => { }); renderMsgs(); renderNotes(); renderDMList(); if (curPg === 'chat') chatHeader(); if (first && needPhoto()) setTimeout(() => photoSheet(true), 600); });
+    DB.watchChat(onChat);
+  }
   initNews(); initChat(); setInterval(() => loadNews(), 10 * 6e4);
   DB.watchLive(v => { LIVE = v; setTeacher(); });
   if (ME.role === 'admin' && S.cast) castNow();
