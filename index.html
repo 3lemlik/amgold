@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-9">
+<meta name="app-build" content="2026.11.19-10">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -559,6 +559,21 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
 @media (min-width:901px){.cbox{flex:1}}
 .cbar .tfs{flex:1;min-width:0}
 @media (max-width:900px){.cbox{width:100%}.cbar #tvOpen{padding:7px 10px}#pg-chart .cbar{flex-wrap:wrap;row-gap:6px}#pg-chart .cbar .tfs{order:5;flex:1 1 100%}}
+
+/* install gate */
+#gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:calc(20px + var(--sat)) 20px calc(90px + var(--sab));background:var(--void);background-image:radial-gradient(700px 360px at 50% 0,var(--accent-glow),transparent 70%),var(--bgpat,none);overflow:auto}
+#gate .gbox{width:min(420px,100%);text-align:center}
+#gate .core{margin:0 auto 14px}
+#gate h2{font-family:var(--fd);font-size:22px;font-weight:800;line-height:1.5;margin:0 0 6px;display:block}
+#gate h2 .wm{font-size:20px}
+#gate p{font-size:14px;line-height:1.8;margin:0 0 16px}
+.gsteps{list-style:none;padding:0;margin:0 0 16px;text-align:right;display:flex;flex-direction:column;gap:10px}
+.gsteps li{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--panel);border:1px solid var(--line);font-size:14.5px;line-height:1.7}
+.gsteps li>span{flex:none;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:800 13px var(--fm)}
+.gsteps .ic{width:22px;height:22px;color:var(--accent);vertical-align:middle;display:inline-block}
+.garrow{position:fixed;bottom:calc(8px + var(--sab));left:50%;transform:translateX(-50%);font-size:34px;color:var(--accent);animation:gbounce 1.2s infinite;text-shadow:0 0 18px var(--accent-glow)}
+@keyframes gbounce{50%{transform:translate(-50%,10px)}}
+.gdone{font:800 40px var(--fd);color:var(--ok);margin:10px 0}
 </style>
 </head>
 <body>
@@ -614,12 +629,21 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
  <symbol id="i-check2" viewBox="0 0 24 24"><path d="M2 13l4 4L15 8"/><path d="M10 15.5l1.5 1.5L22 7"/></symbol>
  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
+ <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></symbol>
+ <symbol id="i-addsq" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></symbol>
  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
  <symbol id="i-ul" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 21h16"/></symbol>
 </svg>
 <div id="warp"></div>
 <div id="toast"></div>
 
+<div id="gate" class="hide">
+ <div class="gbox">
+  <div class="core"><div class="g"></div><div class="r1"></div><div class="r2"></div><div class="r3"></div><svg><use href="#i-logo"/></svg></div>
+  <div class="gbody"></div>
+  <div class="credit" style="margin-top:18px"><span dir="ltr">by <b>Ali Malik</b></span></div>
+ </div>
+</div>
 <div id="login" class="hide">
  <div class="box">
   <div class="core"><div class="g"></div><div class="r1"></div><div class="r2"></div><div class="r3"></div><svg><use href="#i-logo"/></svg></div>
@@ -921,7 +945,7 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
      <div class="kv"><span>الاسم</span><b id="setNm"></b></div>
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv"><span>قاعدة البيانات</span><b id="setDb"></b></div>
-     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-9</span></div>
+     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-10</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1741,7 +1765,28 @@ const GuestDB = Object.assign({}, LocalDB, {
 let DB = LocalDB, ME = null;
 
 /* ====== login ====== */
+const STANDALONE = navigator.standalone === true || ['standalone', 'fullscreen', 'minimal-ui'].some(m => matchMedia('(display-mode: ' + m + ')').matches);
+let installEvt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; const b = $('#gInstall'); if (b) b.classList.remove('hide'); });
+window.addEventListener('appinstalled', () => { const g = $('#gate'); if (g) g.querySelector('.gbody').innerHTML = '<div class="gdone">✓ انثبّت</div><p>هسه افتح <b>AM GOLD</b> من الشاشة الرئيسية مالتك.</p>'; });
+function showGate() {
+  const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  const inApp = /Instagram|FBAN|FBAV|Telegram|Line\/|Snapchat|TikTok|musical_ly|WhatsApp/i.test(ua);
+  const android = /Android/i.test(ua), iosOther = ios && /CriOS|FxiOS|EdgiOS/.test(ua);
+  const share = '<svg class="ic"><use href="#i-share"/></svg>', add = '<svg class="ic"><use href="#i-addsq"/></svg>';
+  let steps = '', arrow = '';
+  if (inApp) steps = `<li><span>1</span>هذا متصفح داخل التطبيق وما يثبّت. دوس <b>⋯</b> فوگ واختار <b>${ios ? 'افتح بسفاري' : 'افتح بالمتصفح'}</b>.</li><li><span>2</span>وبعدين سوّي الخطوات اللي تطلعلك هناك.</li>`;
+  else if (ios) { steps = `<li><span>1</span>دوس زر المشاركة ${share} ${iosOther ? 'بالمتصفح' : 'بالشريط الجوّه'}.</li><li><span>2</span>انزل واختار <b>إضافة إلى الشاشة الرئيسية</b> ${add}</li><li><span>3</span>دوس <b>إضافة</b>، وافتح AM GOLD من شاشتك.</li>`; if (!iosOther && !/iPad/.test(ua)) arrow = '<div class="garrow">⬇</div>'; }
+  else if (android) steps = `<li><span>1</span>دوس <b>ثبّت هسه</b> جوّه.</li><li><span>2</span>إذا ما طلع الزر: دوس <b>⋮</b> فوگ ← <b>إضافة إلى الشاشة الرئيسية</b> أو <b>تثبيت التطبيق</b>.</li><li><span>3</span>افتح AM GOLD من شاشتك.</li>`;
+  else steps = `<li><span>1</span>دوس <b>ثبّت هسه</b> جوّه، أو أيقونة التثبيت ⊕ بشريط العنوان.</li><li><span>2</span>إذا متصفحك ما يدعم التثبيت، افتح الموقع بـ <b>Chrome</b> أو <b>Edge</b>.</li><li><span>3</span>افتح AM GOLD من سطح المكتب أو قائمة البرامج.</li>`;
+  steps = steps.replace(/<li><span>(\d)<\/span>/g, '<li><span>$1</span><div>').replace(/<\/li>/g, '</div></li>');
+  const g = $('#gate'); g.classList.remove('hide');
+  g.querySelector('.gbody').innerHTML = `<h2>ثبّت <span class="wm">AM<em>GOLD</em></span> على شاشتك</h2><p class="dim">الموقع يشتغل كتطبيق بس. ثبّته مرة وحدة وصير عندك أيقونته مثل باقي التطبيقات، وتوصلك إشعارات التحليلات والأخبار.</p><ol class="gsteps">${steps}</ol><button class="btn blk ${installEvt ? '' : 'hide'}" id="gInstall"><svg class="ic"><use href="#i-dl"/></svg>ثبّت هسه</button>`;
+  g.insertAdjacentHTML('beforeend', arrow);
+  $('#gInstall').onclick = async () => { if (!installEvt) return toast('استخدم الخطوات اللي فوگ'); installEvt.prompt(); const r = await installEvt.userChoice; if (r.outcome !== 'accepted') toast('لازم تثبّته حتى تدخل'); installEvt = null; };
+}
 function initAuth() {
+  if (!STANDALONE && location.protocol === 'https:' && !/[?&]web=1/.test(location.search)) { showGate(); return; }
   if (!HAS_FB) {
     ME = { uid: 'local', role: 'admin', name: ADMIN_NAME, local: true };
     start(); return;
@@ -1788,7 +1833,7 @@ function welcome() {
 /* ====== price feed: عقد الذهب XAUUSDT (Binance) + مطابقة السعر الفوري XAU ====== */
 const TFS = [['1m', 'M1', 6e4], ['5m', 'M5', 3e5], ['15m', 'M15', 9e5], ['30m', 'M30', 18e5], ['1h', 'H1', 36e5], ['4h', 'H4', 144e5], ['1d', 'D1', 864e5], ['1w', 'W1', 6048e5]];
 const SYM = 'XAUUSDT', FAPI = 'https://fapi.binance.com/fapi/v1', FWS = 'wss://fstream.binance.com/market/stream?streams=';
-const RAW = { '1d': '1h', '1w': '4h' };            // اليومي والأسبوعي نبنيهن من شموع أصغر حسب جلسة نيويورك مثل أوندا
+const RAW = { '4h': '1h', '1d': '1h', '1w': '4h' };            // اليومي والأسبوعي نبنيهن من شموع أصغر حسب جلسة نيويورك مثل أوندا
 const P = { last: null, open: null, hi: null, lo: null, prev: null, spark: [] };
 let AUTO = L.get('amg_autooff', 0);                // فرق العقد عن الذهب الفوري
 const OFF = () => (S.spot !== false ? AUTO : 0) + (+S.off || 0);
@@ -1800,6 +1845,7 @@ function isOpen(ms) { const d = nyl(ms), w = d.getUTCDay(), h = d.getUTCHours();
 function keepK(k, ms) { if (ms <= 36e5) return isOpen(k.t + Math.min(ms, 6e4) / 2); for (let x = 0; x < ms; x += 36e5) if (isOpen(k.t + x + 18e5)) return true; return false; }
 const dayKey = ms => Math.floor((nyl(ms).getTime() + 7 * 36e5) / 864e5);   // الجلسة تبدي 17:00 نيويورك
 const weekKey = ms => Math.floor((dayKey(ms) + 3) / 7);
+const h4Key = ms => Math.floor((nyl(ms).getTime() + 7 * 36e5) / 144e5);   // شموع 4 ساعات تبدي 17:00 نيويورك مثل أوندا
 function aggr(raw, keyF) {
   const out = []; let cur = null, ck = null;
   raw.forEach(k => { const kk = keyF(k.t); if (kk !== ck) { cur && out.push(cur); ck = kk; cur = Object.assign({}, k); } else { cur.h = Math.max(cur.h, k.h); cur.l = Math.min(cur.l, k.l); cur.c = k.c; cur.v += k.v; } });
@@ -1809,7 +1855,7 @@ let rawK = [], ws, wsTf, wsTry = 0, loadingMore = false, noMore = false;
 function build(tf) {
   const T = TFS.find(x => x[0] === tf), rtf = RAW[tf] || tf, rms = TFS.find(x => x[0] === rtf)[2];
   const f = rawK.filter(k => keepK(k, rms));
-  return tf === '1d' ? aggr(f, dayKey) : tf === '1w' ? aggr(f, weekKey) : f;
+  return tf === '4h' ? aggr(f, h4Key) : tf === '1d' ? aggr(f, dayKey) : tf === '1w' ? aggr(f, weekKey) : f;
 }
 async function loadTF(tf) {
   const T = TFS.find(x => x[0] === tf); S.tf = tf; saveS(); noMore = false;
