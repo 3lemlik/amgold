@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-17">
+<meta name="app-build" content="2026.11.19-19">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -968,6 +968,11 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
 .nres .chip.pos{background:rgba(60,207,130,.16);color:var(--ok)}.nres .chip.neg{background:rgba(242,89,106,.16);color:var(--bad)}
 .nres .nr3{font-size:12.5px;color:var(--dim);line-height:1.7}
 .vals .act{color:var(--ink);font-weight:800}
+
+.pww{position:relative}
+.pww .inp{padding-left:46px}
+.pww .eye{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--faint);background:none}
+.pww .eye.on{color:var(--accent)}.pww .eye .ic{width:19px;height:19px}
 </style>
 </head>
 <body>
@@ -1074,7 +1079,7 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
   </form>
   <button class="btn tint blk" id="regTog" style="margin-top:10px"><svg class="ic"><use href="#i-plus"/></svg><span>ما عندك حساب؟ اتسجل</span></button>
   <button class="btn ghost blk" id="guestBtn" style="margin-top:10px"><svg class="ic"><use href="#i-eye"/></svg>رجوع للتصفّح بدون حساب</button>
-  <div class="xp faint" style="font-size:12px;margin-top:6px">الرمز يعطيك ياه الأستاذ من تشترك بالكورس.</div>
+
   <div class="credit" style="margin-top:16px"><span dir="ltr">by <b>Ali Malik</b></span></div>
  </div>
 </div>
@@ -1438,7 +1443,7 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-17</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-19</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -2200,6 +2205,7 @@ function ago(t) {
 let toastT;
 function toast(m, k = '') { const t = $('#toast'); t.textContent = m; t.className = 'show ' + k; clearTimeout(toastT); toastT = setTimeout(() => t.className = k, 2600); }
 async function sha(s) { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
+const normPw = s => String(s || '').trim().replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 const pwEmail = async pw => 'u' + (await sha('amgold:' + pw)).slice(0, 32) + '@' + DOMAIN;
 const initials = n => (n || '؟').trim().split(/\s+/).slice(0, 2).map(w => w[0]).join(' ');
 const parseN = v => { const n = parseFloat(String(v).replace(/[,٬\s]/g, '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))); return isNaN(n) ? null : n; };
@@ -2453,16 +2459,22 @@ function showGate() {
   $('#gInstall').onclick = async () => { if (!installEvt) return toast('استخدم الخطوات اللي فوگ'); installEvt.prompt(); const r = await installEvt.userChoice; if (r.outcome !== 'accepted') toast('لازم تثبّته حتى تدخل'); installEvt = null; };
 }
 let REGISTERING = false;
+function eyeSetup() {
+  ['#lgPw', '#rgPw', '#rgPw2'].forEach(s => { const i = $(s); if (!i || i.parentNode.classList.contains('pww')) return; const w = document.createElement('div'); w.className = 'pww'; i.parentNode.insertBefore(w, i); w.appendChild(i);
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'eye'; b.innerHTML = '<svg class="ic"><use href="#i-eye"/></svg>'; b.onclick = () => { const on = i.type === 'password'; i.type = on ? 'text' : 'password'; b.classList.toggle('on', on); }; w.appendChild(b);
+    i.setAttribute('autocomplete', s === '#lgPw' ? 'current-password' : 'new-password'); i.setAttribute('autocapitalize', 'off'); i.setAttribute('autocorrect', 'off'); i.setAttribute('spellcheck', 'false'); });
+}
 function regSetup() {
+  eyeSetup();
   const lf = $('#lgForm'), rf = $('#regForm'), tg = $('#regTog');
   tg.onclick = () => { const on = rf.classList.contains('hide'); rf.classList.toggle('hide', !on); lf.classList.toggle('hide', on); tg.querySelector('span').textContent = on ? 'عندي حساب، رجعني للدخول' : 'ما عندك حساب؟ اتسجل'; $('#rgMsg').textContent = ''; setTimeout(() => (on ? $('#rgNm') : $('#lgPw')).focus(), 100); };
   rf.onsubmit = async e => {
     e.preventDefault(); const msg = (t, c) => { $('#rgMsg').textContent = t; $('#rgMsg').style.color = c ? 'var(--' + c + ')' : ''; };
-    const name = $('#rgNm').value.trim().replace(/\s+/g, ' '), ph = $('#rgPh').value.trim().replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^\d+]/g, ''), pw = $('#rgPw').value.trim();
+    const name = $('#rgNm').value.trim().replace(/\s+/g, ' '), ph = $('#rgPh').value.trim().replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^\d+]/g, ''), pw = normPw($('#rgPw').value);
     if (name.length < 3) return msg('اكتب اسمك الكامل', 'bad');
     if (ph.length < 10) return msg('اكتب رقم هاتفك صح', 'bad');
     if (pw.length < 6) return msg('الرمز لازم 6 أو أكثر', 'bad');
-    if (pw !== $('#rgPw2').value.trim()) return msg('الرمزين مو نفس الشي', 'bad');
+    if (pw !== normPw($('#rgPw2').value)) { $('#rgPw2').value = ''; $('#rgPw2').focus(); return msg('الرمزين مو نفس الشي، عيد كتابة الثاني. دوس 👁 حتى تشوف اللي كتبته', 'bad'); }
     $('#rgBtn').disabled = true; msg('لحظة…'); REGISTERING = true;
     try {
       const r = await auth.createUserWithEmailAndPassword(await pwEmail(pw), pw);
@@ -2501,7 +2513,7 @@ function initAuth() {
     } catch (e) { await auth.signOut(); loginErr('صار خلل بالاتصال، جرّب مرة ثانية'); }
   });
   $('#lgForm').onsubmit = async e => {
-    e.preventDefault(); const pw = $('#lgPw').value.trim(); if (!pw) return loginErr('اكتب الرمز');
+    e.preventDefault(); const pw = normPw($('#lgPw').value); if (!pw) return loginErr('اكتب الرمز');
     $('#lgBtn').disabled = true; $('#lgMsg').textContent = 'لحظة…'; $('#lgBar').style.width = '70%';
     try { await auth.signInWithEmailAndPassword(await pwEmail(pw), pw); }
     catch (e1) { try { await auth.signInWithEmailAndPassword(ADMIN_EMAIL, pw); } catch (e2) { loginErr(e2.code === 'auth/network-request-failed' ? 'ماكو انترنت' : 'الرمز غلط'); } }
@@ -3344,7 +3356,7 @@ async function loadNews(force) {
   for (const u of newsSources()) {
     try {
       const r = await fetch(u); if (!r.ok) throw new Error(r.status); const a = parseFF(await r.text());
-      NEWS = { at: Date.now(), list: a.map(e => ({ t: new Date(e.date).getTime(), title: e.title, cur: e.country, imp: e.impact, f: e.forecast || '', p: e.previous || '', a: e.actual || '' })).filter(e => !isNaN(e.t)).sort((x, y) => x.t - y.t) };
+      NEWS = { at: Date.now(), list: a.map(e => ({ t: new Date(e.date).getTime(), title: e.title, cur: e.country, imp: e.impact, f: e.forecast || '', p: e.previous || '', a: e.actual || '', bw: e.bw == null ? null : +e.bw })).filter(e => !isNaN(e.t)).sort((x, y) => x.t - y.t) };
       mergeActs(); L.set('amg_news', NEWS); newsErr = ''; ok = true; break;
     } catch (e) { }
   }
@@ -3387,7 +3399,7 @@ function nBias(e) {
   if (SPK.test(e.title)) return { k: 'spk', t: 'خطاب: إذا النبرة متشددة (رفع فايدة) ← 🟢 الدولار 🔴 الذهب، وإذا ناعمة ← العكس' };
   const inv = INV.test(e.title), a = nNum(e.a), f = nNum(e.f), p = nNum(e.p);
   const dir = (x, y) => x == null || y == null || x === y ? 0 : (x > y ? 1 : -1) * (inv ? -1 : 1);
-  if (a != null && f != null) { const d = dir(a, f); return { k: 'res', d, t: d > 0 ? 'طلع أفضل من المتوقع: إيجابي للدولار 🟢 وسلبي للذهب 🔴' : d < 0 ? 'طلع أسوأ من المتوقع: سلبي للدولار 🔴 وإيجابي للذهب 🟢' : 'طلع نفس المتوقع: تأثير محدود' }; }
+  if (a != null && (f != null || e.bw)) { const d = e.bw ? (e.bw > 0 ? 1 : -1) : dir(a, f); return { k: 'res', d, t: d > 0 ? 'طلع أفضل من المتوقع: إيجابي للدولار 🟢 وسلبي للذهب 🔴' : d < 0 ? 'طلع أسوأ من المتوقع: سلبي للدولار 🔴 وإيجابي للذهب 🟢' : 'طلع نفس المتوقع: تأثير محدود' }; }
   const d = dir(f, p); const rule = inv ? 'إذا طلع أقل من المتوقع ← 🟢 دولار 🔴 ذهب' : 'إذا طلع أعلى من المتوقع ← 🟢 دولار 🔴 ذهب';
   return { k: 'pre', d, t: (d > 0 ? 'التوقع أفضل من السابق: يميل إيجابي للدولار وسلبي للذهب. ' : d < 0 ? 'التوقع أسوأ من السابق: يميل سلبي للدولار وإيجابي للذهب. ' : '') + rule };
 }
