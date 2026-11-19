@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function signed() { return request.auth != null; }
+    function isAdmin() { return signed() && request.auth.token.email == 'aligold@amnet.com'; }
+    function lg() { return get(/databases/$(db)/documents/logins/$(request.auth.uid)).data; }
+    function member() {
+      return isAdmin() || (signed() && exists(/databases/$(db)/documents/logins/$(request.auth.uid))
+        && lg().active == true && (lg().exp == null || lg().exp > request.time.toMillis()));
+    }
+    match /logins/{uid} { allow read: if isAdmin() || (signed() && request.auth.uid == uid); allow write: if isAdmin(); }
+    match /posts/{id}   { allow read: if member(); allow write: if isAdmin(); }
+    match /live/{id}    { allow read: if member(); allow write: if isAdmin(); }
+    match /users/{uid}/{rest=**} { allow read, write: if signed() && request.auth.uid == uid && member(); }
+    match /logs/{id}    { allow read, write: if isAdmin(); }
+  }
+}
