@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.19-30">
+<meta name="app-build" content="2026.11.19-31">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -873,6 +873,13 @@ html[data-theme="light"] .cpost{background:#fff}
 .cmtl .m{max-width:85%}
 @media (max-width:900px){.cmtv .tgfeed{padding-top:calc(78px + var(--sat))}}
 
+.cmtv .tgfoot .ccomp{width:100%;max-width:760px}
+.cmtl{gap:2px}
+.cmtl .m{max-width:min(82%,520px)}
+.cmtl .m.first{margin-top:7px}
+.cmtv .tgin{gap:6px}
+.cmtv .cpost{margin-bottom:4px}
+
 #toast{transform:translate(-50%,calc(-100% - 30px - var(--sat)));opacity:0;visibility:hidden;transition:transform .3s cubic-bezier(.2,.9,.3,1),opacity .25s,visibility 0s .3s;z-index:150}
 #toast.show{transform:translate(-50%,0);opacity:1;visibility:visible;transition:transform .3s cubic-bezier(.2,.9,.3,1),opacity .2s,visibility 0s}
 
@@ -1032,6 +1039,9 @@ html.lock body{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
 .cpost .cm{font-size:12px}
 .tgt b{font-family:var(--sys);font-weight:600}
 @media (min-width:901px){:root{--msg-fs:15.5px}}
+
+/* التاريخ بين الرسائل يمشي ويّاها، ما يبقى معلّق */
+.dsep{position:static!important;top:auto!important}
 </style>
 </head>
 <body>
@@ -1405,7 +1415,7 @@ html.lock body{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
     <div class="cmtv" id="cmtV">
      <div class="wall"></div>
      <div class="tgh"><button class="gl circ" id="cmtBack" title="رجوع"><svg class="ic"><use href="#i-back"/></svg></button><div class="gl tgt"><b id="cmtN">التعليقات</b><small>توصيات AM GOLD ⚡</small></div><span style="width:52px;flex:none"></span></div>
-     <div class="tgfeed" id="cmtScroll"><div class="tgin"><div id="cmtPost"></div><div class="cday">بداية النقاش</div><div class="cmtl" id="cmtList"></div></div></div>
+     <div class="tgfeed" id="cmtScroll"><div class="tgin"><div id="cmtPost"></div><div class="cmtl" id="cmtList"></div></div></div>
      <div class="tgfoot">
       <div class="ccomp gl" id="cmtFoot"><div class="cbar2"><textarea id="cmtTx" rows="1" maxlength="600" placeholder="اكتب تعليق…"></textarea><button class="circ sendc" id="cmtGo"><svg class="ic"><use href="#i-send"/></svg></button></div></div>
       <button class="gl tgbig join hide" id="cmtGuest"><span id="cmtLogin">سجّل دخول حتى تعلّق</span></button>
@@ -1519,7 +1529,7 @@ html.lock body{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-30</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-31</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1909,7 +1919,7 @@ class GoldChart {
         break;
       }
       case 'hline': x.beginPath(); x.moveTo(0, a.y); x.lineTo(this.pw, a.y); x.stroke(); if (d.text) { x.setLineDash([]); this.txt(d.text, 8, a.y - 5, 'left', '700 11px Almarai, sans-serif', col); } break;
-      case 'rect': x.globalAlpha = d.fa != null ? d.fa : .13; x.fillStyle = d.fill || col; x.fillRect(a.x, a.y, (d.extR ? this.pw : b.x) - a.x, b.y - a.y); x.globalAlpha = 1; x.strokeRect(a.x, a.y, (d.extR ? this.pw : b.x) - a.x, b.y - a.y); if (d.text) { x.setLineDash([]); this.txt(d.text, Math.min(a.x, b.x) + 6, Math.min(a.y, b.y) + 14, 'left', '700 11px Almarai, sans-serif', col); } break;
+      case 'rect': x.globalAlpha = d.fa != null ? d.fa : .13; x.fillStyle = d.fill || col; x.fillRect(a.x, a.y, (d.extR ? this.pw : b.x) - a.x, b.y - a.y); x.globalAlpha = 1; x.strokeRect(a.x, a.y, (d.extR ? this.pw : b.x) - a.x, b.y - a.y); if (d.mid !== false) { const my = (a.y + b.y) / 2; x.save(); x.setLineDash([5, 4]); x.globalAlpha = .85; x.beginPath(); x.moveTo(a.x, my); x.lineTo(d.extR ? this.pw : b.x, my); x.stroke(); x.restore(); } if (d.text) { x.setLineDash([]); this.txt(d.text, Math.min(a.x, b.x) + 6, Math.min(a.y, b.y) + 14, 'left', '700 11px Almarai, sans-serif', col); } break;
       case 'vp': this.drawVP(d, a, b, sel); break;
       case 'fib': this.drawFib(d, a, b, col); break;
       case 'long': case 'short': this.drawPos(d, teach); break;
@@ -2033,12 +2043,12 @@ class GoldChart {
   }
   drawPos(d, teach) {
     const x = this.ctx, T = this.th, [e, tp, sl] = d.pts.length < 3 ? this.posPts(d) : d.pts, xa = this.X(e.t), xb = Math.max(this.X(tp.t), xa + 60), ye = this.yP(e.p), yt = this.yP(tp.p), ys = this.yP(sl.p);
-    x.globalAlpha = .18; x.fillStyle = T.up; x.fillRect(xa, Math.min(ye, yt), xb - xa, Math.abs(yt - ye)); x.fillStyle = T.dn; x.fillRect(xa, Math.min(ye, ys), xb - xa, Math.abs(ys - ye)); x.globalAlpha = 1;
+    const cU = d.cTp || T.up, cD = d.cSl || T.dn; x.globalAlpha = d.fa != null ? d.fa : .18; x.fillStyle = cU; x.fillRect(xa, Math.min(ye, yt), xb - xa, Math.abs(yt - ye)); x.fillStyle = cD; x.fillRect(xa, Math.min(ye, ys), xb - xa, Math.abs(ys - ye)); x.globalAlpha = 1;
     x.strokeStyle = T.ink; x.lineWidth = 1.2; x.beginPath(); x.moveTo(xa, ye); x.lineTo(xb, ye); x.stroke();
     const rw = Math.abs(tp.p - e.p), rk = Math.abs(e.p - sl.p), rr = rk ? rw / rk : 0, cx = (xa + xb) / 2;
     const lab = (s, y, c) => { x.font = '700 10.5px "JetBrains Mono", monospace'; const w = x.measureText(s).width + 12; x.fillStyle = c; this.rr(cx - w / 2, y - 9, w, 18, 5); x.fill(); this.txt(s, cx, y + 4, 'center', '700 10.5px "JetBrains Mono", monospace', '#fff'); };
-    lab('TP ' + this.fmt(tp.p) + '  +' + rw.toFixed(2), yt + (yt < ye ? -12 : 12), T.up);
-    lab('SL ' + this.fmt(sl.p) + '  -' + rk.toFixed(2), ys + (ys > ye ? 12 : -12), T.dn);
+    lab('TP ' + this.fmt(tp.p) + '  +' + rw.toFixed(2), yt + (yt < ye ? -12 : 12), cU);
+    lab('SL ' + this.fmt(sl.p) + '  -' + rk.toFixed(2), ys + (ys > ye ? 12 : -12), cD);
     lab((d.type === 'long' ? 'BUY ' : 'SELL ') + this.fmt(e.p) + '  R:R ' + rr.toFixed(2), ye + (d.type === 'long' ? 14 : -14), '#555c69');
   }
   drawAlert(a, sel) {
@@ -2974,6 +2984,8 @@ function drawSheet(d) {
     }
     if (d.type === 'trend') h += swH('extL', d.extL, 'تمديد لليسار') + swH('extR', d.extR, 'تمديد لليمين') + swH('showP', d.showP, 'إظهار السعر على الطرف');
     if (d.type === 'hline' || d.type === 'rect') h += `<div class="fld"><label>كتابة على الخط</label><input class="inp" data-df="text" value="${esc(d.text || '')}" placeholder="مثلاً: دعم قوي"></div>`;
+    if (d.type === 'long' || d.type === 'short') h += `<div class="csrow"><span>لون الهدف</span>${cpk('cTp', d.cTp || CH.th.up)}<span>لون الوقف</span>${cpk('cSl', d.cSl || CH.th.dn)}</div><div class="csw" style="margin:8px 0">${[['#26a69a', '#ef5350'], ['#3ccf82', '#f2596a'], ['#4aa3ff', '#ff9800'], ['#e8b130', '#787b86']].map(([u, n]) => `<button data-pp="${u},${n}" style="background:linear-gradient(135deg,${u} 50%,${n} 50%)"></button>`).join('')}</div><div class="fld"><label>شفافية التعبئة</label><input type="range" min="5" max="60" value="${Math.round((d.fa != null ? d.fa : .18) * 100)}" data-dr="fa"></div>`;
+    if (d.type === 'rect') h += swH('mid', d.mid !== false, 'خط بالنص (المنتصف)');
     if (d.type === 'rect') h += `<div class="fld"><label>شفافية التعبئة</label><input type="range" min="0" max="60" value="${Math.round((d.fa != null ? d.fa : .13) * 100)}" data-dr="fa"></div>` + swH('extR', d.extR, 'تمديد المنطقة لليمين');
     if (d.type === 'fib') {
       const on = d.lv || [0, .236, .382, .5, .618, .786, 1, 1.272, 1.618];
@@ -2997,8 +3009,9 @@ function drawSheet(d) {
     box.onclick = e => {
       const b = e.target.closest('button'); if (!b) return;
       if (b.dataset.dc) { set({ color: b.dataset.dc }); return draw(); }
+      if (b.dataset.pp) { const [u, n] = b.dataset.pp.split(','); set({ cTp: u, cSl: n }); return draw(); }
       if (b.dataset.sk) { set({ [b.dataset.sk]: JSON.parse(b.dataset.sv) }); return draw(); }
-      if (b.dataset.tk) { const k = b.dataset.tk, defOn = ['fibFill', 'lbl', 'showP', 'bgOn', 'vaLines'].includes(k) || (k === 'extR' && d.type === 'fib'); const cur = d[k] == null ? (k === 'showP' && d.type === 'trend' ? false : defOn) : d[k]; set({ [k]: !cur }); return draw(); }
+      if (b.dataset.tk) { const k = b.dataset.tk, defOn = ['fibFill', 'lbl', 'showP', 'bgOn', 'vaLines', 'mid'].includes(k) || (k === 'extR' && d.type === 'fib'); const cur = d[k] == null ? (k === 'showP' && d.type === 'trend' ? false : defOn) : d[k]; set({ [k]: !cur }); return draw(); }
       if (b.dataset.fl) { const l = +b.dataset.fl, on = (d.lv || [0, .236, .382, .5, .618, .786, 1, 1.272, 1.618]).slice(), i = on.indexOf(l); if (i >= 0) on.splice(i, 1); else on.push(l); set({ lv: on }); return draw(); }
       if (b.hasAttribute('data-ddel')) { CH.sel = d; CH.deleteSel(); close(); }
     };
@@ -4196,7 +4209,10 @@ function closeCmts() { $('#cmtV').classList.remove('on'); if (CMT.un) { try { CM
 function renderCmts(scroll) {
   const el = $('#cmtList'); const l = CMT.list;
   $('#cmtN').textContent = l.length ? fmt(l.length) + (l.length === 1 ? ' تعليق' : l.length <= 10 ? ' تعليقات' : ' تعليق') : 'التعليقات';
-  el.innerHTML = l.length ? l.map(c => { const out = c.uid === ME.uid; return `<div class="m ${out ? 'out' : 'in'} first last ${c.role === 'admin' ? 'adm' : ''}" data-cmid="${c.id}">${out ? '' : `<div class="mav">${avHTML(c.uid, c.name, 34)}</div>`}<div class="bub" style="--h:${hue(c.uid)}">${out ? '' : `<div class="from">${esc(c.name)}${c.role === 'admin' ? '<span class="tag">الأستاذ</span>' : ''}</div>`}<span class="txt">${linkify(esc(c.text))}</span><span class="sp" style="width:46px"></span><span class="meta num">${tstr(c.at)}</span></div></div>`; }).join('') : '<div class="dsep" style="position:static;margin:20px auto">ماكو تعليقات لحد الآن. كون أول واحد 💬</div>';
+  let lastD = '';
+  el.innerHTML = l.length ? l.map((c, i) => { const out = c.uid === ME.uid, pv = l[i - 1], nx = l[i + 1], d = new Date(c.at).toDateString(), first = !pv || pv.uid !== c.uid || new Date(pv.at).toDateString() !== d || c.at - pv.at > 5 * 6e4, last = !nx || nx.uid !== c.uid || new Date(nx.at).toDateString() !== d || nx.at - c.at > 5 * 6e4;
+    let sep = ''; if (d !== lastD) { lastD = d; const td = new Date().toDateString(), yd = new Date(Date.now() - 864e5).toDateString(); sep = `<div class="dsep">${d === td ? 'اليوم' : d === yd ? 'البارحة' : dstr(c.at)}</div>`; }
+    return sep + `<div class="m ${out ? 'out' : 'in'} ${first ? 'first' : ''} ${last ? 'last' : ''} ${c.role === 'admin' ? 'adm' : ''}" data-cmid="${c.id}">${out ? '' : `<div class="mav">${last ? avHTML(c.uid, c.name, 32) : ''}</div>`}<div class="bub" style="--h:${hue(c.uid)}">${out || !first ? '' : `<div class="from">${esc(c.name)}${c.role === 'admin' ? '<span class="tag">الأستاذ</span>' : ''}</div>`}<span class="txt">${linkify(esc(c.text))}</span><span class="sp" style="width:38px"></span><span class="meta"><span class="num">${tstr(c.at)}</span></span></div></div>`; }).join('') : '<div class="dsep" style="position:static;margin:20px auto">ماكو تعليقات لحد الآن. كون أول واحد 💬</div>';
   if (scroll) setTimeout(() => { const sc = $('#cmtScroll'); sc.scrollTop = sc.scrollHeight; }, 20);
 }
 async function sendCmt() {
@@ -4493,8 +4509,10 @@ function popNav() {
   const cv = $('#cmtV'); if (cv && cv.classList.contains('on')) return closeCmts();
   if (typeof CONV !== 'undefined' && CONV && curPg === 'chat' && isPhone()) return closeConv();
 }
-function navBack() { if (history.state && history.state.amg) history.back(); else popNav(); }
-addEventListener('popstate', popNav);
+let ignorePop = 0;
+function navBack() { popNav(); if (history.state && history.state.amg) { ignorePop = Date.now(); history.back(); } }
+addEventListener('popstate', () => { if (ignorePop && Date.now() - ignorePop < 1500) { ignorePop = 0; return; } popNav(); });
+try { history.scrollRestoration = 'manual'; } catch (e) { }
 function edgeBack(el, back, peek, when) {
   if (!el) return; let s = null; const EDGE = 30;
   el.addEventListener('touchstart', e => {
