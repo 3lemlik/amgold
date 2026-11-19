@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.19-31">
+<meta name="app-build" content="2026.11.19-32">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1042,6 +1042,25 @@ html.lock body{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
 
 /* التاريخ بين الرسائل يمشي ويّاها، ما يبقى معلّق */
 .dsep{position:static!important;top:auto!important}
+
+/* بطاقة التحليل بالدردشة */
+.pcard{display:block;width:min(300px,68vw);border-radius:14px;overflow:hidden;background:color-mix(in srgb,var(--void) 35%,transparent);cursor:pointer;margin-bottom:2px}
+.m.out .pcard{background:rgba(0,0,0,.14)}
+.pcard img{display:block;width:100%;max-height:200px;object-fit:cover;background:var(--panel3)}
+.pcard .pc-b{display:flex;flex-direction:column;gap:2px;padding:8px 10px 9px;border-right:3px solid var(--accent)}
+.m.out .pcard .pc-b{border-right-color:var(--accent-ink)}
+.pcard .pc-k{font-size:12px;font-weight:700;color:var(--accent)}.m.out .pcard .pc-k{color:inherit;opacity:.85}
+.pcard b{font-size:15px;font-weight:700;line-height:1.35}
+.pcard small{font-size:13px;opacity:.8;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard .pc-go{display:flex;align-items:center;gap:4px;margin-top:4px;font-size:13px;font-weight:700;color:var(--accent)}.m.out .pcard .pc-go{color:inherit}
+.pcard .pc-go .ic{width:14px;height:14px;transform:scaleX(-1)}
+.bub.media .pcard + .meta{position:static;display:flex;justify-content:flex-end;padding:0 8px 4px}
+.post.flash{animation:mflash 1.2s}
+.pask{text-align:center;padding-top:6px}
+.pbell.big{width:72px;height:72px;border-radius:22px;margin:0 auto}.pbell.big .ic{width:34px;height:34px}
+html.lock{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
+#pvfilt{margin-inline-start:auto}
+@media (max-width:520px){#pvfilt{margin-inline-start:0}}
 </style>
 </head>
 <body>
@@ -1318,7 +1337,7 @@ html.lock body{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
       <button class="btn" id="pSend"><svg class="ic" style="width:16px;height:16px"><use href="#i-send"/></svg>انشر</button>
      </div>
     </div>
-    <div class="row" style="gap:8px"><div class="seg" id="pfilt"><button data-pf="all" class="on">الكل</button><button data-pf="analysis">تحليلات</button><button data-pf="post">منشورات</button></div></div>
+    <div class="row wrap" style="gap:8px"><div class="seg" id="pfilt"><button data-pf="all" class="on">الكل</button><button data-pf="analysis">تحليلات</button><button data-pf="post">منشورات</button></div><div class="seg only-admin" id="pvfilt"><button data-pv="all" class="on">الكل</button><button data-pv="public">🌍 العامة</button><button data-pv="students">🎓 الطلاب</button></div></div>
     <div id="feed" class="feed" style="max-width:none"></div>
    </div>
   </section>
@@ -1529,7 +1548,7 @@ html.lock body{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-31</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-32</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -2435,7 +2454,7 @@ let fbApp, auth, fdb;
 const FireDB = {
   kind: 'firebase',
   watchPosts(cb) { fdb.collection('posts').orderBy('at', 'desc').limit(80).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), e => syncState(false, 'ماكو صلاحية للتحليلات')); },
-  addPost(p) { return fdb.collection('posts').add(p); },
+  async addPost(p) { const r = await fdb.collection('posts').add(p); p.id = r.id; return r; },
   updPost(id, x) { return fdb.collection('posts').doc(id).update(x); },
   delPost(id) { return fdb.collection('posts').doc(id).delete(); },
   reactPost(id, add, rem) { const inc = firebase.firestore.FieldValue.increment, x = {}; if (add) x['rx.' + add] = inc(1); if (rem) x['rx.' + rem] = inc(-1); return fdb.collection('posts').doc(id).update(x); },
@@ -3026,7 +3045,7 @@ function shareSheet() {
   const img = CH.snapshot(), draw = JSON.parse(JSON.stringify(CH.mine)).map(d => { delete d._vp; return d; });
   CH.sel = sel; CH.dirty = true;
   const tfn = (TFS.find(t => t[0] === S.tf) || [])[1];
-  let type = 'analysis', pin = false, withDraw = true, vis = pVis;
+  let type = 'analysis', pin = false, withDraw = true, vis = pVis, toChat = L.get('amg_tochat', 1) !== 0;
   modal(`<h2>انشر التحليل<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
    <img src="${img}" class="shprev" data-view>
    <div class="row" style="margin:10px 0"><div class="seg" id="shType"><button data-t="analysis" class="on">تحليل</button><button data-t="post">منشور</button></div><span class="sp"></span><button class="btn ghost sm" id="shPin"><svg class="ic" style="width:16px;height:16px"><use href="#i-pin"/></svg>تثبيت</button></div>
@@ -3034,16 +3053,18 @@ function shareSheet() {
    <div style="margin-bottom:8px">${visSeg('shVis', vis)}</div>
    <textarea class="inp" id="shText" placeholder="اكتب الشرح: الدخول، الهدف، الوقف، وشنو تتوقع…"></textarea>
    ${draw.length ? `<button class="mi" id="shDraw" style="padding-inline:0">ارفق رسوماتي (${draw.length})<small>الطلاب يفتحونها على شارتهم بنفس المناطق</small><span class="sw on"></span></button>` : ''}
+   <button class="mi" id="shChat" style="padding-inline:0">شاركه بغرفة الطلاب<small>يطلع للطلاب كبطاقة بالدردشة يفتحون منها التحليل</small><span class="sw ${toChat ? 'on' : ''}"></span></button>
    <button class="btn blk" id="shGo" style="margin-top:10px"><svg class="ic"><use href="#i-send"/></svg>${vis === 'public' ? 'انشر للعامة' : 'انشر للطلاب'}</button>`, (m, close) => {
-    m.querySelector('#shType').onclick = e => { const b = e.target.closest('[data-t]'); if (!b) return; type = b.dataset.t; m.querySelectorAll('#shType button').forEach(x => x.classList.toggle('on', x === b)); };
+    fastSeg(m.querySelector('#shType'), '[data-t]', b => { type = b.dataset.t; m.querySelectorAll('#shType button').forEach(x => x.classList.toggle('on', x === b)); });
     m.querySelector('#shPin').onclick = e => { pin = !pin; e.currentTarget.className = 'btn sm ' + (pin ? 'tint' : 'ghost'); };
-    m.querySelector('#shVis').onclick = e => { const b = e.target.closest('[data-vis]'); if (!b) return; vis = b.dataset.vis; pVis = vis; L.set('amg_pvis', vis); m.querySelectorAll('#shVis button').forEach(x => x.classList.toggle('on', x === b)); m.querySelector('#shGo').lastChild.textContent = vis === 'public' ? 'انشر للعامة' : 'انشر للطلاب'; };
+    fastSeg(m.querySelector('#shVis'), '[data-vis]', b => { vis = b.dataset.vis; pVis = vis; L.set('amg_pvis', vis); m.querySelectorAll('#shVis button').forEach(x => x.classList.toggle('on', x === b)); m.querySelector('#shGo').lastChild.textContent = vis === 'public' ? 'انشر للعامة' : 'انشر للطلاب'; });
+    m.querySelector('#shChat').onclick = e => { toChat = !toChat; L.set('amg_tochat', toChat ? 1 : 0); e.currentTarget.querySelector('.sw').classList.toggle('on', toChat); };
     const dw = m.querySelector('#shDraw'); if (dw) dw.onclick = () => { withDraw = !withDraw; dw.querySelector('.sw').classList.toggle('on', withDraw); };
     m.querySelector('#shGo').onclick = async () => {
       const p = { type, title: m.querySelector('#shTitle').value.trim(), text: m.querySelector('#shText').value.trim(), imgs: [], snap: img, draw: withDraw && draw.length ? draw : null, tf: S.tf, pin, vis, at: Date.now(), by: ME.name };
       if (JSON.stringify(p).length > 980000) return toast('الصورة كبيرة، صغّر الشارت شوية', 'bad');
       const b = m.querySelector('#shGo'); b.disabled = true;
-      try { await DB.addPost(p); DB.log('نشر تحليل من الشارت: ' + p.title); beep('ok'); toast('انتشر التحليل ✓', 'ok'); close(); }
+      try { await DB.addPost(p); DB.log('نشر تحليل من الشارت: ' + p.title); if (toChat && DB.kind !== 'guest') sharePostChat(p, p.id).catch(() => { }); beep('ok'); toast('انتشر التحليل ✓', 'ok'); close(); }
       catch (e) { toast('ما انتشر: ' + (e.message || 'خلل'), 'bad'); b.disabled = false; }
     };
   });
@@ -3112,6 +3133,8 @@ function clock() {
 }
 
 /* ====== posts ====== */
+let pvFilt = 'all';
+const fastSeg = (el, sel, fn) => { if (!el) return; let t0 = 0; const h = e => { const b = e.target.closest(sel); if (!b || !el.contains(b)) return; if (e.type === 'click' && Date.now() - t0 < 600) return; if (e.type === 'pointerdown') t0 = Date.now(); fn(b); }; el.addEventListener('pointerdown', h); el.addEventListener('click', h); };
 let POSTS = [], firstPosts = true, maxAt = 0, pType = 'analysis', pPin = false, pImgs = [], pSnap = null, pFilt = 'all', pVis = L.get('amg_pvis', 'students');
 const visSeg = (id, v) => `<div class="seg" id="${id}"><button data-vis="public" class="${v === 'public' ? 'on' : ''}">🌍 للعامة</button><button data-vis="students" class="${v !== 'public' ? 'on' : ''}">🎓 للطلاب بس</button></div>`;
 function onPosts(list) {
@@ -3145,7 +3168,7 @@ function postHTML(p, short) {
    ${p.title ? `<div class="tt">${esc(p.title)}</div>` : ''}<div class="tx">${txt}</div>
    ${short ? '' : rxRow('p', p.id, p.rx)}
    ${imgs.length && !short ? `<div class="imgs ${imgs.length === 1 ? 'one' : ''}">${imgs.map(s => `<img src="${s}" loading="lazy" data-view>`).join('')}</div>` : ''}
-   ${short ? '' : `<div class="row wrap" style="margin-top:12px;gap:6px">${(p.draw || []).length ? `<button class="btn tint sm" data-pa="show"><svg class="ic" style="width:16px;height:16px"><use href="#i-eye"/></svg>اعرضه على شارتي</button>` : ''}<span class="sp"></span>${ME.role === 'admin' ? `<button class="btn ghost sm" data-pa="vis">${p.vis === 'public' ? 'خليه للطلاب' : 'خليه للعامة'}</button><button class="btn ghost sm" data-pa="pin">${p.pin ? 'شيل التثبيت' : 'ثبّت'}</button><button class="btn danger sm" data-pa="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button>` : ''}</div>`}
+   ${short ? '' : `<div class="row wrap" style="margin-top:12px;gap:6px">${(p.draw || []).length ? `<button class="btn tint sm" data-pa="show"><svg class="ic" style="width:16px;height:16px"><use href="#i-eye"/></svg>اعرضه على شارتي</button>` : ''}<span class="sp"></span>${ME.role === 'admin' ? `<button class="btn ghost sm ico" data-pa="chat" title="شاركه بغرفة الطلاب"><svg class="ic" style="width:16px;height:16px"><use href="#i-chat"/></svg></button><button class="btn ghost sm" data-pa="vis">${p.vis === 'public' ? 'خليه للطلاب' : 'خليه للعامة'}</button><button class="btn ghost sm" data-pa="pin">${p.pin ? 'شيل التثبيت' : 'ثبّت'}</button><button class="btn danger sm" data-pa="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button>` : ''}</div>`}
   </div>`;
 }
 const RXL = ['👍', '❤️', '🔥', '🎯', '💰', '👏'];
@@ -3176,7 +3199,7 @@ document.addEventListener('click', e => {
 }, true);
 function renderFeed() {
   const el = $('#feed'); if (!el) return;
-  const a = sortPosts(POSTS).filter(p => pFilt === 'all' || p.type === pFilt);
+  const a = sortPosts(POSTS).filter(p => (pFilt === 'all' || p.type === pFilt) && (pvFilt === 'all' || (pvFilt === 'public' ? p.vis === 'public' : p.vis !== 'public')));
   el.innerHTML = a.length ? a.map(p => postHTML(p)).join('') : `<div class="card empty">${ME.role === 'admin' ? 'ماكو منشورات لحد الآن. اكتب أول تحليل من فوگ.' : ME.role === 'guest' ? 'لحد الآن ماكو تحليلات للعامة. التحليلات اليومية الكاملة للطلاب المشتركين.' : 'لحد الآن ماكو تحليلات. من ينزل الأستاذ تحليل يوصلك إشعار.'}</div>`;
   if (curPg === 'posts') anim('#pg-posts');
 }
@@ -3190,6 +3213,7 @@ document.addEventListener('click', async e => {
   const p = POSTS.find(x => x.id === b.closest('[data-pid]').dataset.pid); if (!p) return;
   if (b.dataset.pa === 'show') { OVER = p; go('chart'); if (p.tf && p.tf !== S.tf) loadTF(p.tf); setTeacher(); toast('هذا تحليل الأستاذ على شارتك'); if ((p.draw || []).length) setTimeout(() => focusDraw(p.draw), 600); }
   if (b.dataset.pa === 'pin') { await DB.updPost(p.id, { pin: !p.pin }); }
+  if (b.dataset.pa === 'chat') { await sharePostChat(p, p.id).then(() => toast('انشارك بغرفة الطلاب ✓', 'ok')).catch(() => toast('ما انشارك', 'bad')); }
   if (b.dataset.pa === 'vis') { const v = p.vis === 'public' ? 'students' : 'public'; await DB.updPost(p.id, { vis: v }).catch(() => toast('ما تغيّر', 'bad')); toast(v === 'public' ? 'هسه يشوفه الكل 🌍' : 'هسه بس الطلاب يشوفوه 🎓'); }
   if (b.dataset.pa === 'del') { if (await ask('تحذف المنشور؟', 'راح ينحذف عند كل الطلاب هم.', 'احذف', true)) { await DB.delPost(p.id); DB.log('حذف منشور: ' + (p.title || '')); toast('انحذف'); } }
 });
@@ -3221,10 +3245,11 @@ function shareChart() {
   setTimeout(() => $('#pText').focus(), 300);
 }
 function initPosts() {
-  $('#ptype').onclick = e => { const b = e.target.closest('[data-pt]'); if (!b) return; pType = b.dataset.pt; $$('#ptype button').forEach(x => x.classList.toggle('on', x === b)); };
-  $('#pfilt').onclick = e => { const b = e.target.closest('[data-pf]'); if (!b) return; pFilt = b.dataset.pf; $$('#pfilt button').forEach(x => x.classList.toggle('on', x === b)); renderFeed(); };
+  fastSeg($('#ptype'), '[data-pt]', b => { pType = b.dataset.pt; $$('#ptype button').forEach(x => x.classList.toggle('on', x === b)); });
+  fastSeg($('#pfilt'), '[data-pf]', b => { pFilt = b.dataset.pf; $$('#pfilt button').forEach(x => x.classList.toggle('on', x === b)); renderFeed(); });
+  fastSeg($('#pvfilt'), '[data-pv]', b => { pvFilt = b.dataset.pv; $$('#pvfilt button').forEach(x => x.classList.toggle('on', x === b)); renderFeed(); });
   $('#pvisW').innerHTML = visSeg('pVis', pVis);
-  $('#pvisW').onclick = e => { const b = e.target.closest('[data-vis]'); if (!b) return; pVis = b.dataset.vis; L.set('amg_pvis', pVis); $$('#pVis button').forEach(x => x.classList.toggle('on', x === b)); };
+  fastSeg($('#pvisW'), '[data-vis]', b => { pVis = b.dataset.vis; L.set('amg_pvis', pVis); $$('#pVis button').forEach(x => x.classList.toggle('on', x === b)); });
   $('#pinTog').onclick = () => { pPin = !pPin; $('#pinTog').className = 'btn sm ' + (pPin ? 'tint' : 'ghost'); };
   const addFiles = async files => {
     const fs = [...files].filter(f => /^image\//.test(f.type)).slice(0, 4 - pImgs.length); if (files.length > fs.length) toast('أكثر شي 4 صور بالمنشور');
@@ -3596,7 +3621,7 @@ function chatBadge() {
   $$('.cbadge').forEach(b => { b.textContent = n > 99 ? '99+' : n; b.classList.toggle('hide', !n); });
   if (curPg === 'chat') renderList();
 }
-function lastOf(list) { const m = list[list.length - 1]; return m ? { text: m.text || (m.voice ? '🎤 بصمة' : m.img ? '📷 صورة' : ''), at: m.at, name: m.name, uid: m.uid } : null; }
+function lastOf(list) { const m = list[list.length - 1]; return m ? { text: m.text || (m.post ? '📊 ' + (m.post.title || 'تحليل جديد') : '') || (m.voice ? '🎤 بصمة' : m.img ? '📷 صورة' : ''), at: m.at, name: m.name, uid: m.uid } : null; }
 function renderList() {
   const el = $('#convList'); if (!el) return;
   const q = chQ.trim(), rows = []; const nb = $('#notes'); if (nb) nb.classList.toggle('hide', !!q);
@@ -3627,10 +3652,11 @@ function openConv(c) {
   CONV = c; TMSG = []; chRendered = new Set(); chInitial = true; fabN = 0; $('#msgInner').innerHTML = '';
   if (c.k === 'thr') tUnsub = DB.watchThread(c.tid, list => { if (!CONV || CONV.tid !== c.tid) return; TMSG = list.slice().sort((a, b) => a.at - b.at); renderMsgs(); chatSeenNow(); });
   $('#chatWrap').dataset.cv = 'conv'; if (matchMedia('(max-width:900px)').matches) { $('#app').dataset.conv = '1'; if (!(history.state && history.state.amg === 'conv')) navPush('conv'); } setTimeout(() => { window.kbUpd && kbUpd(); typeof scrollLock === 'function' && scrollLock(); }, 0);
-  chatHeader(); renderMsgs(); renderList(); chatSeenNow();
+  chatHeader(); renderMsgs(); renderList(); chatSeenNow(); pushView();
+  const toEnd = () => { const b = $('#msgs'); if (b) { b.scrollTop = b.scrollHeight; msgsAtEnd = true; } }; requestAnimationFrame(toEnd); setTimeout(toEnd, 90); setTimeout(toEnd, 350); setTimeout(toEnd, 900);
   if (!matchMedia('(pointer:coarse)').matches && c.k !== 'saved') setTimeout(() => $('#chatTx').focus(), 50);
 }
-function closeConv() { stopAudio(); if (REC || RG) recCancel(); if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; } CONV = null; $('#chatWrap').dataset.cv = 'list'; delete $('#app').dataset.conv; setTimeout(() => { window.kbUpd && kbUpd(); typeof scrollLock === 'function' && scrollLock(); }, 0); renderList(); chatHeader(); }
+function closeConv() { stopAudio(); if (REC || RG) recCancel(); if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; } CONV = null; pushView(); $('#chatWrap').dataset.cv = 'list'; delete $('#app').dataset.conv; setTimeout(() => { window.kbUpd && kbUpd(); typeof scrollLock === 'function' && scrollLock(); }, 0); renderList(); chatHeader(); }
 function openKey(k) {
   if (k === 'room') return openConv({ k: 'room' });
   if (k === 'saved') return openConv({ k: 'saved' });
@@ -3639,8 +3665,8 @@ function openKey(k) {
   if (k.startsWith('u:')) { const u = k.slice(2), p = PROF[u] || {}; chQ = ''; $('#chSearch').value = ''; openConv({ k: 'thr', tid: tidOf(ME.uid, u), peer: { uid: u, name: p.name || 'مستخدم' }, isNew: !THREADS.find(t => t.id === tidOf(ME.uid, u)) }); }
 }
 async function convSend(m, lastTxt) {
-  if (cm() === 'room') return DB.sendChat(m);
-  if (cm() === 'thr') { const u = CONV.peer.uid, names = { [ME.uid]: ME.name, [u]: CONV.peer.name }; return DB.sendThread(CONV.tid, { members: [ME.uid, u].sort(), names, last: lastTxt || m.text, at: m.at, from: ME.uid }, m); }
+  if (cm() === 'room') { const r = await DB.sendChat(m); pushPing({ k: 'chat', id: r && r.id }); return r; }
+  if (cm() === 'thr') { const tid = CONV.tid, u = CONV.peer.uid, names = { [ME.uid]: ME.name, [u]: CONV.peer.name }; const r = await DB.sendThread(tid, { members: [ME.uid, u].sort(), names, last: lastTxt || m.text, at: m.at, from: ME.uid }, m); pushPing({ k: 'thr', tid, id: r && r.id }); return r; }
 }
 function msgItems() {
   const list = curList(), out = []; let prev = null;
@@ -3664,11 +3690,12 @@ function msgHTML(m, f) {
   if (m.reply) inner += `<span class="quote" data-jump="${esc(m.reply.id)}"><b>${esc(m.reply.uid === ME.uid ? 'إنت' : m.reply.name || '')}</b><span>${esc(m.reply.text || '📷 صورة')}</span></span>`;
   if (m.savedFrom) inner += `<div class="svd">${ico('bm')} ${m.savedFrom === 'room' ? 'من غرفة الطلاب' : 'من محادثة خاصة'} · ${dstr(m.at)}</div>`;
   if (m.img) inner += `<img class="ph" src="${m.img}" data-view alt="" loading="lazy" draggable="false">`;
+  if (m.post) inner += postCardHTML(m.post);
   if (m.voice) inner += voiceHTML(m, f);
   if (m.text) inner += `<div class="txt">${linkify(esc(m.text))}${hasR ? '' : sp}</div>`;
   if (hasR) inner += `<div class="reacts">${Object.entries(m.reactions).filter(([k, a]) => a && a.length && REACT[k]).map(([k, a]) => `<button data-react="${k}" class="${a.includes(ME.uid) ? 'me' : ''}">${REACT[k]}${a.length > 1 ? `<span class="num">${a.length}</span>` : ''}</button>`).join('')}${sp}</div>`;
   const meta = `<span class="meta">${CFG.pin && CFG.pin.id === m.id && cm() === 'room' ? ico('pin') : ''}<span class="num">${tstr(m.at)}</span>${f.out ? ico('check2') : ''}</span>`;
-  const media = !!m.img, only = media && !m.text && !hasR && !(f.group && !f.out && f.first) && !m.reply;
+  const media = !!m.img || !!m.post, only = media && !m.post && !m.text && !hasR && !(f.group && !f.out && f.first) && !m.reply;
   const av = f.group && !f.out ? `<span class="mav">${avHTML(m.uid, m.name)}</span>` : '';
   return `<div class="${cls.join(' ')}" data-mid="${m.id}">${av}<div class="bub ${media ? 'media' : ''} ${only ? 'only' : ''} ${jumbo ? 'jumbo' : ''} ${m.voice ? 'vbub' : ''}">${inner}${meta}</div><span class="swipe-ic">${ico('reply')}</span></div>`;
 }
@@ -3689,9 +3716,14 @@ function renderMsgs() {
   });
   Object.values(old).forEach(el => el.remove());
   if (!items.length) inner.innerHTML = `<div class="dsep" style="position:static;margin:auto">${cm() === 'room' ? 'ماكو رسائل لحد الآن. ابدي السالفة 👋' : cm() === 'saved' ? 'هنا تنحفظ الرسائل المهمة. اضغط مطوّل على أي رسالة ← حفظ 🔖' : 'ابدي السالفة 👋 الرسائل هنا بينكم بس 🔒'}</div>`;
-  if (chInitial) { chInitial = false; box.scrollTop = box.scrollHeight; }
+  if (chInitial) { if (items.length) { chInitial = false; toBottom(); } }
   else if (added) { if (atBottom || mine) box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' }); else { fabN += added; updFab(); } }
   syncVoice();
+}
+function toBottom() {
+  const box = $('#msgs'); if (!box) return; const go = () => { box.scrollTop = box.scrollHeight; };
+  go(); requestAnimationFrame(go); [60, 180, 400, 800].forEach(t => setTimeout(() => { if (box.scrollHeight - box.scrollTop - box.clientHeight < 600) go(); }, t));
+  $$('#msgInner img').forEach(im => { if (!im.complete) im.addEventListener('load', () => { if (box.scrollHeight - box.scrollTop - box.clientHeight < 700) go(); }, { once: true }); });
 }
 function updFab() { const box = $('#msgs'), far = box.scrollHeight - box.scrollTop - box.clientHeight > 300; $('#fab').classList.toggle('on', far); if (!far) fabN = 0; $('#fabN').textContent = fabN; $('#fabN').classList.toggle('hide', !fabN); }
 function chatHeader() {
@@ -3844,7 +3876,8 @@ function initChat() {
   $('#notes').onclick = e => { const nt = e.target.closest('[data-note]'); if (nt) nt.dataset.note === ME.uid ? noteSheet() : noteView(nt.dataset.note); };
   $('#chSearch').oninput = e => { chQ = e.target.value; renderList(); };
   $('#fab').onclick = () => { box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' }); fabN = 0; updFab(); };
-  box.addEventListener('scroll', updFab, { passive: true });
+  box.addEventListener('scroll', () => { updFab(); msgsAtEnd = box.scrollHeight - box.scrollTop - box.clientHeight < 120; }, { passive: true });
+  box.addEventListener('load', e => { if (e.target.tagName === 'IMG' && msgsAtEnd) box.scrollTop = box.scrollHeight; }, true);
   box.addEventListener('click', e => {
     const pb = e.target.closest('[data-play]'); if (pb) return playVoice(pb.dataset.play);
     const sp = e.target.closest('[data-speed]'); if (sp) { chRate = chRate === 1 ? 1.5 : chRate === 1.5 ? 2 : 1; L.set('amg_rate', chRate); if (AUD) AUD.a.playbackRate = chRate; return syncVoice(); }
@@ -3883,10 +3916,10 @@ function initChat() {
   DB.watchNotes(l => { NOTES = l; renderNotes(); });
   DB.watchThreads(l => { THREADS = l; renderList(); chatBadge(); });
   myAv();
-  if (matchMedia('(min-width:901px)').matches) openConv({ k: 'room' }); else { CONV = null; $('#chatWrap').dataset.cv = 'list'; }
+  if (matchMedia('(min-width:901px)').matches) openConv({ k: 'room' }); else { CONV = null; pushView(); $('#chatWrap').dataset.cv = 'list'; }
   renderList(); chatHeader();
 }
-let chGrow = () => { };
+let chGrow = () => { }, msgsAtEnd = true;
 /* ---- البصمات الصوتية (مثل AM CHAT) ---- */
 const fmtDur = s => { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 function waveOf(m) { if (m.wave && m.wave.length) return m.wave; let h = hue(m.id || 'x') + 7; const a = []; for (let i = 0; i < 30; i++) { h = (h * 9301 + 49297) % 233280; a.push(25 + Math.round(h / 233280 * 75)); } return a; }
@@ -4027,7 +4060,7 @@ function initKB() {
   const vv = window.visualViewport, root = document.documentElement, app = $('#app'); if (!vv) return;
   const txtFocus = () => { const a = document.activeElement; return !!a && (/TEXTAREA|INPUT|SELECT/.test(a.tagName) || a.isContentEditable); };
   const fixedMode = () => document.documentElement.classList.contains('lock');
-  let raf = 0, until = 0, lastH = 0, lastT = -1, stick = false;
+  let raf = 0, until = 0, lastH = 0, lastT = -1, stick = false, stickUntil = 0;
   const upd = () => {
     raf = 0;
     const kb = innerHeight - vv.height > 110 && txtFocus();
@@ -4036,8 +4069,8 @@ function initKB() {
     const h = Math.round(vv.height - bnH), t = Math.max(0, Math.round(vv.offsetTop));
     if (h !== lastH) { root.style.setProperty('--chh', h + 'px'); lastH = h; }
     if (t !== lastT) { root.style.setProperty('--vvt', t + 'px'); lastT = t; }
-    if (fixedMode() && !kb && (scrollY || scrollX)) window.scrollTo(0, 0);
     if (stick) { const m = $('#msgs'); if (m && curPg === 'chat') m.scrollTop = m.scrollHeight; }
+    if (performance.now() > stickUntil) stick = false;
     if (performance.now() < until) raf = requestAnimationFrame(upd); else stick = false;
   };
   const kick = (ms = 350) => { until = Math.max(until, performance.now() + ms); if (!raf) raf = requestAnimationFrame(upd); };
@@ -4048,10 +4081,10 @@ function initKB() {
   window.addEventListener('orientationchange', () => kick(900));
   document.addEventListener('focusin', e => {
     if (!/TEXTAREA|INPUT/.test(e.target.tagName)) return;
-    const m = $('#msgs'); stick = !!(m && curPg === 'chat' && m.scrollHeight - m.scrollTop - m.clientHeight < 160);
+    const m = $('#msgs'); stick = !!(m && curPg === 'chat' && m.scrollHeight - m.scrollTop - m.clientHeight < 160); stickUntil = performance.now() + 650;
     kick(1000);
   });
-  document.addEventListener('focusout', () => { stick = false; kick(1000); setTimeout(() => kick(400), 450); });
+  document.addEventListener('focusout', () => { stick = false; kick(900); setTimeout(() => { if (fixedMode() && (scrollY || scrollX)) window.scrollTo(0, 0); }, 350); });
   // الايفون: لمسة على مربع الكتابة تفتح الكيبورد بدون ما تتحرك الصفحة
   $$('#chatTx,#chanTx,#cmtTx').forEach(tx => tx.addEventListener('touchend', e => {
     if (document.activeElement === tx || !fixedMode()) return;
@@ -4369,7 +4402,7 @@ function go(pg) {
     const w = $('#warp'); w.classList.remove('go'); void w.offsetWidth; w.classList.add('go');
     window.scrollTo(0, 0); anim('#pg-' + pg);
     // reset the page we left
-    if (prev === 'posts') { pFilt = 'all'; $$('#pfilt button').forEach(x => x.classList.toggle('on', x.dataset.pf === 'all')); renderFeed(); }
+    if (prev === 'posts') { pvFilt = 'all'; $$('#pvfilt button').forEach(x => x.classList.toggle('on', x.dataset.pv === 'all')); pFilt = 'all'; $$('#pfilt button').forEach(x => x.classList.toggle('on', x.dataset.pf === 'all')); renderFeed(); }
     if (prev === 'students') { $('#stQ').value = ''; renderStud(); }
     if (prev === 'chart' && CH) { CH.setTool('cursor'); CH.sel = null; selbar(null); $$('#tools [data-tool]').forEach(x => x.classList.toggle('on', x.dataset.tool === 'cursor')); }
   }
@@ -4541,6 +4574,43 @@ function edgeBack(el, back, peek, when) {
   };
   el.addEventListener('touchend', end, { capture: true }); el.addEventListener('touchcancel', end, { capture: true });
 }
+/* ====== إشعار فوري: بعد أي رسالة أو منشور نكلّم السكربت يدز بنفس اللحظة ====== */
+function nudgePush() { const u = (CFG.newsUrl || '').trim(); if (!/script\.google/.test(u)) return; try { fetch(u + (u.includes('?') ? '&' : '?') + 'a=tick&t=' + Date.now(), { mode: 'no-cors', keepalive: true }).catch(() => { }); } catch (e) { } }
+function wrapNudge() { ['sendChat', 'sendThread', 'addChan', 'addPost'].forEach(k => { const f = DB[k]; if (!f || f.__n) return; const g = async function () { const r = await f.apply(this, arguments); setTimeout(nudgePush, 300); return r; }; g.__n = 1; DB[k] = g; }); }
+/* المستخدم داخل المحادثة؟ حتى ما يوصله إشعار رسائلها */
+let hereT = 0;
+function pushView() {
+  clearInterval(hereT); const id = L.get('amg_pid', ''); if (!id || !fdb || !HAS_FB) return;
+  const here = typeof CONV !== 'undefined' && CONV && curPg === 'chat' && !document.hidden ? (CONV.k === 'room' ? 'room' : CONV.k === 'thr' ? CONV.tid : '') : '';
+  const w = () => fdb.collection('push').doc(id).set({ here, hereAt: Date.now() }, { merge: true }).catch(() => { });
+  w(); if (here) hereT = setInterval(w, 40000);
+}
+document.addEventListener('visibilitychange', () => { if (typeof pushView === 'function') pushView(); });
+/* طلب السماح بالإشعارات من يفتح التطبيق */
+function askPushSheet() {
+  if (!pushOK() || Notification.permission !== 'default' || L.get('amg_pask', 0) > Date.now() || $('.ov')) return;
+  modal(`<div class="pask"><div class="pbell big"><svg class="ic"><use href="#i-bell"/></svg></div><h2 style="justify-content:center;margin:12px 0 4px">فعّل الإشعارات</h2><p class="dim" style="font-size:14px;line-height:1.8;margin:0 0 14px">حتى توصلك التوصيات والرسائل والأخبار القوية<br>حتى والتطبيق مسدود.</p><button class="btn blk" id="paOk"><svg class="ic"><use href="#i-bell"/></svg>فعّل هسه</button><button class="btn ghost blk" id="paNo" style="margin-top:8px">بعدين</button></div>`, (m, close) => {
+    m.querySelector('#paOk').onclick = () => { close(); pushSync(true).then(() => { if (pushOn()) toast('🔔 تفعّلت الإشعارات', 'ok'); }).catch(pushErr); };
+    m.querySelector('#paNo').onclick = () => { L.set('amg_pask', Date.now() + 864e5); close(); };
+  });
+}
+/* مشاركة التحليل بغرفة الطلاب */
+function postCardHTML(p) {
+  return `<div class="pcard" data-openpost="${esc(p.id || '')}">${p.thumb ? `<img src="${p.thumb}" alt="" loading="lazy" draggable="false">` : ''}<div class="pc-b"><span class="pc-k">${p.type === 'analysis' ? '📊 تحليل جديد' : '📝 منشور جديد'}${p.tf ? ' · <span class="num">' + esc(p.tf) + '</span>' : ''}</span>${p.title ? `<b>${esc(p.title)}</b>` : ''}${p.text ? `<small>${esc(p.text)}</small>` : ''}<span class="pc-go">افتح التحليل<svg class="ic"><use href="#i-back"/></svg></span></div></div>`;
+}
+function mkThumb(src) {
+  if (!src) return Promise.resolve(null); if (!/^data:/.test(src)) return Promise.resolve(src);
+  return new Promise(res => { const i = new Image(); i.onload = () => { const k = Math.min(1, 520 / i.width), c = document.createElement('canvas'); c.width = Math.round(i.width * k); c.height = Math.round(i.height * k); c.getContext('2d').drawImage(i, 0, 0, c.width, c.height); res(c.toDataURL('image/jpeg', .62)); }; i.onerror = () => res(null); i.src = src; });
+}
+async function sharePostChat(p, id) {
+  const thumb = await mkThumb(p.snap || (p.imgs || [])[0]), tf = p.tf ? (TFS.find(t => t[0] === p.tf) || [])[1] || '' : '';
+  await DB.sendChat({ uid: ME.uid, name: ME.name, role: ME.role, text: '', at: Date.now(), post: { id: id || '', title: (p.title || '').slice(0, 120), text: (p.text || '').slice(0, 160), type: p.type, thumb, tf } });
+}
+document.addEventListener('click', e => {
+  const c = e.target.closest('[data-openpost]'); if (!c) return; const id = c.dataset.openpost;
+  if (typeof CONV !== 'undefined' && CONV && isPhone()) navBack();
+  go('posts'); setTimeout(() => { const el = $(`#feed [data-pid="${CSS.escape(id)}"]`); if (!el) return toast('التحليل انحذف'); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }, 350);
+});
 /* ====== start ====== */
 let started = false;
 function start() {
@@ -4566,7 +4636,7 @@ function start() {
     DB.watchProfiles(p => { PROF = p || {}; const first = !profLoaded; profLoaded = true; if (ME.role === 'admin' && !PROF[ME.uid]) DB.setProfile({ name: ME.name, role: 'admin', photo: '', at: Date.now() }).catch(() => { }); const mp = PROF[ME.uid]; if (ME.role === 'student' && (!mp || mp.name !== ME.name)) DB.setProfile(Object.assign({ photo: '' }, mp || {}, { name: ME.name, role: 'student', at: Date.now() })).catch(() => { }); if (CONV) renderMsgs(); renderNotes(); renderList(); myAv(); if (curPg === 'chat') chatHeader(); if (first && needPhoto()) setTimeout(() => photoSheet(true), 600); });
     DB.watchChat(onChat);
   }
-  initKB(); initNews(); if (isStu()) initChat(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
+  wrapNudge(); initKB(); initNews(); setTimeout(askPushSheet, 2500); if (isStu()) initChat(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
   DB.watchLive(v => { LIVE = v; setTeacher(); });
   if (ME.role === 'admin' && S.cast) castNow();
   setTeacher(); renderAlerts(); loadTicker().then(syncSpot); setInterval(loadTicker, 5 * 6e4); setInterval(syncSpot, 6e4);
