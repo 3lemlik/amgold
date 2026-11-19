@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-22">
+<meta name="app-build" content="2026.11.19-23">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1442,7 +1442,7 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-22</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-23</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -3346,7 +3346,7 @@ function left(ms) { if (ms <= 0) return 'هسه'; const m = Math.floor(ms / 6e4)
 const DAYS = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 const FF_JSON = 'https://nfs.faireconomy.media/ff_calendar_thisweek.json';
 const newsSources = () => { const u = (CFG.newsUrl || '').trim(), a = []; if (u && /script\.google/.test(u)) a.push(u + (u.includes('?') ? '&' : '?') + 'v=' + Math.floor(Date.now() / 6e5)); a.push('https://r.jina.ai/' + FF_JSON); return a; };
-function parseFF(t) { try { const a = JSON.parse(t); if (Array.isArray(a)) return a; if (a && Array.isArray(a.ff)) { if (Array.isArray(a.tv) && a.tv.length) { ACT = { at: Date.now(), list: parseTV(JSON.stringify(a.tv)) }; L.set('amg_act', ACT); } return a.ff; } } catch (e) { } const i = t.indexOf('[{'), j = t.lastIndexOf('}]'); if (i >= 0 && j > i) return JSON.parse(t.slice(i, j + 2)); throw new Error('bad'); }
+function parseFF(t) { try { const a = JSON.parse(t); if (Array.isArray(a)) return a; if (a && Array.isArray(a.ff)) { if (Array.isArray(a.tv) && a.tv.length) { ACT = { at: Date.now(), list: parseTV(JSON.stringify(a.tv)) }; L.set('amg_act', ACT); } if (a.ff.length) return a.ff; throw new Error('noff'); } } catch (e) { if (e.message === 'noff') throw e; } const i = t.indexOf('[{'), j = t.lastIndexOf('}]'); if (i >= 0 && j > i) return JSON.parse(t.slice(i, j + 2)); throw new Error('bad'); }
 async function loadNews(force) {
   if (newsBusy) return;
   if (!force && NEWS.list.length && Date.now() - NEWS.at < 30 * 6e4) { renderNews(); return; }
