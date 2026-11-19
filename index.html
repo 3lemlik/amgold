@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-4">
+<meta name="app-build" content="2026.11.19-6">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -175,6 +175,13 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
 .tvbox{height:calc(100dvh - 190px);min-height:380px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
 .tvbox iframe,.tvbox>div{width:100%!important;height:100%!important}
 .calbox{height:520px;border-radius:12px;overflow:hidden}
+/* chart page fills the screen */
+#app[data-pg=chart] main{padding-top:14px;padding-bottom:10px;max-width:none}
+#app[data-pg=chart] main>.credit,#app[data-pg=chart] #demoBar,#app[data-pg=chart] .chartpg .phead{display:none!important}
+#app[data-pg=chart] .cbox,#app[data-pg=chart] .tvbox{min-height:240px}
+#app[data-fs] .side,#app[data-fs] .top,#app[data-fs] .bnav{display:none!important}
+#app[data-fs] main{padding:calc(6px + var(--sat)) 8px calc(6px + var(--sab))!important}
+#app[data-fs] .cbar{gap:6px}
 /* posts */
 .feed{display:flex;flex-direction:column;gap:14px;max-width:760px}
 .post .hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -321,6 +328,9 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
  .tools hr{border-top:0;border-right:1px solid var(--line);margin:4px 2px}
  .cbox,.tvbox{flex:none;height:calc(100dvh - 268px - var(--sat) - var(--sab));min-height:300px}
  .chartpg .phead{display:none}
+ #app[data-pg=chart] .top{display:none}
+ #app[data-pg=chart] main{padding-top:calc(8px + var(--sat));padding-left:8px;padding-right:8px}
+ #app[data-pg=chart] .cbar .seg button{padding:6px 9px}
  #app[data-pg=chart] #demoBar,#app[data-pg=chart] main>.credit,#app[data-pg=chat] main>.credit{display:none!important}
  .chatbox{height:calc(100dvh - 232px - var(--sat) - var(--sab))}
  #pg-chat h1{font-size:20px}
@@ -374,6 +384,8 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="12" cy="15" r="1.5"/></symbol>
  <symbol id="i-pal" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.6-1.6 0-1-.8-1.4-.8-2.4 0-.9.7-1.6 1.6-1.6H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10" cy="7" r="1.2"/><circle cx="15" cy="7" r="1.2"/></symbol>
  <symbol id="i-in" viewBox="0 0 24 24"><path d="M15 4h4v16h-4"/><path d="M10 17l5-5-5-5M15 12H4"/></symbol>
+ <symbol id="i-fs" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+ <symbol id="i-fsx" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
  <symbol id="i-ul" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 21h16"/></symbol>
 </svg>
@@ -491,6 +503,7 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
     <div class="tfs" id="tfs"></div>
     <span class="sp"></span>
     <div class="seg" id="srcSeg"><button data-src="am" class="on">AM</button><button data-src="tv">TradingView</button></div>
+    <button class="ib" data-act="fs" title="ملء الشاشة" id="fsBtn"><svg class="ic"><use href="#i-fs"/></svg></button>
     <button class="ib" data-act="cset" title="ألوان الشارت"><svg class="ic"><use href="#i-pal"/></svg></button>
     <button class="ib" data-act="ind" title="المؤشرات"><svg class="ic"><use href="#i-lay"/></svg></button>
    </div>
@@ -627,8 +640,9 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
     <div class="card br">
      <h2>السعر</h2>
      <div class="fld"><label>سعر 100 دولار بالدينار</label><input class="inp num" id="sRate" inputmode="numeric"></div>
-     <div class="fld"><label>فرق السعر عن الوسيط مالتك ($)</label><input class="inp num" id="sOff" inputmode="decimal" placeholder="0"></div>
-     <div class="faint" style="font-size:12px">السعر المباشر جاي من PAXG (توكن مربوط بالذهب)، فممكن يختلف كم دولار عن XAUUSD بالـ MT5. اكتب الفرق هنا حتى يطابق الوسيط مالتك.</div>
+     <button class="mi" data-tg="spot" style="padding-inline:0">مطابقة السعر الفوري XAU/USD<small>الشموع من عقد الذهب XAUUSD، والسعر ينضبط تلقائياً على السعر الفوري حتى يقرب من أوندا</small><span class="sw" id="swSpot"></span></button>
+     <div class="fld" style="margin-top:8px"><label>فرق إضافي عن الوسيط مالتك ($)</label><input class="inp num" id="sOff" inputmode="decimal" placeholder="0"></div>
+     <div class="faint" style="font-size:12px" id="spotInfo">إذا شفت فرق ثابت ويا الـ MT5 مالتك (مثلاً Exness)، اكتبه هنا.</div>
     </div>
     <div class="card br only-admin">
      <h2>مصدر الأخبار</h2>
@@ -653,7 +667,7 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
      <div class="kv"><span>الاسم</span><b id="setNm"></b></div>
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv"><span>قاعدة البيانات</span><b id="setDb"></b></div>
-     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-4</span></div>
+     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-6</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1313,7 +1327,7 @@ const parseN = v => { const n = parseFloat(String(v).replace(/[,٬\s]/g, '').rep
 /* ====== settings ====== */
 const S = Object.assign({ rate: 142000, off: 0, snd: true, mag: true, cast: false, notif: false, mode: 'dark', tf: '15m', cs: { up: '', dn: '', type: 'candle', bg: 'theme', grid: true }, ind: { e20: true, e50: true, e200: false, ses: true, sr: true, teach: true, news: true } }, L.get('amg_set', {}));
 const saveS = () => L.set('amg_set', S);
-const showP = p => fx(p + (+S.off || 0));
+const showP = p => fx(p + OFF());
 
 /* ====== sound ====== */
 let AC;
@@ -1505,56 +1519,100 @@ function welcome() {
   setTimeout(() => { $('#login').classList.add('hide'); start(); }, 750);
 }
 
-/* ====== price feed (PAXG/USDT من Binance) ====== */
+/* ====== price feed: عقد الذهب XAUUSDT (Binance) + مطابقة السعر الفوري XAU ====== */
 const TFS = [['1m', 'M1', 6e4], ['5m', 'M5', 3e5], ['15m', 'M15', 9e5], ['30m', 'M30', 18e5], ['1h', 'H1', 36e5], ['4h', 'H4', 144e5], ['1d', 'D1', 864e5], ['1w', 'W1', 6048e5]];
-const API = ['https://data-api.binance.vision', 'https://api.binance.com'];
-const WSB = ['wss://data-stream.binance.vision', 'wss://stream.binance.com:9443'];
+const SYM = 'XAUUSDT', FAPI = 'https://fapi.binance.com/fapi/v1', FWS = 'wss://fstream.binance.com/market/stream?streams=';
+const RAW = { '1d': '1h', '1w': '4h' };            // اليومي والأسبوعي نبنيهن من شموع أصغر حسب جلسة نيويورك مثل أوندا
 const P = { last: null, open: null, hi: null, lo: null, prev: null, spark: [] };
-const mapK = a => ({ t: a[0], o: +a[1], h: +a[2], l: +a[3], c: +a[4], v: +a[5] });
-async function api(path) {
-  let err;
-  for (const b of API) { try { const r = await fetch(b + path); if (r.ok) return await r.json(); err = new Error(r.status); } catch (e) { err = e; } }
-  throw err;
+let AUTO = L.get('amg_autooff', 0);                // فرق العقد عن الذهب الفوري
+const OFF = () => (S.spot !== false ? AUTO : 0) + (+S.off || 0);
+const mapK = a => ({ t: +a[0], o: +a[1], h: +a[2], l: +a[3], c: +a[4], v: +a[5] });
+async function api(path) { const r = await fetch(FAPI + path); if (!r.ok) throw new Error(r.status); return r.json(); }
+// ساعات سوق الذهب: يسد الجمعة 17:00 نيويورك ويفتح الأحد 18:00، وكل يوم استراحة ساعة 17-18
+function nyl(ms) { return new Date(ms + GU.tzOff('America/New_York', ms) * 6e4); }
+function isOpen(ms) { const d = nyl(ms), w = d.getUTCDay(), h = d.getUTCHours(); if (w === 6) return false; if (w === 5 && h >= 17) return false; if (w === 0 && h < 18) return false; if (h === 17) return false; return true; }
+function keepK(k, ms) { if (ms <= 36e5) return isOpen(k.t + Math.min(ms, 6e4) / 2); for (let x = 0; x < ms; x += 36e5) if (isOpen(k.t + x + 18e5)) return true; return false; }
+const dayKey = ms => Math.floor((nyl(ms).getTime() + 7 * 36e5) / 864e5);   // الجلسة تبدي 17:00 نيويورك
+const weekKey = ms => Math.floor((dayKey(ms) + 3) / 7);
+function aggr(raw, keyF) {
+  const out = []; let cur = null, ck = null;
+  raw.forEach(k => { const kk = keyF(k.t); if (kk !== ck) { cur && out.push(cur); ck = kk; cur = Object.assign({}, k); } else { cur.h = Math.max(cur.h, k.h); cur.l = Math.min(cur.l, k.l); cur.c = k.c; cur.v += k.v; } });
+  cur && out.push(cur); return out;
 }
-let ws, wsTf, wsTry = 0, wsI = 0, loadingMore = false, noMore = false;
+let rawK = [], ws, wsTf, wsTry = 0, loadingMore = false, noMore = false;
+function build(tf) {
+  const T = TFS.find(x => x[0] === tf), rtf = RAW[tf] || tf, rms = TFS.find(x => x[0] === rtf)[2];
+  const f = rawK.filter(k => keepK(k, rms));
+  return tf === '1d' ? aggr(f, dayKey) : tf === '1w' ? aggr(f, weekKey) : f;
+}
 async function loadTF(tf) {
   const T = TFS.find(x => x[0] === tf); S.tf = tf; saveS(); noMore = false;
   $$('#tfs button').forEach(b => b.classList.toggle('on', b.dataset.tf === tf));
   if (src === 'tv') makeTV();
   cStatus('جاري تحميل الشموع…');
   try {
-    const a = await api(`/api/v3/klines?symbol=PAXGUSDT&interval=${tf}&limit=1000`);
+    const a = await api(`/klines?symbol=${SYM}&interval=${RAW[tf] || tf}&limit=1500`);
     if (S.tf !== tf) return;
-    CH.setData(a.map(mapK), tf, T[2]); cStatus('');
+    rawK = a.map(mapK); CH.setData(build(tf), tf, T[2]); cStatus('');
   } catch (e) { cStatus('ماكو اتصال بمصدر السعر. تأكد من الانترنت وراح يرجع يحاول.'); setTimeout(() => S.tf === tf && loadTF(tf), 8000); }
   openWS(tf);
 }
 async function loadMore() {
-  if (loadingMore || noMore || !CH.c.length) return; loadingMore = true;
-  try { const a = await api(`/api/v3/klines?symbol=PAXGUSDT&interval=${S.tf}&limit=1000&endTime=${CH.c[0].t - 1}`); if (!a.length) noMore = true; CH.prepend(a.map(mapK)); } catch (e) { }
+  if (loadingMore || noMore || !rawK.length) return; loadingMore = true; const tf = S.tf;
+  try {
+    const a = await api(`/klines?symbol=${SYM}&interval=${RAW[tf] || tf}&limit=1500&endTime=${rawK[0].t - 1}`);
+    if (S.tf !== tf) return;
+    if (!a.length) noMore = true; else { const old = CH.c.length; rawK = a.map(mapK).concat(rawK); const all = build(tf); CH.prepend(all.slice(0, all.length - old)); }
+  } catch (e) { }
   loadingMore = false;
 }
+function onRaw(k) {
+  const n = rawK.length; if (!n) return;
+  if (k.t === rawK[n - 1].t) rawK[n - 1] = k; else if (k.t > rawK[n - 1].t) rawK.push(k); else return;
+  const tf = S.tf, rtf = RAW[tf] || tf, rms = TFS.find(x => x[0] === rtf)[2];
+  if (!keepK(k, rms)) return;
+  if (RAW[tf]) { const tail = build(tf).slice(-1)[0]; if (tail) CH.update(tail); } else CH.update(k);
+}
 function openWS(tf) {
-  if (ws && wsTf === tf && ws.readyState <= 1) return;
+  const rtf = RAW[tf] || tf;
+  if (ws && wsTf === rtf && ws.readyState <= 1) return;
   try { ws && ws.close(); } catch (e) { }
-  wsTf = tf; const base = WSB[wsI % WSB.length];
-  let s; try { s = new WebSocket(`${base}/stream?streams=paxgusdt@kline_${tf}/paxgusdt@miniTicker`); } catch (e) { return; }
+  wsTf = rtf;
+  let s; try { s = new WebSocket(`${FWS}xauusdt@kline_${rtf}/xauusdt@miniTicker`); } catch (e) { return; }
   ws = s;
   s.onopen = () => { wsTry = 0; syncState(true); };
   s.onmessage = ev => {
-    const m = JSON.parse(ev.data), d = m.data; if (!d) return;
-    if (d.e === 'kline' && d.k.i === S.tf) { const k = d.k; CH.update({ t: k.t, o: +k.o, h: +k.h, l: +k.l, c: +k.c, v: +k.v }); }
-    if (d.e === '24hrMiniTicker') tick(+d.c, +d.o, +d.h, +d.l);
+    const m = JSON.parse(ev.data), d = m.data || m; if (!d || !d.e) return;
+    if (d.e === 'kline' && d.k.i === (RAW[S.tf] || S.tf)) { const k = d.k; onRaw({ t: k.t, o: +k.o, h: +k.h, l: +k.l, c: +k.c, v: +k.v }); }
+    if (d.e === '24hrMiniTicker') tick(+d.c);
   };
-  s.onclose = () => { if (ws !== s) return; syncState(false, 'انقطع السعر، دا يرجع يتصل…'); wsTry++; if (wsTry % 3 === 0) wsI++; setTimeout(() => { if (ws === s) { ws = null; openWS(S.tf); } }, Math.min(15000, 1500 * wsTry)); };
+  s.onclose = () => { if (ws !== s) return; syncState(false, 'انقطع السعر، دا يرجع يتصل…'); wsTry++; setTimeout(() => { if (ws === s) { ws = null; openWS(S.tf); } }, Math.min(15000, 1500 * wsTry)); };
+}
+// مطابقة السعر الفوري (XAU/USD) حتى يقرب من أوندا والوسطاء
+async function syncSpot() {
+  try {
+    const g = await (await fetch('https://api.gold-api.com/price/XAU')).json();
+    const fut = P.last; if (!g || !g.price || !fut) return;
+    const d = g.price - fut; if (Math.abs(d) > 60) return;
+    AUTO = AUTO ? AUTO * .6 + d * .4 : d; L.set('amg_autooff', AUTO); renderPrice(); if (CH) CH.dirty = true;
+  } catch (e) { }
 }
 async function loadTicker() {
-  try { const t = await api('/api/v3/ticker/24hr?symbol=PAXGUSDT'); tick(+t.lastPrice, +t.openPrice, +t.highPrice, +t.lowPrice); } catch (e) { }
-  try { const a = await api('/api/v3/klines?symbol=PAXGUSDT&interval=15m&limit=96'); P.spark = a.map(x => +x[4]); renderSpark(); } catch (e) { }
+  try {
+    const a = (await api(`/klines?symbol=${SYM}&interval=15m&limit=192`)).map(mapK).filter(k => keepK(k, 9e5));
+    if (!a.length) return;
+    const lastKey = dayKey(a[a.length - 1].t), today = a.filter(k => dayKey(k.t) === lastKey), prevDay = a.filter(k => dayKey(k.t) < lastKey);
+    P.open = prevDay.length ? prevDay[prevDay.length - 1].c : today[0].o;
+    P.hi = Math.max(...today.map(k => k.h)); P.lo = Math.min(...today.map(k => k.l));
+    P.spark = a.slice(-96).map(k => k.c);
+    tick(a[a.length - 1].c); renderSpark();
+  } catch (e) { }
 }
 let lastHome = 0;
-function tick(c, o, h, l) {
-  const prev = P.last; P.last = c; P.open = o; P.hi = h; P.lo = l;
+function tick(c) {
+  const prev = P.last; P.last = c;
+  if (P.hi != null) { P.hi = Math.max(P.hi, c); P.lo = Math.min(P.lo, c); }
+  if (P.open == null) P.open = c;
   if (prev != null) checkAlerts(prev, c);
   if (P.spark.length) { P.spark[P.spark.length - 1] = c; }
   const now = Date.now(); if (now - lastHome > 700) { lastHome = now; renderPrice(); }
@@ -1594,6 +1652,25 @@ document.addEventListener('click', e => {
 
 /* ====== chart ui ====== */
 let CH, OVER = null, LIVE = null, src = 'am', tvMade = null, calMade = null;
+function fitChart() {
+  if (curPg !== 'chart') return;
+  const box = src === 'tv' ? $('#tvbox') : $('#cbox'); if (!box || box.classList.contains('hide')) return;
+  const bn = $('#bnav'), bnH = bn && getComputedStyle(bn).display !== 'none' ? bn.getBoundingClientRect().height + 6 : 8;
+  const top = box.getBoundingClientRect().top;
+  const h = Math.max(240, Math.floor(window.innerHeight - top - bnH - 4));
+  $('#cbox').style.height = h + 'px'; $('#tvbox').style.height = h + 'px';
+  if (CH) CH.resize();
+}
+window.addEventListener('resize', () => setTimeout(fitChart, 60));
+window.addEventListener('orientationchange', () => setTimeout(fitChart, 300));
+function toggleFS(on) {
+  const app = $('#app'); on = on == null ? !app.dataset.fs : on;
+  if (on) app.dataset.fs = '1'; else delete app.dataset.fs;
+  $('#fsBtn use').setAttribute('href', on ? '#i-fsx' : '#i-fs');
+  try { if (on && document.documentElement.requestFullscreen && !matchMedia('(pointer:coarse)').matches) document.documentElement.requestFullscreen().catch(() => { }); else if (!on && document.fullscreenElement) document.exitFullscreen(); } catch (e) { }
+  setTimeout(fitChart, 80); setTimeout(fitChart, 400);
+}
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && $('#app').dataset.fs && !matchMedia('(pointer:coarse)').matches) toggleFS(false); });
 function cStatus(m) { const s = $('#cStatus'); s.textContent = m; s.classList.toggle('hide', !m); }
 function initChart() {
   CH = new GoldChart($('#cbox'), {
@@ -1610,7 +1687,7 @@ function initChart() {
     onTextTap: d => askText('عدّل الكتابة', d.text).then(s => { if (s) CH.editText(d, s); }),
     emptyText: () => 'جاري التحميل…'
   });
-  CH.fmt = p => fx(p + (+S.off || 0));
+  CH.fmt = p => fx(p + OFF());
   CH.ind = Object.assign(CH.ind, S.ind, { mag: S.mag });
   if (ME.role === 'guest') CH.ind.teach = false;
   CH.setCS(S.cs || {});
@@ -1628,7 +1705,7 @@ function initChart() {
     if (a === 'clear') ask('تمسح رسوماتك؟', 'كل الخطوط والفيبو اللي رسمتها راح تنمسح.', 'امسحها', true).then(ok => ok && CH.clearMine());
     if (a === 'share') shareChart();
   };
-  $('#srcSeg').onclick = e => { const b = e.target.closest('[data-src]'); if (!b) return; src = b.dataset.src; $$('#srcSeg button').forEach(x => x.classList.toggle('on', x === b)); $('#cbox').classList.toggle('hide', src !== 'am'); $('#tools').classList.toggle('hide', src !== 'am'); $('#tvbox').classList.toggle('hide', src !== 'tv'); if (src === 'tv') makeTV(); else CH.resize(); };
+  $('#srcSeg').onclick = e => { const b = e.target.closest('[data-src]'); if (!b) return; src = b.dataset.src; $$('#srcSeg button').forEach(x => x.classList.toggle('on', x === b)); $('#cbox').classList.toggle('hide', src !== 'am'); $('#tools').classList.toggle('hide', src !== 'am'); $('#tvbox').classList.toggle('hide', src !== 'tv'); if (src === 'tv') makeTV(); setTimeout(fitChart, 30); };
   document.addEventListener('keydown', e => {
     if (curPg !== 'chart' || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
     if ((e.key === 'Delete' || e.key === 'Backspace') && CH.sel) { CH.deleteSel(); }
@@ -1739,7 +1816,7 @@ function renderPrice() {
   const pos = P.hi > P.lo ? (c - P.lo) / (P.hi - P.lo) : .5; $('#hRngDot').style.left = (pos * 100).toFixed(1) + '%';
   $('#hRngTx').textContent = pos > .8 ? 'السعر قريب من أعلى اليوم — انتبه من الشراء متأخر.' : pos < .2 ? 'السعر قريب من أدنى اليوم — انتبه من البيع متأخر.' : 'السعر بنص مدى اليوم تقريباً (' + Math.round(pos * 100) + '%).';
   // mithqal
-  const oz = c + (+S.off || 0), g24 = oz / 31.1035, mq = g24 * 5, rate = (+S.rate || 0) / 100;
+  const oz = c + OFF(), g24 = oz / 31.1035, mq = g24 * 5, rate = (+S.rate || 0) / 100;
   $('#hKrt').innerHTML = [[24, 1], [21, .875], [18, .75]].map(([k, f]) => `<div><b>عيار ${k}</b><span class="num">${fmt(mq * f * rate)}</span><small class="num">$${fx(mq * f)}</small></div>`).join('');
   $('#hRate').innerHTML = 'دينار للمثقال (5 غرام) حسب سعر الدولار <span class="num">' + fmt(S.rate) + '</span> لكل 100$. تغيّره من الإعدادات.';
   renderSpark(); calcRisk(); calcGold();
@@ -1877,7 +1954,7 @@ function calcRisk() {
 function calcGold() {
   const w = parseN($('#gW').value) || 0, u = $('#gU').value, k = +$('#gK').value, fee = parseN($('#gF').value) || 0, o = $('#gOut');
   if (P.last == null) { o.innerHTML = '<div class="dim">انتظر السعر…</div>'; return; }
-  const g = u === 'm' ? w * 5 : w, usd = (P.last + (+S.off || 0)) / 31.1035 * g * k / 24, iqd = usd * S.rate / 100 + fee * (g / 5);
+  const g = u === 'm' ? w * 5 : w, usd = (P.last + OFF()) / 31.1035 * g * k / 24, iqd = usd * S.rate / 100 + fee * (g / 5);
   o.innerHTML = `<div class="kv"><span>بالدولار</span><b class="num">$${fx(usd)}</b></div><div class="kv"><span>بالدينار ${fee ? '(ويا الصياغة)' : ''}</span><b class="num" style="color:var(--accent);font-size:19px">${fmt(iqd)}</b></div><div class="faint" style="font-size:12px">${fx(g, g % 1 ? 2 : 0)} غرام عيار ${k}. هذا سعر السوق العالمي، المحلات تزيد عليه.</div>`;
 }
 function initTools() {
@@ -1885,7 +1962,7 @@ function initTools() {
   ['#gW', '#gU', '#gK', '#gF'].forEach(s => $(s).addEventListener('input', calcGold));
   $('#aAdd').onclick = () => {
     const v = parseN($('#aPrice').value); if (!v) return toast('اكتب سعر صحيح', 'bad');
-    ALERTS.push({ id: uid(), p: v - (+S.off || 0), on: true }); saveAlerts(); $('#aPrice').value = ''; beep('ok'); toast('🔔 انحفظ التنبيه', 'ok');
+    ALERTS.push({ id: uid(), p: v - OFF(), on: true }); saveAlerts(); $('#aPrice').value = ''; beep('ok'); toast('🔔 انحفظ التنبيه', 'ok');
     if (S.notif === false && 'Notification' in window && Notification.permission === 'default') toast('شغّل إشعارات الجهاز من الإعدادات حتى يوصلك التنبيه');
   };
   calcRisk(); calcGold();
@@ -1949,11 +2026,12 @@ function initSettings() {
   $('#sRate').value = S.rate; $('#sOff').value = S.off || '';
   $('#sRate').oninput = e => { const v = parseN(e.target.value); if (v) { S.rate = v; saveS(); renderPrice(); } };
   $('#sOff').oninput = e => { S.off = parseN(e.target.value) || 0; saveS(); renderPrice(); renderAlerts(); CH.dirty = true; };
-  const sw = () => { $('#swSnd').classList.toggle('on', S.snd); $('#swMag').classList.toggle('on', S.mag); $('#swCast').classList.toggle('on', S.cast); $('#swNotif').classList.toggle('on', S.notif && 'Notification' in window && Notification.permission === 'granted'); $('#magBtn').classList.toggle('on', S.mag); };
+  const sw = () => { $('#swSpot').classList.toggle('on', S.spot !== false); $('#spotInfo').innerHTML = 'الضبط التلقائي هسه: <span class="num">' + (AUTO >= 0 ? '+' : '') + fx(AUTO) + '$</span>. إذا شفت فرق ثابت ويا الـ MT5 مالتك (مثلاً Exness)، اكتبه هنا.'; $('#swSnd').classList.toggle('on', S.snd); $('#swMag').classList.toggle('on', S.mag); $('#swCast').classList.toggle('on', S.cast); $('#swNotif').classList.toggle('on', S.notif && 'Notification' in window && Notification.permission === 'granted'); $('#magBtn').classList.toggle('on', S.mag); };
   sw();
   $('#pg-settings').addEventListener('click', async e => {
     const b = e.target.closest('[data-tg]'); if (!b) return; const k = b.dataset.tg;
     if (k === 'snd') { S.snd = !S.snd; if (S.snd) beep('ok'); }
+    if (k === 'spot') { S.spot = S.spot === false; renderPrice(); renderAlerts(); CH.dirty = true; }
     if (k === 'mag') { S.mag = !S.mag; CH.ind.mag = S.mag; }
     if (k === 'cast') {
       if (DB.kind === 'local') { toast('البث يحتاج Firebase', 'bad'); return; }
@@ -2120,7 +2198,8 @@ function go(pg) {
     if (prev === 'students') { $('#stQ').value = ''; renderStud(); }
     if (prev === 'chart' && CH) { CH.setTool('cursor'); CH.sel = null; selbar(null); $$('#tools [data-tool]').forEach(x => x.classList.toggle('on', x.dataset.tool === 'cursor')); }
   }
-  if (pg === 'chart' && CH) setTimeout(() => CH.resize(), 30);
+  if (pg === 'chart' && CH) { setTimeout(fitChart, 20); setTimeout(fitChart, 300); }
+  if (pg !== 'chart' && $('#app').dataset.fs) toggleFS(false);
   if (pg === 'news') renderNews();
   if (pg === 'chat') { chatSeenNow(); setTimeout(() => { const l = $('#chatList'); l.scrollTop = l.scrollHeight; }, 30); }
   if (pg === 'home') renderSpark();
@@ -2149,6 +2228,7 @@ document.addEventListener('click', e => {
   if (k === 'more') moreSheet();
   if (k === 'ind') indSheet();
   if (k === 'cset') csSheet();
+  if (k === 'fs') toggleFS();
   if (k === 'tologin') { L.set('amg_guest', 0); location.reload(); }
   if (k === 'logout') logout();
 });
@@ -2176,7 +2256,7 @@ function start() {
   initNews(); initChat(); setInterval(() => loadNews(), 10 * 6e4);
   DB.watchLive(v => { LIVE = v; setTeacher(); });
   if (ME.role === 'admin' && S.cast) castNow();
-  setTeacher(); renderAlerts(); loadTicker(); setInterval(loadTicker, 5 * 6e4);
+  setTeacher(); renderAlerts(); loadTicker().then(syncSpot); setInterval(loadTicker, 5 * 6e4); setInterval(syncSpot, 6e4);
   clock(); setInterval(() => { clock(); newsTick(); }, 1000);
   go('home');
 }

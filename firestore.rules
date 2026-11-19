@@ -8,9 +8,21 @@ service cloud.firestore {
       return isAdmin() || (signed() && exists(/databases/$(db)/documents/logins/$(request.auth.uid))
         && lg().active == true && (lg().exp == null || lg().exp > request.time.toMillis()));
     }
+    function chatOpen() {
+      return !exists(/databases/$(db)/documents/config/public)
+        || get(/databases/$(db)/documents/config/public).data.get('chatOpen', true) != false;
+    }
+    match /config/{id}  { allow read: if true; allow write: if isAdmin(); }
     match /logins/{uid} { allow read: if isAdmin() || (signed() && request.auth.uid == uid); allow write: if isAdmin(); }
     match /posts/{id}   { allow read: if member(); allow write: if isAdmin(); }
     match /live/{id}    { allow read: if member(); allow write: if isAdmin(); }
+    match /chat/{id} {
+      allow read: if member();
+      allow create: if member() && request.resource.data.uid == request.auth.uid
+        && request.resource.data.text is string && request.resource.data.text.size() <= 1000
+        && (isAdmin() || chatOpen());
+      allow delete: if isAdmin() || (signed() && resource.data.uid == request.auth.uid);
+    }
     match /users/{uid}/{rest=**} { allow read, write: if signed() && request.auth.uid == uid && member(); }
     match /logs/{id}    { allow read, write: if isAdmin(); }
   }

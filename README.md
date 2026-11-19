@@ -19,3 +19,15 @@
 7. افتح `index.html` ودوّر على `const FB = window.AMG_FB ||` والصق القيم بداله (apiKey و authDomain و projectId…). احفظ وارفعه.
 
 بعد الربط تدخل بالرمز مالتك، ومن صفحة **الطلاب** تضيف كل طالب برمز ومدة.
+
+## 3) ربط أخبار Forex Factory
+1. افتح script.google.com بنفس حساب Google ← New project.
+2. امسح الكود اللي بيه والصق محتوى ملف `news-apps-script.gs`، واحفظ.
+3. Deploy ← New deployment ← اختار النوع Web app.
+   - Execute as: **Me**
+   - Who has access: **Anyone**
+4. دوس Deploy ← وافق على الصلاحيات ← انسخ رابط الـ Web app (ينتهي بـ `/exec`).
+5. بالموقع: الإعدادات ← مصدر الأخبار ← الصق الرابط ← احفظ وجرّب.
+
+## 4) الـ rules الجديدة
+بعد هذا التحديث لازم تلصق ملف `firestore.rules` الجديد بالـ Firestore ← Rules وتدوس Publish (بيه الدردشة والإعدادات العامة).
