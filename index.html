@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-14">
+<meta name="app-build" content="2026.11.19-15">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -828,8 +828,118 @@ html[data-theme="light"] .cpost{background:#fff}
 .toplogin .ic{width:17px;height:17px}
 .cpost.flash{animation:mflash 1.2s}
 
+/* v15: تيليگرام بالكامل */
+.cpost{cursor:pointer;-webkit-user-select:none;user-select:none}
+.cpost .quote{margin:6px 13px 0;cursor:pointer}
+.cpost .quote b{color:var(--accent)}
+.cpost.imgonly .cb{position:absolute;bottom:52px;left:8px;padding:0}.cpost.imgonly .cm{background:rgba(0,0,0,.5);color:#fff;padding:3px 8px;border-radius:999px}
+.sgx{line-height:1.95;font-size:15.5px;margin-bottom:4px}
+.sgx .h{font-family:var(--fd);font-weight:800;font-size:16.5px;margin-bottom:2px}
+.sgx .num{font-family:var(--fm);font-weight:800;direction:ltr;unicode-bidi:isolate}
+.sgx .sst{display:inline-block;margin-top:6px;padding:2px 10px;border-radius:999px;font-size:13px;font-weight:800;background:var(--panel3);color:var(--dim)}
+.sgx .sst.ok{background:rgba(60,207,130,.16);color:var(--ok)}.sgx .sst.bad{background:rgba(242,89,106,.16);color:var(--bad)}
+.cpost .reacts{padding:0;margin:6px 0 2px}
+.cpost .reacts button{height:30px}
+.cmt{display:flex;align-items:center;gap:10px;padding:10px 13px;border-top:1px solid var(--line);color:var(--accent);font-weight:700;font-size:15px;cursor:pointer}
+.cmt:hover{background:var(--panel2)}
+.cmt>.ic{width:20px;height:20px}
+.cmt .t{flex:1}
+.cmt .ch{width:18px;height:18px;transform:scaleX(-1);color:var(--faint)}
+.cmt .avs{display:flex}.cmt .avs .av{width:26px;height:26px;font-size:10px;border:2px solid var(--panel);margin-left:-8px}
+.crx{display:flex;justify-content:space-between;gap:4px;padding:6px;border-radius:999px;background:var(--panel2);margin-bottom:10px}
+.crx button{width:44px;height:44px;border-radius:50%;font-size:24px;transition:transform .15s}
+.crx button:active{transform:scale(1.3)}.crx button.on{background:var(--accent-soft)}
+.sside{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.sside button{height:50px;border-radius:14px;font:800 15px var(--fd);background:var(--panel2);border:1.5px solid var(--line2);color:var(--dim);transition:.2s}
+.sside button.b.on{background:rgba(60,207,130,.16);border-color:var(--ok);color:var(--ok)}
+.sside button.s.on{background:rgba(242,89,106,.16);border-color:var(--bad);color:var(--bad)}
+.sgrid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sgrid2 .fld:first-child{grid-column:1/-1}
+.sgpv{background:var(--panel2);border-radius:14px;padding:10px 14px;margin:4px 0 12px;border:1px dashed var(--line2)}
+.cinfo{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.cinfo .cav{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,var(--accent-glow),var(--panel2));box-shadow:0 0 0 3px var(--accent-soft)}
+.cinfo .cav svg{width:54px;height:54px}.cinfo b{font-family:var(--fd);font-size:19px}.cinfo small{color:var(--dim)}
+.ctls{display:flex;flex-direction:column;gap:6px}
+.ctl{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--panel2);color:var(--ink);text-decoration:none}
+.ctl .x{flex:1;min-width:0}.ctl b{display:block;font-size:14.5px}.ctl small{color:var(--dim);font-size:12.5px;direction:ltr;display:block;text-align:right}
+.ctl .ch{width:18px;height:18px;transform:scaleX(-1);color:var(--faint)}
+.ci2{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;flex:none}.ci2 .ic{width:22px;height:22px}
+.ci2.wa{background:#25d366}.ci2.tg{background:#2aa1da}.ci2.ig{background:linear-gradient(45deg,#f9a825,#e1306c,#8e24aa)}.ci2.ph{background:var(--accent);color:var(--accent-ink)}
+.sigb{color:var(--accent)!important}
+.ccomp .rbar{background:var(--panel2);margin-bottom:6px}
+.cmtv{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;background:var(--void);transform:translateX(-100%);transition:transform .32s cubic-bezier(.2,.9,.3,1);visibility:hidden}
+.cmtv.on{transform:none;visibility:visible}
+.cmtv .cpost{cursor:default;align-self:center;width:min(560px,100%)}
+.cmtl{display:flex;flex-direction:column;gap:4px}
+.cmtl .m{max-width:85%}
+@media (max-width:900px){.cmtv .tgfeed{padding-top:calc(78px + var(--sat))}}
+
 #toast{transform:translate(-50%,calc(-100% - 30px - var(--sat)));opacity:0;visibility:hidden;transition:transform .3s cubic-bezier(.2,.9,.3,1),opacity .25s,visibility 0s .3s;z-index:150}
 #toast.show{transform:translate(-50%,0);opacity:1;visibility:visible;transition:transform .3s cubic-bezier(.2,.9,.3,1),opacity .2s,visibility 0s}
+
+/* ===== v15: قائمة تنطوي، مؤشر يتزحلق، شريط موبايل أيقونات ===== */
+.side{transition:width .3s cubic-bezier(.2,.8,.3,1),padding .3s;overflow:hidden}
+.sbt{position:absolute;top:20px;left:12px;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:var(--faint);z-index:2;transition:.2s}
+.sbt:hover{background:var(--panel2);color:var(--ink)}.sbt .ic{width:18px;height:18px;transition:transform .3s}
+.side .brand{padding-left:34px}
+.nav{position:relative}
+.nav>.ind{position:absolute;right:0;left:0;top:0;border-radius:10px;background:var(--accent-soft);box-shadow:inset -3px 0 0 var(--accent);transition:transform .38s cubic-bezier(.2,.9,.3,1.15),height .3s,opacity .2s;pointer-events:none;z-index:0}
+.nav button{position:relative;z-index:1;white-space:nowrap}
+.nav button.on{background:none!important}
+.nav button .lbl,.cta .lbl{transition:opacity .2s}
+.nav button .nbadge{margin-inline-start:auto}
+#app[data-sbc] .side{width:76px;padding-inline:12px}
+#app[data-sbc] .side .brand .wm,#app[data-sbc] .side .brand .bell,#app[data-sbc] .nav button i,#app[data-sbc] .nav button .lbl,#app[data-sbc] .cta .lbl,#app[data-sbc] .side .clock,#app[data-sbc] .side .sync span:not(.dot),#app[data-sbc] .side .credit,#app[data-sbc] .ucard>div,#app[data-sbc] .ucard .ib,#app[data-sbc] .side>.btn{display:none!important}
+#app[data-sbc] .side .brand{padding:42px 0 0;justify-content:center}
+#app[data-sbc] .sbt{left:50%;margin-left:-15px}#app[data-sbc] .sbt .ic{transform:scaleX(-1)}
+#app[data-sbc] .nav button{justify-content:center;padding:11px 0}
+#app[data-sbc] .nav button .nbadge{position:absolute;top:2px;left:6px;margin:0}
+#app[data-sbc] .cta{padding:13px 0;clip-path:none;border-radius:12px}
+#app[data-sbc] .ucard{padding:6px;justify-content:center;background:none;border:0}
+#app[data-sbc] .side .sync{justify-content:center}
+#app[data-sbc] .nav>.ind{box-shadow:none}
+/* انتقال ناعم بين الصفحات */
+.pg.in{animation:pgin .32s cubic-bezier(.2,.8,.3,1)}
+@keyframes pgin{from{opacity:0;transform:translateY(10px)}}
+@media (prefers-reduced-motion:reduce){.pg.in{animation:none}.nav>.ind,.bnav>.ind{transition:none}}
+/* أزرار أيقونة بس */
+.btn.ico{width:34px;height:34px;padding:0;display:grid;place-items:center}
+/* الدردشة والتوصيات بالحاسوب: تاخذ كل المساحة بدون إطار */
+@media (min-width:901px){
+ #app[data-pg=chat] main,#app[data-pg=signals] main{padding:0!important;max-width:none!important;margin:0!important}
+ #app[data-pg=chat] .gchat,#app[data-pg=signals] .tgc{height:100dvh;border:0;border-radius:0}
+ #app[data-pg=chat] main>.credit,#app[data-pg=signals] main>.credit{display:none}
+ .clist{border-left:1px solid var(--line)}
+}
+/* شريط الموبايل: أيقونات بس، عائم، ومؤشر يتزحلق */
+@media (max-width:900px){
+ .bnav{display:grid!important;grid-template-columns:repeat(5,1fr);left:12px;right:12px;bottom:calc(8px + var(--sab));height:62px;padding:0 6px;border-radius:24px;border:.5px solid rgba(255,255,255,.12);background:color-mix(in srgb,var(--panel) 72%,transparent);backdrop-filter:blur(22px) saturate(1.8);-webkit-backdrop-filter:blur(22px) saturate(1.8);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 12px 34px rgba(0,0,0,.42)}
+ html[data-theme="light"] .bnav{background:rgba(255,255,255,.78);border-color:rgba(16,22,34,.08);box-shadow:0 12px 34px rgba(16,22,34,.16)}
+ #app[data-kb] .bnav,#app[data-conv] .bnav,#app[data-pg=signals] .bnav,#app[data-fs] .bnav{display:none!important}
+ .bnav button{position:relative;z-index:1;display:grid!important;place-items:center;padding:0;height:62px;color:var(--faint);transition:color .25s}
+ .bnav button .bl{display:none!important}
+ .bnav button .ic{width:25px;height:25px;transition:transform .3s cubic-bezier(.2,.9,.3,1.4)}
+ .bnav button.on{color:var(--accent-ink)}
+ .bnav button.on .ic{transform:scale(1.06)}
+ .bnav button:active .ic{transform:scale(.85)}
+ .bnav>.ind{position:absolute;top:7px;left:0;width:48px;height:48px;border-radius:16px;background:var(--accent);box-shadow:0 6px 18px var(--accent-glow);transition:transform .42s cubic-bezier(.2,.9,.25,1.2),opacity .2s;pointer-events:none;z-index:0}
+ .bnav .nbadge{top:8px;left:calc(50% + 6px);z-index:2;box-shadow:0 0 0 2px var(--panel)}
+ .bnav .mid .bl{margin:0}
+ main{padding-bottom:calc(92px + var(--sab))}
+}
+
+#app:not([data-admin]) .xp{display:none!important}
+.ev .nb{grid-column:1/-1;margin-top:0}
+.nb{margin-top:6px;font-size:12.5px;line-height:1.7;padding:6px 10px;border-radius:10px;background:var(--panel2);color:var(--dim)}
+.nb b{color:var(--ink)}
+.nb.usd{background:rgba(74,163,255,.1);color:#7fb8ff}
+.nb.gold{background:rgba(232,177,48,.12);color:var(--warn)}
+html[data-theme=light] .nb.usd{color:#2563eb}
+
+#login{overflow-y:auto;place-items:safe center}
+#regForm{margin-top:14px;text-align:right}
+#app[data-pg=signals] #demoBar,#app[data-pg=chat] #demoBar{display:none!important}
+.pend{margin-bottom:16px;border-color:rgba(242,176,61,.4)}
+.pend .li .btn{flex:none}
 </style>
 </head>
 <body>
@@ -894,6 +1004,13 @@ html[data-theme="light"] .cpost{background:#fff}
  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></symbol>
  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
  <symbol id="i-move" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><path d="m9 6 3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></symbol>
+ <symbol id="i-side" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/><path d="m10 10-2 2 2 2"/></symbol>
+ <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.4A8 8 0 1 1 21 12z"/></symbol>
+ <symbol id="i-wa" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-12 6.9L4 20l1.1-3.9A8 8 0 1 1 20 12z"/><path d="M9 8.5c0 3.5 2.5 6.5 6.5 6.5l1-1.5-2-1-1 1c-1.2-.5-2.5-1.8-3-3l1-1-1-2z"/></symbol>
+ <symbol id="i-tg" viewBox="0 0 24 24"><path d="M21 4 3 11l6 2 2 6 3-4 4 3z"/><path d="m9 13 9-6"/></symbol>
+ <symbol id="i-ig" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r=".8"/></symbol>
+ <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+ <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></symbol>
  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol>
  <symbol id="i-sig" viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/></symbol>
  <symbol id="i-ul" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 21h16"/></symbol>
@@ -919,14 +1036,24 @@ html[data-theme="light"] .cpost{background:#fff}
    <div class="bar"><i id="lgBar"></i></div>
    <div id="lgMsg" class="dim" style="font-size:13px;margin-top:8px;min-height:20px;text-align:center"></div>
   </form>
+  <form class="card br hide" id="regForm" autocomplete="off">
+   <div class="fld"><label>اسمك الكامل</label><input class="inp" id="rgNm" maxlength="40" placeholder="مثلاً: حسين علي"></div>
+   <div class="fld"><label>رقم الهاتف</label><input class="inp num" id="rgPh" inputmode="tel" maxlength="20" placeholder="07xxxxxxxxx"></div>
+   <div class="fld"><label>اختار رمز سري (6 أو أكثر)</label><input class="inp num" id="rgPw" type="password" placeholder="••••••"></div>
+   <div class="fld"><label>عيد الرمز</label><input class="inp num" id="rgPw2" type="password" placeholder="••••••"></div>
+   <button class="btn blk" id="rgBtn">أرسل طلب التسجيل</button>
+   <div id="rgMsg" class="dim" style="font-size:13px;margin-top:8px;min-height:20px;text-align:center"></div>
+  </form>
+  <button class="btn tint blk" id="regTog" style="margin-top:10px"><svg class="ic"><use href="#i-plus"/></svg><span>ما عندك حساب؟ اتسجل</span></button>
   <button class="btn ghost blk" id="guestBtn" style="margin-top:10px"><svg class="ic"><use href="#i-eye"/></svg>رجوع للتصفّح بدون حساب</button>
-  <div class="faint" style="font-size:12px;margin-top:6px">الرمز يعطيك ياه الأستاذ من تشترك بالكورس.</div>
+  <div class="xp faint" style="font-size:12px;margin-top:6px">الرمز يعطيك ياه الأستاذ من تشترك بالكورس.</div>
   <div class="credit" style="margin-top:16px"><span dir="ltr">by <b>Ali Malik</b></span></div>
  </div>
 </div>
 
 <div id="app" class="hide">
  <aside class="side">
+  <button class="sbt" data-act="sbc" title="طي القائمة"><svg class="ic"><use href="#i-side"/></svg></button>
   <div class="brand"><svg><use href="#i-logo"/></svg><span class="wm">AM<em>GOLD</em></span><button class="bell only-mem" data-act="bell"><svg class="ic"><use href="#i-bell"/></svg><b class="hide bcount"></b></button></div>
   <button class="cta" data-go="chart"><svg class="ic"><use href="#i-chart"/></svg>افتح الشارت</button>
   <nav class="nav" id="snav">
@@ -937,7 +1064,7 @@ html[data-theme="light"] .cpost{background:#fff}
    <button data-go="chat" class="only-mem"><i></i><svg class="ic"><use href="#i-chat"/></svg>الدردشة<b class="nbadge cbadge hide"></b></button>
    <button data-go="news"><i></i><svg class="ic"><use href="#i-cal"/></svg>الأخبار</button>
    <button data-go="tools"><i></i><svg class="ic"><use href="#i-tools"/></svg>الأدوات</button>
-   <button data-go="students" class="only-admin"><i></i><svg class="ic"><use href="#i-users"/></svg>الطلاب</button>
+   <button data-go="students" class="only-admin"><i></i><svg class="ic"><use href="#i-users"/></svg>الطلاب<b class="nbadge pdbadge hide"></b></button>
    <button data-go="settings"><i></i><svg class="ic"><use href="#i-set"/></svg>الإعدادات</button>
   </nav>
   <div class="clock"><div class="num" id="sClock">--:--</div><small id="sDate"></small></div>
@@ -1026,7 +1153,7 @@ html[data-theme="light"] .cpost{background:#fff}
    <div class="cbar">
     <div class="seg" id="srcSeg"><button data-src="am">AM GOLD</button><button data-src="tv">TradingView</button></div>
     <div class="tfs amonly" id="tfs"></div>
-    <a class="btn tint sm tvonly" id="tvOpen" href="https://www.tradingview.com/chart/?symbol=OANDA%3AXAUUSD" target="_blank" rel="noopener"><svg class="ic" style="width:16px;height:16px"><use href="#i-in"/></svg>افتح بحسابي</a>
+    <a class="btn tint sm tvonly" id="tvOpen" title="افتح بحسابي بـ TradingView" href="https://www.tradingview.com/chart/?symbol=OANDA%3AXAUUSD" target="_blank" rel="noopener"><svg class="ic" style="width:16px;height:16px"><use href="#i-in"/></svg></a>
     <span class="sp"></span>
     <button class="ib amonly" data-act="cset" title="ألوان الشارت"><svg class="ic"><use href="#i-pal"/></svg></button>
     <button class="ib amonly" data-act="ind" title="المؤشرات"><svg class="ic"><use href="#i-lay"/></svg></button>
@@ -1072,7 +1199,7 @@ html[data-theme="light"] .cpost{background:#fff}
      <div class="row" style="margin-bottom:10px"><div class="seg" id="ptype"><button data-pt="analysis" class="on">تحليل</button><button data-pt="post">منشور</button></div><span class="sp"></span><button class="btn ghost sm" id="pinTog"><svg class="ic" style="width:16px;height:16px"><use href="#i-pin"/></svg>تثبيت</button></div>
      <div id="pvisW" style="margin-bottom:8px"></div>
      <input class="inp" id="pTitle" placeholder="العنوان (مثلاً: الذهب اليوم — فريم 15)" style="margin-bottom:8px">
-     <div class="drop" id="pDrop"><svg class="ic"><use href="#i-img"/></svg><b>ضيف سكرين شوت التحليل</b><small>دوس هنا تختار صورة، أو الصقها (Ctrl+V)، أو اسحبها لهنا</small><input type="file" accept="image/*" multiple id="pImgs" hidden></div>
+     <div class="drop" id="pDrop"><svg class="ic"><use href="#i-img"/></svg><b>ضيف سكرين شوت التحليل</b><small class="xp">دوس هنا تختار صورة، أو الصقها (Ctrl+V)، أو اسحبها لهنا</small><input type="file" accept="image/*" multiple id="pImgs" hidden></div>
      <div class="row" style="margin:8px 0"><input class="inp" id="pLink" dir="ltr" placeholder="أو الصق رابط سكرين TradingView: tradingview.com/x/…"><button class="btn ghost sm" id="pLinkAdd">ضيف</button></div>
      <textarea class="inp" id="pText" placeholder="اكتب شرح التحليل: وين الدخول، الهدف، الوقف، وشنو تتوقع"></textarea>
      <div class="att" id="pAtt"></div>
@@ -1097,7 +1224,7 @@ html[data-theme="light"] .cpost{background:#fff}
     <div class="seg" id="nImp"><button data-ni="High">قوي</button><button data-ni="Medium" class="on">قوي ومتوسط</button><button data-ni="all">الكل</button></div>
    </div>
    <div id="nList" class="list"></div>
-   <div class="faint" style="font-size:12px;margin-top:10px" id="nSrc"></div>
+   <div class="xp faint" style="font-size:12px;margin-top:10px" id="nSrc"></div>
    <div class="calbox hide" id="calbox" style="margin-top:12px"></div>
   </section>
 
@@ -1155,7 +1282,7 @@ html[data-theme="light"] .cpost{background:#fff}
      <button class="gl circ" data-go="home" title="رجوع"><svg class="ic"><use href="#i-back"/></svg></button>
      <div class="gl tgt" id="chanInfo"><b>توصيات AM GOLD ⚡</b><small><span class="num" id="chSubs">0</span> مشترك</small></div>
      <div class="tgs gl hide" id="chanSearchW"><svg class="ic"><use href="#i-search"/></svg><input id="chanQ" placeholder="دوّر بالتوصيات…" autocomplete="off"><button class="ib" id="chanQX"><svg class="ic"><use href="#i-x"/></svg></button></div>
-     <div class="cav gl"><svg><use href="#i-logo"/></svg></div>
+     <div class="cav gl" id="chanAv"><svg><use href="#i-logo"/></svg></div>
     </div>
     <div class="pinbar gl hide" id="chanPin"><div class="bar"></div><svg class="ic"><use href="#i-pin"/></svg><div class="x"><div class="t">الرسالة المثبتة</div><div class="s" id="chanPinTx"></div></div></div>
     <div class="tgfeed" id="chanScroll"><div class="tgin" id="chanFeed"></div></div>
@@ -1166,23 +1293,23 @@ html[data-theme="light"] .cpost{background:#fff}
     </div>
     <div class="tgfoot adm only-admin" id="chanComp">
      <div class="ccomp gl">
-      <div class="sigf hide" id="sigF">
-       <div class="row" style="gap:8px;margin-bottom:8px"><div class="seg" id="sigSide"><button data-sd="buy" class="on">شراء BUY</button><button data-sd="sell">بيع SELL</button></div><span class="sp"></span><button class="ib" id="sigX" title="بدون توصية"><svg class="ic"><use href="#i-x"/></svg></button></div>
-       <div class="sgrid">
-        <div class="fld"><label>الدخول</label><input class="inp num" id="sgEn" inputmode="decimal" placeholder="3650 أو 3648-3652"></div>
-        <div class="fld"><label>الوقف SL</label><input class="inp num" id="sgSl" inputmode="decimal"></div>
-        <div class="fld"><label>الهدف 1</label><input class="inp num" id="sgT1" inputmode="decimal"></div>
-        <div class="fld"><label>الهدف 2</label><input class="inp num" id="sgT2" inputmode="decimal"></div>
-        <div class="fld"><label>الهدف 3</label><input class="inp num" id="sgT3" inputmode="decimal"></div>
-       </div>
-      </div>
-      <div class="rbar hide" id="chanImgPrev" style="margin-bottom:8px"><img alt=""><div class="x"><div class="t">صورة</div><div class="s">تنرسل ويا المنشور</div></div><button class="ib"><svg class="ic"><use href="#i-x"/></svg></button></div>
+      <div class="rbar hide" id="chanRb"><svg class="ic lead"><use href="#i-reply"/></svg><div class="x"><div class="t">رد على</div><div class="s" id="chanRbTx"></div></div><button class="ib" id="chanRbX"><svg class="ic"><use href="#i-x"/></svg></button></div>
+      <div class="rbar hide" id="chanImgPrev"><img alt=""><div class="x"><div class="t">صورة</div><div class="s">تنرسل ويا المنشور</div></div><button class="ib"><svg class="ic"><use href="#i-x"/></svg></button></div>
       <div class="cbar2">
-       <button class="ib" id="sigTog" title="توصية"><svg class="ic"><use href="#i-long"/></svg></button>
        <label class="ib" title="صورة"><svg class="ic"><use href="#i-img"/></svg><input type="file" accept="image/*" id="chanImg" hidden></label>
+       <button class="ib sigb" id="sigTog" title="توصية جديدة"><svg class="ic"><use href="#i-long"/></svg></button>
        <textarea id="chanTx" rows="1" placeholder="رسالة للقناة…"></textarea>
-       <button class="circ sendc" id="chanSend"><svg class="ic"><use href="#i-send"/></svg></button>
+       <button class="circ sendc" id="chanSend" title="انشر"><svg class="ic"><use href="#i-send"/></svg></button>
       </div>
+     </div>
+    </div>
+    <div class="cmtv" id="cmtV">
+     <div class="wall"></div>
+     <div class="tgh"><button class="gl circ" id="cmtBack" title="رجوع"><svg class="ic"><use href="#i-back"/></svg></button><div class="gl tgt"><b id="cmtN">التعليقات</b><small>توصيات AM GOLD ⚡</small></div><span style="width:52px;flex:none"></span></div>
+     <div class="tgfeed" id="cmtScroll"><div class="tgin"><div id="cmtPost"></div><div class="cday">بداية النقاش</div><div class="cmtl" id="cmtList"></div></div></div>
+     <div class="tgfoot">
+      <div class="ccomp gl" id="cmtFoot"><div class="cbar2"><textarea id="cmtTx" rows="1" maxlength="600" placeholder="اكتب تعليق…"></textarea><button class="circ sendc" id="cmtGo"><svg class="ic"><use href="#i-send"/></svg></button></div></div>
+      <button class="gl tgbig join hide" id="cmtGuest"><span id="cmtLogin">سجّل دخول حتى تعلّق</span></button>
      </div>
     </div>
    </div>
@@ -1203,12 +1330,12 @@ html[data-theme="light"] .cpost{background:#fff}
       <div class="fld" style="grid-column:1/-1"><label>الهدف (اختياري)</label><input class="inp num" id="rTp" inputmode="decimal"></div>
      </div>
      <div id="rOut"></div>
-     <div class="faint" style="font-size:12px;margin-top:8px">لوت الذهب = 100 أونصة، يعني حركة دولار وحدة = 100$ للوت.</div>
+     <div class="xp faint" style="font-size:12px;margin-top:8px">لوت الذهب = 100 أونصة، يعني حركة دولار وحدة = 100$ للوت.</div>
     </div>
     <div class="card br">
      <h2>تنبيهات السعر</h2>
      <div class="row"><input class="inp num" id="aPrice" inputmode="decimal" placeholder="السعر"><button class="btn" id="aAdd"><svg class="ic"><use href="#i-plus"/></svg>ضيف</button></div>
-     <div class="faint" style="font-size:12px;margin:6px 0 10px">تگدر تحط تنبيه من الشارت هم، بأداة 🔔. التنبيه يشتغل والموقع مفتوح.</div>
+     <div class="xp faint" style="font-size:12px;margin:6px 0 10px">تگدر تحط تنبيه من الشارت هم، بأداة 🔔. التنبيه يشتغل والموقع مفتوح.</div>
      <div class="list" id="aList"></div>
     </div>
     <div class="card br">
@@ -1227,6 +1354,7 @@ html[data-theme="light"] .cpost{background:#fff}
   <!-- STUDENTS -->
   <section class="pg hide" id="pg-students">
    <div class="eyebrow">05 · STUDENTS ── ACCESS</div>
+   <div id="stPend"></div>
    <div class="row"><h1 style="margin-bottom:14px">الطلاب</h1><span class="sp"></span><button class="btn" id="stAdd"><svg class="ic"><use href="#i-plus"/></svg>طالب جديد</button></div>
    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(min(150px,100%),1fr));margin-bottom:14px" id="stStats"></div>
    <input class="inp" id="stQ" placeholder="دوّر على طالب…" style="margin-bottom:10px">
@@ -1248,9 +1376,9 @@ html[data-theme="light"] .cpost{background:#fff}
     <div class="card br">
      <h2>السعر</h2>
      <div class="fld"><label>سعر 100 دولار بالدينار</label><input class="inp num" id="sRate" inputmode="numeric"></div>
-     <button class="mi" data-tg="spot" style="padding-inline:0">مطابقة السعر الفوري XAU/USD<small>الشموع من عقد الذهب XAUUSD، والسعر ينضبط تلقائياً على السعر الفوري حتى يقرب من أوندا</small><span class="sw" id="swSpot"></span></button>
+     <button class="mi" data-tg="spot" style="padding-inline:0">مطابقة السعر الفوري XAU/USD<small class="xp">الشموع من عقد الذهب XAUUSD، والسعر ينضبط تلقائياً على السعر الفوري حتى يقرب من أوندا</small><span class="sw" id="swSpot"></span></button>
      <div class="fld" style="margin-top:8px"><label>فرق إضافي عن الوسيط مالتك ($)</label><input class="inp num" id="sOff" inputmode="decimal" placeholder="0"></div>
-     <div class="faint" style="font-size:12px" id="spotInfo">إذا شفت فرق ثابت ويا الـ MT5 مالتك (مثلاً Exness)، اكتبه هنا.</div>
+     <div class="xp faint" style="font-size:12px" id="spotInfo">إذا شفت فرق ثابت ويا الـ MT5 مالتك (مثلاً Exness)، اكتبه هنا.</div>
     </div>
     <div class="card br only-admin">
      <h2>مصدر الأخبار</h2>
@@ -1262,22 +1390,22 @@ html[data-theme="light"] .cpost{background:#fff}
     <div class="card br">
      <h2>الجهاز</h2>
      <button class="mi" data-tg="snd">الأصوات<span class="sw" id="swSnd"></span></button>
-     <button class="mi" data-tg="mag">المغناطيس بالرسم<small>يلصق الخط على أعلى وأدنى الشمعة</small><span class="sw" id="swMag"></span></button>
-     <button class="mi only-admin" data-tg="cast">بث رسوماتي للطلاب<small>أي خط ترسمه يطلع عدهم بالشارت مباشرة</small><span class="sw" id="swCast"></span></button>
-     <button class="mi" data-tg="notif">إشعارات الجهاز<small>للتنبيهات والتحليلات الجديدة</small><span class="sw" id="swNotif"></span></button>
+     <button class="mi" data-tg="mag">المغناطيس بالرسم<small class="xp">يلصق الخط على أعلى وأدنى الشمعة</small><span class="sw" id="swMag"></span></button>
+     <button class="mi only-admin" data-tg="cast">بث رسوماتي للطلاب<small class="xp">أي خط ترسمه يطلع عدهم بالشارت مباشرة</small><span class="sw" id="swCast"></span></button>
+     <button class="mi" data-tg="notif">إشعارات الجهاز<small class="xp">للتنبيهات والتحليلات الجديدة</small><span class="sw" id="swNotif"></span></button>
     </div>
     <div class="card br">
      <h2>نسخة احتياطية</h2>
-     <div class="dim" style="font-size:13px;margin-bottom:10px">رسوماتك وتنبيهاتك وإعداداتك بملف وحد.</div>
+     <div class="xp dim" style="font-size:13px;margin-bottom:10px">رسوماتك وتنبيهاتك وإعداداتك بملف وحد.</div>
      <div class="row wrap"><button class="btn ghost" id="bkOut"><svg class="ic"><use href="#i-dl"/></svg>تصدير</button><label class="btn ghost"><svg class="ic"><use href="#i-ul"/></svg>استيراد<input type="file" accept=".json" id="bkIn" hidden></label></div>
     </div>
     <div class="card br">
      <h2>الحساب</h2>
      <div class="kv"><span>الاسم</span><b id="setNm"></b></div>
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
-     <div class="kv"><span>قاعدة البيانات</span><b id="setDb"></b></div>
+     <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-mem" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-14</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-15</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1289,7 +1417,7 @@ html[data-theme="light"] .cpost{background:#fff}
  <nav class="bnav" id="bnav">
   <button data-go="home"><svg class="ic"><use href="#i-home"/></svg><span class="bl">الرئيسية</span></button>
   <button data-go="signals"><svg class="ic"><use href="#i-sig"/></svg><span class="bl">التوصيات</span><b class="nbadge sgbadge hide"></b></button>
-  <button data-go="chart" class="mid"><span class="dia"><svg class="ic"><use href="#i-chart"/></svg></span><span class="bl">الشارت</span></button>
+  <button data-go="chart" class="mid"><svg class="ic"><use href="#i-chart"/></svg><span class="bl">الشارت</span></button>
   <button data-go="chat" class="only-mem"><svg class="ic"><use href="#i-chat"/></svg><span class="bl">الدردشة</span><b class="nbadge cbadge hide"></b></button>
   <button data-go="news" class="only-guest"><svg class="ic"><use href="#i-cal"/></svg><span class="bl">الأخبار</span></button>
   <button data-act="more"><svg class="ic"><use href="#i-more"/></svg><span class="bl">المزيد</span></button>
@@ -2169,7 +2297,11 @@ const LocalDB = {
   watchStat(k, cb) { (this.stcb = this.stcb || {})[k] = cb; cb(L.get('amg_st_' + k, {})); },
   async setSub(on) { const s = L.get('amg_st_channel', {}); s.subs = Math.max(0, (s.subs || 0) + (on ? 1 : -1)); L.set('amg_st_channel', s); this.stcb && this.stcb.channel && this.stcb.channel(s); },
   async addVisit(d, nd) { const v = L.get('amg_visits', {}); v[d] = (v[d] || 0) + 1; L.set('amg_visits', v); const s = L.get('amg_st_visits', {}); s.total = (s.total || 0) + 1; if (nd) s.devices = (s.devices || 0) + 1; L.set('amg_st_visits', s); },
-  watchVisits(cb) { cb(L.get('amg_visits', {})); }
+  watchVisits(cb) { cb(L.get('amg_visits', {})); },
+  async reactChan(id, add, rem) { const a = L.get('amg_chan', []).map(p => { if (p.id !== id) return p; const rx = Object.assign({}, p.rx || {}); if (rem) rx[rem] = Math.max(0, (rx[rem] || 1) - 1); if (add) rx[add] = (rx[add] || 0) + 1; return Object.assign(p, { rx }); }); L.set('amg_chan', a); this.chcb && this.chcb(a); },
+  watchComments(pid, cb) { this.cmcb = cb; this.cmid = pid; cb(L.get('amg_cm_' + pid, [])); return () => { this.cmcb = null; }; },
+  async addComment(pid, c, cu) { const a = L.get('amg_cm_' + pid, []); c.id = uid(); a.push(c); L.set('amg_cm_' + pid, a); const ch = L.get('amg_chan', []).map(p => p.id === pid ? Object.assign(p, { cn: (p.cn || 0) + 1, cu }) : p); L.set('amg_chan', ch); this.chcb && this.chcb(ch); this.cmcb && this.cmid === pid && this.cmcb(a); },
+  async delComment(pid, id) { const a = L.get('amg_cm_' + pid, []).filter(c => c.id !== id); L.set('amg_cm_' + pid, a); const ch = L.get('amg_chan', []).map(p => p.id === pid ? Object.assign(p, { cn: Math.max(0, (p.cn || 1) - 1) }) : p); L.set('amg_chan', ch); this.chcb && this.chcb(ch); this.cmcb && this.cmcb(a); }
 };
 let fbApp, auth, fdb;
 const FireDB = {
@@ -2241,9 +2373,14 @@ const FireDB = {
   watchStat(k, cb) { fdb.collection('stats').doc(k).onSnapshot(d => cb(d.exists ? d.data() : {}), () => cb({})); },
   async setSub(on) { const inc = firebase.firestore.FieldValue.increment(on ? 1 : -1); if (on) await fdb.collection('subs').doc(devId).set({ at: Date.now() }); else await fdb.collection('subs').doc(devId).delete(); await fdb.collection('stats').doc('channel').set({ subs: inc }, { merge: true }); },
   async addVisit(d, nd) { const inc = firebase.firestore.FieldValue.increment(1); await fdb.collection('visits').doc(d).set({ n: inc }, { merge: true }); await fdb.collection('stats').doc('visits').set(nd ? { total: inc, devices: inc } : { total: inc }, { merge: true }); },
+  reactChan(id, add, rem) { const inc = firebase.firestore.FieldValue.increment, x = {}; if (add) x['rx.' + add] = inc(1); if (rem) x['rx.' + rem] = inc(-1); return fdb.collection('channel').doc(id).update(x); },
+  watchComments(pid, cb) { return fdb.collection('channel').doc(pid).collection('comments').orderBy('at', 'desc').limit(300).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
+  async addComment(pid, c, cu) { await fdb.collection('channel').doc(pid).collection('comments').add(c); await fdb.collection('channel').doc(pid).update({ cn: firebase.firestore.FieldValue.increment(1), cu }).catch(() => { }); },
+  async delComment(pid, id) { await fdb.collection('channel').doc(pid).collection('comments').doc(id).delete(); await fdb.collection('channel').doc(pid).update({ cn: firebase.firestore.FieldValue.increment(-1) }).catch(() => { }); },
   watchVisits(cb) { fdb.collection('visits').orderBy(firebase.firestore.FieldPath.documentId(), 'desc').limit(31).onSnapshot(s => { const o = {}; s.docs.forEach(d => o[d.id] = d.data().n || 0); cb(o); }, () => cb({})); }
 };
 const GuestDB = Object.assign({}, LocalDB, {
+  watchComments(pid, cb) { cb([]); return () => { }; },
   kind: 'guest',
   watchPosts(cb) { cb([]); }, watchChat(cb) { cb([]); },
   async loadMine() { return L.get('amg_draw_guest', []); },
@@ -2253,6 +2390,7 @@ const GuestDB = Object.assign({}, LocalDB, {
 if (HAS_FB) Object.assign(GuestDB, {
   watchPosts(cb) { if (!fdb) return cb([]); fdb.collection('posts').where('vis', '==', 'public').limit(80).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
   watchChan(cb) { fdb ? FireDB.watchChan(cb) : cb([]); }, viewChan(id) { return FireDB.viewChan(id); },
+  reactChan(id, a, r) { return FireDB.reactChan(id, a, r); }, watchComments(pid, cb) { return fdb ? FireDB.watchComments(pid, cb) : (cb([]), () => { }); },
   watchStat(k, cb) { fdb ? FireDB.watchStat(k, cb) : cb({}); }, setSub(on) { return FireDB.setSub(on); }, addVisit(d, nd) { return FireDB.addVisit(d, nd); }
 });
 let DB = LocalDB, ME = null;
@@ -2278,6 +2416,28 @@ function showGate() {
   g.insertAdjacentHTML('beforeend', arrow);
   $('#gInstall').onclick = async () => { if (!installEvt) return toast('استخدم الخطوات اللي فوگ'); installEvt.prompt(); const r = await installEvt.userChoice; if (r.outcome !== 'accepted') toast('لازم تثبّته حتى تدخل'); installEvt = null; };
 }
+let REGISTERING = false;
+function regSetup() {
+  const lf = $('#lgForm'), rf = $('#regForm'), tg = $('#regTog');
+  tg.onclick = () => { const on = rf.classList.contains('hide'); rf.classList.toggle('hide', !on); lf.classList.toggle('hide', on); tg.querySelector('span').textContent = on ? 'عندي حساب، رجعني للدخول' : 'ما عندك حساب؟ اتسجل'; $('#rgMsg').textContent = ''; setTimeout(() => (on ? $('#rgNm') : $('#lgPw')).focus(), 100); };
+  rf.onsubmit = async e => {
+    e.preventDefault(); const msg = (t, c) => { $('#rgMsg').textContent = t; $('#rgMsg').style.color = c ? 'var(--' + c + ')' : ''; };
+    const name = $('#rgNm').value.trim().replace(/\s+/g, ' '), ph = $('#rgPh').value.trim().replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[^\d+]/g, ''), pw = $('#rgPw').value.trim();
+    if (name.length < 3) return msg('اكتب اسمك الكامل', 'bad');
+    if (ph.length < 10) return msg('اكتب رقم هاتفك صح', 'bad');
+    if (pw.length < 6) return msg('الرمز لازم 6 أو أكثر', 'bad');
+    if (pw !== $('#rgPw2').value.trim()) return msg('الرمزين مو نفس الشي', 'bad');
+    $('#rgBtn').disabled = true; msg('لحظة…'); REGISTERING = true;
+    try {
+      const r = await auth.createUserWithEmailAndPassword(await pwEmail(pw), pw);
+      await fdb.collection('logins').doc(r.user.uid).set({ name, phone: ph, pw, role: 'student', active: false, pending: true, exp: null, at: Date.now() });
+      try { await auth.signOut(); } catch (er) { }
+      rf.innerHTML = `<div style="text-align:center;padding:10px 0"><div style="font-size:44px">✅</div><b style="font-family:var(--fd);font-size:18px">وصل طلبك للأستاذ</b><p class="dim" style="font-size:14px;line-height:1.8;margin:8px 0 0">من يوافق عليه تگدر تدخل بنفس الرمز اللي اخترته.<br>احفظ رمزك ولا تنطيه لأحد.</p></div>`;
+      $('#regTog').classList.add('hide');
+    } catch (er) { msg(er.code === 'auth/email-already-in-use' ? 'هذا الرمز مستخدم، اختار رمز غيره' : er.code === 'auth/network-request-failed' ? 'ماكو انترنت' : 'ما وصل الطلب، جرّب مرة ثانية', 'bad'); try { if (auth.currentUser) await auth.signOut(); } catch (e2) { } }
+    REGISTERING = false; const rb = $('#rgBtn'); if (rb) rb.disabled = false;
+  };
+}
 function initAuth() {
   if (!STANDALONE && location.protocol === 'https:' && !/[?&]web=1/.test(location.search)) { showGate(); return; }
   if (!HAS_FB) {
@@ -2286,12 +2446,15 @@ function initAuth() {
   }
   fbApp = firebase.initializeApp(FB); auth = fbApp.auth(); fdb = fbApp.firestore(); DB = FireDB;
   $('#guestBtn').onclick = () => { L.set('amg_wantlogin', 0); if (started) { $('#login').classList.add('hide'); $('#app').classList.remove('hide'); } else enterGuest(); };
+  regSetup();
   auth.onAuthStateChanged(async u => {
+    if (REGISTERING) return;
     if (!u) { if (L.get('amg_wantlogin', 0)) showLogin(); else enterGuest(); return; }
     L.set('amg_wantlogin', 0);
     if (u.email === ADMIN_EMAIL) { ME = { uid: u.uid, role: 'admin', name: ADMIN_NAME }; welcome(); return; }
     try {
       const d = await fdb.collection('logins').doc(u.uid).get(), x = d.exists ? d.data() : null;
+      if (x && x.pending) { await auth.signOut(); return loginErr('طلبك لحد الآن ينتظر موافقة الأستاذ ⏳'); }
       if (!x || !x.active) { await auth.signOut(); return loginErr('حسابك مسدود، راجع الأستاذ'); }
       if (x.exp && x.exp < Date.now()) { await auth.signOut(); return loginErr('انتهى اشتراكك، راجع الأستاذ حتى يجدده'); }
       ME = { uid: u.uid, role: 'student', name: x.name || 'طالب', exp: x.exp };
@@ -2346,14 +2509,16 @@ function aggr(raw, keyF) {
   raw.forEach(k => { const kk = keyF(k.t); if (kk !== ck) { cur && out.push(cur); ck = kk; cur = Object.assign({}, k); } else { cur.h = Math.max(cur.h, k.h); cur.l = Math.min(cur.l, k.l); cur.c = k.c; cur.v += k.v; } });
   cur && out.push(cur); return out;
 }
-let rawK = [], ws, wsTf, wsTry = 0, loadingMore = false, noMore = false;
+let rawK = [], ws, wsTf, wsTry = 0, loadingMore = false, noMore = false, pxMode = false, pxRatio = null;
+const SPOT = 'https://api.binance.com/api/v3';
+async function spotK(itv, end) { const r = await fetch(`${SPOT}/klines?symbol=PAXGUSDT&interval=${itv}&limit=1000&endTime=${end}`); if (!r.ok) throw new Error(r.status); return r.json(); }
 function build(tf) {
   const T = TFS.find(x => x[0] === tf), rtf = RAW[tf] || tf, rms = TFS.find(x => x[0] === rtf)[2];
   const f = rawK.filter(k => keepK(k, rms));
   return tf === '4h' ? aggr(f, h4Key) : tf === '1d' ? aggr(f, dayKey) : tf === '1w' ? aggr(f, weekKey) : f;
 }
 async function loadTF(tf) {
-  const T = TFS.find(x => x[0] === tf); S.tf = tf; saveS(); noMore = false;
+  const T = TFS.find(x => x[0] === tf); S.tf = tf; saveS(); noMore = false; pxMode = false; pxRatio = null;
   $$('#tfs button').forEach(b => b.classList.toggle('on', b.dataset.tf === tf));
   if (src === 'tv') makeTV();
   cStatus('جاري تحميل الشموع…');
@@ -2361,16 +2526,28 @@ async function loadTF(tf) {
     const a = await api(`/klines?symbol=${SYM}&interval=${RAW[tf] || tf}&limit=1500`);
     if (S.tf !== tf) return;
     rawK = a.map(mapK); CH.setData(build(tf), tf, T[2]); cStatus(''); fitChart();
+    if (a.length < 1500) { pxMode = true; setTimeout(loadMore, 50); }
   } catch (e) { cStatus('ماكو اتصال بمصدر السعر. تأكد من الانترنت وراح يرجع يحاول.'); setTimeout(() => S.tf === tf && loadTF(tf), 8000); }
   openWS(tf);
 }
 async function loadMore() {
   if (loadingMore || noMore || !rawK.length) return; loadingMore = true; const tf = S.tf;
   try {
-    const a = await api(`/klines?symbol=${SYM}&interval=${RAW[tf] || tf}&limit=1500&endTime=${rawK[0].t - 1}`);
-    if (S.tf !== tf) return;
-    if (!a.length) noMore = true; else { const old = CH.c.length; rawK = a.map(mapK).concat(rawK); const all = build(tf); CH.prepend(all.slice(0, all.length - old)); }
-  } catch (e) { }
+    const itv = RAW[tf] || tf; let arr;
+    if (!pxMode) {
+      const a = await api(`/klines?symbol=${SYM}&interval=${itv}&limit=1500&endTime=${rawK[0].t - 1}`);
+      if (S.tf !== tf) return;
+      arr = a.map(mapK); if (a.length < 1500) pxMode = true;
+    } else arr = [];
+    if (pxMode && arr.length < 1500) {
+      const first = arr.length ? arr[0] : rawK[0];
+      const b = (await spotK(itv, first.t + 1)).map(mapK); if (S.tf !== tf) return;
+      if (pxRatio == null) { const ov = b.find(k => k.t === first.t) || b[b.length - 1]; pxRatio = ov ? first.o / ov.o : 1; }
+      const older = b.filter(k => k.t < first.t).map(k => ({ t: k.t, o: k.o * pxRatio, h: k.h * pxRatio, l: k.l * pxRatio, c: k.c * pxRatio, v: k.v, px: 1 }));
+      if (!older.length) noMore = true; arr = older.concat(arr);
+    }
+    if (!arr.length) noMore = true; else { const old = CH.c.length; rawK = arr.concat(rawK); const all = build(tf); CH.prepend(all.slice(0, all.length - old)); }
+  } catch (e) { if (pxMode) noMore = true; }
   loadingMore = false;
 }
 function onRaw(k) {
@@ -2550,10 +2727,10 @@ function selbar(d) {
   const sb = $('#selbar');
   if (!d) { sb.classList.add('hide'); return; }
   if (ALERTS.find(a => a.id === d.id)) {
-    sb.innerHTML = `<span class="pill warn">🔔 <span class="num">${showP(d.p)}</span></span><button class="btn danger sm" data-sb="del">احذف</button>`;
+    sb.innerHTML = `<span class="pill warn">🔔 <span class="num">${showP(d.p)}</span></span><button class="btn danger sm ico" data-sb="del" title="احذف"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button>`;
   } else {
     const cols = ['#e8b130', '#4aa3ff', '#3ccf82', '#f2596a', '#b07cff', '#eceef2'];
-    sb.innerHTML = (['long', 'short', 'vp'].includes(d.type) ? '' : cols.map(c => `<button class="c ${d.color === c ? 'on' : ''}" style="background:${c}" data-sb="col" data-c="${c}"></button>`).join('')) + `<button class="btn tint sm" data-sb="set"><svg class="ic" style="width:16px;height:16px"><use href="#i-set"/></svg>إعدادات</button><button class="btn danger sm" data-sb="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button>`;
+    sb.innerHTML = (['long', 'short', 'vp'].includes(d.type) ? '' : cols.map(c => `<button class="c ${d.color === c ? 'on' : ''}" style="background:${c}" data-sb="col" data-c="${c}"></button>`).join('')) + `<button class="btn tint sm ico" data-sb="set" title="إعدادات الأداة"><svg class="ic" style="width:16px;height:16px"><use href="#i-set"/></svg></button><button class="btn danger sm" data-sb="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button>`;
   }
   sb.classList.remove('hide');
   sb.onclick = e => {
@@ -2768,7 +2945,7 @@ function renderPrice() {
   // mithqal
   const oz = c + OFF(), g24 = oz / 31.1035, mq = g24 * 5, rate = (+S.rate || 0) / 100;
   $('#hKrt').innerHTML = [[24, 1], [21, .875], [18, .75]].map(([k, f]) => `<div><b>عيار ${k}</b><span class="num">${fmt(mq * f * rate)}</span><small class="num">$${fx(mq * f)}</small></div>`).join('');
-  $('#hRate').innerHTML = 'دينار للمثقال (5 غرام) حسب سعر الدولار <span class="num">' + fmt(S.rate) + '</span> لكل 100$. تغيّره من الإعدادات.';
+  $('#hRate').innerHTML = 'دينار للمثقال (5 غرام) حسب سعر الدولار <span class="num">' + fmt(S.rate) + '</span> لكل 100$.' + (ME.role === 'admin' ? ' تغيّره من الإعدادات.' : '');
   renderSpark(); calcRisk(); calcGold();
 }
 function renderSpark() {
@@ -2965,10 +3142,21 @@ function stStatus(s) {
   if (s.exp && s.exp - Date.now() < 3 * 864e5) return ['قرب ينتهي', 'warn'];
   return ['فعّال', 'ok'];
 }
+let pendKnown = null;
+function renderPend() {
+  const P = STUD.filter(s => s.pending).sort((x, y) => y.at - x.at), el = $('#stPend');
+  $$('.pdbadge').forEach(b => { b.textContent = P.length; b.classList.toggle('hide', !P.length); });
+  const ids = P.map(s => s.uid);
+  if (pendKnown && ids.some(i => !pendKnown.includes(i))) { const s = P.find(x => !pendKnown.includes(x.uid)); beep('post'); toast('🆕 طلب تسجيل جديد: ' + s.name, 'ok'); devNotify('AM GOLD', 'طلب تسجيل جديد: ' + s.name); }
+  pendKnown = ids;
+  if (!el) return;
+  el.innerHTML = P.length ? `<div class="card br pend"><div class="row"><h2 style="margin:0">طلبات التسجيل</h2><span class="pill warn num">${P.length}</span></div><div class="list" style="margin-top:10px">${P.map(s => `<div class="li" data-pid="${s.uid}"><div class="av">${esc(initials(s.name))}</div><div class="mn"><b>${esc(s.name)}</b><small><span class="num">${esc(s.phone || '')}</span> · ${ago(s.at)}</small></div>${s.phone ? `<a class="btn ghost sm ico" href="https://wa.me/${esc(String(s.phone).replace(/\D/g, '').replace(/^0/, '964'))}" target="_blank" rel="noopener" title="واتساب"><svg class="ic" style="width:16px;height:16px"><use href="#i-wa"/></svg></a>` : ''}<button class="btn sm" data-pa2="ok">وافق</button><button class="btn danger sm ico" data-pa2="no" title="ارفض"><svg class="ic" style="width:16px;height:16px"><use href="#i-x"/></svg></button></div>`).join('')}</div></div>` : '';
+}
 function renderStud() {
-  const q = ($('#stQ').value || '').trim(), a = STUD.filter(s => !q || (s.name || '').includes(q)).sort((x, y) => y.at - x.at);
-  const n = k => STUD.filter(s => stStatus(s)[0] === k).length;
-  $('#stStats').innerHTML = [['كل الطلاب', STUD.length, ''], ['فعّال', n('فعّال'), 'ok'], ['قرب ينتهي', n('قرب ينتهي'), 'warn'], ['منتهي أو مسدود', n('منتهي') + n('مسدود'), 'bad']].map(([t, v, c]) => `<div class="card br stat"><small>${t}</small><span class="num ${c}" style="font-size:24px">${v}</span></div>`).join('');
+  renderPend();
+  const q = ($('#stQ').value || '').trim(), a = STUD.filter(s => !s.pending && (!q || (s.name || '').includes(q))).sort((x, y) => y.at - x.at);
+  const n = k => STUD.filter(s => !s.pending && stStatus(s)[0] === k).length;
+  $('#stStats').innerHTML = [['كل الطلاب', STUD.filter(s => !s.pending).length, ''], ['فعّال', n('فعّال'), 'ok'], ['قرب ينتهي', n('قرب ينتهي'), 'warn'], ['منتهي أو مسدود', n('منتهي') + n('مسدود'), 'bad']].map(([t, v, c]) => `<div class="card br stat"><small>${t}</small><span class="num ${c}" style="font-size:24px">${v}</span></div>`).join('');
   $('#stList').innerHTML = a.length ? a.map(s => { const [t, c] = stStatus(s); const left = s.exp ? Math.ceil((s.exp - Date.now()) / 864e5) : null; return `<div class="li" data-sid="${s.uid}"><div class="av" style="border-color:var(--${c})">${esc(initials(s.name))}</div><div class="mn"><b>${esc(s.name)}</b><small>${s.exp ? (left > 0 ? 'باقي <span class="num">' + left + '</span> يوم · لحد ' + dstr(s.exp) : 'خلص ' + dstr(s.exp)) : 'بدون انتهاء'}</small></div><span class="pill ${c}">${t}</span><div class="acts"><button class="btn tint sm" data-st="ext">+30 يوم</button><button class="btn ghost sm" data-st="edit">تعديل</button><button class="btn ${s.active ? 'danger' : 'tint'} sm" data-st="tog">${s.active ? 'سدّ' : 'فعّل'}</button></div></div>`; }).join('') : `<div class="card empty">${DB.kind === 'local' ? 'حتى تضيف طلاب لازم تربط Firebase. شوف ملف الشرح.' : 'ماكو طلاب لحد الآن. دوس "طالب جديد".'}</div>`;
   if (curPg === 'students') anim('#pg-students');
 }
@@ -2996,6 +3184,14 @@ function studentForm(s) {
 function initStudents() {
   $('#stAdd').onclick = () => DB.kind === 'local' ? toast('اربط Firebase أول حتى تضيف طلاب', 'bad') : studentForm();
   $('#stQ').oninput = renderStud;
+  $('#stPend').onclick = async e => {
+    const b = e.target.closest('[data-pa2]'); if (!b) return; const s = STUD.find(x => x.uid === b.closest('[data-pid]').dataset.pid); if (!s) return;
+    if (b.dataset.pa2 === 'no') { if (await ask('ترفض طلب ' + s.name + '؟', 'ينحذف الطلب وما يگدر يدخل.', 'ارفض', true)) { await DB.delStudent(s.uid).catch(() => { }); DB.log('رفض طلب تسجيل ' + s.name); } return; }
+    modal(`<h2>توافق على ${esc(s.name)}؟<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2><div class="fld"><label>مدة الاشتراك (يوم) — فارغة بدون انتهاء</label><input class="inp num" id="apD" inputmode="numeric" value="30"></div><div class="row wrap" style="gap:6px;margin-bottom:10px">${[7, 30, 90, 365].map(d => `<button class="btn ghost sm" data-ad="${d}">${d} يوم</button>`).join('')}</div><button class="btn blk" id="apOk">فعّل الحساب</button>`, (m, close) => {
+      m.onclick = ev => { const x = ev.target.closest('[data-ad]'); if (x) m.querySelector('#apD').value = x.dataset.ad; };
+      m.querySelector('#apOk').onclick = async () => { const d = parseN(m.querySelector('#apD').value); try { await DB.updStudent(s.uid, { active: true, pending: false, exp: d ? Date.now() + d * 864e5 : null }); DB.log('وافق على تسجيل ' + s.name); toast('انفعّل حساب ' + s.name + ' ✓', 'ok'); close(); } catch (er) { toast('ما تفعّل', 'bad'); } };
+    });
+  };
   $('#stList').onclick = async e => {
     const b = e.target.closest('[data-st]'); if (!b) return; const s = STUD.find(x => x.uid === b.closest('[data-sid]').dataset.sid); if (!s) return;
     if (b.dataset.st === 'edit') studentForm(s);
@@ -3089,7 +3285,7 @@ function renderNews() {
   if (h) h.innerHTML = up.length ? up.map(e => { const g = gloss(e.title); return `<div class="li" data-go="news" style="cursor:pointer"><span class="imp ${e.imp}"></span><div class="mn"><b>${esc(g.ar || e.title)}</b><small><span class="num">${tstr(e.t)}</span> · ${DAYS[new Date(e.t).getDay()]}</small></div><span class="pill ${e.imp === 'High' ? 'bad' : 'warn'} ncd" data-t="${e.t}">${left(e.t - now)}</span></div>`; }).join('') : `<div class="dim" style="font-size:13.5px">${list.length ? 'ماكو أخبار مهمة باقية هالأسبوع.' : 'الأخبار لحد الآن ما مربوطة.'}</div>`;
   // next big
   const nx = list.find(e => e.t > now - 6e4 && e.cur === 'USD' && e.imp === 'High'), nn = $('#nNext');
-  if (nx) { const g = gloss(nx.title); nn.innerHTML = `<div class="row wrap" style="gap:14px"><div style="min-width:0;flex:1"><div class="dim" style="font-size:12.5px">الخبر القوي الجاي للدولار</div><div style="font-family:var(--fd);font-weight:800;font-size:18px">${esc(g.ar || nx.title)}</div><div class="faint" style="direction:ltr;text-align:right;font-size:12.5px">${esc(nx.title)}</div><div class="dim" style="font-size:13px;margin-top:4px">${DAYS[new Date(nx.t).getDay()]} الساعة <span class="num">${tstr(nx.t)}</span>${nx.f ? ' · المتوقع <span class="num">' + esc(nx.f) + '</span>' : ''}${nx.p ? ' · السابق <span class="num">' + esc(nx.p) + '</span>' : ''}</div></div><div style="text-align:center"><div class="dim" style="font-size:12px">باقي</div><div class="cd ncd" data-t="${nx.t}">${left(nx.t - now)}</div></div></div><div class="faint" style="font-size:12px;margin-top:8px">الأخبار القوية تحرّك الذهب بقوة. انتبه لصفقاتك قبلها بربع ساعة.</div>`; }
+  if (nx) { const g = gloss(nx.title); nn.innerHTML = `<div class="row wrap" style="gap:14px"><div style="min-width:0;flex:1"><div class="dim" style="font-size:12.5px">الخبر القوي الجاي للدولار</div><div style="font-family:var(--fd);font-weight:800;font-size:18px">${esc(g.ar || nx.title)}</div>${nBiasH(nx)}<div class="faint" style="direction:ltr;text-align:right;font-size:12.5px">${esc(nx.title)}</div><div class="dim" style="font-size:13px;margin-top:4px">${DAYS[new Date(nx.t).getDay()]} الساعة <span class="num">${tstr(nx.t)}</span>${nx.f ? ' · المتوقع <span class="num">' + esc(nx.f) + '</span>' : ''}${nx.p ? ' · السابق <span class="num">' + esc(nx.p) + '</span>' : ''}</div></div><div style="text-align:center"><div class="dim" style="font-size:12px">باقي</div><div class="cd ncd" data-t="${nx.t}">${left(nx.t - now)}</div></div></div><div class="faint" style="font-size:12px;margin-top:8px">الأخبار القوية تحرّك الذهب بقوة. انتبه لصفقاتك قبلها بربع ساعة.</div>`; }
   else nn.innerHTML = `<div class="dim">${list.length ? 'ماكو أخبار قوية للدولار باقية هالأسبوع.' : 'لحد الآن ماكو أخبار.'}</div>`;
   // list
   const L2 = list.filter(e => nFilt(e, nCur, nImp)), nl = $('#nList');
@@ -3103,12 +3299,24 @@ function renderNews() {
       const d = new Date(e.t), ds = d.toDateString();
       if (ds !== day) { day = ds; h2 += `<div class="nday ${ds === td ? 'today' : ''}">${ds === td ? 'اليوم' : ds === tm ? 'باچر' : DAYS[d.getDay()]} <span class="num" style="font-size:12px">${dstr(e.t)}</span></div>`; }
       const g = gloss(e.title), past = e.t < now - 6e4;
-      h2 += `<div class="ev ${past ? 'past' : ''} ${e === nxt ? 'next' : ''}"><div class="tm">${tstr(e.t)}${e === nxt ? `<small class="ncd" data-t="${e.t}">${left(e.t - now)}</small>` : ''}</div><div class="ti"><b><span class="imp ${e.imp}"></span><span class="cur">${esc(e.cur)}</span>${esc(g.ar || e.title)}</b>${g.ar ? `<small>${esc(e.title)}</small>` : ''}</div><div class="vals">${e.a ? `<span>الفعلي <span class="num">${esc(e.a)}</span></span>` : ''}${e.f ? `<span>المتوقع <span class="num">${esc(e.f)}</span></span>` : ''}${e.p ? `<span>السابق <span class="num">${esc(e.p)}</span></span>` : ''}</div></div>`;
+      h2 += `<div class="ev ${past ? 'past' : ''} ${e === nxt ? 'next' : ''}"><div class="tm">${tstr(e.t)}${e === nxt ? `<small class="ncd" data-t="${e.t}">${left(e.t - now)}</small>` : ''}</div><div class="ti"><b><span class="imp ${e.imp}"></span><span class="cur">${esc(e.cur)}</span>${esc(g.ar || e.title)}</b>${g.ar ? `<small>${esc(e.title)}</small>` : ''}</div><div class="vals">${e.a ? `<span>الفعلي <span class="num">${esc(e.a)}</span></span>` : ''}${e.f ? `<span>المتوقع <span class="num">${esc(e.f)}</span></span>` : ''}${e.p ? `<span>السابق <span class="num">${esc(e.p)}</span></span>` : ''}</div></div>${e.cur === 'USD' && e.imp !== 'Low' ? nBiasH(e) : ''}`;
     });
     nl.innerHTML = h2 || '<div class="card empty">ماكو أخبار بهذا الفلتر</div>';
   }
   $('#nSrc').innerHTML = (newsErr ? `<span class="bad">${newsErr}</span> · ` : '') + (NEWS.at ? 'المصدر: Forex Factory · آخر تحديث <span class="num">' + tstr(NEWS.at) + '</span> · الأوقات بتوقيت جهازك' : '');
 }
+const INV = /unemployment rate|jobless|claims|unemployment change/i, SPK = /speaks|testifies|press conference|minutes|statement/i;
+const nNum = v => { if (v == null || v === '') return null; const m = String(v).replace(/,/g, '').match(/-?\d+(\.\d+)?/); if (!m) return null; let n = parseFloat(m[0]); const u = String(v).slice(-1).toUpperCase(); if (u === 'K') n *= 1e3; if (u === 'M') n *= 1e6; if (u === 'B') n *= 1e9; return n; };
+function nBias(e) {
+  if (e.cur !== 'USD') return null;
+  if (SPK.test(e.title)) return { k: 'spk', t: 'خطاب: إذا النبرة متشددة (رفع فايدة) ← 🟢 الدولار 🔴 الذهب، وإذا ناعمة ← العكس' };
+  const inv = INV.test(e.title), a = nNum(e.a), f = nNum(e.f), p = nNum(e.p);
+  const dir = (x, y) => x == null || y == null || x === y ? 0 : (x > y ? 1 : -1) * (inv ? -1 : 1);
+  if (a != null && f != null) { const d = dir(a, f); return { k: 'res', d, t: d > 0 ? 'طلع أفضل من المتوقع: إيجابي للدولار 🟢 وسلبي للذهب 🔴' : d < 0 ? 'طلع أسوأ من المتوقع: سلبي للدولار 🔴 وإيجابي للذهب 🟢' : 'طلع نفس المتوقع: تأثير محدود' }; }
+  const d = dir(f, p); const rule = inv ? 'إذا طلع أقل من المتوقع ← 🟢 دولار 🔴 ذهب' : 'إذا طلع أعلى من المتوقع ← 🟢 دولار 🔴 ذهب';
+  return { k: 'pre', d, t: (d > 0 ? 'التوقع أفضل من السابق: يميل إيجابي للدولار وسلبي للذهب. ' : d < 0 ? 'التوقع أسوأ من السابق: يميل سلبي للدولار وإيجابي للذهب. ' : '') + rule };
+}
+const nBiasH = e => { const b = nBias(e); if (!b) return ''; const cls = b.k === 'spk' ? '' : b.d > 0 ? 'usd' : b.d < 0 ? 'gold' : ''; return `<div class="nb ${cls}">${b.k === 'res' ? '<b>النتيجة:</b> ' : b.k === 'pre' ? '<b>التحليل:</b> ' : ''}${esc(b.t)}</div>`; };
 function newsTick() {
   const now = Date.now();
   $$('.ncd').forEach(el => { el.textContent = left(+el.dataset.t - now); });
@@ -3587,17 +3795,24 @@ let CHAN = [], chanFirst = true, chanMax = 0, chanImg = null, sigOn = false, sig
 const devId = (() => { let d = L.get('amg_dev', ''); if (!d) { d = 'd' + uid() + Math.random().toString(36).slice(2, 8); L.set('amg_dev', d); } return d; })();
 const isSub = () => !!L.get('amg_sub', 0);
 const SIGST = { on: ['شغّالة', 'on'], tp1: ['ضرب الهدف 1', 'ok'], tp2: ['ضرب الهدف 2', 'ok'], tp3: ['ضرب الهدف 3', 'ok'], sl: ['ضرب الوقف', 'bad'], be: ['طلعنا تعادل', ''], close: ['تسكرت', ''], wait: ['ما تفعّلت', ''] };
-function sigHTML(s) {
-  const st = SIGST[s.st || 'on'] || SIGST.on, hit = n => ['tp1', 'tp2', 'tp3'].indexOf(s.st) >= n - 1 && /^tp/.test(s.st || '');
-  const tps = (s.tp || []).filter(x => x !== '' && x != null);
-  return `<div class="sig ${s.side}"><div class="sh"><span class="sgside">${s.side === 'buy' ? 'BUY' : 'SELL'}</span><span class="sym">XAUUSD</span><span class="st ${st[1]}">${st[0]}</span></div>
-   <div class="sl"><div><small>الدخول</small><b>${esc(s.entry || '—')}</b></div><div class="slb"><small>الوقف</small><b>${esc(s.sl || '—')}</b></div>${tps.map((t, i) => `<div class="${hit(i + 1) ? 'hit' : ''}"><small>الهدف ${i + 1}</small><b>${esc(t)}</b></div>`).join('')}</div></div>`;
+function sigLines(s) {
+  const st = SIGST[s.st || 'on'] || SIGST.on, tps = (s.tp || []).filter(x => x !== '' && x != null), lv = /^tp(\d)/.exec(s.st || ''), hitN = lv ? +lv[1] : 0;
+  const N = v => `<b class="num">${esc(v)}</b>`;
+  return `<div class="sgx ${s.side}"><div class="h">${s.side === 'buy' ? '🟢 شراء' : '🔴 بيع'} الذهب <span class="num">XAUUSD</span></div>
+   <div>📍 الدخول: ${N(s.entry || '—')}</div>${tps.map((t, i) => `<div>🎯 الهدف ${i + 1}: ${N(t)}${i < hitN ? ' ✅' : ''}</div>`).join('')}<div>🛑 الوقف: ${N(s.sl || '—')}${s.st === 'sl' ? ' ❌' : ''}</div>
+   ${s.st && s.st !== 'on' ? `<div class="sst ${st[1]}">${st[1] === 'ok' ? '✅' : st[1] === 'bad' ? '⛔' : 'ℹ️'} ${st[0]}</div>` : ''}</div>`;
 }
+const sigTxt = s => s ? (s.side === 'buy' ? 'شراء' : 'بيع') + ' الذهب ' + (s.entry || '') : '';
+const postTxt = p => (p.sig ? sigTxt(p.sig) + (p.text ? ' · ' : '') : '') + (p.text || (p.img && !p.sig ? '📷 صورة' : ''));
 function chanHTML(p) {
-  return `<div class="cpost ${p.pin ? 'pin' : ''}" data-cid="${p.id}"><div class="cn">AM GOLD ⚡</div>${p.img ? `<img class="cimg" src="${p.img}" data-view loading="lazy">` : ''}
-   <div class="cb">${p.sig ? sigHTML(p.sig) : ''}${p.text ? `<div class="ctx">${linkify(esc(p.text))}</div>` : ''}
-   <div class="cm"><span><svg class="ic"><use href="#i-eye"/></svg><span class="num">${fmt(p.views || 0)}</span></span><span class="num">${tstr(p.at)}</span>${p.pin ? '<span class="cpin">📌 مثبّت</span>' : ''}</div></div>
-   ${ME.role === 'admin' ? `<div class="cadm">${p.sig ? '<button class="btn tint sm" data-ca="st">حالة التوصية</button>' : ''}<button class="btn ghost sm" data-ca="pin">${p.pin ? 'شيل التثبيت' : 'ثبّت'}</button><span class="sp"></span><button class="btn danger sm" data-ca="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button></div>` : ''}</div>`;
+  const cn = p.cn || 0, cu = (p.cu || []).slice(-3);
+  return `<div class="cpost ${p.img && !p.text && !p.sig ? 'imgonly' : ''}" data-cid="${p.id}"><div class="cn">AM GOLD ⚡</div>
+   ${p.reply ? `<div class="quote" data-jumpc="${esc(p.reply.id)}"><b>AM GOLD ⚡</b><span>${esc(p.reply.text || '')}</span></div>` : ''}
+   ${p.img ? `<img class="cimg" src="${p.img}" data-view loading="lazy">` : ''}
+   <div class="cb">${p.sig ? sigLines(p.sig) : ''}${p.text ? `<div class="ctx">${linkify(esc(p.text))}</div>` : ''}
+   ${Object.entries(p.rx || {}).filter(([, n]) => n > 0).length ? `<div class="reacts">${Object.entries(p.rx).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).map(([e, n]) => `<button data-crx="${e}" class="${myRx()[p.id] === e ? 'me' : ''}">${e}<span class="num">${fmt(n)}</span></button>`).join('')}</div>` : ''}
+   <div class="cm">${p.pin ? '<span class="cpin">📌</span>' : ''}<span class="num">${tstr(p.at)}</span><span><span class="num">${fmt(p.views || 0)}</span><svg class="ic"><use href="#i-eye"/></svg></span></div></div>
+   <div class="cmt" data-cmt="${p.id}">${cu.length ? `<span class="avs">${cu.map(u => avHTML(u, (PROF[u] || {}).name || '؟', 26)).join('')}</span>` : '<svg class="ic"><use href="#i-msg"/></svg>'}<span class="t">${cn ? fmt(cn) + (cn === 1 ? ' تعليق' : cn <= 10 ? ' تعليقات' : ' تعليق') : 'اكتب تعليق'}</span><svg class="ic ch"><use href="#i-back"/></svg></div></div>`;
 }
 const canSee = () => ME.role === 'admin' || isSub();
 const isMute = () => !!L.get('amg_mute', 0);
@@ -3647,53 +3862,163 @@ async function setSubbed(on) {
   try { await DB.setSub(on); } catch (e) { }
   if (on) { toast('اشتركت بالتوصيات 🔔', 'ok'); setTimeout(() => chanBottom(false), 40); if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission().then(p => { if (p === 'granted') { S.notif = true; saveS(); } }); }
 }
+/* ---- معلومات القناة + التواصل ---- */
+const CT = [['wa', 'واتساب', 'wa', v => 'https://wa.me/' + v.replace(/\D/g, '').replace(/^0/, '964')], ['tg', 'تيليگرام', 'tg', v => 'https://t.me/' + v.replace(/^@|https?:\/\/t\.me\//g, '')], ['ig', 'انستغرام', 'ig', v => 'https://instagram.com/' + v.replace(/^@|https?:\/\/(www\.)?instagram\.com\//g, '')], ['ph', 'اتصال', 'phone', v => 'tel:' + v.replace(/[^\d+]/g, '')]];
+function chanInfo() {
+  const c = CFG.contacts || {}, about = CFG.about || 'توصيات الذهب أول بأول ويا علي مالك: الدخول والوقف والأهداف، وتحديث كل صفقة لحد ما تتسكر.';
+  const links = CT.filter(([k]) => c[k]).map(([k, n, i, f]) => `<a class="ctl" href="${esc(f(c[k]))}" target="_blank" rel="noopener"><span class="ci2 ${k}"><svg class="ic"><use href="#i-${i}"/></svg></span><span class="x"><b>${n}</b><small class="num">${esc(c[k])}</small></span><svg class="ic ch"><use href="#i-back"/></svg></a>`).join('');
+  modal(`<div class="cinfo"><div class="cav"><svg><use href="#i-logo"/></svg></div><b>توصيات AM GOLD ⚡</b><small><span class="num">${fmt(SUBS)}</span> مشترك · <span class="num">${fmt(CHAN.length)}</span> منشور</small></div>
+    <div class="card" style="margin:12px 0;line-height:1.9;white-space:pre-wrap;font-size:14.5px">${linkify(esc(about))}</div>
+    ${links ? `<div class="ctls">${links}</div>` : ME.role === 'admin' ? '<div class="faint" style="font-size:13px;text-align:center;margin-bottom:8px">ما حاط وسيلة تواصل لحد الآن</div>' : ''}
+    ${ME.role === 'admin' ? '<button class="btn tint blk" data-ci="edit" style="margin-top:10px"><svg class="ic"><use href="#i-edit"/></svg>عدّل الوصف ووسائل التواصل</button>' : isSub() ? `<button class="mi" data-ci="mute">التنبيهات<span class="sw ${isMute() ? '' : 'on'}"></span></button><button class="mi" data-ci="leave" style="color:var(--bad)">إلغاء الاشتراك</button>` : '<button class="btn blk" data-ci="join" style="margin-top:10px">اشترك بالتوصيات</button>'}
+    <button class="btn ghost blk" data-close style="margin-top:8px">رجوع</button>`, (m, close) => {
+    m.onclick = async e => { const b = e.target.closest('[data-ci]'); if (!b) return; const k = b.dataset.ci;
+      if (k === 'mute') { L.set('amg_mute', isMute() ? 0 : 1); b.querySelector('.sw').classList.toggle('on', !isMute()); renderSubs(); return; }
+      close();
+      if (k === 'join') { if (curPg !== 'signals') go('signals'); setSubbed(true); }
+      if (k === 'edit') editInfo();
+      if (k === 'leave' && await ask('تلغي الاشتراك؟', 'القناة تنسد عليك وما يوصلك تنبيه من تنزل توصية جديدة.', 'ألغي', true)) setSubbed(false); };
+  });
+}
+function editInfo() {
+  const c = CFG.contacts || {};
+  modal(`<h2>الوصف ووسائل التواصل<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
+    <div class="fld"><label>الوصف</label><textarea class="inp" id="eAb" rows="4" maxlength="600">${esc(CFG.about || '')}</textarea></div>
+    ${CT.map(([k, n, i]) => `<div class="fld"><label>${n}</label><input class="inp num" id="e_${k}" dir="ltr" value="${esc(c[k] || '')}" placeholder="${k === 'wa' || k === 'ph' ? '07xxxxxxxxx' : '@username'}"></div>`).join('')}
+    <button class="btn blk" id="eGo">احفظ</button>`, (m, close) => {
+    m.querySelector('#eGo').onclick = async () => { const contacts = {}; CT.forEach(([k]) => { const v = m.querySelector('#e_' + k).value.trim(); if (v) contacts[k] = v; });
+      try { await DB.setConfig({ about: m.querySelector('#eAb').value.trim(), contacts }); toast('انحفظ ✓', 'ok'); close(); } catch (e) { toast('ما انحفظ', 'bad'); } };
+  });
+}
+/* ---- التفاعلات (وحدة لكل جهاز مثل تيليگرام) ---- */
+const CRX = ['👍', '❤️', '🔥', '🎯', '💰', '👏'];
+const myRx = () => L.get('amg_rx', {});
+function reactChanPost(p, e) {
+  const R = myRx(), old = R[p.id]; if (old === e) { delete R[p.id]; } else R[p.id] = e; L.set('amg_rx', R);
+  const rx = Object.assign({}, p.rx || {}); if (old) rx[old] = Math.max(0, (rx[old] || 1) - 1); if (old !== e) rx[e] = (rx[e] || 0) + 1; p.rx = rx; renderChan();
+  DB.reactChan(p.id, old !== e ? e : null, old || null).catch(() => { });
+  navigator.vibrate && navigator.vibrate(8);
+}
+/* ---- قائمة الضغط على المنشور ---- */
+let chanReply = null;
+function chanMenu(p) {
+  const adm = ME.role === 'admin', mine = myRx()[p.id];
+  modal(`<div class="crx">${CRX.map(e => `<button data-rx="${e}" class="${mine === e ? 'on' : ''}">${e}</button>`).join('')}</div>
+    ${adm ? `<button class="mi" data-cm2="reply"><svg class="ic"><use href="#i-reply"/></svg>رد</button>` : ''}
+    <button class="mi" data-cm2="cmt"><svg class="ic"><use href="#i-msg"/></svg>التعليقات</button>
+    ${p.text || p.sig ? `<button class="mi" data-cm2="copy"><svg class="ic"><use href="#i-copy"/></svg>نسخ</button>` : ''}
+    <button class="mi" data-cm2="share"><svg class="ic"><use href="#i-share"/></svg>مشاركة</button>
+    ${adm ? `<button class="mi" data-cm2="pin"><svg class="ic"><use href="#i-pin"/></svg>${p.pin ? 'شيل التثبيت' : 'تثبيت'}</button>${p.sig ? `<button class="mi" data-cm2="st"><svg class="ic"><use href="#i-long"/></svg>حالة التوصية</button>` : ''}<button class="mi" data-cm2="del" style="color:var(--bad)"><svg class="ic"><use href="#i-trash"/></svg>حذف</button>` : ''}`, (m, close) => {
+    m.onclick = async e => {
+      const r = e.target.closest('[data-rx]'); if (r) { close(); return reactChanPost(p, r.dataset.rx); }
+      const b = e.target.closest('[data-cm2]'); if (!b) return; const k = b.dataset.cm2; close();
+      if (k === 'reply') { chanReply = { id: p.id, text: postTxt(p).slice(0, 120) }; $('#chanRbTx').textContent = chanReply.text; $('#chanRb').classList.remove('hide'); $('#chanTx').focus(); }
+      if (k === 'cmt') openCmts(p.id);
+      if (k === 'copy') { const t = (p.sig ? sigPlain(p.sig) + '\n\n' : '') + (p.text || ''); (navigator.clipboard ? navigator.clipboard.writeText(t.trim()) : Promise.reject()).then(() => toast('انسخ ✓')).catch(() => toast('ما گدرت أنسخ', 'bad')); }
+      if (k === 'share') { const url = location.origin + location.pathname + '#c=' + p.id, t = 'توصيات AM GOLD ⚡\n' + postTxt(p); if (navigator.share) navigator.share({ title: 'AM GOLD', text: t, url }).catch(() => { }); else (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => toast('انسخ الرابط ✓')).catch(() => toast(url)); }
+      if (k === 'pin') DB.updChan(p.id, { pin: !p.pin }).catch(() => toast('ما تغيّر', 'bad'));
+      if (k === 'del') { if (await ask('تحذف المنشور من القناة؟', '', 'احذف', true)) DB.delChan(p.id).then(() => DB.log('حذف من التوصيات')).catch(() => toast('ما انحذف', 'bad')); }
+      if (k === 'st') modal(`<h2>حالة التوصية<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>${Object.entries(SIGST).map(([k2, v]) => `<button class="mi" data-sst="${k2}">${v[0]}${(p.sig.st || 'on') === k2 ? '<span class="pill acc">هسه</span>' : ''}</button>`).join('')}`, (m2, close2) => { m2.onclick = ev => { const x = ev.target.closest('[data-sst]'); if (!x) return; DB.updChan(p.id, { sig: Object.assign({}, p.sig, { st: x.dataset.sst }) }).then(() => toast('تحدّثت الحالة ✓', 'ok')).catch(() => toast('ما تحدّثت', 'bad')); close2(); }; });
+    };
+  });
+}
+const sigPlain = s => `${s.side === 'buy' ? '🟢 شراء' : '🔴 بيع'} الذهب XAUUSD\n📍 الدخول: ${s.entry || '—'}\n${(s.tp || []).map((t, i) => `🎯 الهدف ${i + 1}: ${t}`).join('\n')}\n🛑 الوقف: ${s.sl || '—'}`;
+/* ---- التعليقات (مثل نقاش تيليگرام) ---- */
+let CMT = { pid: null, list: [], un: null };
+function openCmts(pid) {
+  const p = CHAN.find(x => x.id === pid); if (!p) return;
+  if (CMT.un) { try { CMT.un(); } catch (e) { } }
+  CMT = { pid, list: [], un: null };
+  const v = $('#cmtV'); v.classList.add('on'); $('#cmtPost').innerHTML = chanHTML(p).replace(/<div class="cmt"[\s\S]*<\/div><\/div>$/, '</div>');
+  $('#cmtN').textContent = 'التعليقات';
+  const can = ME.role !== 'guest'; $('#cmtFoot').classList.toggle('hide', !can); $('#cmtGuest').classList.toggle('hide', can);
+  renderCmts(); CMT.un = DB.watchComments(pid, l => { if (CMT.pid !== pid) return; CMT.list = l.slice().sort((a, b) => a.at - b.at); renderCmts(true); });
+}
+function closeCmts() { $('#cmtV').classList.remove('on'); if (CMT.un) { try { CMT.un(); } catch (e) { } } CMT = { pid: null, list: [], un: null }; }
+function renderCmts(scroll) {
+  const el = $('#cmtList'); const l = CMT.list;
+  $('#cmtN').textContent = l.length ? fmt(l.length) + (l.length === 1 ? ' تعليق' : l.length <= 10 ? ' تعليقات' : ' تعليق') : 'التعليقات';
+  el.innerHTML = l.length ? l.map(c => { const out = c.uid === ME.uid; return `<div class="m ${out ? 'out' : 'in'} first last ${c.role === 'admin' ? 'adm' : ''}" data-cmid="${c.id}">${out ? '' : `<div class="mav">${avHTML(c.uid, c.name, 34)}</div>`}<div class="bub" style="--h:${hue(c.uid)}">${out ? '' : `<div class="from">${esc(c.name)}${c.role === 'admin' ? '<span class="tag">الأستاذ</span>' : ''}</div>`}<span class="txt">${linkify(esc(c.text))}</span><span class="sp" style="width:46px"></span><span class="meta num">${tstr(c.at)}</span></div></div>`; }).join('') : '<div class="dsep" style="position:static;margin:20px auto">ماكو تعليقات لحد الآن. كون أول واحد 💬</div>';
+  if (scroll) setTimeout(() => { const sc = $('#cmtScroll'); sc.scrollTop = sc.scrollHeight; }, 20);
+}
+async function sendCmt() {
+  const tx = $('#cmtTx'), t = tx.value.trim(); if (!t || !CMT.pid) return; const p = CHAN.find(x => x.id === CMT.pid);
+  tx.value = ''; tx.style.height = '40px';
+  try { await DB.addComment(CMT.pid, { uid: ME.uid, name: ME.name, role: ME.role, text: t.slice(0, 600), at: Date.now() }, ((p && p.cu) || []).filter(u => u !== ME.uid).concat(ME.uid).slice(-3)); }
+  catch (e) { toast('ما وصل التعليق' + (e.code === 'permission-denied' ? ': الصق الـ rules الجديدة' : ''), 'bad'); tx.value = t; }
+}
+/* ---- نافذة التوصية الجديدة ---- */
+function sigSheet() {
+  let side = 'buy';
+  modal(`<h2>توصية جديدة<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
+    <div class="sside"><button data-sd="buy" class="on b">🟢 شراء BUY</button><button data-sd="sell" class="s">🔴 بيع SELL</button></div>
+    <div class="sgrid2">
+     <div class="fld"><label>📍 الدخول</label><input class="inp num" id="sgEn" inputmode="decimal" placeholder="3650 أو 3648-3652"></div>
+     <div class="fld"><label>🛑 الوقف</label><input class="inp num" id="sgSl" inputmode="decimal"></div>
+     <div class="fld"><label>🎯 الهدف 1</label><input class="inp num" id="sgT1" inputmode="decimal"></div>
+     <div class="fld"><label>🎯 الهدف 2</label><input class="inp num" id="sgT2" inputmode="decimal"></div>
+     <div class="fld"><label>🎯 الهدف 3</label><input class="inp num" id="sgT3" inputmode="decimal"></div>
+    </div>
+    <div class="fld"><label>ملاحظة (اختياري)</label><textarea class="inp" id="sgNote" rows="2" placeholder="مثلاً: دخول من منطقة الطلب، الوقف تحت القاع"></textarea></div>
+    <div class="sgpv" id="sgPv"></div>
+    <button class="btn blk" id="sgGo"><svg class="ic"><use href="#i-send"/></svg>انشر التوصية</button>`, (m, close) => {
+    const v = id => m.querySelector(id).value.trim().replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+    const get = () => ({ side, entry: v('#sgEn'), sl: v('#sgSl'), tp: [v('#sgT1'), v('#sgT2'), v('#sgT3')].filter(Boolean), st: 'on' });
+    const pv = () => { m.querySelector('#sgPv').innerHTML = sigLines(get()); };
+    m.querySelector('.sside').onclick = e => { const b = e.target.closest('[data-sd]'); if (!b) return; side = b.dataset.sd; m.querySelectorAll('.sside button').forEach(x => x.classList.toggle('on', x === b)); pv(); };
+    m.addEventListener('input', pv); pv(); setTimeout(() => m.querySelector('#sgEn').focus(), 250);
+    m.querySelector('#sgGo').onclick = async () => {
+      const sig = get(); if (!sig.entry) return toast('اكتب سعر الدخول', 'bad');
+      const p = { text: v('#sgNote').slice(0, 3000), img: null, sig, at: Date.now(), views: 0, pin: false, by: ME.name }; if (chanReply) p.reply = chanReply;
+      const b = m.querySelector('#sgGo'); b.disabled = true;
+      try { await DB.addChan(p); beep('ok'); DB.log('توصية: ' + sigTxt(sig)); close(); chanRbClear(); setTimeout(() => chanBottom(true), 80); } catch (e) { b.disabled = false; toast('ما انتشرت: ' + (e.code === 'permission-denied' ? 'الصق الـ rules الجديدة' : (e.message || 'خلل')), 'bad'); }
+    };
+  });
+}
+function chanRbClear() { chanReply = null; const r = $('#chanRb'); if (r) r.classList.add('hide'); }
+function chanJump(id) { const el = $(`#chanFeed [data-cid="${CSS.escape(id)}"]`); if (!el) return toast('المنشور انحذف'); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
 function initChan() {
   DB.watchChan(onChan);
   DB.watchStat('channel', s => { SUBS = Math.max(0, (s && s.subs) || 0); renderSubs(); if (!canSee()) renderChan(); });
   $('#subBtn').onclick = () => { if (!isSub()) return setSubbed(true); L.set('amg_mute', isMute() ? 0 : 1); renderSubs(); toast(isMute() ? '🔕 انكتمت التنبيهات' : '🔔 رجعت التنبيهات'); };
-  const info = () => modal(`<div style="text-align:center"><div class="clock2" style="padding:6px 0 0"><div class="cav"><svg><use href="#i-logo"/></svg></div><b>توصيات AM GOLD ⚡</b><div><span class="num">${fmt(SUBS)}</span> مشترك · <span class="num">${fmt(CHAN.length)}</span> منشور</div></div></div>
-    ${isSub() ? `<button class="mi" data-ci="mute">${isMute() ? 'رجّع التنبيهات' : 'اكتم التنبيهات'}<span class="sw ${isMute() ? '' : 'on'}"></span></button><button class="mi" data-ci="leave" style="color:var(--bad)">إلغاء الاشتراك</button>` : ME.role === 'admin' ? '' : '<button class="btn blk" data-ci="join">اشترك</button>'}
-    <button class="btn ghost blk" data-close style="margin-top:10px">رجوع</button>`, (m, close) => {
-      m.onclick = async e => { const b = e.target.closest('[data-ci]'); if (!b) return; const k = b.dataset.ci; close();
-        if (k === 'join') setSubbed(true);
-        if (k === 'mute') { L.set('amg_mute', isMute() ? 0 : 1); renderSubs(); }
-        if (k === 'leave' && await ask('تلغي الاشتراك؟', 'القناة تنسد عليك وما يوصلك تنبيه من تنزل توصية جديدة.', 'ألغي', true)) setSubbed(false); };
-    });
-  $('#chanInfo').onclick = info; $('#chanMore').onclick = info;
+  $('#chanInfo').onclick = chanInfo; $('#chanMore').onclick = chanInfo; $('#chanAv').onclick = chanInfo;
   const openS = on => { $('#chanSearchW').classList.toggle('hide', !on); $('#chanInfo').classList.toggle('hide', on); if (on) setTimeout(() => $('#chanQ').focus(), 30); else { chanQ = ''; $('#chanQ').value = ''; renderChan(); } };
   $('#chanSB').onclick = () => { if (!canSee()) return toast('اشترك أول'); openS(true); };
   $('#chanQX').onclick = () => openS(false);
   $('#chanQ').oninput = e => { chanQ = e.target.value; renderChan(); };
-  $('#chanPin').onclick = () => { const id = $('#chanPin').dataset.jumpc, el = id && $(`#chanFeed [data-cid="${id}"]`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); } };
-  $('#chanFeed').addEventListener('click', async e => {
-    const b = e.target.closest('[data-ca]'); if (!b) return; const p = CHAN.find(x => x.id === b.closest('[data-cid]').dataset.cid); if (!p) return;
-    if (b.dataset.ca === 'pin') DB.updChan(p.id, { pin: !p.pin }).catch(() => toast('ما تغيّر', 'bad'));
-    if (b.dataset.ca === 'del') { if (await ask('تحذف المنشور من القناة؟', '', 'احذف', true)) DB.delChan(p.id).then(() => DB.log('حذف من التوصيات')).catch(() => toast('ما انحذف', 'bad')); }
-    if (b.dataset.ca === 'st') modal(`<h2>حالة التوصية<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>${Object.entries(SIGST).map(([k, v]) => `<button class="mi" data-sst="${k}">${v[0]}${(p.sig.st || 'on') === k ? '<span class="pill acc">هسه</span>' : ''}</button>`).join('')}<div class="faint" style="font-size:12px;margin-top:8px">من تغيّرها، المشتركين يشوفون الحالة الجديدة على التوصية.</div>`, (m, close) => { m.onclick = ev => { const x = ev.target.closest('[data-sst]'); if (!x) return; DB.updChan(p.id, { sig: Object.assign({}, p.sig, { st: x.dataset.sst }) }).then(() => toast('تحدّثت الحالة ✓', 'ok')).catch(() => toast('ما تحدّثت', 'bad')); close(); }; });
+  $('#chanPin').onclick = () => { const id = $('#chanPin').dataset.jumpc; if (id) chanJump(id); };
+  $('#chanFeed').addEventListener('click', e => {
+    const q = e.target.closest('[data-jumpc]'); if (q) return chanJump(q.dataset.jumpc);
+    const c = e.target.closest('[data-cmt]'); if (c) return openCmts(c.dataset.cmt);
+    const r = e.target.closest('[data-crx]'); if (r) { const p = CHAN.find(x => x.id === r.closest('[data-cid]').dataset.cid); if (p) reactChanPost(p, r.dataset.crx); return; }
+    if (e.target.closest('a,[data-view]')) return;
+    const b = e.target.closest('.cpost'); if (!b) return; const p = CHAN.find(x => x.id === b.dataset.cid); if (p) chanMenu(p);
   });
+  $('#chanFeed').addEventListener('contextmenu', e => { const b = e.target.closest('.cpost'); if (!b) return; e.preventDefault(); const p = CHAN.find(x => x.id === b.dataset.cid); if (p) chanMenu(p); });
+  $('#cmtBack').onclick = closeCmts;
+  $('#cmtGo').onclick = sendCmt;
+  $('#cmtTx').addEventListener('input', e => { const t = e.target; t.style.height = '40px'; t.style.height = Math.min(140, t.scrollHeight) + 'px'; });
+  $('#cmtTx').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !matchMedia('(pointer:coarse)').matches) { e.preventDefault(); sendCmt(); } });
+  $('#cmtLogin').onclick = () => toLogin();
+  $('#cmtList').addEventListener('click', async e => { const m = e.target.closest('[data-cmid]'); if (!m) return; const c = CMT.list.find(x => x.id === m.dataset.cmid); if (!c || !(ME.role === 'admin' || c.uid === ME.uid)) return; if (await ask('تحذف التعليق؟', '', 'احذف', true)) DB.delComment(CMT.pid, c.id).catch(() => toast('ما انحذف', 'bad')); });
+  if (/^#c=/.test(location.hash)) { const id = location.hash.slice(3); history.replaceState(null, '', location.pathname + location.search); setTimeout(() => { go('signals'); setTimeout(() => canSee() && chanJump(id), 700); }, 400); }
   if (ME.role !== 'admin') return;
   const tx = $('#chanTx'), grow = () => { tx.style.height = '40px'; tx.style.height = Math.min(160, tx.scrollHeight) + 'px'; };
   tx.addEventListener('input', grow);
-  const sigSet = on => { sigOn = on; $('#sigF').classList.toggle('hide', !on); $('#sigTog').classList.toggle('on', on); };
-  $('#sigTog').onclick = () => sigSet(!sigOn);
-  $('#sigX').onclick = () => sigSet(false);
-  $('#sigSide').onclick = e => { const b = e.target.closest('[data-sd]'); if (!b) return; sigSide = b.dataset.sd; $$('#sigSide button').forEach(x => x.classList.toggle('on', x === b)); };
+  $('#sigTog').onclick = sigSheet;
+  $('#chanRbX').onclick = chanRbClear;
   $('#chanImg').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; try { chanImg = await compressImg(f, 1400, .78); const p = $('#chanImgPrev'); p.querySelector('img').src = chanImg; p.classList.remove('hide'); } catch (er) { toast('الصورة ما انقرت', 'bad'); } };
   $('#chanImgPrev').onclick = e => { if (e.target.closest('button')) { chanImg = null; $('#chanImgPrev').classList.add('hide'); } };
-  $('#chanSend').onclick = async () => {
-    const t = tx.value.trim(), v = id => $(id).value.trim().replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
-    let sig = null;
-    if (sigOn) { sig = { side: sigSide, entry: v('#sgEn'), sl: v('#sgSl'), tp: [v('#sgT1'), v('#sgT2'), v('#sgT3')].filter(Boolean), st: 'on' }; if (!sig.entry) return toast('اكتب سعر الدخول', 'bad'); }
-    if (!t && !chanImg && !sig) return toast('اكتب شي أول');
-    const p = { text: t.slice(0, 3000), img: chanImg || null, sig, at: Date.now(), views: 0, pin: false, by: ME.name };
+  const sendP = async () => {
+    const t = tx.value.trim(); if (!t && !chanImg) return toast('اكتب شي أول');
+    const p = { text: t.slice(0, 3000), img: chanImg || null, sig: null, at: Date.now(), views: 0, pin: false, by: ME.name }; if (chanReply) p.reply = chanReply;
     $('#chanSend').disabled = true;
-    try {
-      await DB.addChan(p); beep('ok'); DB.log('نشر بالتوصيات' + (sig ? ': ' + (sig.side === 'buy' ? 'شراء ' : 'بيع ') + sig.entry : ''));
-      tx.value = ''; grow(); chanImg = null; $('#chanImgPrev').classList.add('hide'); ['#sgEn', '#sgSl', '#sgT1', '#sgT2', '#sgT3'].forEach(i => $(i).value = ''); sigSet(false);
-      setTimeout(() => chanBottom(true), 60);
-    } catch (e) { toast('ما انتشر: ' + (e.code === 'permission-denied' ? 'الصق الـ rules الجديدة' : (e.message || 'خلل')), 'bad'); }
+    try { await DB.addChan(p); beep('ok'); DB.log('نشر بالتوصيات'); tx.value = ''; grow(); chanImg = null; $('#chanImgPrev').classList.add('hide'); chanRbClear(); setTimeout(() => chanBottom(true), 60); }
+    catch (e) { toast('ما انتشر: ' + (e.code === 'permission-denied' ? 'الصق الـ rules الجديدة' : (e.message || 'خلل')), 'bad'); }
     $('#chanSend').disabled = false;
   };
+  $('#chanSend').onclick = sendP;
+  tx.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !matchMedia('(pointer:coarse)').matches) { e.preventDefault(); sendP(); } });
 }
 /* ====== عدد الزيارات (بدون أجهزة الأدمن) ====== */
 const dayId = (t = Date.now()) => { const d = new Date(t); return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()); };
@@ -3761,7 +4086,7 @@ function anim(sel) { const p = $(sel); p.classList.remove('in'); $$('.card,.li',
 function go(pg) {
   if (pg === 'students' && ME.role !== 'admin') pg = 'home';
   if (ME.role === 'guest' && ['chat', 'students'].includes(pg)) pg = 'home';
-  const prev = curPg; curPg = pg; $('#app').dataset.pg = pg;
+  const prev = curPg; curPg = pg; $('#app').dataset.pg = pg; requestAnimationFrame(navInd);
   $$('.pg').forEach(p => p.classList.toggle('hide', p.id !== 'pg-' + pg));
   $$('[data-go]').forEach(b => { if (b.closest('#snav') || b.closest('#bnav')) b.classList.toggle('on', b.dataset.go === pg); });
   if (prev !== pg) {
@@ -3788,6 +4113,7 @@ function go(pg) {
 }
 function moreSheet() {
   modal(`<h2>المزيد<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
+   <button class="mi" data-mo="contact"><svg class="ic"><use href="#i-msg"/></svg>تواصل ويا علي مالك</button>
    <button class="mi" data-mo="posts"><svg class="ic"><use href="#i-news"/></svg>التحليلات والمنشورات</button>
    <button class="mi" data-mo="news"><svg class="ic"><use href="#i-cal"/></svg>الأخبار</button>
    ${ME.role !== 'guest' ? '<button class="mi" data-mo="tools"><svg class="ic"><use href="#i-tools"/></svg>الأدوات</button>' : ''}
@@ -3796,7 +4122,7 @@ function moreSheet() {
    <button class="mi" data-mo="snd"><svg class="ic"><use href="#i-snd"/></svg>الأصوات<span class="sw ${S.snd ? 'on' : ''}"></span></button>
    ${ME.role === 'guest' ? '<button class="mi" data-mo="login" style="color:var(--accent)"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>' : ME.local ? '' : '<button class="mi" data-mo="out" style="color:var(--bad)"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>'}
    <div class="credit" style="margin-top:12px"><span dir="ltr">by <b>Ali Malik</b></span></div>`, (m, close) => {
-    m.onclick = e => { const b = e.target.closest('[data-mo]'); if (!b) return; const k = b.dataset.mo; if (k === 'snd') { S.snd = !S.snd; saveS(); b.querySelector('.sw').classList.toggle('on', S.snd); $('#swSnd').classList.toggle('on', S.snd); return; } close(); if (k === 'out') logout(); else if (k === 'login') toLogin(); else go(k); };
+    m.onclick = e => { const b = e.target.closest('[data-mo]'); if (!b) return; const k = b.dataset.mo; if (k === 'snd') { S.snd = !S.snd; saveS(); b.querySelector('.sw').classList.toggle('on', S.snd); $('#swSnd').classList.toggle('on', S.snd); return; } close(); if (k === 'contact') return chanInfo(); if (k === 'out') logout(); else if (k === 'login') toLogin(); else go(k); };
   });
 }
 async function logout() { if (await ask('تطلع من الحساب؟', 'تگدر ترجع تدخل بنفس الرمز.', 'اطلع')) { if (auth) await auth.signOut(); location.reload(); } }
@@ -3808,6 +4134,7 @@ document.addEventListener('click', e => {
   if (k === 'snd') { S.snd = !S.snd; saveS(); toast(S.snd ? 'الصوت شغّال' : 'الصوت طافي'); if (S.snd) beep('ok'); }
   if (k === 'bell') { e.stopPropagation(); bellPanel(); }
   if (k === 'more') moreSheet();
+  if (k === 'sbc') { const on = !$('#app').hasAttribute('data-sbc'); $('#app').toggleAttribute('data-sbc', on); L.set('amg_sbc', on ? 1 : 0); setTimeout(() => { navInd(); fitChart(); }, 320); }
   if (k === 'ind') indSheet();
   if (k === 'cset') csSheet();
   if (k === 'myphoto') photoSheet(false);
@@ -3824,6 +4151,24 @@ document.addEventListener('click', e => {
   if (k === 'logout') logout();
 });
 
+/* مؤشر الصفحة الحالية يتزحلق بين الأزرار */
+function navInd() {
+  [['#snav', 'y'], ['#bnav', 'x']].forEach(([sel, ax]) => {
+    const n = $(sel); if (!n) return; let ind = n.querySelector(':scope>.ind'); if (!ind) { ind = document.createElement('span'); ind.className = 'ind'; n.prepend(ind); }
+    const b = [...n.querySelectorAll('[data-go].on')].find(x => x.offsetParent); if (!b) { ind.style.opacity = 0; return; }
+    ind.style.opacity = 1;
+    if (ax === 'y') { ind.style.transform = `translateY(${b.offsetTop}px)`; ind.style.height = b.offsetHeight + 'px'; }
+    else { ind.style.transform = `translateX(${b.offsetLeft + b.offsetWidth / 2 - 24}px)`; }
+  });
+}
+function navPrep() {
+  $$('#snav button').forEach(b => { const t = [...b.childNodes].find(x => x.nodeType === 3 && x.textContent.trim()); if (t) { const s = document.createElement('span'); s.className = 'lbl'; s.textContent = t.textContent.trim(); b.replaceChild(s, t); b.title = s.textContent; } });
+  $$('#bnav button').forEach(b => { const l = b.querySelector('.bl'); if (l) b.title = l.textContent; });
+  const c = $('.side .cta'); if (c) { const t = [...c.childNodes].find(x => x.nodeType === 3 && x.textContent.trim()); if (t) { const s = document.createElement('span'); s.className = 'lbl'; s.textContent = t.textContent.trim(); c.replaceChild(s, t); c.title = s.textContent; } }
+  if (L.get('amg_sbc', 0)) $('#app').setAttribute('data-sbc', '');
+  addEventListener('resize', () => requestAnimationFrame(navInd));
+}
+
 /* ====== start ====== */
 let started = false;
 function start() {
@@ -3838,7 +4183,7 @@ function start() {
   $('#outBtn').classList.toggle('hide', !!ME.local);
   const h = new Date().getHours(), first = ME.name.split(' ')[0];
   $('#hello').textContent = ME.role === 'guest' ? (h < 12 ? 'صباح الخير' : 'مساء الخير') : (h < 12 ? 'صباح الخير ' : 'مساء الخير ') + first;
-  $$('#snav button').filter(b => getComputedStyle(b).display !== 'none').forEach((b, i) => b.querySelector('i').textContent = p2(i + 1));
+  navPrep(); $$('#snav button').filter(b => getComputedStyle(b).display !== 'none').forEach((b, i) => b.querySelector('i').textContent = p2(i + 1));
   setMode(S.mode); initChart(); initPosts(); initTools(); initSettings();
   if (ME.role === 'admin') { initStudents(); DB.watchDelLog(l => { LOGS = l.map(x => Object.assign({ kind: 'del' }, x)); }); DB.watchStudents(l => { STUD = l; renderStud(); }); DB.watchLogs(l => { $('#logList').innerHTML = l.length ? l.slice(0, 20).map(x => `<div class="li"><div class="mn"><b style="font-weight:700;font-size:14px">${esc(x.t)}</b><small>${ago(x.at)} · ${esc(x.by || '')}</small></div></div>`).join('') : '<div class="empty">ماكو حركات</div>'; }); }
   DB.watchPosts(onPosts);
