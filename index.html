@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-15">
+<meta name="app-build" content="2026.11.19-16">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -940,6 +940,22 @@ html[data-theme=light] .nb.usd{color:#2563eb}
 #app[data-pg=signals] #demoBar,#app[data-pg=chat] #demoBar{display:none!important}
 .pend{margin-bottom:16px;border-color:rgba(242,176,61,.4)}
 .pend .li .btn{flex:none}
+
+#app[data-guest] .only-stu,#app[data-sub] .only-stu{display:none!important}
+#app:not([data-guest]):not([data-sub]) .only-nostu{display:none!important}
+#app:not([data-sub]) .only-sub{display:none!important}
+
+.rxr{margin-top:8px}
+.rxadd{height:28px;padding:0 8px;border-radius:999px;background:var(--panel2)!important;color:var(--dim)!important;display:flex;align-items:center;gap:2px;border:1px solid var(--line2)!important}
+.rxadd .ic{width:16px;height:16px}.rxadd b{font-size:13px}
+.post .reacts button:not(.rxadd){background:var(--accent-soft);color:var(--ink)}
+.post .reacts button.me{background:var(--accent);color:var(--accent-ink)}
+.rxpick{position:fixed;z-index:160;display:flex;gap:2px;padding:6px;border-radius:999px;background:var(--panel);border:1px solid var(--line2);box-shadow:0 14px 40px rgba(0,0,0,.4);animation:cmin .16s ease-out}
+.rxpick button{width:42px;height:42px;border-radius:50%;font-size:24px;transition:transform .15s}
+.rxpick button:hover,.rxpick button:active{transform:scale(1.25);background:var(--panel3)}
+
+html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;height:100%}
+#msgs,.tgfeed,.cscroll{-webkit-overflow-scrolling:touch}
 </style>
 </head>
 <body>
@@ -1041,7 +1057,7 @@ html[data-theme=light] .nb.usd{color:#2563eb}
    <div class="fld"><label>رقم الهاتف</label><input class="inp num" id="rgPh" inputmode="tel" maxlength="20" placeholder="07xxxxxxxxx"></div>
    <div class="fld"><label>اختار رمز سري (6 أو أكثر)</label><input class="inp num" id="rgPw" type="password" placeholder="••••••"></div>
    <div class="fld"><label>عيد الرمز</label><input class="inp num" id="rgPw2" type="password" placeholder="••••••"></div>
-   <button class="btn blk" id="rgBtn">أرسل طلب التسجيل</button>
+   <button class="btn blk" id="rgBtn">اتسجل</button>
    <div id="rgMsg" class="dim" style="font-size:13px;margin-top:8px;min-height:20px;text-align:center"></div>
   </form>
   <button class="btn tint blk" id="regTog" style="margin-top:10px"><svg class="ic"><use href="#i-plus"/></svg><span>ما عندك حساب؟ اتسجل</span></button>
@@ -1061,10 +1077,10 @@ html[data-theme=light] .nb.usd{color:#2563eb}
    <button data-go="chart"><i></i><svg class="ic"><use href="#i-chart"/></svg>الشارت</button>
    <button data-go="signals"><i></i><svg class="ic"><use href="#i-sig"/></svg>التوصيات<b class="nbadge sgbadge hide"></b></button>
    <button data-go="posts"><i></i><svg class="ic"><use href="#i-news"/></svg>التحليلات</button>
-   <button data-go="chat" class="only-mem"><i></i><svg class="ic"><use href="#i-chat"/></svg>الدردشة<b class="nbadge cbadge hide"></b></button>
+   <button data-go="chat" class="only-stu"><i></i><svg class="ic"><use href="#i-chat"/></svg>الدردشة<b class="nbadge cbadge hide"></b></button>
    <button data-go="news"><i></i><svg class="ic"><use href="#i-cal"/></svg>الأخبار</button>
    <button data-go="tools"><i></i><svg class="ic"><use href="#i-tools"/></svg>الأدوات</button>
-   <button data-go="students" class="only-admin"><i></i><svg class="ic"><use href="#i-users"/></svg>الطلاب<b class="nbadge pdbadge hide"></b></button>
+   <button data-go="students" class="only-admin"><i></i><svg class="ic"><use href="#i-users"/></svg>الحسابات<b class="nbadge pdbadge hide"></b></button>
    <button data-go="settings"><i></i><svg class="ic"><use href="#i-set"/></svg>الإعدادات</button>
   </nav>
   <div class="clock"><div class="num" id="sClock">--:--</div><small id="sDate"></small></div>
@@ -1130,6 +1146,11 @@ html[data-theme=light] .nb.usd{color:#2563eb}
      <div class="row"><h2 style="margin:0">الزيارات والمشتركين</h2><span class="sp"></span><button class="btn tint sm" data-go="signals">التوصيات</button></div>
      <div class="vstat" id="vStats" style="margin-top:10px"></div>
      <div class="faint" style="font-size:12px;margin-top:8px">كل جهاز ينحسب زيارة وحدة باليوم. أجهزتك إنت ما تنحسب.</div>
+    </div>
+    <div class="card br only-sub">
+     <h2>تريد تصير طالب؟</h2>
+     <div class="dim" style="font-size:13.5px;margin-bottom:12px">الطلاب عدهم التحليلات اليومية الكاملة، ودردشة ويا الأستاذ والطلاب، ورسم الأستاذ مباشرة على الشارت.</div>
+     <button class="btn blk" data-act="contact"><svg class="ic"><use href="#i-msg"/></svg>تواصل ويا الأستاذ</button>
     </div>
     <div class="card br only-guest">
      <h2>تحليلات علي مالك</h2>
@@ -1355,7 +1376,7 @@ html[data-theme=light] .nb.usd{color:#2563eb}
   <section class="pg hide" id="pg-students">
    <div class="eyebrow">05 · STUDENTS ── ACCESS</div>
    <div id="stPend"></div>
-   <div class="row"><h1 style="margin-bottom:14px">الطلاب</h1><span class="sp"></span><button class="btn" id="stAdd"><svg class="ic"><use href="#i-plus"/></svg>طالب جديد</button></div>
+   <div class="row"><h1 style="margin-bottom:14px">الطلاب والمشتركين</h1><span class="sp"></span><button class="btn" id="stAdd"><svg class="ic"><use href="#i-plus"/></svg>طالب جديد</button></div>
    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(min(150px,100%),1fr));margin-bottom:14px" id="stStats"></div>
    <input class="inp" id="stQ" placeholder="دوّر على طالب…" style="margin-bottom:10px">
    <div class="list" id="stList"></div>
@@ -1371,9 +1392,9 @@ html[data-theme=light] .nb.usd{color:#2563eb}
     <div class="card br">
      <h2>المظهر</h2>
      <div class="fld"><label>الوضع</label><div class="seg" id="modeSeg"><button data-m="dark">داكن</button><button data-m="light">فاتح</button><button data-m="auto">تلقائي</button></div></div>
-     <div class="fld"><label>اللون</label><div class="row wrap" id="accSw"></div></div>
+     <div class="fld only-admin"><label>لون الموقع (يتطبق على الكل)</label><div class="row wrap" id="accSw"></div></div>
     </div>
-    <div class="card br">
+    <div class="card br only-admin">
      <h2>السعر</h2>
      <div class="fld"><label>سعر 100 دولار بالدينار</label><input class="inp num" id="sRate" inputmode="numeric"></div>
      <button class="mi" data-tg="spot" style="padding-inline:0">مطابقة السعر الفوري XAU/USD<small class="xp">الشموع من عقد الذهب XAUUSD، والسعر ينضبط تلقائياً على السعر الفوري حتى يقرب من أوندا</small><span class="sw" id="swSpot"></span></button>
@@ -1387,14 +1408,14 @@ html[data-theme=light] .nb.usd{color:#2563eb}
      <button class="btn tint sm" id="sNewsSave">احفظ وجرّب</button>
      <div class="faint" style="font-size:12px;margin-top:8px">خلّيها فارغة. تحتاجها بس إذا يوم وگفت الأخبار.</div>
     </div>
-    <div class="card br">
+    <div class="card br only-admin">
      <h2>الجهاز</h2>
      <button class="mi" data-tg="snd">الأصوات<span class="sw" id="swSnd"></span></button>
      <button class="mi" data-tg="mag">المغناطيس بالرسم<small class="xp">يلصق الخط على أعلى وأدنى الشمعة</small><span class="sw" id="swMag"></span></button>
      <button class="mi only-admin" data-tg="cast">بث رسوماتي للطلاب<small class="xp">أي خط ترسمه يطلع عدهم بالشارت مباشرة</small><span class="sw" id="swCast"></span></button>
      <button class="mi" data-tg="notif">إشعارات الجهاز<small class="xp">للتنبيهات والتحليلات الجديدة</small><span class="sw" id="swNotif"></span></button>
     </div>
-    <div class="card br">
+    <div class="card br only-admin">
      <h2>نسخة احتياطية</h2>
      <div class="xp dim" style="font-size:13px;margin-bottom:10px">رسوماتك وتنبيهاتك وإعداداتك بملف وحد.</div>
      <div class="row wrap"><button class="btn ghost" id="bkOut"><svg class="ic"><use href="#i-dl"/></svg>تصدير</button><label class="btn ghost"><svg class="ic"><use href="#i-ul"/></svg>استيراد<input type="file" accept=".json" id="bkIn" hidden></label></div>
@@ -1404,8 +1425,8 @@ html[data-theme=light] .nb.usd{color:#2563eb}
      <div class="kv"><span>الاسم</span><b id="setNm"></b></div>
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
-     <button class="btn tint blk only-mem" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-15</span></div>
+     <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-16</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1418,8 +1439,8 @@ html[data-theme=light] .nb.usd{color:#2563eb}
   <button data-go="home"><svg class="ic"><use href="#i-home"/></svg><span class="bl">الرئيسية</span></button>
   <button data-go="signals"><svg class="ic"><use href="#i-sig"/></svg><span class="bl">التوصيات</span><b class="nbadge sgbadge hide"></b></button>
   <button data-go="chart" class="mid"><svg class="ic"><use href="#i-chart"/></svg><span class="bl">الشارت</span></button>
-  <button data-go="chat" class="only-mem"><svg class="ic"><use href="#i-chat"/></svg><span class="bl">الدردشة</span><b class="nbadge cbadge hide"></b></button>
-  <button data-go="news" class="only-guest"><svg class="ic"><use href="#i-cal"/></svg><span class="bl">الأخبار</span></button>
+  <button data-go="chat" class="only-stu"><svg class="ic"><use href="#i-chat"/></svg><span class="bl">الدردشة</span><b class="nbadge cbadge hide"></b></button>
+  <button data-go="news" class="only-nostu"><svg class="ic"><use href="#i-cal"/></svg><span class="bl">الأخبار</span></button>
   <button data-act="more"><svg class="ic"><use href="#i-more"/></svg><span class="bl">المزيد</span></button>
  </nav>
 </div>
@@ -2139,6 +2160,7 @@ const FB = window.AMG_FB || {
   messagingSenderId: "272593977654",
   appId: "1:272593977654:web:0db60a8bcd209b73bfb397"
 };
+const isStu = () => ME && (ME.role === 'admin' || ME.role === 'student');
 const DOMAIN = 'amgold.app', ADMIN_EMAIL = 'aligold@amnet.com', ADMIN_NAME = 'علي مالك';
 const HAS_FB = !!(FB.apiKey && FB.projectId && window.firebase);
 
@@ -2255,6 +2277,7 @@ const LocalDB = {
   async addPost(p) { const a = L.get('amg_posts', []); p.id = uid(); a.unshift(p); L.set('amg_posts', a); this.pcb(a); },
   async updPost(id, x) { const a = L.get('amg_posts', []).map(p => p.id === id ? Object.assign(p, x) : p); L.set('amg_posts', a); this.pcb(a); },
   async delPost(id) { const a = L.get('amg_posts', []).filter(p => p.id !== id); L.set('amg_posts', a); this.pcb(a); },
+  async reactPost(id, add, rem) { const a = L.get('amg_posts', []).map(p => { if (p.id !== id) return p; const rx = Object.assign({}, p.rx || {}); if (rem) rx[rem] = Math.max(0, (rx[rem] || 1) - 1); if (add) rx[add] = (rx[add] || 0) + 1; return Object.assign(p, { rx }); }); L.set('amg_posts', a); this.pcb(a); },
   watchLive() { }, async setLive() { },
   async loadMine() { return L.get('amg_draw', []); },
   saveMine(d) { L.set('amg_draw', d); },
@@ -2310,6 +2333,7 @@ const FireDB = {
   addPost(p) { return fdb.collection('posts').add(p); },
   updPost(id, x) { return fdb.collection('posts').doc(id).update(x); },
   delPost(id) { return fdb.collection('posts').doc(id).delete(); },
+  reactPost(id, add, rem) { const inc = firebase.firestore.FieldValue.increment, x = {}; if (add) x['rx.' + add] = inc(1); if (rem) x['rx.' + rem] = inc(-1); return fdb.collection('posts').doc(id).update(x); },
   watchLive(cb) { fdb.collection('live').doc('board').onSnapshot(d => cb(d.exists ? d.data() : null), () => { }); },
   setLive(v) { return fdb.collection('live').doc('board').set(v); },
   async loadMine() {
@@ -2320,7 +2344,7 @@ const FireDB = {
     L.set('amg_draw_' + ME.uid, list); clearTimeout(this.st);
     this.st = setTimeout(() => fdb.collection('users').doc(ME.uid).collection('data').doc('draw').set({ list, at: Date.now() }).catch(() => syncState(false, 'ما انحفظت الرسومات')), 900);
   },
-  watchStudents(cb) { fdb.collection('logins').onSnapshot(s => cb(s.docs.map(d => Object.assign({ uid: d.id }, d.data())).filter(x => x.role === 'student'))); },
+  watchStudents(cb) { fdb.collection('logins').onSnapshot(s => cb(s.docs.map(d => Object.assign({ uid: d.id }, d.data())).filter(x => x.role === 'student' || x.role === 'member'))); },
   async addStudent(name, pw, days) {
     if (pw.length < 6) throw new Error('الرمز لازم يكون 6 حروف أو أرقام أو أكثر');
     const email = await pwEmail(pw);
@@ -2390,7 +2414,7 @@ const GuestDB = Object.assign({}, LocalDB, {
 if (HAS_FB) Object.assign(GuestDB, {
   watchPosts(cb) { if (!fdb) return cb([]); fdb.collection('posts').where('vis', '==', 'public').limit(80).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
   watchChan(cb) { fdb ? FireDB.watchChan(cb) : cb([]); }, viewChan(id) { return FireDB.viewChan(id); },
-  reactChan(id, a, r) { return FireDB.reactChan(id, a, r); }, watchComments(pid, cb) { return fdb ? FireDB.watchComments(pid, cb) : (cb([]), () => { }); },
+  reactChan(id, a, r) { return FireDB.reactChan(id, a, r); }, reactPost(id, a, r) { return FireDB.reactPost(id, a, r); }, watchComments(pid, cb) { return fdb ? FireDB.watchComments(pid, cb) : (cb([]), () => { }); },
   watchStat(k, cb) { fdb ? FireDB.watchStat(k, cb) : cb({}); }, setSub(on) { return FireDB.setSub(on); }, addVisit(d, nd) { return FireDB.addVisit(d, nd); }
 });
 let DB = LocalDB, ME = null;
@@ -2430,10 +2454,10 @@ function regSetup() {
     $('#rgBtn').disabled = true; msg('لحظة…'); REGISTERING = true;
     try {
       const r = await auth.createUserWithEmailAndPassword(await pwEmail(pw), pw);
-      await fdb.collection('logins').doc(r.user.uid).set({ name, phone: ph, pw, role: 'student', active: false, pending: true, exp: null, at: Date.now() });
-      try { await auth.signOut(); } catch (er) { }
-      rf.innerHTML = `<div style="text-align:center;padding:10px 0"><div style="font-size:44px">✅</div><b style="font-family:var(--fd);font-size:18px">وصل طلبك للأستاذ</b><p class="dim" style="font-size:14px;line-height:1.8;margin:8px 0 0">من يوافق عليه تگدر تدخل بنفس الرمز اللي اخترته.<br>احفظ رمزك ولا تنطيه لأحد.</p></div>`;
-      $('#regTog').classList.add('hide');
+      await fdb.collection('logins').doc(r.user.uid).set({ name, phone: ph, pw, role: 'member', active: true, exp: null, at: Date.now() });
+      L.set('amg_wantlogin', 0);
+      rf.innerHTML = `<div style="text-align:center;padding:10px 0"><div style="font-size:44px">✅</div><b style="font-family:var(--fd);font-size:18px">أهلاً ${esc(name)}، اتسجلت</b><p class="dim" style="font-size:14px;margin:6px 0 0">لحظة وتدخل…</p></div>`; $('#regTog').classList.add('hide');
+      setTimeout(() => location.reload(), 1200); return;
     } catch (er) { msg(er.code === 'auth/email-already-in-use' ? 'هذا الرمز مستخدم، اختار رمز غيره' : er.code === 'auth/network-request-failed' ? 'ماكو انترنت' : 'ما وصل الطلب، جرّب مرة ثانية', 'bad'); try { if (auth.currentUser) await auth.signOut(); } catch (e2) { } }
     REGISTERING = false; const rb = $('#rgBtn'); if (rb) rb.disabled = false;
   };
@@ -2454,11 +2478,13 @@ function initAuth() {
     if (u.email === ADMIN_EMAIL) { ME = { uid: u.uid, role: 'admin', name: ADMIN_NAME }; welcome(); return; }
     try {
       const d = await fdb.collection('logins').doc(u.uid).get(), x = d.exists ? d.data() : null;
-      if (x && x.pending) { await auth.signOut(); return loginErr('طلبك لحد الآن ينتظر موافقة الأستاذ ⏳'); }
+      if (x && x.pending) await fdb.collection('logins').doc(u.uid).update({ pending: false, active: true, role: 'member' }).then(() => { x.active = true; x.role = 'member'; }).catch(() => { });
       if (!x || !x.active) { await auth.signOut(); return loginErr('حسابك مسدود، راجع الأستاذ'); }
-      if (x.exp && x.exp < Date.now()) { await auth.signOut(); return loginErr('انتهى اشتراكك، راجع الأستاذ حتى يجدده'); }
-      ME = { uid: u.uid, role: 'student', name: x.name || 'طالب', exp: x.exp };
-      fdb.collection('logins').doc(u.uid).onSnapshot(s => { const y = s.data(); if (!y || !y.active || (y.exp && y.exp < Date.now())) { auth.signOut(); location.reload(); } });
+      if (x.role === 'student' && x.exp && x.exp < Date.now()) { await fdb.collection('logins').doc(u.uid).update({ role: 'member' }).catch(() => { }); x.role = 'member'; toast('خلص اشتراك الطالب، رجع حسابك مشترك عادي'); }
+      const role = x.role === 'student' ? 'student' : 'member';
+      ME = { uid: u.uid, role, name: x.name || (role === 'student' ? 'طالب' : 'مشترك'), exp: role === 'student' ? x.exp : null };
+      if (role === 'member') DB = Object.assign({}, FireDB, { watchPosts: cb => GuestDB.watchPosts(cb), watchLive() { }, watchChat(cb) { cb([]); } });
+      fdb.collection('logins').doc(u.uid).onSnapshot(s => { const y = s.data(); if (!y || !y.active) { auth.signOut(); location.reload(); return; } if ((y.role === 'student' ? 'student' : 'member') !== ME.role) location.reload(); });
       welcome();
     } catch (e) { await auth.signOut(); loginErr('صار خلل بالاتصال، جرّب مرة ثانية'); }
   });
@@ -3004,10 +3030,37 @@ function postHTML(p, short) {
   return `<div class="card br post ${p.pin ? 'pin' : ''}" data-pid="${p.id}">
    <div class="hd"><div class="av">${esc(initials(p.by || ADMIN_NAME))}</div><div style="min-width:0"><b>${esc(p.by || ADMIN_NAME)}</b><small>${ago(p.at)} · ${p.type === 'analysis' ? 'تحليل' : 'منشور'}${p.tf ? ' · <span class="num">' + (TFS.find(t => t[0] === p.tf) || [, p.tf])[1] + '</span>' : ''}${ME.role === 'admin' ? ' · <span class="vis-badge ' + (p.vis === 'public' ? 'pub' : '') + '">' + (p.vis === 'public' ? 'للعامة' : 'للطلاب') + '</span>' : ''}</small></div><span class="sp"></span>${p.pin ? '<span class="pill acc">📌 مثبّت</span>' : ''}</div>
    ${p.title ? `<div class="tt">${esc(p.title)}</div>` : ''}<div class="tx">${txt}</div>
+   ${short ? '' : rxRow('p', p.id, p.rx)}
    ${imgs.length && !short ? `<div class="imgs ${imgs.length === 1 ? 'one' : ''}">${imgs.map(s => `<img src="${s}" loading="lazy" data-view>`).join('')}</div>` : ''}
    ${short ? '' : `<div class="row wrap" style="margin-top:12px;gap:6px">${(p.draw || []).length ? `<button class="btn tint sm" data-pa="show"><svg class="ic" style="width:16px;height:16px"><use href="#i-eye"/></svg>اعرضه على شارتي</button>` : ''}<span class="sp"></span>${ME.role === 'admin' ? `<button class="btn ghost sm" data-pa="vis">${p.vis === 'public' ? 'خليه للطلاب' : 'خليه للعامة'}</button><button class="btn ghost sm" data-pa="pin">${p.pin ? 'شيل التثبيت' : 'ثبّت'}</button><button class="btn danger sm" data-pa="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button>` : ''}</div>`}
   </div>`;
 }
+const RXL = ['👍', '❤️', '🔥', '🎯', '💰', '👏'];
+function rxRow(kind, id, rx) {
+  const mine = L.get('amg_rx', {})[(kind === 'p' ? 'p_' : '') + id], ent = Object.entries(rx || {}).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]);
+  return `<div class="reacts rxr">${ent.map(([e, n]) => `<button data-rxk="${kind}" data-rxe="${e}" data-rxi="${id}" class="${mine === e ? 'me' : ''}">${e}<span class="num">${fmt(n)}</span></button>`).join('')}<button class="rxadd" data-rxadd="${kind}" data-rxi="${id}" title="تفاعل"><svg class="ic"><use href="#i-smile"/></svg><b>+</b></button></div>`;
+}
+function reactPost(p, e) {
+  const R0 = L.get('amg_rx', {}), k = 'p_' + p.id, old = R0[k]; if (old === e) delete R0[k]; else R0[k] = e; L.set('amg_rx', R0);
+  const rx = Object.assign({}, p.rx || {}); if (old) rx[old] = Math.max(0, (rx[old] || 1) - 1); if (old !== e) rx[e] = (rx[e] || 0) + 1; p.rx = rx; renderFeed(); renderHomePost();
+  DB.reactPost(p.id, old !== e ? e : null, old || null).catch(() => { }); navigator.vibrate && navigator.vibrate(8);
+}
+function rxPick(btn) {
+  $$('.rxpick').forEach(x => x.remove());
+  const r = btn.getBoundingClientRect(), d = document.createElement('div'); d.className = 'rxpick'; d.innerHTML = RXL.map(e => `<button data-rxp="${e}">${e}</button>`).join('');
+  document.body.appendChild(d); const w = d.offsetWidth; d.style.left = Math.max(8, Math.min(r.left + r.width / 2 - w / 2, innerWidth - w - 8)) + 'px'; d.style.top = Math.max(8, r.top - d.offsetHeight - 8) + 'px';
+  const close = () => { d.remove(); removeEventListener('pointerdown', out, true); }, out = ev => { if (!d.contains(ev.target)) close(); };
+  setTimeout(() => addEventListener('pointerdown', out, true), 0);
+  d.onclick = ev => { const x = ev.target.closest('[data-rxp]'); if (!x) return; close(); doReact(btn.dataset.rxadd, btn.dataset.rxi, x.dataset.rxp); };
+}
+function doReact(kind, id, e) {
+  if (kind === 'p') { const p = POSTS.find(x => x.id === id); if (p) reactPost(p, e); }
+  else { const p = CHAN.find(x => x.id === id); if (p) reactChanPost(p, e); }
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-rxadd]'); if (a) { e.stopPropagation(); rxPick(a); return; }
+  const b = e.target.closest('[data-rxk]'); if (b) { e.stopPropagation(); doReact(b.dataset.rxk, b.dataset.rxi, b.dataset.rxe); }
+}, true);
 function renderFeed() {
   const el = $('#feed'); if (!el) return;
   const a = sortPosts(POSTS).filter(p => pFilt === 'all' || p.type === pFilt);
@@ -3138,6 +3191,7 @@ function initTools() {
 let STUD = [];
 function stStatus(s) {
   if (!s.active) return ['مسدود', 'bad'];
+  if (s.role === 'member') return ['مشترك', 'acc'];
   if (s.exp && s.exp < Date.now()) return ['منتهي', 'bad'];
   if (s.exp && s.exp - Date.now() < 3 * 864e5) return ['قرب ينتهي', 'warn'];
   return ['فعّال', 'ok'];
@@ -3156,14 +3210,15 @@ function renderStud() {
   renderPend();
   const q = ($('#stQ').value || '').trim(), a = STUD.filter(s => !s.pending && (!q || (s.name || '').includes(q))).sort((x, y) => y.at - x.at);
   const n = k => STUD.filter(s => !s.pending && stStatus(s)[0] === k).length;
-  $('#stStats').innerHTML = [['كل الطلاب', STUD.filter(s => !s.pending).length, ''], ['فعّال', n('فعّال'), 'ok'], ['قرب ينتهي', n('قرب ينتهي'), 'warn'], ['منتهي أو مسدود', n('منتهي') + n('مسدود'), 'bad']].map(([t, v, c]) => `<div class="card br stat"><small>${t}</small><span class="num ${c}" style="font-size:24px">${v}</span></div>`).join('');
-  $('#stList').innerHTML = a.length ? a.map(s => { const [t, c] = stStatus(s); const left = s.exp ? Math.ceil((s.exp - Date.now()) / 864e5) : null; return `<div class="li" data-sid="${s.uid}"><div class="av" style="border-color:var(--${c})">${esc(initials(s.name))}</div><div class="mn"><b>${esc(s.name)}</b><small>${s.exp ? (left > 0 ? 'باقي <span class="num">' + left + '</span> يوم · لحد ' + dstr(s.exp) : 'خلص ' + dstr(s.exp)) : 'بدون انتهاء'}</small></div><span class="pill ${c}">${t}</span><div class="acts"><button class="btn tint sm" data-st="ext">+30 يوم</button><button class="btn ghost sm" data-st="edit">تعديل</button><button class="btn ${s.active ? 'danger' : 'tint'} sm" data-st="tog">${s.active ? 'سدّ' : 'فعّل'}</button></div></div>`; }).join('') : `<div class="card empty">${DB.kind === 'local' ? 'حتى تضيف طلاب لازم تربط Firebase. شوف ملف الشرح.' : 'ماكو طلاب لحد الآن. دوس "طالب جديد".'}</div>`;
+  $('#stStats').innerHTML = [['المشتركين', STUD.filter(s => s.role === 'member').length, 'acc'], ['كل الطلاب', STUD.filter(s => !s.pending && s.role === 'student').length, ''], ['فعّال', n('فعّال'), 'ok'], ['قرب ينتهي', n('قرب ينتهي'), 'warn'], ['منتهي أو مسدود', n('منتهي') + n('مسدود'), 'bad']].map(([t, v, c]) => `<div class="card br stat"><small>${t}</small><span class="num ${c}" style="font-size:24px">${v}</span></div>`).join('');
+  $('#stList').innerHTML = a.length ? a.map(s => { const [t, c] = stStatus(s), mem = s.role === 'member', left = s.exp ? Math.ceil((s.exp - Date.now()) / 864e5) : null; return `<div class="li" data-sid="${s.uid}"><div class="av" style="border-color:var(--${c === 'acc' ? 'accent' : c})">${esc(initials(s.name))}</div><div class="mn"><b>${esc(s.name)}</b><small>${mem ? (s.phone ? '<span class="num">' + esc(s.phone) + '</span> · ' : '') + 'اتسجل ' + ago(s.at) : s.exp ? (left > 0 ? 'باقي <span class="num">' + left + '</span> يوم · لحد ' + dstr(s.exp) : 'خلص ' + dstr(s.exp)) : 'بدون انتهاء'}</small></div><span class="pill ${c}">${t}</span>${mem ? `<button class="btn sm" data-st="up">خليه طالب</button>` : `<button class="btn tint sm ico" data-st="ext" title="مدّد 30 يوم"><svg class="ic" style="width:16px;height:16px"><use href="#i-plus"/></svg></button>`}<button class="btn ghost sm ico" data-st="edit" title="تعديل"><svg class="ic" style="width:16px;height:16px"><use href="#i-edit"/></svg></button></div>`; }).join('') : '<div class="empty">ماكو أحد</div>';
   if (curPg === 'students') anim('#pg-students');
 }
 function studentForm(s) {
   modal(`<h2>${s ? 'تعديل طالب' : 'طالب جديد'}<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
    <div class="fld"><label>الاسم</label><input class="inp" id="fNm" value="${esc(s ? s.name : '')}"></div>
    ${s ? `<div class="fld"><label>الرمز</label><div class="row"><input class="inp num" value="${esc(s.pw || '')}" readonly><button class="btn ghost sm" data-cp="${esc(s.pw || '')}">انسخ</button></div></div>` : `<div class="fld"><label>الرمز السري (6 أو أكثر)</label><div class="row"><input class="inp num" id="fPw"><button class="btn ghost sm" id="fGen">ولّد</button></div></div>`}
+   ${s ? `<div class="fld"><label>نوع الحساب</label><select class="inp" id="fRole"><option value="member" ${s.role === 'member' ? 'selected' : ''}>مشترك عادي</option><option value="student" ${s.role === 'student' ? 'selected' : ''}>طالب بالكورس</option></select></div>` : ''}
    <div class="fld"><label>${s ? 'مدة الاشتراك من اليوم (يوم)' : 'مدة الاشتراك (يوم) — خليها فارغة بدون انتهاء'}</label><input class="inp num" id="fDays" inputmode="numeric" value="${s ? (s.exp ? Math.max(0, Math.ceil((s.exp - Date.now()) / 864e5)) : '') : 30}"></div>
    <div class="row"><button class="btn sp" id="fOk">${s ? 'احفظ' : 'ضيف'}</button>${s ? '<button class="btn danger sm" id="fDel">احذف</button>' : ''}</div>`, (m, close) => {
     const g = m.querySelector('#fGen'); if (g) g.onclick = () => { m.querySelector('#fPw').value = String(Math.floor(100000 + Math.random() * 900000)); };
@@ -3173,12 +3228,18 @@ function studentForm(s) {
       if (!name) return toast('اكتب الاسم', 'bad');
       const btn = m.querySelector('#fOk'); btn.disabled = true;
       try {
-        if (s) { await DB.updStudent(s.uid, { name, exp: days ? Date.now() + days * 864e5 : null }); DB.log('عدّل الطالب ' + name); }
+        if (s) { const role = m.querySelector('#fRole') ? m.querySelector('#fRole').value : s.role; await DB.updStudent(s.uid, { name, role, exp: role === 'student' && days ? Date.now() + days * 864e5 : null }); DB.log('عدّل ' + name); }
         else { const pw = m.querySelector('#fPw').value.trim(); await DB.addStudent(name, pw, days); DB.log('ضاف الطالب ' + name); }
         beep('ok'); toast(s ? 'انحفظ' : 'اتسجل الطالب ✓ — انطيه الرمز حتى يدخل', 'ok'); close();
       } catch (e) { toast(e.message || 'صار خلل', 'bad'); btn.disabled = false; }
     };
     const dl = m.querySelector('#fDel'); if (dl) dl.onclick = async () => { close(); if (await ask('تحذف ' + s.name + '؟', 'ما يگدر يدخل بعد.', 'احذف', true)) { await DB.delStudent(s.uid); DB.log('حذف الطالب ' + s.name); toast('انحذف'); } };
+  });
+}
+function makeStudent(s) {
+  modal(`<h2>تخلي ${esc(s.name)} طالب؟<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2><div class="fld"><label>مدة الاشتراك (يوم) — فارغة بدون انتهاء</label><input class="inp num" id="apD" inputmode="numeric" value="30"></div><div class="row wrap" style="gap:6px;margin-bottom:10px">${[7, 30, 90, 365].map(d => `<button class="btn ghost sm" data-ad="${d}">${d} يوم</button>`).join('')}</div><button class="btn blk" id="apOk">فعّل مميزات الطالب</button>`, (m, close) => {
+    m.onclick = ev => { const x = ev.target.closest('[data-ad]'); if (x) m.querySelector('#apD').value = x.dataset.ad; };
+    m.querySelector('#apOk').onclick = async () => { const d = parseN(m.querySelector('#apD').value); try { await DB.updStudent(s.uid, { role: 'student', active: true, pending: false, exp: d ? Date.now() + d * 864e5 : null }); DB.log('خلّى ' + s.name + ' طالب'); toast(s.name + ' صار طالب ✓', 'ok'); close(); } catch (er) { toast('ما تغيّر', 'bad'); } };
   });
 }
 function initStudents() {
@@ -3195,6 +3256,7 @@ function initStudents() {
   $('#stList').onclick = async e => {
     const b = e.target.closest('[data-st]'); if (!b) return; const s = STUD.find(x => x.uid === b.closest('[data-sid]').dataset.sid); if (!s) return;
     if (b.dataset.st === 'edit') studentForm(s);
+    if (b.dataset.st === 'up') return makeStudent(s);
     if (b.dataset.st === 'ext') { const base = Math.max(Date.now(), s.exp || Date.now()); await DB.updStudent(s.uid, { exp: base + 30 * 864e5, active: true }); DB.log('مدّد اشتراك ' + s.name + ' 30 يوم'); toast('انمدّ 30 يوم', 'ok'); }
     if (b.dataset.st === 'tog') { await DB.updStudent(s.uid, { active: !s.active }); DB.log((s.active ? 'سدّ حساب ' : 'فعّل حساب ') + s.name); }
   };
@@ -3205,11 +3267,12 @@ function initSettings() {
   $('#modeSeg').onclick = e => { const b = e.target.closest('[data-m]'); if (b) setMode(b.dataset.m); };
   $('#accSw').innerHTML = SWATCH.map(c => `<button class="c" data-acc="${c}" style="width:32px;height:32px;border-radius:50%;background:${c};border:3px solid var(--panel);box-shadow:0 0 0 1px var(--line2)"></button>`).join('') + `<label style="width:32px;height:32px;border-radius:50%;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);display:inline-block;position:relative;cursor:pointer"><input type="color" id="accPick" style="opacity:0;position:absolute;inset:0;width:100%;height:100%"></label>`;
   const markAcc = () => $$('[data-acc]').forEach(b => b.style.boxShadow = b.dataset.acc === (S.acc || SWATCH[0]) ? '0 0 0 2px var(--ink)' : '0 0 0 1px var(--line2)');
-  $('#accSw').onclick = e => { const b = e.target.closest('[data-acc]'); if (!b) return; S.acc = b.dataset.acc; saveS(); applyTheme(); markAcc(); };
-  $('#accPick').oninput = e => { S.acc = e.target.value; saveS(); applyTheme(); markAcc(); };
+  let accT; const pushAcc = () => { clearTimeout(accT); accT = setTimeout(() => DB.setConfig({ accent: S.acc }).catch(() => toast('ما انحفظ اللون للكل', 'bad')), 600); };
+  $('#accSw').onclick = e => { const b = e.target.closest('[data-acc]'); if (!b) return; S.acc = b.dataset.acc; saveS(); applyTheme(); markAcc(); pushAcc(); };
+  $('#accPick').oninput = e => { S.acc = e.target.value; saveS(); applyTheme(); markAcc(); pushAcc(); };
   markAcc();
   $('#sRate').value = S.rate; $('#sOff').value = S.off || '';
-  $('#sRate').oninput = e => { const v = parseN(e.target.value); if (v) { S.rate = v; saveS(); renderPrice(); } };
+  let rateT; $('#sRate').oninput = e => { const v = parseN(e.target.value); if (v) { S.rate = v; saveS(); renderPrice(); clearTimeout(rateT); rateT = setTimeout(() => DB.setConfig({ rate: v }).catch(() => { }), 800); } };
   $('#sOff').oninput = e => { S.off = parseN(e.target.value) || 0; saveS(); renderPrice(); renderAlerts(); CH.dirty = true; };
   const sw = () => { $('#swSpot').classList.toggle('on', S.spot !== false); $('#spotInfo').innerHTML = 'الضبط التلقائي هسه: <span class="num">' + (AUTO >= 0 ? '+' : '') + fx(AUTO) + '$</span>. إذا شفت فرق ثابت ويا الـ MT5 مالتك (مثلاً Exness)، اكتبه هنا.'; $('#swSnd').classList.toggle('on', S.snd); $('#swMag').classList.toggle('on', S.mag); $('#swCast').classList.toggle('on', S.cast); $('#swNotif').classList.toggle('on', S.notif && 'Notification' in window && Notification.permission === 'granted'); $('#magBtn').classList.toggle('on', S.mag); };
   sw();
@@ -3402,11 +3465,11 @@ function openConv(c) {
   if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; }
   CONV = c; TMSG = []; chRendered = new Set(); chInitial = true; fabN = 0; $('#msgInner').innerHTML = '';
   if (c.k === 'thr') tUnsub = DB.watchThread(c.tid, list => { if (!CONV || CONV.tid !== c.tid) return; TMSG = list.slice().sort((a, b) => a.at - b.at); renderMsgs(); chatSeenNow(); });
-  $('#chatWrap').dataset.cv = 'conv'; if (matchMedia('(max-width:900px)').matches) $('#app').dataset.conv = '1'; setTimeout(() => window.kbUpd && kbUpd(), 0);
+  $('#chatWrap').dataset.cv = 'conv'; if (matchMedia('(max-width:900px)').matches) $('#app').dataset.conv = '1'; setTimeout(() => { window.kbUpd && kbUpd(); typeof scrollLock === 'function' && scrollLock(); }, 0);
   chatHeader(); renderMsgs(); renderList(); chatSeenNow();
   if (!matchMedia('(pointer:coarse)').matches && c.k !== 'saved') setTimeout(() => $('#chatTx').focus(), 50);
 }
-function closeConv() { stopAudio(); if (REC || RG) recCancel(); if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; } CONV = null; $('#chatWrap').dataset.cv = 'list'; delete $('#app').dataset.conv; setTimeout(() => window.kbUpd && kbUpd(), 0); renderList(); chatHeader(); }
+function closeConv() { stopAudio(); if (REC || RG) recCancel(); if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; } CONV = null; $('#chatWrap').dataset.cv = 'list'; delete $('#app').dataset.conv; setTimeout(() => { window.kbUpd && kbUpd(); typeof scrollLock === 'function' && scrollLock(); }, 0); renderList(); chatHeader(); }
 function openKey(k) {
   if (k === 'room') return openConv({ k: 'room' });
   if (k === 'saved') return openConv({ k: 'saved' });
@@ -3810,7 +3873,7 @@ function chanHTML(p) {
    ${p.reply ? `<div class="quote" data-jumpc="${esc(p.reply.id)}"><b>AM GOLD ⚡</b><span>${esc(p.reply.text || '')}</span></div>` : ''}
    ${p.img ? `<img class="cimg" src="${p.img}" data-view loading="lazy">` : ''}
    <div class="cb">${p.sig ? sigLines(p.sig) : ''}${p.text ? `<div class="ctx">${linkify(esc(p.text))}</div>` : ''}
-   ${Object.entries(p.rx || {}).filter(([, n]) => n > 0).length ? `<div class="reacts">${Object.entries(p.rx).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).map(([e, n]) => `<button data-crx="${e}" class="${myRx()[p.id] === e ? 'me' : ''}">${e}<span class="num">${fmt(n)}</span></button>`).join('')}</div>` : ''}
+   ${rxRow('c', p.id, p.rx)}
    <div class="cm">${p.pin ? '<span class="cpin">📌</span>' : ''}<span class="num">${tstr(p.at)}</span><span><span class="num">${fmt(p.views || 0)}</span><svg class="ic"><use href="#i-eye"/></svg></span></div></div>
    <div class="cmt" data-cmt="${p.id}">${cu.length ? `<span class="avs">${cu.map(u => avHTML(u, (PROF[u] || {}).name || '؟', 26)).join('')}</span>` : '<svg class="ic"><use href="#i-msg"/></svg>'}<span class="t">${cn ? fmt(cn) + (cn === 1 ? ' تعليق' : cn <= 10 ? ' تعليقات' : ' تعليق') : 'اكتب تعليق'}</span><svg class="ic ch"><use href="#i-back"/></svg></div></div>`;
 }
@@ -4085,7 +4148,7 @@ let curPg = 'home';
 function anim(sel) { const p = $(sel); p.classList.remove('in'); $$('.card,.li', p).forEach((c, i) => c.style.setProperty('--i', Math.min(i, 12))); void p.offsetWidth; p.classList.add('in'); }
 function go(pg) {
   if (pg === 'students' && ME.role !== 'admin') pg = 'home';
-  if (ME.role === 'guest' && ['chat', 'students'].includes(pg)) pg = 'home';
+  if (!isStu() && pg === 'chat') pg = 'home';
   const prev = curPg; curPg = pg; $('#app').dataset.pg = pg; requestAnimationFrame(navInd);
   $$('.pg').forEach(p => p.classList.toggle('hide', p.id !== 'pg-' + pg));
   $$('[data-go]').forEach(b => { if (b.closest('#snav') || b.closest('#bnav')) b.classList.toggle('on', b.dataset.go === pg); });
@@ -4107,7 +4170,7 @@ function go(pg) {
   if (prev === 'chat' && pg !== 'chat') { setTimeout(() => window.kbUpd && kbUpd(), 0); chQ = ''; const cs = $('#chSearch'); if (cs) cs.value = ''; if (matchMedia('(max-width:900px)').matches && CONV) closeConv(); }
   if (pg === 'signals') { L.set('amg_chseen', Date.now()); chanBadge(); setTimeout(() => chanBottom(false), 60); }
   else chanBadge();
-  setTimeout(() => window.kbUpd && kbUpd(), 0);
+  setTimeout(() => window.kbUpd && kbUpd(), 0); scrollLock();
   if (pg === 'home') renderSpark();
   $('.npanel') && $('.npanel').remove();
 }
@@ -4116,7 +4179,7 @@ function moreSheet() {
    <button class="mi" data-mo="contact"><svg class="ic"><use href="#i-msg"/></svg>تواصل ويا علي مالك</button>
    <button class="mi" data-mo="posts"><svg class="ic"><use href="#i-news"/></svg>التحليلات والمنشورات</button>
    <button class="mi" data-mo="news"><svg class="ic"><use href="#i-cal"/></svg>الأخبار</button>
-   ${ME.role !== 'guest' ? '<button class="mi" data-mo="tools"><svg class="ic"><use href="#i-tools"/></svg>الأدوات</button>' : ''}
+   ${ME.role === 'admin' ? '<button class="mi" data-mo="tools"><svg class="ic"><use href="#i-tools"/></svg>الأدوات</button>' : ''}
    ${ME.role === 'admin' ? '<button class="mi" data-mo="students"><svg class="ic"><use href="#i-users"/></svg>الطلاب</button>' : ''}
    <button class="mi" data-mo="settings"><svg class="ic"><use href="#i-set"/></svg>الإعدادات</button>
    <button class="mi" data-mo="snd"><svg class="ic"><use href="#i-snd"/></svg>الأصوات<span class="sw ${S.snd ? 'on' : ''}"></span></button>
@@ -4134,6 +4197,7 @@ document.addEventListener('click', e => {
   if (k === 'snd') { S.snd = !S.snd; saveS(); toast(S.snd ? 'الصوت شغّال' : 'الصوت طافي'); if (S.snd) beep('ok'); }
   if (k === 'bell') { e.stopPropagation(); bellPanel(); }
   if (k === 'more') moreSheet();
+  if (k === 'contact') chanInfo();
   if (k === 'sbc') { const on = !$('#app').hasAttribute('data-sbc'); $('#app').toggleAttribute('data-sbc', on); L.set('amg_sbc', on ? 1 : 0); setTimeout(() => { navInd(); fitChart(); }, 320); }
   if (k === 'ind') indSheet();
   if (k === 'cset') csSheet();
@@ -4169,6 +4233,16 @@ function navPrep() {
   addEventListener('resize', () => requestAnimationFrame(navInd));
 }
 
+function scrollLock() {
+  const m = matchMedia('(max-width:900px)').matches, app = $('#app');
+  const on = m && ((curPg === 'chat' && app.hasAttribute('data-conv')) || curPg === 'signals');
+  document.documentElement.classList.toggle('lock', on); if (on) window.scrollTo(0, 0);
+}
+document.addEventListener('touchmove', e => {
+  if (!document.documentElement.classList.contains('lock')) return;
+  const sc = e.target.closest('#msgs,.cscroll,.tgfeed,.emoji .grid,textarea,.ov,.modal,.sheet,.npanel,.rxpick');
+  if (!sc && e.cancelable) e.preventDefault();
+}, { passive: false });
 /* ====== start ====== */
 let started = false;
 function start() {
@@ -4176,9 +4250,10 @@ function start() {
   const app = $('#app'); app.classList.remove('hide');
   if (ME.role === 'admin') app.dataset.admin = '1';
   if (ME.role === 'guest') app.dataset.guest = '1';
+  if (ME.role === 'member') app.dataset.sub = '1';
   $('#demoBar').classList.toggle('hide', !ME.local);
-  $('#uNm').textContent = ME.name; $('#uAv').textContent = initials(ME.name); $('#uRole').textContent = ME.role === 'admin' ? 'الأدمن' : ME.role === 'guest' ? 'تصفّح بدون حساب' : 'طالب';
-  $('#setNm').textContent = ME.name; $('#setRole').textContent = ME.role === 'admin' ? 'الأدمن' : ME.role === 'guest' ? 'زائر' : 'طالب' + (ME.exp ? ' · لحد ' + dstr(ME.exp) : '');
+  $('#uNm').textContent = ME.name; $('#uAv').textContent = initials(ME.name); $('#uRole').textContent = ME.role === 'admin' ? 'الأدمن' : ME.role === 'member' ? 'مشترك' : ME.role === 'guest' ? 'تصفّح بدون حساب' : 'طالب';
+  $('#setNm').textContent = ME.name; $('#setRole').textContent = ME.role === 'admin' ? 'الأدمن' : ME.role === 'member' ? 'مشترك' : ME.role === 'guest' ? 'زائر' : 'طالب' + (ME.exp ? ' · لحد ' + dstr(ME.exp) : '');
   $('#setDb').textContent = DB.kind === 'firebase' ? 'Firebase (مربوط)' : 'هذا الجهاز بس';
   $('#outBtn').classList.toggle('hide', !!ME.local);
   const h = new Date().getHours(), first = ME.name.split(' ')[0];
@@ -4187,12 +4262,12 @@ function start() {
   setMode(S.mode); initChart(); initPosts(); initTools(); initSettings();
   if (ME.role === 'admin') { initStudents(); DB.watchDelLog(l => { LOGS = l.map(x => Object.assign({ kind: 'del' }, x)); }); DB.watchStudents(l => { STUD = l; renderStud(); }); DB.watchLogs(l => { $('#logList').innerHTML = l.length ? l.slice(0, 20).map(x => `<div class="li"><div class="mn"><b style="font-weight:700;font-size:14px">${esc(x.t)}</b><small>${ago(x.at)} · ${esc(x.by || '')}</small></div></div>`).join('') : '<div class="empty">ماكو حركات</div>'; }); }
   DB.watchPosts(onPosts);
-  DB.watchConfig(c => { const old = CFG.newsUrl, oldPin = JSON.stringify(CFG.pin || null); CFG = c || {}; renderChatLock(); if (ME.role !== 'guest' && JSON.stringify(CFG.pin || null) !== oldPin) { renderPin(); if (CONV) renderMsgs(); } const si = $('#sNews'); if (si && document.activeElement !== si) si.value = CFG.newsUrl || ''; if (CFG.newsUrl !== old) loadNews(true); });
-  if (ME.role !== 'guest') {
+  DB.watchConfig(c => { if (c && c.accent && c.accent !== S.acc) { S.acc = c.accent; saveS(); applyTheme(); } if (c && c.rate && c.rate !== S.rate) { S.rate = c.rate; saveS(); const r = $('#sRate'); if (r && document.activeElement !== r) r.value = c.rate; renderPrice(); } const old = CFG.newsUrl, oldPin = JSON.stringify(CFG.pin || null); CFG = c || {}; if (isStu()) renderChatLock(); if (isStu() && JSON.stringify(CFG.pin || null) !== oldPin) { renderPin(); if (CONV) renderMsgs(); } const si = $('#sNews'); if (si && document.activeElement !== si) si.value = CFG.newsUrl || ''; if (CFG.newsUrl !== old) loadNews(true); });
+  if (isStu()) {
     DB.watchProfiles(p => { PROF = p || {}; const first = !profLoaded; profLoaded = true; if (ME.role === 'admin' && !PROF[ME.uid]) DB.setProfile({ name: ME.name, role: 'admin', photo: '', at: Date.now() }).catch(() => { }); const mp = PROF[ME.uid]; if (ME.role === 'student' && (!mp || mp.name !== ME.name)) DB.setProfile(Object.assign({ photo: '' }, mp || {}, { name: ME.name, role: 'student', at: Date.now() })).catch(() => { }); if (CONV) renderMsgs(); renderNotes(); renderList(); myAv(); if (curPg === 'chat') chatHeader(); if (first && needPhoto()) setTimeout(() => photoSheet(true), 600); });
     DB.watchChat(onChat);
   }
-  initNews(); if (ME.role !== 'guest') initChat(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
+  initNews(); if (isStu()) initChat(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
   DB.watchLive(v => { LIVE = v; setTeacher(); });
   if (ME.role === 'admin' && S.cast) castNow();
   setTeacher(); renderAlerts(); loadTicker().then(syncSpot); setInterval(loadTicker, 5 * 6e4); setInterval(syncSpot, 6e4);
