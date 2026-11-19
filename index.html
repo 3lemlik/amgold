@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.19-32">
+<meta name="app-build" content="2026.11.19-33">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1548,7 +1548,7 @@ html.lock{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-32</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-33</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -2453,7 +2453,7 @@ const LocalDB = {
 let fbApp, auth, fdb;
 const FireDB = {
   kind: 'firebase',
-  watchPosts(cb) { fdb.collection('posts').orderBy('at', 'desc').limit(80).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), e => syncState(false, 'ماكو صلاحية للتحليلات')); },
+  watchPosts(cb) { fdb.collection('posts').orderBy('at', 'desc').limit(40).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), e => syncState(false, 'ماكو صلاحية للتحليلات')); },
   async addPost(p) { const r = await fdb.collection('posts').add(p); p.id = r.id; return r; },
   updPost(id, x) { return fdb.collection('posts').doc(id).update(x); },
   delPost(id) { return fdb.collection('posts').doc(id).delete(); },
@@ -2487,7 +2487,7 @@ const FireDB = {
   delStudent(id) { const s = STUD.find(x => x.uid === id); fdb.collection('dellog').add({ kind: 'del', t: 'حذف حساب طالب', text: 'انحذف حساب ' + ((s && s.name) || ''), author: (s && s.name) || '', where: 'الحسابات', by: ME.name, at: Date.now() }).catch(() => { }); return fdb.collection('logins').doc(id).delete(); },
   log(t) { fdb.collection('logs').add({ t, at: Date.now(), by: ME.name }).catch(() => { }); },
   watchLogs(cb) { fdb.collection('logs').orderBy('at', 'desc').limit(40).onSnapshot(s => cb(s.docs.map(d => d.data())), () => { }); },
-  watchChat(cb) { fdb.collection('chat').orderBy('at', 'desc').limit(150).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => { }); },
+  watchChat(cb) { fdb.collection('chat').orderBy('at', 'desc').limit(80).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => { }); },
   sendChat(m) { return fdb.collection('chat').add(m); },
   delChat(id) { return fdb.collection('chat').doc(id).delete(); },
   watchConfig(cb) { fdb.collection('config').doc('public').onSnapshot(d => cb(d.exists ? d.data() : {}), () => cb({})); },
@@ -2507,13 +2507,13 @@ const FireDB = {
   saveMsg(m) { return fdb.collection('users').doc(ME.uid).collection('saved').add(m); },
   unsaveMsg(id) { return fdb.collection('users').doc(ME.uid).collection('saved').doc(id).delete(); },
   watchThreads(cb) { fdb.collection('threads').where('members', 'array-contains', ME.uid).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => { }); },
-  watchThread(tid, cb) { return fdb.collection('threads').doc(tid).collection('msgs').orderBy('at', 'desc').limit(200).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
+  watchThread(tid, cb) { return fdb.collection('threads').doc(tid).collection('msgs').orderBy('at', 'desc').limit(100).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
   async sendThread(tid, meta, m) { await fdb.collection('threads').doc(tid).set(meta); await fdb.collection('threads').doc(tid).collection('msgs').add(m); },
   delThreadMsg(tid, id) { return fdb.collection('threads').doc(tid).collection('msgs').doc(id).delete(); },
   reactThread(tid, id, R) { return fdb.collection('threads').doc(tid).collection('msgs').doc(id).update({ reactions: R }); },
   logDel(x) { return fdb.collection('dellog').add(x); },
-  watchDelLog(cb) { fdb.collection('dellog').orderBy('at', 'desc').limit(200).onSnapshot(s => cb(s.docs.map(d => d.data())), () => { }); },
-  watchChan(cb) { fdb.collection('channel').orderBy('at', 'desc').limit(150).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
+  watchDelLog(cb) { fdb.collection('dellog').orderBy('at', 'desc').limit(60).onSnapshot(s => cb(s.docs.map(d => d.data())), () => { }); },
+  watchChan(cb) { fdb.collection('channel').orderBy('at', 'desc').limit(60).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
   addChan(p) { return fdb.collection('channel').add(p); },
   updChan(id, x) { return fdb.collection('channel').doc(id).update(x); },
   delChan(id) { return fdb.collection('channel').doc(id).delete(); },
@@ -2598,6 +2598,7 @@ function initAuth() {
     start(); return;
   }
   fbApp = firebase.initializeApp(FB); auth = fbApp.auth(); fdb = fbApp.firestore(); DB = FireDB;
+  try { fdb.enablePersistence({ synchronizeTabs: true }).catch(() => { }); } catch (e) { }
   $('#guestBtn').onclick = () => { L.set('amg_wantlogin', 0); if (started) { $('#login').classList.add('hide'); $('#app').classList.remove('hide'); } else enterGuest(); };
   regSetup();
   auth.onAuthStateChanged(async u => {
@@ -3856,7 +3857,7 @@ function initChat() {
     const m = { uid: ME.uid, name: ME.name, role: ME.role, text: t.slice(0, 1000), at: Date.now() };
     if (replyTo) m.reply = replyTo; if (chImgData) m.img = chImgData;
     tx.value = ''; replyClear(); chImgData = null; $('#chImgPrev').classList.add('hide'); grow();
-    try { await convSend(m, m.text || '📷 صورة'); } catch (e) { toast('ما وصلت الرسالة', 'bad'); tx.value = t; grow(); }
+    try { await convSend(m, m.text || '📷 صورة'); } catch (e) { toast(sendErr(e), 'bad'); tx.value = t; grow(); }
   };
   setupSendBtn();
   tx.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !matchMedia('(pointer:coarse)').matches) { e.preventDefault(); send(); } });
@@ -4135,8 +4136,19 @@ function renderChan() {
   const q = chanQ.trim(), list = q ? a.filter(p => (p.text || '').includes(q) || (p.sig && ((p.sig.entry || '') + (p.sig.side === 'buy' ? 'شراء buy' : 'بيع sell')).toLowerCase().includes(q.toLowerCase()))) : a;
   let h = '', lastD = '';
   if (!list.length) h = `<div class="clock2"><div class="cav"><svg><use href="#i-logo"/></svg></div>${q ? 'ماكو شي بهالكلمة' : ME.role === 'admin' ? 'القناة فارغة. اكتب أول توصية أو رسالة من جوّه 👇' : 'لحد الآن ماكو توصيات، من تنزل وحدة يوصلك تنبيه 🔔'}</div>`;
-  list.forEach(p => { const d = new Date(p.at).toDateString(); if (d !== lastD) { lastD = d; const td = new Date().toDateString(), yd = new Date(Date.now() - 864e5).toDateString(); h += `<div class="cday">${d === td ? 'اليوم' : d === yd ? 'البارحة' : DAYS[new Date(p.at).getDay()] + ' ' + dstr(p.at)}</div>`; } h += chanHTML(p); });
-  el.innerHTML = h; watchViews();
+  const items = []; if (!list.length) items.push({ key: 'empty', html: h });
+  list.forEach(p => { const d = new Date(p.at).toDateString(); if (d !== lastD) { lastD = d; const td = new Date().toDateString(), yd = new Date(Date.now() - 864e5).toDateString(); items.push({ key: 'd' + d, html: `<div class="cday">${d === td ? 'اليوم' : d === yd ? 'البارحة' : DAYS[new Date(p.at).getDay()] + ' ' + dstr(p.at)}</div>` }); } items.push({ key: p.id, p }); });
+  // نحدّث المتغيّر بس، حتى الصور ما تنعاد وما تتحرك الصفحة
+  const old = {}; [...el.children].forEach(n => { if (n.dataset.k) old[n.dataset.k] = n; });
+  items.forEach((it, i) => {
+    let n = old[it.key];
+    const sig = it.p ? JSON.stringify([it.p.text, it.p.img ? it.p.img.length : 0, it.p.sig, it.p.rx, it.p.pin, it.p.reply, ME.role, L.get('amg_rx', {})[it.p.id]]) : it.html;
+    if (!n || n.dataset.sig !== sig) { const t = document.createElement('div'); t.innerHTML = it.p ? chanHTML(it.p) : it.html; const nn = t.firstElementChild; nn.dataset.k = it.key; nn.dataset.sig = sig; if (n) n.replaceWith(nn); n = nn; }
+    else if (it.p) { const v = n.querySelector('.cm .num + svg') ? null : null; const vs = n.querySelectorAll('.cm span .num'); if (vs.length) vs[vs.length - 1].textContent = fmt(it.p.views || 0); const cm = n.querySelector('.cmt'); if (cm) { const t = document.createElement('div'); t.innerHTML = chanHTML(it.p); const nc = t.querySelector('.cmt'); if (nc && nc.innerHTML !== cm.innerHTML) cm.innerHTML = nc.innerHTML; } }
+    delete old[it.key]; if (el.children[i] !== n) el.insertBefore(n, el.children[i] || null);
+  });
+  Object.values(old).forEach(n => n.remove()); [...el.children].forEach(n => { if (!n.dataset.k) n.remove(); });
+  watchViews();
 }
 function watchViews() {
   if (!('IntersectionObserver' in window)) return;
@@ -4484,7 +4496,9 @@ function navPrep() {
 function scrollLock() {
   const m = matchMedia('(max-width:900px)').matches, app = $('#app');
   const on = m && ((curPg === 'chat' && app.hasAttribute('data-conv')) || curPg === 'signals');
-  document.documentElement.classList.toggle('lock', on); if (on) window.scrollTo(0, 0);
+  const h = document.documentElement, was = h.classList.contains('lock'); if (was === on) return;
+  if (on) { scrollLock.y = window.scrollY; h.classList.add('lock'); }
+  else { h.classList.remove('lock'); const y = scrollLock.y || 0; window.scrollTo(0, y); requestAnimationFrame(() => window.scrollTo(0, y)); }
 }
 document.addEventListener('touchmove', e => {
   if (!document.documentElement.classList.contains('lock')) return;
@@ -4576,14 +4590,16 @@ function edgeBack(el, back, peek, when) {
 }
 /* ====== إشعار فوري: بعد أي رسالة أو منشور نكلّم السكربت يدز بنفس اللحظة ====== */
 function nudgePush() { const u = (CFG.newsUrl || '').trim(); if (!/script\.google/.test(u)) return; try { fetch(u + (u.includes('?') ? '&' : '?') + 'a=tick&t=' + Date.now(), { mode: 'no-cors', keepalive: true }).catch(() => { }); } catch (e) { } }
+function pushPing() { }  // الإشعار الفوري يصير من wrapNudge
 function wrapNudge() { ['sendChat', 'sendThread', 'addChan', 'addPost'].forEach(k => { const f = DB[k]; if (!f || f.__n) return; const g = async function () { const r = await f.apply(this, arguments); setTimeout(nudgePush, 300); return r; }; g.__n = 1; DB[k] = g; }); }
 /* المستخدم داخل المحادثة؟ حتى ما يوصله إشعار رسائلها */
 let hereT = 0;
 function pushView() {
-  clearInterval(hereT); const id = L.get('amg_pid', ''); if (!id || !fdb || !HAS_FB) return;
+  const id = L.get('amg_pid', ''); if (!id || !fdb || !HAS_FB) return;
   const here = typeof CONV !== 'undefined' && CONV && curPg === 'chat' && !document.hidden ? (CONV.k === 'room' ? 'room' : CONV.k === 'thr' ? CONV.tid : '') : '';
   const w = () => fdb.collection('push').doc(id).set({ here, hereAt: Date.now() }, { merge: true }).catch(() => { });
-  w(); if (here) hereT = setInterval(w, 40000);
+  if (pushView.last === here && (!here || Date.now() - (pushView.at || 0) < 60000)) return;
+  clearInterval(hereT); pushView.last = here; pushView.at = Date.now(); w(); if (here) hereT = setInterval(() => { pushView.at = Date.now(); w(); }, 90000);
 }
 document.addEventListener('visibilitychange', () => { if (typeof pushView === 'function') pushView(); });
 /* طلب السماح بالإشعارات من يفتح التطبيق */
@@ -4611,6 +4627,13 @@ document.addEventListener('click', e => {
   if (typeof CONV !== 'undefined' && CONV && isPhone()) navBack();
   go('posts'); setTimeout(() => { const el = $(`#feed [data-pid="${CSS.escape(id)}"]`); if (!el) return toast('التحليل انحذف'); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }, 350);
 });
+function sendErr(e) {
+  const c = (e && e.code) || '';
+  if (c === 'resource-exhausted') return 'ما وصلت: خلص الحد اليومي المجاني لقاعدة البيانات، يرجع الساعة 11 الصبح';
+  if (c === 'permission-denied') return 'ما وصلت: ماكو صلاحية (الغرفة مقفولة أو اشتراكك خلص)';
+  if (c === 'unavailable' || !navigator.onLine) return 'ما وصلت: ماكو انترنت، جرّب مرة ثانية';
+  return 'ما وصلت الرسالة' + (c ? ' (' + c + ')' : '');
+}
 /* ====== start ====== */
 let started = false;
 function start() {
