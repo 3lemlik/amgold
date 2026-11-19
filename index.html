@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-19">
+<meta name="app-build" content="2026.11.19-22">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1072,8 +1072,7 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
   <form class="card br hide" id="regForm" autocomplete="off">
    <div class="fld"><label>اسمك الكامل</label><input class="inp" id="rgNm" maxlength="40" placeholder="مثلاً: حسين علي"></div>
    <div class="fld"><label>رقم الهاتف</label><input class="inp num" id="rgPh" inputmode="tel" maxlength="20" placeholder="07xxxxxxxxx"></div>
-   <div class="fld"><label>اختار رمز سري (6 أو أكثر)</label><input class="inp num" id="rgPw" type="password" placeholder="••••••"></div>
-   <div class="fld"><label>عيد الرمز</label><input class="inp num" id="rgPw2" type="password" placeholder="••••••"></div>
+   <div class="fld"><label>اختار رمز سري (6 أو أكثر) — احفظه زين</label><input class="inp num" id="rgPw" type="text" name="amg-new-code" autocomplete="off" inputmode="text" placeholder="مثلاً 784512"></div>
    <button class="btn blk" id="rgBtn">اتسجل</button>
    <div id="rgMsg" class="dim" style="font-size:13px;margin-top:8px;min-height:20px;text-align:center"></div>
   </form>
@@ -1443,7 +1442,7 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-19</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-22</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -2460,12 +2459,12 @@ function showGate() {
 }
 let REGISTERING = false;
 function eyeSetup() {
-  ['#lgPw', '#rgPw', '#rgPw2'].forEach(s => { const i = $(s); if (!i || i.parentNode.classList.contains('pww')) return; const w = document.createElement('div'); w.className = 'pww'; i.parentNode.insertBefore(w, i); w.appendChild(i);
+  ['#lgPw'].forEach(s => { const i = $(s); if (!i || i.parentNode.classList.contains('pww')) return; const w = document.createElement('div'); w.className = 'pww'; i.parentNode.insertBefore(w, i); w.appendChild(i);
     const b = document.createElement('button'); b.type = 'button'; b.className = 'eye'; b.innerHTML = '<svg class="ic"><use href="#i-eye"/></svg>'; b.onclick = () => { const on = i.type === 'password'; i.type = on ? 'text' : 'password'; b.classList.toggle('on', on); }; w.appendChild(b);
-    i.setAttribute('autocomplete', s === '#lgPw' ? 'current-password' : 'new-password'); i.setAttribute('autocapitalize', 'off'); i.setAttribute('autocorrect', 'off'); i.setAttribute('spellcheck', 'false'); });
+    i.setAttribute('autocomplete', 'current-password'); i.setAttribute('autocapitalize', 'off'); i.setAttribute('autocorrect', 'off'); i.setAttribute('spellcheck', 'false'); });
 }
 function regSetup() {
-  eyeSetup();
+  eyeSetup(); const rp = $('#rgPw'); ['autocapitalize', 'autocorrect'].forEach(k => rp.setAttribute(k, 'off')); rp.setAttribute('spellcheck', 'false');
   const lf = $('#lgForm'), rf = $('#regForm'), tg = $('#regTog');
   tg.onclick = () => { const on = rf.classList.contains('hide'); rf.classList.toggle('hide', !on); lf.classList.toggle('hide', on); tg.querySelector('span').textContent = on ? 'عندي حساب، رجعني للدخول' : 'ما عندك حساب؟ اتسجل'; $('#rgMsg').textContent = ''; setTimeout(() => (on ? $('#rgNm') : $('#lgPw')).focus(), 100); };
   rf.onsubmit = async e => {
@@ -2474,7 +2473,6 @@ function regSetup() {
     if (name.length < 3) return msg('اكتب اسمك الكامل', 'bad');
     if (ph.length < 10) return msg('اكتب رقم هاتفك صح', 'bad');
     if (pw.length < 6) return msg('الرمز لازم 6 أو أكثر', 'bad');
-    if (pw !== normPw($('#rgPw2').value)) { $('#rgPw2').value = ''; $('#rgPw2').focus(); return msg('الرمزين مو نفس الشي، عيد كتابة الثاني. دوس 👁 حتى تشوف اللي كتبته', 'bad'); }
     $('#rgBtn').disabled = true; msg('لحظة…'); REGISTERING = true;
     try {
       const r = await auth.createUserWithEmailAndPassword(await pwEmail(pw), pw);
@@ -3883,18 +3881,39 @@ function noteView(uid) {
   modal(`<div class="nt-edit" style="padding-top:4px">${avHTML(uid, n.name, 84)}<b style="font-family:var(--fd)">${esc(n.name)}</b><div class="card" style="font-size:16px;line-height:1.8;text-align:center;width:100%">${esc(n.text)}</div><small class="faint">${ago(n.at)}</small></div><button class="btn ghost blk" data-close style="margin-top:12px">زين</button>`);
 }
 /* ---- صورة الحساب (إجبارية للطالب) ---- */
-function cropSquare(file, size = 256) {
-  return new Promise((res, rej) => { const fr = new FileReader(); fr.onerror = rej; fr.onload = () => { const im = new Image(); im.onerror = () => rej(new Error('img')); im.onload = () => { const s = Math.min(im.width, im.height), c = document.createElement('canvas'); c.width = c.height = size; c.getContext('2d').drawImage(im, (im.width - s) / 2, (im.height - s) / 2, s, s, 0, 0, size, size); res(c.toDataURL('image/jpeg', .82)); }; im.src = fr.result; }; fr.readAsDataURL(file); });
+/* قص الصورة مربّع — يشتغل ويا صور الايفون (HEIC والصور الكبيرة) */
+async function cropSquare(file, size = 256) {
+  const draw = (src, w, h) => { const s = Math.min(w, h), c = document.createElement('canvas'); c.width = c.height = size; const x = c.getContext('2d'); x.fillStyle = '#111'; x.fillRect(0, 0, size, size); x.drawImage(src, (w - s) / 2, (h - s) / 2, s, s, 0, 0, size, size); return c.toDataURL('image/jpeg', .8); };
+  const viaImg = src => new Promise((res, rej) => { const i = new Image(); const t = setTimeout(() => rej(new Error('timeout')), 20000); i.onload = () => { clearTimeout(t); try { res(draw(i, i.naturalWidth, i.naturalHeight)); } catch (e) { rej(e); } }; i.onerror = () => { clearTimeout(t); rej(new Error('decode')); }; i.src = src; });
+  // 1) رابط مؤقت للملف (أخف شي على الايفون)
+  const url = URL.createObjectURL(file);
+  try { return await viaImg(url); } catch (e) { } finally { setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  // 2) createImageBitmap
+  if (window.createImageBitmap) { for (const o of [{ imageOrientation: 'from-image' }, undefined]) { try { const bm = o ? await createImageBitmap(file, o) : await createImageBitmap(file); const u = draw(bm, bm.width, bm.height); bm.close && bm.close(); return u; } catch (e) { } } }
+  // 3) الطريقة القديمة
+  const du = await new Promise((res, rej) => { const fr = new FileReader(); fr.onerror = () => rej(new Error('read')); fr.onload = () => res(fr.result); fr.readAsDataURL(file); });
+  return viaImg(du);
 }
 function photoSheet(force) {
-  let data = (PROF[ME.uid] || {}).photo || null;
-  const c = modal(`<div class="phgate"><h2 style="justify-content:center">${force ? 'ضيف صورتك' : 'صورتك'}</h2><p class="dim" style="font-size:14px">${force ? 'حتى تدخل للدردشة لازم تحط صورة إلك، حتى الأستاذ والطلاب يعرفوك.' : 'تطلع بالدردشة والملاحظات.'}</p><div id="phAv">${avHTML(ME.uid, ME.name, 120)}</div><label class="btn ghost blk" style="margin:6px 0 10px"><svg class="ic"><use href="#i-cam"/></svg>اختار صورة<input type="file" accept="image/*" id="phIn" hidden></label><button class="btn blk" id="phOk" ${data ? '' : 'disabled'}>احفظ</button>${force ? '' : '<button class="btn ghost blk" data-close style="margin-top:8px">رجوع</button>'}</div>`, (m, close) => {
-    m.querySelector('#phIn').onchange = async e => { const f = e.target.files[0]; if (!f) return; try { data = await cropSquare(f); m.querySelector('#phAv').innerHTML = `<span class="av ph" style="width:120px;height:120px;margin:0 auto 10px"><img src="${data}"></span>`; m.querySelector('#phOk').disabled = false; } catch (er) { toast('الصورة ما انقرت', 'bad'); } };
-    m.querySelector('#phOk').onclick = () => {
-      if (!data) return; PROF[ME.uid] = Object.assign({}, PROF[ME.uid], { name: ME.name, role: ME.role, photo: data });
-      close(); toast('انحفظت صورتك ✓', 'ok'); renderMsgs(); renderNotes(); renderList(); chatHeader(); myAv();
+  let data = (PROF[ME.uid] || {}).photo || null, busy = false;
+  const c = modal(`<div class="phgate"><h2 style="justify-content:center">${force ? 'ضيف صورتك' : 'صورتك'}</h2><p class="dim" style="font-size:14px">${force ? 'حتى تدخل للدردشة لازم تحط صورة إلك، حتى الأستاذ والطلاب يعرفوك.' : 'تطلع بالدردشة والملاحظات.'}</p><div id="phAv">${avHTML(ME.uid, ME.name, 120)}</div><label class="btn ghost blk" style="margin:6px 0 10px"><svg class="ic"><use href="#i-cam"/></svg>اختار صورة<input type="file" accept="image/*" id="phIn" hidden></label><button class="btn blk" id="phOk" ${data ? '' : 'disabled'}>احفظ</button><div id="phMsg" class="dim" style="font-size:13px;min-height:18px;margin-top:8px"></div>${force ? '' : '<button class="btn ghost blk" data-close style="margin-top:8px">رجوع</button>'}</div>`, (m, close) => {
+    const msg = (t, k) => { const e = m.querySelector('#phMsg'); e.textContent = t; e.style.color = k ? 'var(--' + k + ')' : ''; };
+    m.querySelector('#phIn').onchange = async e => {
+      const f = e.target.files[0]; e.target.value = ''; if (!f) return; msg('لحظة، دا أجهّز الصورة…');
+      try { data = await cropSquare(f); m.querySelector('#phAv').innerHTML = `<span class="av ph" style="width:120px;height:120px;margin:0 auto 10px"><img src="${data}"></span>`; m.querySelector('#phOk').disabled = false; msg(''); }
+      catch (er) { msg('الصورة ما انقرت. اختار صورة ثانية من الألبوم، أو سكرين شوت.', 'bad'); }
+    };
+    m.querySelector('#phOk').onclick = async () => {
+      if (!data || busy) return; busy = true; const b = m.querySelector('#phOk'); b.disabled = true; b.textContent = 'دا ينحفظ…'; msg('');
       const w = DB.setProfile({ name: ME.name, role: ME.role, photo: data, at: Date.now() });
-      Promise.race([w, new Promise((_, r) => setTimeout(() => r(new Error('slow')), 15000))]).catch(e => { if (e.message !== 'slow') toast('ما انحفظت الصورة بالسيرفر: ' + (e.code === 'permission-denied' ? 'الصق الـ rules الجديدة' : 'جرّب مرة ثانية'), 'bad'); });
+      try {
+        await Promise.race([w, new Promise((_, r) => setTimeout(() => r({ code: 'slow' }), 20000))]);
+        PROF[ME.uid] = Object.assign({}, PROF[ME.uid], { name: ME.name, role: ME.role, photo: data });
+        close(); toast('انحفظت صورتك ✓', 'ok'); if (CONV) renderMsgs(); renderNotes(); renderList(); chatHeader(); myAv();
+      } catch (er) {
+        busy = false; b.disabled = false; b.textContent = 'جرّب مرة ثانية';
+        msg(er.code === 'slow' ? 'الانترنت بطيء، تأكد من الشبكة وجرّب مرة ثانية.' : er.code === 'permission-denied' ? 'ما عندك صلاحية تحفظ صورة. راجع الأستاذ.' : 'ما انحفظت (' + (er.code || er.message || 'خلل') + '). جرّب مرة ثانية.', 'bad');
+      }
     };
   });
   if (force) { const ov = $$('.ov').pop(); if (ov) ov.addEventListener('click', e => { if (e.target === ov) e.stopImmediatePropagation(); }, true); }
@@ -4349,7 +4368,7 @@ function start() {
   const myBuild = document.querySelector('meta[name=app-build]').content;
   async function chk() {
     if (location.protocol !== 'https:' || !navigator.onLine) return;
-    try { const t = await (await fetch(location.pathname + '?b=' + Date.now(), { cache: 'no-store' })).text(); const m = t.match(/name="app-build" content="([^"]+)"/); if (m && m[1] !== myBuild) location.reload(); } catch (e) { }
+    try { const t = await (await fetch(location.pathname + '?b=' + Date.now(), { cache: 'no-store' })).text(); const m = t.match(/name="app-build" content="([^"]+)"/); if (m && m[1] !== myBuild && !document.querySelector('.ov') && !/INPUT|TEXTAREA/.test((document.activeElement || {}).tagName || '')) location.reload(); } catch (e) { }
   }
   setInterval(chk, 6e4); document.addEventListener('visibilitychange', () => { if (!document.hidden) { chk(); if (!ws || ws.readyState > 1) { ws = null; src === 'am' ? openWS(S.tf) : openTicker(); } } });
   window.addEventListener('resize', () => renderSpark());
