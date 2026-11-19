@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-25">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
+<meta name="app-build" content="2026.11.19-27">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -983,6 +983,13 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
 .ev.rup{box-shadow:inset -3px 0 0 var(--ok)}.ev.rdn{box-shadow:inset -3px 0 0 var(--bad)}
 .ev.rup .vals .act .num{color:var(--ok)}.ev.rdn .vals .act .num{color:var(--bad)}
 .ev.past.rup,.ev.past.rdn,.ev.past.req{opacity:1}
+
+html.lock body{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
+#app[data-kb] .gchat,#app[data-kb] .tgc{transition:none}
+.cbar textarea,#chanTx,#cmtTx{font-size:17px}
+
+.pbell{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);flex:none;animation:bring 2.4s infinite}
+@keyframes bring{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(-12deg)}90%{transform:rotate(10deg)}95%{transform:rotate(-6deg)}}
 </style>
 </head>
 <body>
@@ -1172,6 +1179,9 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
      <div class="row"><h2 style="margin:0">الزيارات والمشتركين</h2><span class="sp"></span><button class="btn tint sm" data-go="signals">التوصيات</button></div>
      <div class="vstat" id="vStats" style="margin-top:10px"></div>
      <div class="faint" style="font-size:12px;margin-top:8px">كل جهاز ينحسب زيارة وحدة باليوم. أجهزتك إنت ما تنحسب.</div>
+    </div>
+    <div class="card br hide" id="pushHome" style="grid-column:1/-1">
+     <div class="row" style="gap:12px"><div class="pbell"><svg class="ic"><use href="#i-bell"/></svg></div><div style="flex:1;min-width:0"><b style="font-family:var(--fd)">فعّل الإشعارات</b><div class="dim" style="font-size:13px">توصلك التوصيات والأخبار حتى والتطبيق مسدود</div></div><button class="btn sm" data-act="pushon">فعّل</button><button class="ib" data-act="pushx" title="بعدين"><svg class="ic"><use href="#i-x"/></svg></button></div>
     </div>
     <div class="card br only-sub">
      <h2>تريد تصير طالب؟</h2>
@@ -1415,6 +1425,21 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
    <div class="eyebrow">06 · SETTINGS ── DEVICE</div>
    <h1>الإعدادات</h1>
    <div class="grid">
+    <div class="card br" id="pushCard">
+     <h2>الإشعارات</h2>
+     <div class="dim" style="font-size:13.5px;margin-bottom:10px" id="pushTx">توصلك التوصيات والأخبار القوية حتى والتطبيق مسدود.</div>
+     <button class="btn blk" id="pushBtn"><svg class="ic"><use href="#i-bell"/></svg><span>فعّل الإشعارات</span></button>
+     <div id="pushOpts" class="hide" style="margin-top:8px">
+      <button class="mi" data-pk="news">الأخبار القوية للدولار<small>قبل الخبر بربع ساعة، ونتيجته من تطلع</small><span class="sw"></span></button>
+      <button class="mi" data-pk="sig">التوصيات<small>كل توصية أو رسالة جديدة بالقناة</small><span class="sw"></span></button>
+      <button class="mi only-stu" data-pk="post">التحليلات والرسائل الخاصة<span class="sw"></span></button>
+     </div>
+    </div>
+    <div class="card br only-admin">
+     <h2>إعداد الإشعارات</h2>
+     <div class="fld"><label>مفتاح Web Push (VAPID) من Firebase</label><input class="inp num" id="sVapid" dir="ltr" placeholder="BK…"></div>
+     <button class="btn tint sm" id="sVapidSave">احفظ</button>
+    </div>
     <div class="card br">
      <h2>المظهر</h2>
      <div class="fld"><label>الوضع</label><div class="seg" id="modeSeg"><button data-m="dark">داكن</button><button data-m="light">فاتح</button><button data-m="auto">تلقائي</button></div></div>
@@ -1452,7 +1477,7 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-25</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-27</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1473,6 +1498,7 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
 <script>/* ===== AM GOLD chart engine (canvas, no libs) ===== */
 const GU = (() => {
   const offCache = {};
@@ -3799,7 +3825,7 @@ function initChat() {
   DB.watchSaved(l => { SAVED = l.map(x => Object.assign({}, x, { id: x.id })).sort((a, b) => a.at - b.at); if (cm() === 'saved') renderMsgs(); renderList(); });
   DB.watchNotes(l => { NOTES = l; renderNotes(); });
   DB.watchThreads(l => { THREADS = l; renderList(); chatBadge(); });
-  initKB(); myAv();
+  myAv();
   if (matchMedia('(min-width:901px)').matches) openConv({ k: 'room' }); else { CONV = null; $('#chatWrap').dataset.cv = 'list'; }
   renderList(); chatHeader();
 }
@@ -3940,18 +3966,42 @@ function photoSheet(force) {
 function needPhoto() { return ME && ME.role === 'student' && profLoaded && !(PROF[ME.uid] || {}).photo; }
 /* ---- الكيبورد بالايفون: الدردشة تلحگ الشاشة الظاهرة بدون قفزات ---- */
 function initKB() {
-  const vv = window.visualViewport, root = document.documentElement; if (!vv) return;
-  let raf = 0;
+  if (window.__kb) return; window.__kb = 1;
+  const vv = window.visualViewport, root = document.documentElement, app = $('#app'); if (!vv) return;
+  const txtFocus = () => { const a = document.activeElement; return !!a && (/TEXTAREA|INPUT|SELECT/.test(a.tagName) || a.isContentEditable); };
+  const fixedMode = () => document.documentElement.classList.contains('lock');
+  let raf = 0, until = 0, lastH = 0, lastT = -1, stick = false;
   const upd = () => {
-    raf = 0; const kb = innerHeight - vv.height > 120 && document.activeElement && /TEXTAREA|INPUT/.test(document.activeElement.tagName);
-    $('#app').toggleAttribute('data-kb', !!kb);
-    const bn = $('#bnav'), bnH = !kb && bn && getComputedStyle(bn).display !== 'none' ? bn.getBoundingClientRect().height : 0;
-    root.style.setProperty('--vvt', vv.offsetTop + 'px'); root.style.setProperty('--chh', Math.round(vv.height - bnH) + 'px');
-    if (curPg === 'chat' && kb) { const b = $('#msgs'); if (b && b.scrollHeight - b.scrollTop - b.clientHeight < 200) b.scrollTop = b.scrollHeight; }
+    raf = 0;
+    const kb = innerHeight - vv.height > 110 && txtFocus();
+    if (app.hasAttribute('data-kb') !== kb) app.toggleAttribute('data-kb', kb);
+    const bn = $('#bnav'), bnH = !kb && bn && getComputedStyle(bn).display !== 'none' && getComputedStyle(bn).position !== 'fixed' ? bn.getBoundingClientRect().height : 0;
+    const h = Math.round(vv.height - bnH), t = Math.max(0, Math.round(vv.offsetTop));
+    if (h !== lastH) { root.style.setProperty('--chh', h + 'px'); lastH = h; }
+    if (t !== lastT) { root.style.setProperty('--vvt', t + 'px'); lastT = t; }
+    if (fixedMode() && !kb && (scrollY || scrollX)) window.scrollTo(0, 0);
+    if (stick) { const m = $('#msgs'); if (m && curPg === 'chat') m.scrollTop = m.scrollHeight; }
+    if (performance.now() < until) raf = requestAnimationFrame(upd); else stick = false;
   };
-  const q = () => { if (!raf) raf = requestAnimationFrame(upd); }; window.kbUpd = q;
-  vv.addEventListener('resize', q); vv.addEventListener('scroll', q); window.addEventListener('focusin', () => setTimeout(q, 50)); window.addEventListener('focusout', () => setTimeout(q, 80)); upd();
-  $('#chatTx').addEventListener('focus', () => { if (matchMedia('(max-width:900px)').matches) setTimeout(() => window.scrollTo(0, 0), 30); });
+  const kick = (ms = 350) => { until = Math.max(until, performance.now() + ms); if (!raf) raf = requestAnimationFrame(upd); };
+  window.kbUpd = () => kick(120);
+  vv.addEventListener('resize', () => kick(400), { passive: true });
+  vv.addEventListener('scroll', () => kick(250), { passive: true });
+  window.addEventListener('resize', () => kick(300));
+  window.addEventListener('orientationchange', () => kick(900));
+  document.addEventListener('focusin', e => {
+    if (!/TEXTAREA|INPUT/.test(e.target.tagName)) return;
+    const m = $('#msgs'); stick = !!(m && curPg === 'chat' && m.scrollHeight - m.scrollTop - m.clientHeight < 160);
+    kick(1000);
+  });
+  document.addEventListener('focusout', () => { stick = false; kick(1000); setTimeout(() => kick(400), 450); });
+  // الايفون: لمسة على مربع الكتابة تفتح الكيبورد بدون ما تتحرك الصفحة
+  $$('#chatTx,#chanTx,#cmtTx').forEach(tx => tx.addEventListener('touchend', e => {
+    if (document.activeElement === tx || !fixedMode()) return;
+    e.preventDefault(); try { tx.focus({ preventScroll: true }); } catch (er) { tx.focus(); }
+    const L2 = tx.value.length; try { tx.setSelectionRange(L2, L2); } catch (er) { }
+  }, { passive: false }));
+  kick(200);
 }
 
 /* ====== قناة التوصيات (مثل قنوات تيليگرام) ====== */
@@ -4022,9 +4072,9 @@ function renderSubs() {
   b.classList.toggle('join', !on); b.innerHTML = !on ? '<span>اشترك</span>' : isMute() ? '<svg class="ic"><use href="#i-bell"/></svg><span>إلغاء الكتم</span>' : '<span>كتم</span>';
 }
 async function setSubbed(on) {
-  L.set('amg_sub', on ? 1 : 0); if (on) L.set('amg_mute', 0); SUBS = Math.max(0, SUBS + (on ? 1 : -1)); renderSubs(); renderChan(); chanBadge();
+  L.set('amg_sub', on ? 1 : 0); if (on) L.set('amg_mute', 0); if (typeof pushSync === 'function') pushSync(on).catch(() => { }); SUBS = Math.max(0, SUBS + (on ? 1 : -1)); renderSubs(); renderChan(); chanBadge();
   try { await DB.setSub(on); } catch (e) { }
-  if (on) { toast('اشتركت بالتوصيات 🔔', 'ok'); setTimeout(() => chanBottom(false), 40); if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission().then(p => { if (p === 'granted') { S.notif = true; saveS(); } }); }
+  if (on) { toast('اشتركت بالتوصيات 🔔', 'ok'); setTimeout(() => chanBottom(false), 40); }
 }
 /* ---- معلومات القناة + التواصل ---- */
 const CT = [['wa', 'واتساب', 'wa', v => 'https://wa.me/' + v.replace(/\D/g, '').replace(/^0/, '964')], ['tg', 'تيليگرام', 'tg', v => 'https://t.me/' + v.replace(/^@|https?:\/\/t\.me\//g, '')], ['ig', 'انستغرام', 'ig', v => 'https://instagram.com/' + v.replace(/^@|https?:\/\/(www\.)?instagram\.com\//g, '')], ['ph', 'اتصال', 'phone', v => 'tel:' + v.replace(/[^\d+]/g, '')]];
@@ -4037,7 +4087,7 @@ function chanInfo() {
     ${ME.role === 'admin' ? '<button class="btn tint blk" data-ci="edit" style="margin-top:10px"><svg class="ic"><use href="#i-edit"/></svg>عدّل الوصف ووسائل التواصل</button>' : isSub() ? `<button class="mi" data-ci="mute">التنبيهات<span class="sw ${isMute() ? '' : 'on'}"></span></button><button class="mi" data-ci="leave" style="color:var(--bad)">إلغاء الاشتراك</button>` : '<button class="btn blk" data-ci="join" style="margin-top:10px">اشترك بالتوصيات</button>'}
     <button class="btn ghost blk" data-close style="margin-top:8px">رجوع</button>`, (m, close) => {
     m.onclick = async e => { const b = e.target.closest('[data-ci]'); if (!b) return; const k = b.dataset.ci;
-      if (k === 'mute') { L.set('amg_mute', isMute() ? 0 : 1); b.querySelector('.sw').classList.toggle('on', !isMute()); renderSubs(); return; }
+      if (k === 'mute') { L.set('amg_mute', isMute() ? 0 : 1); pushSync(false).catch(() => { }); b.querySelector('.sw').classList.toggle('on', !isMute()); renderSubs(); return; }
       close();
       if (k === 'join') { if (curPg !== 'signals') go('signals'); setSubbed(true); }
       if (k === 'edit') editInfo();
@@ -4144,7 +4194,7 @@ function chanJump(id) { const el = $(`#chanFeed [data-cid="${CSS.escape(id)}"]`)
 function initChan() {
   DB.watchChan(onChan);
   DB.watchStat('channel', s => { SUBS = Math.max(0, (s && s.subs) || 0); renderSubs(); if (!canSee()) renderChan(); });
-  $('#subBtn').onclick = () => { if (!isSub()) return setSubbed(true); L.set('amg_mute', isMute() ? 0 : 1); renderSubs(); toast(isMute() ? '🔕 انكتمت التنبيهات' : '🔔 رجعت التنبيهات'); };
+  $('#subBtn').onclick = () => { if (!isSub()) return setSubbed(true); L.set('amg_mute', isMute() ? 0 : 1); renderSubs(); pushSync(false).catch(() => { }); toast(isMute() ? '🔕 انكتمت التنبيهات' : '🔔 رجعت التنبيهات'); };
   $('#chanInfo').onclick = chanInfo; $('#chanMore').onclick = chanInfo; $('#chanAv').onclick = chanInfo;
   const openS = on => { $('#chanSearchW').classList.toggle('hide', !on); $('#chanInfo').classList.toggle('hide', on); if (on) setTimeout(() => $('#chanQ').focus(), 30); else { chanQ = ''; $('#chanQ').value = ''; renderChan(); } };
   $('#chanSB').onclick = () => { if (!canSee()) return toast('اشترك أول'); openS(true); };
@@ -4299,6 +4349,8 @@ document.addEventListener('click', e => {
   if (k === 'bell') { e.stopPropagation(); bellPanel(); }
   if (k === 'more') moreSheet();
   if (k === 'contact') chanInfo();
+  if (k === 'pushon') pushSync(true).then(() => { if (pushOn()) toast('🔔 تفعّلت الإشعارات', 'ok'); }).catch(pushErr);
+  if (k === 'pushx') { L.set('amg_pushx', Date.now() + 7 * 864e5); renderPush(); }
   if (k === 'sbc') { const on = !$('#app').hasAttribute('data-sbc'); $('#app').toggleAttribute('data-sbc', on); L.set('amg_sbc', on ? 1 : 0); setTimeout(() => { navInd(); fitChart(); }, 320); }
   if (k === 'ind') indSheet();
   if (k === 'cset') csSheet();
@@ -4344,6 +4396,50 @@ document.addEventListener('touchmove', e => {
   const sc = e.target.closest('#msgs,.cscroll,.tgfeed,.emoji .grid,textarea,.ov,.modal,.sheet,.npanel,.rxpick');
   if (!sc && e.cancelable) e.preventDefault();
 }, { passive: false });
+/* ====== الإشعارات بالخلفية ====== */
+const PUSH = Object.assign({ news: true, sig: true, post: true }, L.get('amg_push', {}));
+const VAPID = () => (CFG.vapid || 'BMqtdc4HOOjwFnS9Ew3TmD8wR5-81BL4Vl3Ktj_z63WpHfwgB41NoXr3STcZN9K64WuBdiev_6I2EhLHxxNxRMs').trim();
+const pushOK = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window && !!(window.firebase && firebase.messaging) && location.protocol === 'https:';
+const pushOn = () => pushOK() && Notification.permission === 'granted' && !!L.get('amg_ptok', '');
+let pushBusy = false;
+async function pushToken(ask) {
+  if (!pushOK()) throw new Error(/iPhone|iPad/.test(navigator.userAgent) && !STANDALONE ? 'ios-install' : 'unsupported');
+
+  if (Notification.permission !== 'granted') { if (!ask) return null; const p = await Notification.requestPermission(); if (p !== 'granted') throw new Error('denied'); }
+  const reg = await navigator.serviceWorker.ready;
+  const m = (fbApp || firebase.app()).messaging ? (fbApp || firebase.app()).messaging() : firebase.messaging();
+  return m.getToken({ vapidKey: VAPID(), serviceWorkerRegistration: reg });
+}
+async function pushSync(ask) {
+  if (pushBusy || !HAS_FB || !fdb) return; pushBusy = true;
+  try {
+    const tok = await pushToken(ask); if (!tok) return;
+    const id = (await sha(tok)).slice(0, 40), old = L.get('amg_pid', '');
+    const doc = { token: tok, uid: ME ? ME.uid : 'guest', role: ME ? ME.role : 'guest', sub: !!(PUSH.sig && isSub() && !isMute()), stu: !!(PUSH.post && isStu()), news: !!PUSH.news, at: Date.now(), ua: /iPhone|iPad/.test(navigator.userAgent) ? 'ios' : /Android/.test(navigator.userAgent) ? 'android' : 'web' };
+    await fdb.collection('push').doc(id).set(doc);
+    if (old && old !== id) fdb.collection('push').doc(old).delete().catch(() => { });
+    L.set('amg_ptok', tok); L.set('amg_pid', id);
+  } finally { pushBusy = false; renderPush(); }
+}
+function pushErr(e) {
+  const m = e && e.message;
+  toast(m === 'ios-install' ? 'بالايفون لازم تفتح AM GOLD من أيقونته بالشاشة الرئيسية' : m === 'denied' ? 'رفضت الإشعارات. فعّلها من إعدادات الجهاز ← AM GOLD ← الإشعارات' : m === 'novapid' ? 'الإشعارات لحد الآن ما مفعّلة من الأستاذ' : m === 'unsupported' ? 'جهازك أو متصفحك ما يدعم الإشعارات' : 'ما گدرت أفعّل الإشعارات، جرّب مرة ثانية', 'bad');
+}
+function renderPush() {
+  const on = pushOn(), c = $('#pushCard'); if (!c) return;
+  $('#pushBtn').classList.toggle('hide', on); $('#pushOpts').classList.toggle('hide', !on);
+  $('#pushTx').textContent = on ? 'الإشعارات شغّالة على هذا الجهاز ✓' : window.Notification && Notification.permission === 'denied' ? 'الإشعارات مسدودة. فعّلها من إعدادات الجهاز ← AM GOLD ← الإشعارات.' : 'توصلك التوصيات والأخبار القوية حتى والتطبيق مسدود.';
+  $$('#pushOpts [data-pk]').forEach(b => b.querySelector('.sw').classList.toggle('on', !!PUSH[b.dataset.pk]));
+  const h = $('#pushHome'); if (h) h.classList.toggle('hide', on || !pushOK() || L.get('amg_pushx', 0) > Date.now() || (window.Notification && Notification.permission === 'denied'));
+}
+function initPush() {
+  $('#pushBtn').onclick = () => pushSync(true).then(() => { if (pushOn()) toast('🔔 تفعّلت الإشعارات', 'ok'); }).catch(pushErr);
+  $('#pushOpts').onclick = e => { const b = e.target.closest('[data-pk]'); if (!b) return; PUSH[b.dataset.pk] = !PUSH[b.dataset.pk]; L.set('amg_push', PUSH); renderPush(); pushSync(false).catch(() => { }); };
+  const sv = $('#sVapid'); if (sv) { sv.value = CFG.vapid || ''; $('#sVapidSave').onclick = () => DB.setConfig({ vapid: sv.value.trim() }).then(() => toast('انحفظ ✓', 'ok')).catch(() => toast('ما انحفظ', 'bad')); }
+  if (pushOK() && Notification.permission === 'granted') pushSync(false).catch(() => { });
+  if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { const d = e.data || {}; if (d.go) go(d.go); });
+  renderPush();
+}
 /* ====== start ====== */
 let started = false;
 function start() {
@@ -4363,17 +4459,19 @@ function start() {
   setMode(S.mode); initChart(); initPosts(); initTools(); initSettings();
   if (ME.role === 'admin') { initStudents(); DB.watchDelLog(l => { LOGS = l.map(x => Object.assign({ kind: 'del' }, x)); }); DB.watchStudents(l => { STUD = l; renderStud(); }); DB.watchLogs(l => { $('#logList').innerHTML = l.length ? l.slice(0, 20).map(x => `<div class="li"><div class="mn"><b style="font-weight:700;font-size:14px">${esc(x.t)}</b><small>${ago(x.at)} · ${esc(x.by || '')}</small></div></div>`).join('') : '<div class="empty">ماكو حركات</div>'; }); }
   DB.watchPosts(onPosts);
-  DB.watchConfig(c => { if (c && c.accent && c.accent !== S.acc) { S.acc = c.accent; saveS(); applyTheme(); } if (c && c.rate && c.rate !== S.rate) { S.rate = c.rate; saveS(); const r = $('#sRate'); if (r && document.activeElement !== r) r.value = c.rate; renderPrice(); } const old = CFG.newsUrl, oldPin = JSON.stringify(CFG.pin || null); CFG = c || {}; if (isStu()) renderChatLock(); if (isStu() && JSON.stringify(CFG.pin || null) !== oldPin) { renderPin(); if (CONV) renderMsgs(); } const si = $('#sNews'); if (si && document.activeElement !== si) si.value = CFG.newsUrl || ''; if (CFG.newsUrl !== old) loadNews(true); });
+  let pushInit = false;
+  DB.watchConfig(c => { setTimeout(() => { if (!pushInit) { pushInit = true; initPush(); } else renderPush(); const sv = $('#sVapid'); if (sv && document.activeElement !== sv) sv.value = CFG.vapid || ''; }, 0); if (c && c.accent && c.accent !== S.acc) { S.acc = c.accent; saveS(); applyTheme(); } if (c && c.rate && c.rate !== S.rate) { S.rate = c.rate; saveS(); const r = $('#sRate'); if (r && document.activeElement !== r) r.value = c.rate; renderPrice(); } const old = CFG.newsUrl, oldPin = JSON.stringify(CFG.pin || null); CFG = c || {}; if (isStu()) renderChatLock(); if (isStu() && JSON.stringify(CFG.pin || null) !== oldPin) { renderPin(); if (CONV) renderMsgs(); } const si = $('#sNews'); if (si && document.activeElement !== si) si.value = CFG.newsUrl || ''; if (CFG.newsUrl !== old) loadNews(true); });
   if (isStu()) {
     DB.watchProfiles(p => { PROF = p || {}; const first = !profLoaded; profLoaded = true; if (ME.role === 'admin' && !PROF[ME.uid]) DB.setProfile({ name: ME.name, role: 'admin', photo: '', at: Date.now() }).catch(() => { }); const mp = PROF[ME.uid]; if (ME.role === 'student' && (!mp || mp.name !== ME.name)) DB.setProfile(Object.assign({ photo: '' }, mp || {}, { name: ME.name, role: 'student', at: Date.now() })).catch(() => { }); if (CONV) renderMsgs(); renderNotes(); renderList(); myAv(); if (curPg === 'chat') chatHeader(); if (first && needPhoto()) setTimeout(() => photoSheet(true), 600); });
     DB.watchChat(onChat);
   }
-  initNews(); if (isStu()) initChat(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
+  initKB(); initNews(); if (isStu()) initChat(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
   DB.watchLive(v => { LIVE = v; setTeacher(); });
   if (ME.role === 'admin' && S.cast) castNow();
   setTeacher(); renderAlerts(); loadTicker().then(syncSpot); setInterval(loadTicker, 5 * 6e4); setInterval(syncSpot, 6e4);
   clock(); setInterval(() => { clock(); newsTick(); }, 1000);
-  go('home');
+  const gq = new URLSearchParams(location.search).get('go'); go(gq && document.getElementById('pg-' + gq) ? gq : 'home');
+  if (gq) history.replaceState(null, '', location.pathname);
 }
 
 /* ====== pwa & ios ====== */
