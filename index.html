@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-12">
+<meta name="app-build" content="2026.11.19-13">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -654,6 +654,137 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .seg2 button{display:flex;align-items:center;gap:5px}
 .seg2 .ic{width:17px;height:17px}
 @media (max-width:900px){.seg2 .tl{display:none}.seg2 button{padding:0 11px}}
+
+/* ===== chat v3: سجل محادثات مثل تيليگرام + ملء الشاشة ===== */
+#app[data-pg=chat] .side,#app[data-pg=chat] .top,#app[data-pg=chat] .bnav,#app[data-pg=chat] main>.credit,#app[data-pg=chat] #demoBar{display:none!important}
+#app[data-pg=chat] main{padding:0!important;max-width:none!important;margin:0!important}
+#app[data-pg=chat] .gchat{position:fixed;left:0;right:0;top:var(--vvt,0px);height:var(--chh,100dvh);z-index:30;border-radius:0;border:0;flex-direction:row}
+.gchat{display:flex;height:100dvh}
+.clist{position:relative;z-index:2;width:360px;flex:none;display:flex;flex-direction:column;border-left:1px solid var(--line);background:var(--panel);min-height:0}
+.cview{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.clh{display:flex;align-items:center;gap:10px;padding:calc(10px + var(--sat)) 12px 8px}
+.clh .t{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;line-height:1.2}
+.clh .t b{font-family:var(--fd);font-size:18px;font-weight:800}
+.clh .avb{padding:0;overflow:hidden}.clh .avb .av{width:100%!important;height:100%!important;border:0}
+.srch{display:flex;align-items:center;gap:8px;margin:2px 12px 6px;height:44px;border-radius:22px;padding:0 14px}
+.srch .ic{width:18px;height:18px;color:var(--dim);flex:none}
+.srch input{flex:1;min-width:0;border:0;outline:0;background:none;color:var(--ink);font-size:16px;font-family:inherit}
+.cscroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 6px calc(10px + var(--sab))}
+.clist .notes{padding:8px 6px 10px;max-width:none}
+.ci{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:14px;cursor:pointer;position:relative}
+.ci:hover{background:var(--panel2)}.ci:active{background:var(--panel3)}
+.ci.on{background:var(--accent-soft)}
+.ci .av{width:52px;height:52px;font-size:17px;flex:none}
+.ci.sm .av{width:44px;height:44px;font-size:18px}
+.av.grp{display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,rgba(var(--acc-rgb),.35),rgba(var(--acc-rgb),.1));border:0}
+.av.grp.sv{color:var(--accent)}.av.grp .ic{width:24px;height:24px}
+.ci .b{flex:1;min-width:0;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:-9px}
+.ci .r1,.ci .r2{display:flex;align-items:center;gap:8px;min-width:0}
+.ci .nm{flex:1;min-width:0;font-weight:700;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
+.ci .tag{font-size:10px;font-weight:800;background:var(--accent);color:var(--accent-ink);padding:0 6px;border-radius:6px;line-height:16px;flex:none}
+.ci .tm{font-size:12px;color:var(--faint);flex:none}
+.ci .pv{flex:1;min-width:0;font-size:14px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.ci .pv b{color:var(--ink);font-weight:700}
+.ci .nbadge{margin:0;flex:none}
+.ci .pinI{color:var(--faint);flex:none}.ci .pinI .ic{width:15px;height:15px;transform:rotate(30deg)}
+.clist .sec-t{font-size:12.5px;font-weight:800;color:var(--accent);padding:12px 12px 4px;letter-spacing:.3px}
+.clist .hint{font-size:13px;color:var(--dim);padding:0 12px 8px;line-height:1.7}
+.cempty{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--dim);z-index:1;text-align:center;padding:20px}
+.cempty svg{width:64px;height:64px;color:var(--accent);opacity:.5;fill:none;stroke:currentColor;stroke-width:1.4}
+.cempty b{font-family:var(--fd);font-size:18px;color:var(--ink)}
+.gchat.noconv .cempty{display:flex}
+.gchat.noconv .chead,.gchat.noconv #msgs,.gchat.noconv .comp,.gchat.noconv #fab,.gchat.noconv .pinbar{visibility:hidden}
+.gchat .ch-av{display:flex;align-items:center;gap:8px}
+.gchat #chAvW .av{width:44px;height:44px;font-size:15px;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+#chBack{display:none}
+@media (max-width:900px){
+ .clist{width:100%;border:0}
+ .gchat[data-cv=list] .cview{display:none}
+ .gchat[data-cv=conv] .clist{display:none}
+ #chBack{display:grid}
+ .gchat .chead{padding:calc(6px + var(--sat)) 10px 18px}
+ .gchat .who{max-width:52vw}
+}
+@media (min-width:901px){
+ .gchat .chead{padding:10px 14px 18px}
+ #msgs{padding-top:76px}
+}
+/* زر البصمة + القفل يطلع من نفس مكان الزر */
+.sendw{position:relative;flex:none;width:46px;height:46px}
+.sendw .sendb{position:relative;z-index:2;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.lockp{position:absolute;left:0;right:0;bottom:0;margin:0 auto;width:46px;height:46px;border-radius:23px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:12px;gap:2px;color:var(--ink);opacity:0;pointer-events:none;transition:height .25s cubic-bezier(.2,.9,.3,1.2),opacity .2s,bottom .25s;z-index:1}
+.lockp .ic{width:19px;height:19px}.lockp .up{transform:rotate(180deg);width:16px;height:16px;opacity:.7;animation:lkup 1.1s infinite}
+@keyframes lkup{50%{transform:rotate(180deg) translateY(4px)}}
+.comp[data-rec="1"][data-lock="0"] .lockp{opacity:1;height:118px}
+.comp[data-rec="1"][data-lock="0"] .sendb{transform:scale(1.35);background:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 8px var(--accent-soft),0 6px 22px var(--accent-glow)}
+.comp[data-rec="1"][data-lock="0"] .sendb .s-mic{display:block}.comp[data-rec="1"][data-lock="0"] .sendb .s-send{display:none}
+.rslide{display:none;flex:1;text-align:center;font-size:13.5px;color:var(--dim);white-space:nowrap;transition:opacity .1s}
+.comp[data-lock="0"] .rec .rslide{display:block}
+.comp[data-lock="0"] .rec canvas,.comp[data-lock="0"] .rec #recDel{display:none}
+
+/* ===== قناة التوصيات مثل تيليگرام ===== */
+.chan{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px;min-height:calc(100dvh - 140px)}
+.chh{display:flex;align-items:center;gap:12px;position:sticky;top:calc(64px + var(--sat));z-index:6;padding:12px 14px}
+@media (min-width:901px){.chh{top:10px}}
+.chh .cav{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 50% 40%,var(--accent-glow),var(--panel2));display:grid;place-items:center;flex:none;box-shadow:0 0 0 2px var(--accent-soft)}
+.chh .cav svg{width:32px;height:32px}
+.chh .cinf{flex:1;min-width:0}.chh .cinf b{display:block;font-family:var(--fd);font-size:16.5px;font-weight:800}.chh .cinf small{color:var(--dim);font-size:12.5px}
+#subBtn.on{background:var(--panel2);color:var(--ink);border:1px solid var(--line2)}
+.cfeed{display:flex;flex-direction:column;gap:12px;flex:1}
+.cday{align-self:center;padding:3px 12px;border-radius:999px;background:var(--panel2);font-size:12.5px;color:var(--dim);font-weight:700}
+.cpost{align-self:flex-start;width:min(560px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px 18px 18px 6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.18);position:relative}
+.cpost.pin{box-shadow:0 0 0 1.5px rgba(var(--acc-rgb),.6),0 2px 10px rgba(0,0,0,.18)}
+.cpost .cimg{display:block;width:100%;max-height:420px;object-fit:cover;cursor:zoom-in;background:var(--panel2)}
+.cpost .cb{padding:10px 13px 8px}
+.cpost .ctx{white-space:pre-wrap;line-height:1.75;font-size:15px;overflow-wrap:anywhere}
+.cpost .ctx a{color:var(--accent)}
+.cpost .cm{display:flex;align-items:center;gap:10px;justify-content:flex-end;font-size:12px;color:var(--faint);margin-top:6px}
+.cpost .cm .ic{width:15px;height:15px}
+.cpost .cm span{display:inline-flex;align-items:center;gap:4px}
+.cpost .cpin{margin-inline-end:auto;font-size:11.5px;font-weight:800;color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:999px}
+.cpost .cadm{display:flex;gap:6px;flex-wrap:wrap;padding:0 13px 10px}
+.sig{border-radius:14px;padding:11px 12px;margin-bottom:8px;border:1px solid var(--line2);background:var(--panel2)}
+.sig.buy{border-color:rgba(60,207,130,.45);background:linear-gradient(135deg,rgba(60,207,130,.13),transparent 70%)}
+.sig.sell{border-color:rgba(242,89,106,.45);background:linear-gradient(135deg,rgba(242,89,106,.13),transparent 70%)}
+.sig .sh{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sig .sgside{font:800 13px var(--fm);padding:3px 10px;border-radius:8px;letter-spacing:.5px}
+.sig.buy .sgside{background:var(--ok);color:#06140c}.sig.sell .sgside{background:var(--bad);color:#fff}
+.sig .sym{font:800 13px var(--fm);color:var(--dim);letter-spacing:1px}
+.sig .st{margin-inline-start:auto;font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--panel3);color:var(--dim)}
+.sig .st.ok{background:rgba(60,207,130,.16);color:var(--ok)}.sig .st.bad{background:rgba(242,89,106,.16);color:var(--bad)}.sig .st.on{background:var(--accent-soft);color:var(--accent)}
+.sig .sl{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:6px}
+.sig .sl div{background:color-mix(in srgb,var(--void) 40%,transparent);border-radius:10px;padding:6px 9px}
+.sig .sl small{display:block;font-size:11.5px;color:var(--dim)}
+.sig .sl b{font:800 15px var(--fm);direction:ltr;display:block;text-align:right}
+.sig .sl .hit b{color:var(--ok)}.sig .sl .hit small::after{content:" ✓";color:var(--ok)}
+.sig .sl .slb b{color:var(--bad)}
+.ccomp{position:sticky;bottom:calc(76px + var(--sab));z-index:6;padding:10px}
+@media (min-width:901px){.ccomp{bottom:12px}}
+.cbar2{display:flex;align-items:flex-end;gap:8px}
+.cbar2 textarea{flex:1;min-width:0;resize:none;min-height:42px;max-height:160px;padding:9px 12px;line-height:1.5}
+.cbar2 .ib{flex:none;cursor:pointer}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(130px,100%),1fr));gap:8px;margin-bottom:8px}
+.sgrid .fld{margin:0}
+.cempty2{text-align:center;color:var(--dim);padding:40px 16px;line-height:1.9}
+/* زيارات الأدمن */
+.vstat{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(110px,100%),1fr));gap:8px}
+.vstat div{background:var(--panel2);border-radius:12px;padding:10px 12px}
+.vstat small{display:block;font-size:12px;color:var(--dim)}
+.vstat b{font:800 22px var(--fm);direction:ltr;display:block;text-align:right}
+/* قائمة كلك يمين على الشارت */
+.cmenu{position:fixed;z-index:120;min-width:230px;max-width:calc(100vw - 16px);padding:6px;border-radius:14px;background:var(--panel);border:1px solid var(--line2);box-shadow:0 18px 50px rgba(0,0,0,.45);animation:cmin .14s ease-out;max-height:calc(100vh - 16px);overflow-y:auto}
+@keyframes cmin{from{opacity:0;transform:scale(.96)}}
+.cmenu .ttl{font:700 12px var(--fm);color:var(--faint);padding:6px 10px 4px;direction:ltr;text-align:right}
+.cmenu button{display:flex;align-items:center;gap:10px;width:100%;height:38px;padding:0 10px;border-radius:9px;font-size:14px;font-weight:600;color:var(--ink);text-align:right}
+.cmenu button:hover{background:var(--panel3)}
+.cmenu button .ic{width:18px;height:18px;color:var(--dim);flex:none}
+.cmenu button kbd{margin-inline-start:auto;font:600 11px var(--fm);color:var(--faint)}
+.cmenu hr{border:0;height:1px;background:var(--line);margin:4px 6px}
+.vis-badge{font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;background:var(--panel3);color:var(--dim)}
+.vis-badge.pub{background:rgba(74,163,255,.15);color:#4aa3ff}
+.toplogin{height:36px;padding:0 12px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:13.5px;display:flex;align-items:center;gap:6px}
+.toplogin .ic{width:17px;height:17px}
+.cpost.flash{animation:mflash 1.2s}
 </style>
 </head>
 <body>
@@ -717,6 +848,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></symbol>
  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></symbol>
  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol>
+ <symbol id="i-sig" viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/></symbol>
  <symbol id="i-ul" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 21h16"/></symbol>
 </svg>
 <div id="warp"></div>
@@ -740,8 +873,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
    <div class="bar"><i id="lgBar"></i></div>
    <div id="lgMsg" class="dim" style="font-size:13px;margin-top:8px;min-height:20px;text-align:center"></div>
   </form>
-  <button class="btn ghost blk" id="guestBtn" style="margin-top:10px"><svg class="ic"><use href="#i-eye"/></svg>تصفّح بدون حساب</button>
-  <div class="faint" style="font-size:12px;margin-top:6px">تشوف الشارت وسعر الذهب والأخبار. التحليلات والدردشة للمشتركين بس.</div>
+  <button class="btn ghost blk" id="guestBtn" style="margin-top:10px"><svg class="ic"><use href="#i-eye"/></svg>رجوع للتصفّح بدون حساب</button>
+  <div class="faint" style="font-size:12px;margin-top:6px">الرمز يعطيك ياه الأستاذ من تشترك بالكورس.</div>
   <div class="credit" style="margin-top:16px"><span dir="ltr">by <b>Ali Malik</b></span></div>
  </div>
 </div>
@@ -753,7 +886,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   <nav class="nav" id="snav">
    <button data-go="home"><i></i><svg class="ic"><use href="#i-home"/></svg>الرئيسية</button>
    <button data-go="chart"><i></i><svg class="ic"><use href="#i-chart"/></svg>الشارت</button>
-   <button data-go="posts" class="only-mem"><i></i><svg class="ic"><use href="#i-news"/></svg>التحليلات</button>
+   <button data-go="signals"><i></i><svg class="ic"><use href="#i-sig"/></svg>التوصيات<b class="nbadge sgbadge hide"></b></button>
+   <button data-go="posts"><i></i><svg class="ic"><use href="#i-news"/></svg>التحليلات</button>
    <button data-go="chat" class="only-mem"><i></i><svg class="ic"><use href="#i-chat"/></svg>الدردشة<b class="nbadge cbadge hide"></b></button>
    <button data-go="news"><i></i><svg class="ic"><use href="#i-cal"/></svg>الأخبار</button>
    <button data-go="tools"><i></i><svg class="ic"><use href="#i-tools"/></svg>الأدوات</button>
@@ -765,6 +899,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   <div class="ucard"><div class="av" id="uAv">ع</div><div style="min-width:0"><div class="nm" id="uNm">علي</div><small id="uRole">الأدمن</small></div>
    <button class="ib" data-act="snd" title="الصوت"><svg class="ic"><use href="#i-snd"/></svg></button>
    <button class="ib" data-act="mode" title="الوضع"><svg class="ic"><use href="#i-sun"/></svg></button></div>
+  <button class="btn blk only-guest" data-act="tologin" style="margin-top:8px"><svg class="ic"><use href="#i-in"/></svg>تسجيل الدخول</button>
   <div class="credit"><span dir="ltr">by <b>Ali Malik</b></span></div>
  </aside>
 
@@ -773,6 +908,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   <span class="dot" id="tDot"></span>
   <button class="bell only-mem" data-act="bell"><svg class="ic"><use href="#i-bell"/></svg><b class="hide bcount"></b></button>
   <button class="ib" data-act="mode"><svg class="ic"><use href="#i-sun"/></svg></button>
+  <button class="toplogin only-guest" data-act="tologin"><svg class="ic"><use href="#i-in"/></svg>دخول</button>
   <span class="num tclk" id="tClock">--:--</span>
  </header>
 
@@ -817,12 +953,18 @@ input[type=range]{width:100%;accent-color:var(--accent)}
      <div class="row"><h2 style="margin:0">الأخبار الجاية</h2><span class="sp"></span><button class="btn tint sm" data-go="news">كل الأخبار</button></div>
      <div id="hNews" class="list" style="margin-top:10px"></div>
     </div>
+    <div class="card br only-admin" style="grid-column:1/-1">
+     <div class="row"><h2 style="margin:0">الزيارات والمشتركين</h2><span class="sp"></span><button class="btn tint sm" data-go="signals">التوصيات</button></div>
+     <div class="vstat" id="vStats" style="margin-top:10px"></div>
+     <div class="faint" style="font-size:12px;margin-top:8px">كل جهاز ينحسب زيارة وحدة باليوم. أجهزتك إنت ما تنحسب.</div>
+    </div>
     <div class="card br only-guest">
      <h2>تحليلات علي مالك</h2>
-     <div class="dim" style="font-size:13.5px;margin-bottom:12px">التحليلات اليومية بالصور والشرح، والدردشة ويا الطلاب والأستاذ. كلها للمشتركين بالكورس.</div>
+     <div class="dim" style="font-size:13.5px;margin-bottom:12px">تگدر تتابع التوصيات والتحليلات العامة هسه. التحليلات الكاملة والدردشة ويا الأستاذ للطلاب المشتركين بالكورس.</div>
+     <button class="btn tint blk" data-go="signals" style="margin-bottom:8px"><svg class="ic"><use href="#i-sig"/></svg>افتح التوصيات</button>
      <button class="btn blk" data-act="tologin"><svg class="ic"><use href="#i-in"/></svg>عندي حساب، سجّل دخول</button>
     </div>
-    <div class="card br only-mem">
+    <div class="card br">
      <div class="row"><h2 style="margin:0">آخر تحليل</h2><span class="sp"></span><button class="btn tint sm" data-go="posts">كل التحليلات</button></div>
      <div id="hPost" style="margin-top:10px"></div>
     </div>
@@ -881,6 +1023,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
    <div class="feed">
     <div class="card br comp only-admin" id="comp">
      <div class="row" style="margin-bottom:10px"><div class="seg" id="ptype"><button data-pt="analysis" class="on">تحليل</button><button data-pt="post">منشور</button></div><span class="sp"></span><button class="btn ghost sm" id="pinTog"><svg class="ic" style="width:16px;height:16px"><use href="#i-pin"/></svg>تثبيت</button></div>
+     <div id="pvisW" style="margin-bottom:8px"></div>
      <input class="inp" id="pTitle" placeholder="العنوان (مثلاً: الذهب اليوم — فريم 15)" style="margin-bottom:8px">
      <div class="drop" id="pDrop"><svg class="ic"><use href="#i-img"/></svg><b>ضيف سكرين شوت التحليل</b><small>دوس هنا تختار صورة، أو الصقها (Ctrl+V)، أو اسحبها لهنا</small><input type="file" accept="image/*" multiple id="pImgs" hidden></div>
      <div class="row" style="margin:8px 0"><input class="inp" id="pLink" dir="ltr" placeholder="أو الصق رابط سكرين TradingView: tradingview.com/x/…"><button class="btn ghost sm" id="pLinkAdd">ضيف</button></div>
@@ -913,33 +1056,76 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
   <!-- CHAT -->
   <section class="pg hide" id="pg-chat">
-   <div class="gchat" id="chatWrap">
-    <div class="wall"></div>
-    <div class="chead">
-     <div class="ch-av" id="chAvW"><div class="av" id="chAv">👥</div></div>
-     <div class="who gl hud"><div class="x"><div class="nm" id="chTitle">غرفة الطلاب</div><div class="st" id="chSub"></div></div></div>
-     <div class="ch-l">
-      <button class="gl pill back hide" id="chBack"><svg class="ic"><use href="#i-back"/></svg><span>رجوع</span></button>
-      <button class="gl circ only-admin" id="chatLock" title="قفل الغرفة"></button>
-      <div class="gl seg2" id="chTabs"><button data-ct="room" class="on" title="غرفة الطلاب"><svg class="ic"><use href="#i-users"/></svg><span class="tl">الغرفة</span><b class="nbadge rmbadge hide"></b></button><button data-ct="dm" title="الخاص"><svg class="ic"><use href="#i-chat"/></svg><span class="tl">الخاص</span><b class="nbadge dmbadge hide"></b></button><button data-ct="saved" title="المحفوظة"><svg class="ic"><use href="#i-bm"/></svg><span class="tl">المحفوظة</span></button></div>
+   <div class="gchat noconv" id="chatWrap" data-cv="list">
+    <aside class="clist">
+     <div class="clh">
+      <button class="gl circ" data-go="home" title="الرئيسية"><svg class="ic"><use href="#i-home"/></svg></button>
+      <div class="t"><span class="wm" style="font-size:13px">AM<em>GOLD</em></span><b>الدردشات</b></div>
+      <button class="gl circ avb" data-act="myphoto" id="myPhotoBtn" title="صورتي"></button>
+     </div>
+     <div class="srch gl"><svg class="ic"><use href="#i-search"/></svg><input id="chSearch" placeholder="دوّر على طالب أو الأستاذ…" autocomplete="off" enterkeyhint="search"></div>
+     <div class="cscroll">
+      <div class="notes" id="notes"></div>
+      <div id="convList"></div>
+     </div>
+    </aside>
+    <div class="cview">
+     <div class="wall"></div>
+     <div class="cempty"><svg><use href="#i-chat"/></svg><b>اختار محادثة</b><span>أو دوّر على اسم حتى تبدي محادثة جديدة</span></div>
+     <div class="chead">
+      <div class="ch-av"><button class="gl circ" id="chBack" title="رجوع"><svg class="ic"><use href="#i-back"/></svg></button><span id="chAvW"></span></div>
+      <div class="who gl hud"><div class="x"><div class="nm" id="chTitle">غرفة الطلاب</div><div class="st" id="chSub"></div></div></div>
+      <div class="ch-l"><button class="gl circ only-admin" id="chatLock" title="قفل الغرفة"></button></div>
+     </div>
+     <div class="pinbar gl hide" id="pinbar"><div class="bar"></div><svg class="ic"><use href="#i-pin"/></svg><div class="x"><div class="t">رسالة مثبّتة</div><div class="s" id="pinTxt"></div></div><button class="ib only-admin" id="unpin"><svg class="ic"><use href="#i-x"/></svg></button></div>
+     <div id="msgs"><div class="inner" id="msgInner"></div></div>
+     <button class="fab gl" id="fab"><svg class="ic"><use href="#i-down"/></svg><span class="nbadge hide" id="fabN"></span></button>
+     <div class="comp" id="chatFoot" data-has="0" data-rec="0" data-lock="0">
+      <div class="emoji gl" id="emoji"></div>
+      <div class="rbar gl hide" id="replyBar"><svg class="ic lead"><use href="#i-reply"/></svg><div class="x"><div class="t" id="rbName"></div><div class="s" id="rbText"></div></div><button class="ib" id="rbX"><svg class="ic"><use href="#i-x"/></svg></button></div>
+      <div class="rbar gl hide" id="chImgPrev"><img alt=""><div class="x"><div class="t">صورة</div><div class="s">تگدر تكتب وصف ويّاها</div></div><button class="ib"><svg class="ic"><use href="#i-x"/></svg></button></div>
+      <div class="cbar">
+       <div class="sendw">
+        <div class="lockp gl" id="lockP"><svg class="ic"><use href="#i-lock"/></svg><svg class="ic up"><use href="#i-down"/></svg></div>
+        <button class="gl circ sendb" id="chatSend" title="اضغط مطوّل للبصمة"><svg class="ic s-send"><use href="#i-send"/></svg><svg class="ic s-mic"><use href="#i-mic"/></svg></button>
+       </div>
+       <div class="box gl hud">
+        <textarea id="chatTx" rows="1" placeholder="اكتب رسالة…" maxlength="1000" enterkeyhint="send"></textarea>
+        <div class="rec"><button class="ib" id="recDel" title="إلغاء"><svg class="ic"><use href="#i-trash"/></svg></button><i class="rd"></i><span class="num" id="recT">0:00</span><canvas id="recWave"></canvas><span class="rslide" id="recSlide">اسحب يسار للإلغاء ‹</span></div>
+        <button class="ib tb" id="emoBtn" title="إيموجي"><svg class="ic"><use href="#i-smile"/></svg></button>
+       </div>
+       <label class="gl circ att" title="صورة"><svg class="ic"><use href="#i-img"/></svg><input type="file" accept="image/*" id="chImg" hidden></label>
+      </div>
      </div>
     </div>
-    <div class="pinbar gl hide" id="pinbar"><div class="bar"></div><svg class="ic"><use href="#i-pin"/></svg><div class="x"><div class="t">رسالة مثبّتة</div><div class="s" id="pinTxt"></div></div><button class="ib only-admin" id="unpin"><svg class="ic"><use href="#i-x"/></svg></button></div>
-    <div id="dmList" class="dmlist hide"></div>
-    <div id="msgs"><div class="notes hide" id="notes"></div><div class="inner" id="msgInner"></div></div>
-    <button class="fab gl" id="fab"><svg class="ic"><use href="#i-down"/></svg><span class="nbadge hide" id="fabN"></span></button>
-    <div class="comp" id="chatFoot" data-has="0" data-rec="0">
-     <div class="emoji gl" id="emoji"></div>
-     <div class="rbar gl hide" id="replyBar"><svg class="ic lead"><use href="#i-reply"/></svg><div class="x"><div class="t" id="rbName"></div><div class="s" id="rbText"></div></div><button class="ib" id="rbX"><svg class="ic"><use href="#i-x"/></svg></button></div>
-     <div class="rbar gl hide" id="chImgPrev"><img alt=""><div class="x"><div class="t">صورة</div><div class="s">تگدر تكتب وصف ويّاها</div></div><button class="ib"><svg class="ic"><use href="#i-x"/></svg></button></div>
-     <div class="cbar">
-      <button class="gl circ sendb" id="chatSend" title="إرسال"><svg class="ic s-send"><use href="#i-send"/></svg><svg class="ic s-mic"><use href="#i-mic"/></svg></button>
-      <div class="box gl hud">
-       <textarea id="chatTx" rows="1" placeholder="اكتب رسالة…" maxlength="1000" enterkeyhint="send"></textarea>
-       <div class="rec"><button class="ib" id="recDel" title="إلغاء"><svg class="ic"><use href="#i-trash"/></svg></button><i class="rd"></i><span class="num" id="recT">0:00</span><canvas id="recWave"></canvas></div>
-       <button class="ib tb" id="emoBtn" title="إيموجي"><svg class="ic"><use href="#i-smile"/></svg></button>
+   </div>
+  </section>
+  <!-- SIGNALS CHANNEL -->
+  <section class="pg hide" id="pg-signals">
+   <div class="chan">
+    <div class="chh card br">
+     <div class="cav"><svg><use href="#i-logo"/></svg></div>
+     <div class="cinf"><b>توصيات AM GOLD</b><small><span class="num" id="chSubs">0</span> مشترك · قناة علي مالك</small></div>
+     <button class="btn" id="subBtn"><svg class="ic"><use href="#i-bell"/></svg><span>اشترك</span></button>
+    </div>
+    <div class="cfeed" id="chanFeed"></div>
+    <div class="ccomp card br only-admin" id="chanComp">
+     <div class="sigf hide" id="sigF">
+      <div class="row" style="gap:8px;margin-bottom:8px"><div class="seg" id="sigSide"><button data-sd="buy" class="on">شراء BUY</button><button data-sd="sell">بيع SELL</button></div><span class="sp"></span><button class="ib" id="sigX" title="بدون توصية"><svg class="ic"><use href="#i-x"/></svg></button></div>
+      <div class="sgrid">
+       <div class="fld"><label>الدخول</label><input class="inp num" id="sgEn" inputmode="decimal" placeholder="مثلاً 3650 أو 3648-3652"></div>
+       <div class="fld"><label>الوقف SL</label><input class="inp num" id="sgSl" inputmode="decimal"></div>
+       <div class="fld"><label>الهدف 1</label><input class="inp num" id="sgT1" inputmode="decimal"></div>
+       <div class="fld"><label>الهدف 2</label><input class="inp num" id="sgT2" inputmode="decimal"></div>
+       <div class="fld"><label>الهدف 3</label><input class="inp num" id="sgT3" inputmode="decimal"></div>
       </div>
-      <label class="gl circ att" title="صورة"><svg class="ic"><use href="#i-img"/></svg><input type="file" accept="image/*" id="chImg" hidden></label>
+     </div>
+     <div class="rbar hide" id="chanImgPrev" style="background:var(--panel2);margin-bottom:8px"><img alt=""><div class="x"><div class="t">صورة</div><div class="s">تنرسل ويا المنشور</div></div><button class="ib"><svg class="ic"><use href="#i-x"/></svg></button></div>
+     <div class="cbar2">
+      <button class="btn tint sm" id="sigTog"><svg class="ic" style="width:16px;height:16px"><use href="#i-long"/></svg>توصية</button>
+      <label class="ib" title="صورة"><svg class="ic"><use href="#i-img"/></svg><input type="file" accept="image/*" id="chanImg" hidden></label>
+      <textarea class="inp" id="chanTx" rows="1" placeholder="اكتب رسالة للقناة…"></textarea>
+      <button class="btn" id="chanSend"><svg class="ic" style="width:16px;height:16px"><use href="#i-send"/></svg></button>
      </div>
     </div>
    </div>
@@ -1034,7 +1220,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-mem" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-12</span></div>
+     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-13</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1045,8 +1231,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
  <nav class="bnav" id="bnav">
   <button data-go="home"><svg class="ic"><use href="#i-home"/></svg><span class="bl">الرئيسية</span></button>
-  <button data-go="posts" class="only-mem"><svg class="ic"><use href="#i-news"/></svg><span class="bl">التحليلات</span></button>
-  <button data-go="tools" class="only-guest"><svg class="ic"><use href="#i-tools"/></svg><span class="bl">الأدوات</span></button>
+  <button data-go="signals"><svg class="ic"><use href="#i-sig"/></svg><span class="bl">التوصيات</span><b class="nbadge sgbadge hide"></b></button>
   <button data-go="chart" class="mid"><span class="dia"><svg class="ic"><use href="#i-chart"/></svg></span><span class="bl">الشارت</span></button>
   <button data-go="chat" class="only-mem"><svg class="ic"><use href="#i-chat"/></svg><span class="bl">الدردشة</span><b class="nbadge cbadge hide"></b></button>
   <button data-go="news" class="only-guest"><svg class="ic"><use href="#i-cal"/></svg><span class="bl">الأخبار</span></button>
@@ -1157,7 +1342,11 @@ class GoldChart {
     if (!arr.length) return;
     const first = this.c.length ? this.c[0].t : Infinity;
     arr = arr.filter(x => x.t < first);
-    this.c = arr.concat(this.c); this.right += arr.length; this.calc(); this.dirty = true;
+    this.c = arr.concat(this.c); this.right += arr.length;
+    if (this.drag && this.drag.r != null) { this.drag.r += arr.length; if (this.drag.hist) this.drag.hist.forEach(h => h.r += arr.length); }
+    if (this.pinch) this.pinch.i += arr.length;
+    if (this.drag && this.drag.i != null) this.drag.i += arr.length;
+    this.calc(); this.dirty = true;
   }
   update(k) {
     const n = this.c.length; if (!n) return;
@@ -1615,7 +1804,7 @@ class GoldChart {
   bind() {
     const cv = this.cv; cv.style.touchAction = 'none';
     ['touchstart', 'touchmove', 'touchend'].forEach(ev => cv.addEventListener(ev, e => { if (e.cancelable) e.preventDefault(); }, { passive: false }));
-    cv.addEventListener('contextmenu', e => e.preventDefault());
+    cv.addEventListener('contextmenu', e => { e.preventDefault(); const p = loc(e); if (this.cb.onContext && p.x <= this.pw && p.y <= this.ph) this.cb.onContext(e.clientX, e.clientY, this.pY(p.y), this.tI(Math.round(this.iX(p.x)))); });
     const loc = e => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
     cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); this.down(e.pointerId, loc(e), e.pointerType === 'touch' || e.pointerType === 'pen'); });
     cv.addEventListener('pointermove', e => this.move(e.pointerId, loc(e), e.pointerType !== 'mouse', e.buttons));
@@ -1624,11 +1813,16 @@ class GoldChart {
     cv.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse' && !this.drag) { this.cross = null; this.dirty = true; } });
     cv.addEventListener('wheel', e => {
       e.preventDefault(); const p = loc(e);
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { this.right += e.deltaX / this.barW; this.clampV(); }
-      else this.zoomAt(p.x, Math.exp(-e.deltaY * .0016));
+      cancelAnimationFrame(this.kin);
+      const dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+      if (e.ctrlKey) this.zoomAt(p.x, Math.exp(-dy * .012));
+      else if (Math.abs(e.deltaX) > Math.abs(dy)) { this.right += e.deltaX / this.barW; this.clampV(); }
+      else this.zoomAt(p.x, Math.exp(-Math.max(-120, Math.min(120, dy)) * .0018));
       this.dirty = true;
     }, { passive: false });
   }
+  zoomBy(f) { this.zoomAt(this.pw * .8, f); }
+  autoScale() { this.yS = 1; this.yO = 0; this.manualY = false; this.dirty = true; }
   zoomAt(x, f) { const i = this.iX(x); this.barW = Math.max(1.5, Math.min(48, this.barW * f)); this.right = i + (this.pw - x) / this.barW; this.clampV(); this.dirty = true; }
   clampV() {
     const n = this.c.length, vis = this.pw / this.barW;
@@ -1646,7 +1840,8 @@ class GoldChart {
     if (this.ptrs.size === 2) {
       const [a, b] = [...this.ptrs.values()]; this.drag = null; clearTimeout(this.lpT);
       if (this.creating && !this.pend) this.creating = null;
-      this.pinch = { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, bw: this.barW, cx: (a.x + b.x) / 2, i: this.iX((a.x + b.x) / 2) }; return;
+      cancelAnimationFrame(this.kin);
+      this.pinch = { d: Math.max(40, Math.abs(a.x - b.x)), bw: this.barW, cx: (a.x + b.x) / 2, i: this.iX((a.x + b.x) / 2) }; return;
     }
     this.downP = p; this.moved = false;
     if (this.tool !== 'cursor') {
@@ -1671,8 +1866,8 @@ class GoldChart {
   move(id, p, touch, buttons) {
     if (this.ptrs.has(id)) this.ptrs.set(id, p);
     if (this.pinch && this.ptrs.size >= 2) {
-      const [a, b] = [...this.ptrs.values()], dd = Math.hypot(a.x - b.x, a.y - b.y);
-      this.barW = Math.max(1.5, Math.min(48, this.pinch.bw * dd / this.pinch.d));
+      const [a, b] = [...this.ptrs.values()], dd = Math.max(40, Math.abs(a.x - b.x));
+      const nb = Math.max(1.5, Math.min(48, this.pinch.bw * dd / this.pinch.d)); this.barW += (nb - this.barW) * .65;
       const cx = (a.x + b.x) / 2; this.right = this.pinch.i + (this.pw - cx) / this.barW; this.clampV(); this.dirty = true; return;
     }
     if (this.downP && Math.hypot(p.x - this.downP.x, p.y - this.downP.y) > 6) { this.moved = true; clearTimeout(this.lpT); }
@@ -1735,8 +1930,8 @@ class GoldChart {
       const h = D.hist, a = h[0], b = h[h.length - 1], dt = b.t - a.t;
       if (dt > 0 && performance.now() - b.t < 60) { let v = (b.r - a.r) / dt; if (Math.abs(v) * this.barW > .25) this.glide(v); }
     }
-    if (!this.moved && D && D.k === 'pan') {
-      const now = Date.now(); if (now - this.lastTap < 300) { this.resetView(); this.lastTap = 0; } else this.lastTap = now;
+    if (!this.moved && D && (D.k === 'pan' || D.k === 'y')) {
+      const now = Date.now(); if (now - this.lastTap < 300) { if (D.sx > this.pw) this.autoScale(); else this.resetView(); this.lastTap = 0; } else this.lastTap = now;
       if (touch && this.cb.onTap) this.cb.onTap();
     }
     if (D && D.k === 'b' && !this.moved && D.d.type === 'text' && this.cb.onTextTap) this.cb.onTextTap(D.d);
@@ -1899,7 +2094,23 @@ const LocalDB = {
   async delNote() { const a = L.get('amg_notes', []).filter(n => n.id !== ME.uid); L.set('amg_notes', a); this.ntcb && this.ntcb(a); },
   watchSaved(cb) { this.svcb = cb; cb(L.get('amg_saved_' + ME.uid, [])); },
   async saveMsg(m) { const a = L.get('amg_saved_' + ME.uid, []); m.id = uid(); a.push(m); L.set('amg_saved_' + ME.uid, a); this.svcb && this.svcb(a); },
-  async unsaveMsg(id) { const a = L.get('amg_saved_' + ME.uid, []).filter(m => m.id !== id); L.set('amg_saved_' + ME.uid, a); this.svcb && this.svcb(a); }
+  async unsaveMsg(id) { const a = L.get('amg_saved_' + ME.uid, []).filter(m => m.id !== id); L.set('amg_saved_' + ME.uid, a); this.svcb && this.svcb(a); },
+  watchThreads(cb) { this.thcb = cb; cb(L.get('amg_thr', []).filter(t => (t.members || []).includes(ME.uid))); },
+  watchThread(tid, cb) { this.tmcb = cb; this.tmid = tid; cb(L.get('amg_tm_' + tid, [])); return () => { this.tmcb = null; }; },
+  async sendThread(tid, meta, m) { const a = L.get('amg_tm_' + tid, []); m.id = uid(); a.push(m); L.set('amg_tm_' + tid, a.slice(-300)); const ls = L.get('amg_thr', []).filter(t => t.id !== tid); ls.unshift(Object.assign({ id: tid }, meta)); L.set('amg_thr', ls); this.tmcb && this.tmid === tid && this.tmcb(a); this.thcb && this.thcb(ls.filter(t => (t.members || []).includes(ME.uid))); },
+  async delThreadMsg(tid, id) { const a = L.get('amg_tm_' + tid, []).filter(m => m.id !== id); L.set('amg_tm_' + tid, a); this.tmcb && this.tmcb(a); },
+  async reactThread(tid, id, R) { const a = L.get('amg_tm_' + tid, []).map(m => m.id === id ? Object.assign(m, { reactions: R }) : m); L.set('amg_tm_' + tid, a); this.tmcb && this.tmcb(a); },
+  async logDel(x) { const a = L.get('amg_dellog', []); a.unshift(x); L.set('amg_dellog', a.slice(0, 300)); this.dlgcb && this.dlgcb(a); },
+  watchDelLog(cb) { this.dlgcb = cb; cb(L.get('amg_dellog', [])); },
+  watchChan(cb) { this.chcb = cb; cb(L.get('amg_chan', [])); },
+  async addChan(p) { const a = L.get('amg_chan', []); p.id = uid(); a.push(p); L.set('amg_chan', a.slice(-300)); this.chcb && this.chcb(a); },
+  async updChan(id, x) { const a = L.get('amg_chan', []).map(p => p.id === id ? Object.assign(p, x) : p); L.set('amg_chan', a); this.chcb && this.chcb(a); },
+  async delChan(id) { const a = L.get('amg_chan', []).filter(p => p.id !== id); L.set('amg_chan', a); this.chcb && this.chcb(a); },
+  async viewChan(id) { const a = L.get('amg_chan', []).map(p => p.id === id ? Object.assign(p, { views: (p.views || 0) + 1 }) : p); L.set('amg_chan', a); this.chcb && this.chcb(a); },
+  watchStat(k, cb) { (this.stcb = this.stcb || {})[k] = cb; cb(L.get('amg_st_' + k, {})); },
+  async setSub(on) { const s = L.get('amg_st_channel', {}); s.subs = Math.max(0, (s.subs || 0) + (on ? 1 : -1)); L.set('amg_st_channel', s); this.stcb && this.stcb.channel && this.stcb.channel(s); },
+  async addVisit(d, nd) { const v = L.get('amg_visits', {}); v[d] = (v[d] || 0) + 1; L.set('amg_visits', v); const s = L.get('amg_st_visits', {}); s.total = (s.total || 0) + 1; if (nd) s.devices = (s.devices || 0) + 1; L.set('amg_st_visits', s); },
+  watchVisits(cb) { cb(L.get('amg_visits', {})); }
 };
 let fbApp, auth, fdb;
 const FireDB = {
@@ -1934,7 +2145,7 @@ const FireDB = {
     }
   },
   updStudent(id, x) { return fdb.collection('logins').doc(id).update(x); },
-  delStudent(id) { return fdb.collection('logins').doc(id).delete(); },
+  delStudent(id) { const s = STUD.find(x => x.uid === id); fdb.collection('dellog').add({ kind: 'del', t: 'حذف حساب طالب', text: 'انحذف حساب ' + ((s && s.name) || ''), author: (s && s.name) || '', where: 'الحسابات', by: ME.name, at: Date.now() }).catch(() => { }); return fdb.collection('logins').doc(id).delete(); },
   log(t) { fdb.collection('logs').add({ t, at: Date.now(), by: ME.name }).catch(() => { }); },
   watchLogs(cb) { fdb.collection('logs').orderBy('at', 'desc').limit(40).onSnapshot(s => cb(s.docs.map(d => d.data())), () => { }); },
   watchChat(cb) { fdb.collection('chat').orderBy('at', 'desc').limit(150).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => { }); },
@@ -1955,7 +2166,23 @@ const FireDB = {
   delNote() { return fdb.collection('notes').doc(ME.uid).delete(); },
   watchSaved(cb) { fdb.collection('users').doc(ME.uid).collection('saved').orderBy('at', 'desc').limit(200).onSnapshot(s => cb(s.docs.map(d => Object.assign({}, d.data(), { id: d.id }))), () => { }); },
   saveMsg(m) { return fdb.collection('users').doc(ME.uid).collection('saved').add(m); },
-  unsaveMsg(id) { return fdb.collection('users').doc(ME.uid).collection('saved').doc(id).delete(); }
+  unsaveMsg(id) { return fdb.collection('users').doc(ME.uid).collection('saved').doc(id).delete(); },
+  watchThreads(cb) { fdb.collection('threads').where('members', 'array-contains', ME.uid).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => { }); },
+  watchThread(tid, cb) { return fdb.collection('threads').doc(tid).collection('msgs').orderBy('at', 'desc').limit(200).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
+  async sendThread(tid, meta, m) { await fdb.collection('threads').doc(tid).set(meta); await fdb.collection('threads').doc(tid).collection('msgs').add(m); },
+  delThreadMsg(tid, id) { return fdb.collection('threads').doc(tid).collection('msgs').doc(id).delete(); },
+  reactThread(tid, id, R) { return fdb.collection('threads').doc(tid).collection('msgs').doc(id).update({ reactions: R }); },
+  logDel(x) { return fdb.collection('dellog').add(x); },
+  watchDelLog(cb) { fdb.collection('dellog').orderBy('at', 'desc').limit(200).onSnapshot(s => cb(s.docs.map(d => d.data())), () => { }); },
+  watchChan(cb) { fdb.collection('channel').orderBy('at', 'desc').limit(150).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
+  addChan(p) { return fdb.collection('channel').add(p); },
+  updChan(id, x) { return fdb.collection('channel').doc(id).update(x); },
+  delChan(id) { return fdb.collection('channel').doc(id).delete(); },
+  viewChan(id) { return fdb.collection('channel').doc(id).update({ views: firebase.firestore.FieldValue.increment(1) }); },
+  watchStat(k, cb) { fdb.collection('stats').doc(k).onSnapshot(d => cb(d.exists ? d.data() : {}), () => cb({})); },
+  async setSub(on) { const inc = firebase.firestore.FieldValue.increment(on ? 1 : -1); if (on) await fdb.collection('subs').doc(devId).set({ at: Date.now() }); else await fdb.collection('subs').doc(devId).delete(); await fdb.collection('stats').doc('channel').set({ subs: inc }, { merge: true }); },
+  async addVisit(d, nd) { const inc = firebase.firestore.FieldValue.increment(1); await fdb.collection('visits').doc(d).set({ n: inc }, { merge: true }); await fdb.collection('stats').doc('visits').set(nd ? { total: inc, devices: inc } : { total: inc }, { merge: true }); },
+  watchVisits(cb) { fdb.collection('visits').orderBy(firebase.firestore.FieldPath.documentId(), 'desc').limit(31).onSnapshot(s => { const o = {}; s.docs.forEach(d => o[d.id] = d.data().n || 0); cb(o); }, () => cb({})); }
 };
 const GuestDB = Object.assign({}, LocalDB, {
   kind: 'guest',
@@ -1963,6 +2190,11 @@ const GuestDB = Object.assign({}, LocalDB, {
   async loadMine() { return L.get('amg_draw_guest', []); },
   saveMine(d) { L.set('amg_draw_guest', d); },
   watchConfig(cb) { if (HAS_FB && fdb) FireDB.watchConfig(cb); else LocalDB.watchConfig(cb); }
+});
+if (HAS_FB) Object.assign(GuestDB, {
+  watchPosts(cb) { if (!fdb) return cb([]); fdb.collection('posts').where('vis', '==', 'public').limit(80).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
+  watchChan(cb) { fdb ? FireDB.watchChan(cb) : cb([]); }, viewChan(id) { return FireDB.viewChan(id); },
+  watchStat(k, cb) { fdb ? FireDB.watchStat(k, cb) : cb({}); }, setSub(on) { return FireDB.setSub(on); }, addVisit(d, nd) { return FireDB.addVisit(d, nd); }
 });
 let DB = LocalDB, ME = null;
 
@@ -1994,10 +2226,10 @@ function initAuth() {
     start(); return;
   }
   fbApp = firebase.initializeApp(FB); auth = fbApp.auth(); fdb = fbApp.firestore(); DB = FireDB;
-  $('#guestBtn').onclick = () => { L.set('amg_guest', 1); enterGuest(); };
+  $('#guestBtn').onclick = () => { L.set('amg_wantlogin', 0); if (started) { $('#login').classList.add('hide'); $('#app').classList.remove('hide'); } else enterGuest(); };
   auth.onAuthStateChanged(async u => {
-    if (!u) { if (L.get('amg_guest', 0)) enterGuest(); else showLogin(); return; }
-    L.set('amg_guest', 0);
+    if (!u) { if (L.get('amg_wantlogin', 0)) showLogin(); else enterGuest(); return; }
+    L.set('amg_wantlogin', 0);
     if (u.email === ADMIN_EMAIL) { ME = { uid: u.uid, role: 'admin', name: ADMIN_NAME }; welcome(); return; }
     try {
       const d = await fdb.collection('logins').doc(u.uid).get(), x = d.exists ? d.data() : null;
@@ -2020,6 +2252,7 @@ function enterGuest() {
   ME = { uid: 'guest', role: 'guest', name: 'زائر' }; DB = GuestDB;
   $('#login').classList.add('hide'); start();
 }
+function toLogin() { if (!HAS_FB || !auth) return toast('لازم Firebase'); L.set('amg_wantlogin', 1); showLogin(); }
 function showLogin() { $('#login').classList.remove('hide'); $('#app').classList.add('hide'); $('#lgBtn').disabled = false; $('#lgBar').style.width = '0'; setTimeout(() => $('#lgPw').focus(), 200); }
 function loginErr(m) {
   showLogin(); $('#lgMsg').textContent = m; $('#lgMsg').style.color = 'var(--bad)';
@@ -2027,6 +2260,7 @@ function loginErr(m) {
   setTimeout(() => i.classList.remove('err'), 1600);
 }
 function welcome() {
+  if (started) { location.reload(); return; }
   if ($('#login').classList.contains('hide')) { start(); return; }
   $('#lgMsg').style.color = 'var(--ok)'; $('#lgMsg').textContent = 'أهلاً وسهلاً ' + ME.name; $('#lgBar').style.width = '100%';
   setTimeout(() => { $('#login').classList.add('hide'); start(); }, 750);
@@ -2176,8 +2410,7 @@ document.addEventListener('click', e => {
 let CH, OVER = null, LIVE = null, src = 'am', tvMade = null, calMade = null;
 function fitChat() {
   if (curPg !== 'chat') return; const w = $('#chatWrap'); if (!w) return;
-  const bn = $('#bnav'), bnH = bn && getComputedStyle(bn).display !== 'none' ? bn.getBoundingClientRect().height + 6 : 10;
-  w.style.height = Math.max(320, Math.floor((window.visualViewport ? visualViewport.height : innerHeight) - w.getBoundingClientRect().top - bnH)) + 'px';
+  w.style.height = '';
 }
 window.addEventListener('resize', () => setTimeout(fitChat, 60));
 if (window.visualViewport) visualViewport.addEventListener('resize', () => { fitChat(); const l = $('#msgs'); if (l && curPg === 'chat') l.scrollTop = l.scrollHeight; });
@@ -2214,7 +2447,8 @@ function initChart() {
     },
     askText: () => askText('شنو تريد تكتب على الشارت؟', '', 'مثلاً: منطقة شراء'),
     onTextTap: d => askText('عدّل الكتابة', d.text).then(s => { if (s) CH.editText(d, s); }),
-    emptyText: () => 'جاري التحميل…'
+    emptyText: () => 'جاري التحميل…',
+    onContext: (x, y, p, t) => chartMenu(x, y, p, t)
   });
   CH.fmt = p => fx(p + OFF());
   CH.ind = Object.assign(CH.ind, S.ind, { mag: S.mag });
@@ -2416,19 +2650,21 @@ function shareSheet() {
   const img = CH.snapshot(), draw = JSON.parse(JSON.stringify(CH.mine)).map(d => { delete d._vp; return d; });
   CH.sel = sel; CH.dirty = true;
   const tfn = (TFS.find(t => t[0] === S.tf) || [])[1];
-  let type = 'analysis', pin = false, withDraw = true;
+  let type = 'analysis', pin = false, withDraw = true, vis = pVis;
   modal(`<h2>انشر التحليل<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
    <img src="${img}" class="shprev" data-view>
    <div class="row" style="margin:10px 0"><div class="seg" id="shType"><button data-t="analysis" class="on">تحليل</button><button data-t="post">منشور</button></div><span class="sp"></span><button class="btn ghost sm" id="shPin"><svg class="ic" style="width:16px;height:16px"><use href="#i-pin"/></svg>تثبيت</button></div>
    <input class="inp" id="shTitle" value="تحليل الذهب — ${tfn} — ${dstr(Date.now())}" style="margin-bottom:8px">
+   <div style="margin-bottom:8px">${visSeg('shVis', vis)}</div>
    <textarea class="inp" id="shText" placeholder="اكتب الشرح: الدخول، الهدف، الوقف، وشنو تتوقع…"></textarea>
    ${draw.length ? `<button class="mi" id="shDraw" style="padding-inline:0">ارفق رسوماتي (${draw.length})<small>الطلاب يفتحونها على شارتهم بنفس المناطق</small><span class="sw on"></span></button>` : ''}
-   <button class="btn blk" id="shGo" style="margin-top:10px"><svg class="ic"><use href="#i-send"/></svg>انشر للطلاب</button>`, (m, close) => {
+   <button class="btn blk" id="shGo" style="margin-top:10px"><svg class="ic"><use href="#i-send"/></svg>${vis === 'public' ? 'انشر للعامة' : 'انشر للطلاب'}</button>`, (m, close) => {
     m.querySelector('#shType').onclick = e => { const b = e.target.closest('[data-t]'); if (!b) return; type = b.dataset.t; m.querySelectorAll('#shType button').forEach(x => x.classList.toggle('on', x === b)); };
     m.querySelector('#shPin').onclick = e => { pin = !pin; e.currentTarget.className = 'btn sm ' + (pin ? 'tint' : 'ghost'); };
+    m.querySelector('#shVis').onclick = e => { const b = e.target.closest('[data-vis]'); if (!b) return; vis = b.dataset.vis; pVis = vis; L.set('amg_pvis', vis); m.querySelectorAll('#shVis button').forEach(x => x.classList.toggle('on', x === b)); m.querySelector('#shGo').lastChild.textContent = vis === 'public' ? 'انشر للعامة' : 'انشر للطلاب'; };
     const dw = m.querySelector('#shDraw'); if (dw) dw.onclick = () => { withDraw = !withDraw; dw.querySelector('.sw').classList.toggle('on', withDraw); };
     m.querySelector('#shGo').onclick = async () => {
-      const p = { type, title: m.querySelector('#shTitle').value.trim(), text: m.querySelector('#shText').value.trim(), imgs: [], snap: img, draw: withDraw && draw.length ? draw : null, tf: S.tf, pin, at: Date.now(), by: ME.name };
+      const p = { type, title: m.querySelector('#shTitle').value.trim(), text: m.querySelector('#shText').value.trim(), imgs: [], snap: img, draw: withDraw && draw.length ? draw : null, tf: S.tf, pin, vis, at: Date.now(), by: ME.name };
       if (JSON.stringify(p).length > 980000) return toast('الصورة كبيرة، صغّر الشارت شوية', 'bad');
       const b = m.querySelector('#shGo'); b.disabled = true;
       try { await DB.addPost(p); DB.log('نشر تحليل من الشارت: ' + p.title); beep('ok'); toast('انتشر التحليل ✓', 'ok'); close(); }
@@ -2500,7 +2736,8 @@ function clock() {
 }
 
 /* ====== posts ====== */
-let POSTS = [], firstPosts = true, maxAt = 0, pType = 'analysis', pPin = false, pImgs = [], pSnap = null, pFilt = 'all';
+let POSTS = [], firstPosts = true, maxAt = 0, pType = 'analysis', pPin = false, pImgs = [], pSnap = null, pFilt = 'all', pVis = L.get('amg_pvis', 'students');
+const visSeg = (id, v) => `<div class="seg" id="${id}"><button data-vis="public" class="${v === 'public' ? 'on' : ''}">🌍 للعامة</button><button data-vis="students" class="${v !== 'public' ? 'on' : ''}">🎓 للطلاب بس</button></div>`;
 function onPosts(list) {
   POSTS = list.slice();
   const mx = Math.max(0, ...POSTS.map(p => p.at || 0));
@@ -2528,16 +2765,16 @@ function postHTML(p, short) {
   const imgs = (p.imgs || []).concat(p.snap ? [p.snap] : []);
   const txt = short && (p.text || '').length > 220 ? esc(p.text.slice(0, 220)) + '…' : esc(p.text || '');
   return `<div class="card br post ${p.pin ? 'pin' : ''}" data-pid="${p.id}">
-   <div class="hd"><div class="av">${esc(initials(p.by || ADMIN_NAME))}</div><div style="min-width:0"><b>${esc(p.by || ADMIN_NAME)}</b><small>${ago(p.at)} · ${p.type === 'analysis' ? 'تحليل' : 'منشور'}${p.tf ? ' · <span class="num">' + (TFS.find(t => t[0] === p.tf) || [, p.tf])[1] + '</span>' : ''}</small></div><span class="sp"></span>${p.pin ? '<span class="pill acc">📌 مثبّت</span>' : ''}</div>
+   <div class="hd"><div class="av">${esc(initials(p.by || ADMIN_NAME))}</div><div style="min-width:0"><b>${esc(p.by || ADMIN_NAME)}</b><small>${ago(p.at)} · ${p.type === 'analysis' ? 'تحليل' : 'منشور'}${p.tf ? ' · <span class="num">' + (TFS.find(t => t[0] === p.tf) || [, p.tf])[1] + '</span>' : ''}${ME.role === 'admin' ? ' · <span class="vis-badge ' + (p.vis === 'public' ? 'pub' : '') + '">' + (p.vis === 'public' ? 'للعامة' : 'للطلاب') + '</span>' : ''}</small></div><span class="sp"></span>${p.pin ? '<span class="pill acc">📌 مثبّت</span>' : ''}</div>
    ${p.title ? `<div class="tt">${esc(p.title)}</div>` : ''}<div class="tx">${txt}</div>
    ${imgs.length && !short ? `<div class="imgs ${imgs.length === 1 ? 'one' : ''}">${imgs.map(s => `<img src="${s}" loading="lazy" data-view>`).join('')}</div>` : ''}
-   ${short ? '' : `<div class="row wrap" style="margin-top:12px;gap:6px">${(p.draw || []).length ? `<button class="btn tint sm" data-pa="show"><svg class="ic" style="width:16px;height:16px"><use href="#i-eye"/></svg>اعرضه على شارتي</button>` : ''}<span class="sp"></span>${ME.role === 'admin' ? `<button class="btn ghost sm" data-pa="pin">${p.pin ? 'شيل التثبيت' : 'ثبّت'}</button><button class="btn danger sm" data-pa="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button>` : ''}</div>`}
+   ${short ? '' : `<div class="row wrap" style="margin-top:12px;gap:6px">${(p.draw || []).length ? `<button class="btn tint sm" data-pa="show"><svg class="ic" style="width:16px;height:16px"><use href="#i-eye"/></svg>اعرضه على شارتي</button>` : ''}<span class="sp"></span>${ME.role === 'admin' ? `<button class="btn ghost sm" data-pa="vis">${p.vis === 'public' ? 'خليه للطلاب' : 'خليه للعامة'}</button><button class="btn ghost sm" data-pa="pin">${p.pin ? 'شيل التثبيت' : 'ثبّت'}</button><button class="btn danger sm" data-pa="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button>` : ''}</div>`}
   </div>`;
 }
 function renderFeed() {
   const el = $('#feed'); if (!el) return;
   const a = sortPosts(POSTS).filter(p => pFilt === 'all' || p.type === pFilt);
-  el.innerHTML = a.length ? a.map(p => postHTML(p)).join('') : `<div class="card empty">${ME.role === 'admin' ? 'ماكو منشورات لحد الآن. اكتب أول تحليل من فوگ.' : 'لحد الآن ماكو تحليلات. من ينزل الأستاذ تحليل يوصلك إشعار.'}</div>`;
+  el.innerHTML = a.length ? a.map(p => postHTML(p)).join('') : `<div class="card empty">${ME.role === 'admin' ? 'ماكو منشورات لحد الآن. اكتب أول تحليل من فوگ.' : ME.role === 'guest' ? 'لحد الآن ماكو تحليلات للعامة. التحليلات اليومية الكاملة للطلاب المشتركين.' : 'لحد الآن ماكو تحليلات. من ينزل الأستاذ تحليل يوصلك إشعار.'}</div>`;
   if (curPg === 'posts') anim('#pg-posts');
 }
 function renderHomePost() {
@@ -2550,6 +2787,7 @@ document.addEventListener('click', async e => {
   const p = POSTS.find(x => x.id === b.closest('[data-pid]').dataset.pid); if (!p) return;
   if (b.dataset.pa === 'show') { OVER = p; go('chart'); if (p.tf && p.tf !== S.tf) loadTF(p.tf); setTeacher(); toast('هذا تحليل الأستاذ على شارتك'); if ((p.draw || []).length) setTimeout(() => focusDraw(p.draw), 600); }
   if (b.dataset.pa === 'pin') { await DB.updPost(p.id, { pin: !p.pin }); }
+  if (b.dataset.pa === 'vis') { const v = p.vis === 'public' ? 'students' : 'public'; await DB.updPost(p.id, { vis: v }).catch(() => toast('ما تغيّر', 'bad')); toast(v === 'public' ? 'هسه يشوفه الكل 🌍' : 'هسه بس الطلاب يشوفوه 🎓'); }
   if (b.dataset.pa === 'del') { if (await ask('تحذف المنشور؟', 'راح ينحذف عند كل الطلاب هم.', 'احذف', true)) { await DB.delPost(p.id); DB.log('حذف منشور: ' + (p.title || '')); toast('انحذف'); } }
 });
 function focusDraw(list) {
@@ -2582,6 +2820,8 @@ function shareChart() {
 function initPosts() {
   $('#ptype').onclick = e => { const b = e.target.closest('[data-pt]'); if (!b) return; pType = b.dataset.pt; $$('#ptype button').forEach(x => x.classList.toggle('on', x === b)); };
   $('#pfilt').onclick = e => { const b = e.target.closest('[data-pf]'); if (!b) return; pFilt = b.dataset.pf; $$('#pfilt button').forEach(x => x.classList.toggle('on', x === b)); renderFeed(); };
+  $('#pvisW').innerHTML = visSeg('pVis', pVis);
+  $('#pvisW').onclick = e => { const b = e.target.closest('[data-vis]'); if (!b) return; pVis = b.dataset.vis; L.set('amg_pvis', pVis); $$('#pVis button').forEach(x => x.classList.toggle('on', x === b)); };
   $('#pinTog').onclick = () => { pPin = !pPin; $('#pinTog').className = 'btn sm ' + (pPin ? 'tint' : 'ghost'); };
   const addFiles = async files => {
     const fs = [...files].filter(f => /^image\//.test(f.type)).slice(0, 4 - pImgs.length); if (files.length > fs.length) toast('أكثر شي 4 صور بالمنشور');
@@ -2608,7 +2848,7 @@ function initPosts() {
   $('#pSend').onclick = async () => {
     const title = $('#pTitle').value.trim(), text = $('#pText').value.trim();
     if (!text && !title && !pImgs.length && !pSnap) return toast('اكتب شي أول', 'bad');
-    const p = { type: pType, title, text, imgs: pImgs, snap: pSnap ? pSnap.img : null, draw: pSnap ? pSnap.draw : null, tf: pSnap ? pSnap.tf : null, pin: pPin, at: Date.now(), by: ME.name };
+    const p = { type: pType, title, text, imgs: pImgs, snap: pSnap ? pSnap.img : null, draw: pSnap ? pSnap.draw : null, tf: pSnap ? pSnap.tf : null, pin: pPin, vis: pVis, at: Date.now(), by: ME.name };
     if (JSON.stringify(p).length > 980000) return toast('الصور كبيرة، قلّل عددها', 'bad');
     $('#pSend').disabled = true;
     try { await DB.addPost(p); DB.log('نشر ' + (pType === 'analysis' ? 'تحليل' : 'منشور') + ': ' + (title || text.slice(0, 40))); beep('ok'); toast('انتشر ✓', 'ok'); $('#pTitle').value = ''; $('#pText').value = ''; pImgs = []; pSnap = null; pPin = false; $('#pinTog').className = 'btn ghost sm'; renderAtt(); }
@@ -2836,11 +3076,9 @@ function initNews() {
 
 }
 
-/* ====== chat — نفس فكرة AM CHAT: غرفة الطلاب + خاص + محفوظة + ملاحظات + بصمات ====== */
-let PROF = {}, profLoaded = false, NOTES = [], SAVED = [], AUD = null, REC = null, chRate = +L.get('amg_rate', 1) || 1;
-function avHTML(uid, name, size, cls = '') { const p = PROF[uid] && PROF[uid].photo; return `<span class="av ${p ? 'ph' : ''} ${cls}" style="--h:${hue(uid)};${size ? `width:${size}px;height:${size}px;font-size:${Math.round(size * .34)}px` : ''}">${p ? `<img src="${p}" alt="" draggable="false">` : esc(initials(name))}</span>`; }
-const adminUid = () => (Object.entries(PROF).find(([u, p]) => p.role === 'admin') || [])[0];
-let CHAT = [], DMMSG = [], DMLIST = [], lastSend = 0, chMode = 'room', dmPeer = null, dmUnsub = null, replyTo = null, chImgData = null, chRendered = new Set(), chInitial = true, fabN = 0;
+/* ====== chat — نفس AM CHAT: سجل محادثات، غرفة الطلاب مثبتة، بحث، محفوظة، ملاحظات، بصمات ====== */
+let PROF = {}, profLoaded = false, NOTES = [], SAVED = [], AUD = null, REC = null, RECH = false, RECB = false, chRate = +L.get('amg_rate', 1) || 1;
+let CHAT = [], TMSG = [], THREADS = [], CONV = null, tUnsub = null, lastSend = 0, replyTo = null, chImgData = null, chRendered = new Set(), chInitial = true, fabN = 0, chQ = '', LOGS = [];
 const REACT = { heart: '❤️', fire: '🔥', laugh: '😂', like: '👍', wow: '😮', clap: '👏' };
 const EMO = [['😀', '😀 😃 😄 😁 😆 😅 😂 🤣 😊 😇 🙂 🙃 😉 😌 😍 🥰 😘 😋 😛 😜 🤪 🤨 🧐 🤓 😎 🥳 😏 😒 😔 😟 🙁 😣 😫 😩 🥺 😢 😭 😤 😠 😡 🤯 😳 🥵 🥶 😱 😨 😰 😓 🤗 🤔 🤭 🤫 😶 😐 😑 😬 🙄 😮 😲 🥱 😴 🤤 😵 🤐 🥴 🤢 🤮 😷 🤒 🤕 😈 🤡 💀'],
 ['👋', '👋 🤚 ✋ 🖖 👌 🤌 🤏 ✌️ 🤞 🤟 🤘 🤙 👈 👉 👆 👇 ☝️ 👍 👎 ✊ 👊 🤛 🤜 👏 🙌 👐 🤲 🤝 🙏 💪 🫶 👀 🧠'],
@@ -2852,18 +3090,65 @@ const linkify = s => s.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_b
 const ico = n => `<svg class="ic"><use href="#i-${n}"/></svg>`;
 const seenK = k => 'amg_seen_' + k + '_' + (ME && ME.uid);
 const getSeen = k => L.get(seenK(k), 0), setSeen = k => L.set(seenK(k), Date.now());
-const curList = () => chMode === 'room' ? CHAT : chMode === 'saved' ? SAVED : DMMSG;
-function chatSeenNow() { setSeen(chMode === 'room' ? 'room' : 'dm_' + (dmPeer && dmPeer.uid)); chatBadge(); }
+const cm = () => CONV ? CONV.k : null;
+const curList = () => cm() === 'room' ? CHAT : cm() === 'saved' ? SAVED : TMSG;
+const tidOf = (a, b) => [a, b].sort().join('_');
+function avHTML(uid, name, size, cls = '') { const p = PROF[uid] && PROF[uid].photo; return `<span class="av ${p ? 'ph' : ''} ${cls}" style="--h:${hue(uid)};${size ? `width:${size}px;height:${size}px;font-size:${Math.round(size * .34)}px` : ''}">${p ? `<img src="${p}" alt="" draggable="false">` : esc(initials(name))}</span>`; }
+const adminUid = () => (Object.entries(PROF).find(([u, p]) => p.role === 'admin') || [])[0];
+const peerOf = t => { const u = (t.members || []).find(x => x !== ME.uid) || ME.uid; return { uid: u, name: (PROF[u] && PROF[u].name) || (t.names || {})[u] || 'مستخدم' }; };
+function chatSeenNow() { if (!CONV || curPg !== 'chat') return; if (cm() === 'room') setSeen('room'); if (cm() === 'thr') setSeen('t_' + CONV.tid); chatBadge(); }
+function unreadRoom() { return (curPg === 'chat' && cm() === 'room') ? 0 : CHAT.filter(m => m.at > getSeen('room') && m.uid !== ME.uid).length; }
+function unreadThr(t) { return t.from !== ME.uid && t.at > getSeen('t_' + t.id) && !(curPg === 'chat' && cm() === 'thr' && CONV.tid === t.id); }
 function chatBadge() {
-  const onRoom = curPg === 'chat' && chMode === 'room';
-  const nRoom = onRoom ? 0 : CHAT.filter(m => m.at > getSeen('room') && m.uid !== ME.uid).length;
-  let nDm = 0;
-  if (ME.role === 'admin') nDm = DMLIST.filter(t => t.from === 'student' && t.at > getSeen('dm_' + t.id) && !(curPg === 'chat' && chMode === 'dm' && dmPeer && dmPeer.uid === t.id)).length;
-  else if (ME.role === 'student') nDm = (curPg === 'chat' && chMode === 'dm') ? 0 : DMMSG.filter(m => m.at > getSeen('dm_' + ME.uid) && m.uid !== ME.uid).length;
-  const n = nRoom + nDm;
+  const n = unreadRoom() + THREADS.filter(unreadThr).length;
   $$('.cbadge').forEach(b => { b.textContent = n > 99 ? '99+' : n; b.classList.toggle('hide', !n); });
-  $$('.dmbadge').forEach(b => { b.textContent = nDm; b.classList.toggle('hide', !nDm); });
-  $$('.rmbadge').forEach(b => { b.textContent = nRoom; b.classList.toggle('hide', !nRoom); });
+  if (curPg === 'chat') renderList();
+}
+function lastOf(list) { const m = list[list.length - 1]; return m ? { text: m.text || (m.voice ? '🎤 بصمة' : m.img ? '📷 صورة' : ''), at: m.at, name: m.name, uid: m.uid } : null; }
+function renderList() {
+  const el = $('#convList'); if (!el) return;
+  const q = chQ.trim(), rows = []; const nb = $('#notes'); if (nb) nb.classList.toggle('hide', !!q);
+  const lr = lastOf(CHAT), ur = unreadRoom();
+  const item = (key, av, name, sub, time, badge, pin, on) => `<div class="ci ${on ? 'on' : ''}" data-open="${key}">${av}<div class="b"><div class="r1"><span class="nm">${name}</span><span class="tm num">${time || ''}</span></div><div class="r2"><span class="pv">${sub || ''}</span>${badge ? `<b class="nbadge">${badge}</b>` : pin ? `<span class="pinI">${ico('pin')}</span>` : ''}</div></div></div>`;
+  const tm = t => !t ? '' : new Date(t).toDateString() === new Date().toDateString() ? tstr(t) : dstr(t).slice(0, 5);
+  if (!q) {
+    rows.push(item('room', '<span class="av grp">👥</span>', 'غرفة الطلاب', lr ? `<b>${esc(lr.uid === ME.uid ? 'إنت' : (lr.name || '').split(' ')[0])}:</b> ${esc(lr.text)}` : 'كل طلاب الكورس ويا الأستاذ', lr && tm(lr.at), ur, true, cm() === 'room'));
+    rows.push(item('saved', `<span class="av grp sv">${ico('bm')}</span>`, 'المحفوظة', SAVED.length ? SAVED.length + ' رسالة محفوظة' : 'احفظ الرسائل المهمة هنا', '', 0, false, cm() === 'saved'));
+  }
+  const thr = THREADS.slice().sort((a, b) => b.at - a.at).filter(t => !q || peerOf(t).name.includes(q));
+  thr.forEach(t => { const p = peerOf(t); rows.push(item('t:' + t.id, avHTML(p.uid, p.name, 52), esc(p.name) + (PROF[p.uid] && PROF[p.uid].role === 'admin' ? ' <span class="tag">الأستاذ</span>' : ''), (t.from === ME.uid ? 'إنت: ' : '') + esc(t.last || ''), tm(t.at), unreadThr(t) ? '●' : 0, false, cm() === 'thr' && CONV.tid === t.id)); });
+  if (q) {
+    const have = new Set(thr.map(t => peerOf(t).uid));
+    const ppl = Object.entries(PROF).filter(([u, p]) => u !== ME.uid && p.role !== 'guest' && (p.name || '').includes(q) && !have.has(u)).sort((a, b) => (b[1].role === 'admin') - (a[1].role === 'admin'));
+    if (ppl.length) rows.push(`<div class="sec-t">أشخاص</div>` + ppl.map(([u, p]) => `<div class="ci" data-open="u:${u}">${avHTML(u, p.name, 52)}<div class="b"><div class="r1"><span class="nm">${esc(p.name)}${p.role === 'admin' ? ' <span class="tag">الأستاذ</span>' : ''}</span></div><div class="r2"><span class="pv">ابدي محادثة جديدة</span></div></div></div>`).join(''));
+    if (!thr.length && !ppl.length) rows.push('<div class="empty">ماكو أحد بهذا الاسم</div>');
+  } else if (!THREADS.length) {
+    const a = adminUid();
+    rows.push(`<div class="sec-t">ابدي محادثة</div><div class="hint">دوّر على اسم أي طالب${ME.role === 'student' ? ' أو الأستاذ' : ''} من فوگ حتى تراسله بالخاص.</div>` + (ME.role === 'student' && a ? `<div class="ci" data-open="u:${a}">${avHTML(a, ADMIN_NAME, 52)}<div class="b"><div class="r1"><span class="nm">${esc(ADMIN_NAME)} <span class="tag">الأستاذ</span></span></div><div class="r2"><span class="pv">راسل الأستاذ</span></div></div></div>` : ''));
+  }
+  if (ME.role === 'admin' && !q) rows.push(`<div class="ci sm" data-open="dellog"><span class="av grp">🗑</span><div class="b"><div class="r1"><span class="nm">سجل الرسائل المحذوفة</span></div><div class="r2"><span class="pv">شنو انحذف ومنو حذفه</span></div></div></div>`);
+  el.innerHTML = rows.join('');
+}
+function openConv(c) {
+  stopAudio(); if (REC) recStop(false); replyClear();
+  if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; }
+  CONV = c; TMSG = []; chRendered = new Set(); chInitial = true; fabN = 0; $('#msgInner').innerHTML = '';
+  if (c.k === 'thr') tUnsub = DB.watchThread(c.tid, list => { if (!CONV || CONV.tid !== c.tid) return; TMSG = list.slice().sort((a, b) => a.at - b.at); renderMsgs(); chatSeenNow(); });
+  $('#chatWrap').dataset.cv = 'conv';
+  chatHeader(); renderMsgs(); renderList(); chatSeenNow();
+  if (!matchMedia('(pointer:coarse)').matches && c.k !== 'saved') setTimeout(() => $('#chatTx').focus(), 50);
+}
+function closeConv() { stopAudio(); if (REC) recStop(false); if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; } CONV = null; $('#chatWrap').dataset.cv = 'list'; renderList(); chatHeader(); }
+function openKey(k) {
+  if (k === 'room') return openConv({ k: 'room' });
+  if (k === 'saved') return openConv({ k: 'saved' });
+  if (k === 'dellog') return delLogSheet();
+  if (k.startsWith('t:')) { const t = THREADS.find(x => x.id === k.slice(2)); if (t) openConv({ k: 'thr', tid: t.id, peer: peerOf(t) }); return; }
+  if (k.startsWith('u:')) { const u = k.slice(2), p = PROF[u] || {}; chQ = ''; $('#chSearch').value = ''; openConv({ k: 'thr', tid: tidOf(ME.uid, u), peer: { uid: u, name: p.name || 'مستخدم' }, isNew: !THREADS.find(t => t.id === tidOf(ME.uid, u)) }); }
+}
+async function convSend(m, lastTxt) {
+  if (cm() === 'room') return DB.sendChat(m);
+  if (cm() === 'thr') { const u = CONV.peer.uid, names = { [ME.uid]: ME.name, [u]: CONV.peer.name }; return DB.sendThread(CONV.tid, { members: [ME.uid, u].sort(), names, last: lastTxt || m.text, at: m.at, from: ME.uid }, m); }
 }
 function msgItems() {
   const list = curList(), out = []; let prev = null;
@@ -2871,7 +3156,7 @@ function msgItems() {
   const same = (a, b) => a && b && a.uid === b.uid && dk(a.at) === dk(b.at) && Math.abs(b.at - a.at) < 300000;
   list.forEach((m, i) => {
     if (!prev || dk(prev.at) !== dk(m.at)) { const lab = dk(m.at) === new Date().toDateString() ? 'اليوم' : dk(m.at) === new Date(Date.now() - 864e5).toDateString() ? 'البارحة' : DAYS[new Date(m.at).getDay()] + ' ' + dstr(m.at); out.push({ key: 'd' + dk(m.at), sig: lab, html: `<div class="dsep">${lab}</div>` }); }
-    const next = list[i + 1], f = { first: !same(prev, m), last: !same(m, next), out: m.uid === ME.uid, group: chMode !== 'dm' };
+    const next = list[i + 1], f = { first: !same(prev, m), last: !same(m, next), out: m.uid === ME.uid, group: cm() !== 'thr' };
     out.push({ key: m.id, m, f, sig: [m.text, JSON.stringify(m.reactions || {}), f.first, f.last, (m.img || '').length, (m.voice || '').length, (PROF[m.uid] || {}).photo ? 1 : 0, CFG.pin && CFG.pin.id === m.id].join('|') });
     prev = m;
   });
@@ -2885,18 +3170,19 @@ function msgHTML(m, f) {
   let inner = '';
   if (f.group && !f.out && f.first && !jumbo) inner += `<div class="from" style="--h:${hue(m.uid)}">${esc(m.name || '')}${m.role === 'admin' ? '<span class="tag">الأستاذ</span>' : ''}</div>`;
   if (m.reply) inner += `<span class="quote" data-jump="${esc(m.reply.id)}"><b>${esc(m.reply.uid === ME.uid ? 'إنت' : m.reply.name || '')}</b><span>${esc(m.reply.text || '📷 صورة')}</span></span>`;
-  if (m.savedFrom) inner += `<div class="svd">${ico('bm')} ${m.savedFrom === 'room' ? 'من غرفة الطلاب' : 'من الخاص'} · ${dstr(m.at)}</div>`;
+  if (m.savedFrom) inner += `<div class="svd">${ico('bm')} ${m.savedFrom === 'room' ? 'من غرفة الطلاب' : 'من محادثة خاصة'} · ${dstr(m.at)}</div>`;
   if (m.img) inner += `<img class="ph" src="${m.img}" data-view alt="" loading="lazy" draggable="false">`;
   if (m.voice) inner += voiceHTML(m, f);
   if (m.text) inner += `<div class="txt">${linkify(esc(m.text))}${hasR ? '' : sp}</div>`;
   if (hasR) inner += `<div class="reacts">${Object.entries(m.reactions).filter(([k, a]) => a && a.length && REACT[k]).map(([k, a]) => `<button data-react="${k}" class="${a.includes(ME.uid) ? 'me' : ''}">${REACT[k]}${a.length > 1 ? `<span class="num">${a.length}</span>` : ''}</button>`).join('')}${sp}</div>`;
-  const meta = `<span class="meta">${CFG.pin && CFG.pin.id === m.id && chMode === 'room' ? ico('pin') : ''}<span class="num">${tstr(m.at)}</span>${f.out ? ico('check2') : ''}</span>`;
+  const meta = `<span class="meta">${CFG.pin && CFG.pin.id === m.id && cm() === 'room' ? ico('pin') : ''}<span class="num">${tstr(m.at)}</span>${f.out ? ico('check2') : ''}</span>`;
   const media = !!m.img, only = media && !m.text && !hasR && !(f.group && !f.out && f.first) && !m.reply;
   const av = f.group && !f.out ? `<span class="mav">${avHTML(m.uid, m.name)}</span>` : '';
   return `<div class="${cls.join(' ')}" data-mid="${m.id}">${av}<div class="bub ${media ? 'media' : ''} ${only ? 'only' : ''} ${jumbo ? 'jumbo' : ''} ${m.voice ? 'vbub' : ''}">${inner}${meta}</div><span class="swipe-ic">${ico('reply')}</span></div>`;
 }
+
 function renderMsgs() {
-  const box = $('#msgs'), inner = $('#msgInner'); if (!box) return;
+  const box = $('#msgs'), inner = $('#msgInner'); if (!box || !CONV) return;
   const atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 90;
   const items = msgItems(), old = {}; [...inner.children].forEach(el => old[el.dataset.key] = el);
   let added = 0, mine = false;
@@ -2910,57 +3196,31 @@ function renderMsgs() {
     delete old[it.key]; if (inner.children[i] !== el) inner.insertBefore(el, inner.children[i] || null);
   });
   Object.values(old).forEach(el => el.remove());
-  if (!items.length) inner.innerHTML = `<div class="dsep" style="position:static;margin:auto">${chMode === 'room' ? 'ماكو رسائل لحد الآن. ابدي السالفة 👋' : chMode === 'saved' ? 'هنا تنحفظ الرسائل المهمة. اضغط مطوّل على أي رسالة ← حفظ 🔖' : ME.role === 'admin' ? 'ابدي السالفة ويا الطالب' : 'هنا تسأل الأستاذ بالخاص، محد غيره يشوف 🔒'}</div>`;
-  syncVoice();
+  if (!items.length) inner.innerHTML = `<div class="dsep" style="position:static;margin:auto">${cm() === 'room' ? 'ماكو رسائل لحد الآن. ابدي السالفة 👋' : cm() === 'saved' ? 'هنا تنحفظ الرسائل المهمة. اضغط مطوّل على أي رسالة ← حفظ 🔖' : 'ابدي السالفة 👋 الرسائل هنا بينكم بس 🔒'}</div>`;
   if (chInitial) { chInitial = false; box.scrollTop = box.scrollHeight; }
   else if (added) { if (atBottom || mine) box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' }); else { fabN += added; updFab(); } }
+  syncVoice();
 }
 function updFab() { const box = $('#msgs'), far = box.scrollHeight - box.scrollTop - box.clientHeight > 300; $('#fab').classList.toggle('on', far); if (!far) fabN = 0; $('#fabN').textContent = fabN; $('#fabN').classList.toggle('hide', !fabN); }
 function chatHeader() {
-  const dmList = ME.role === 'admin' && chMode === 'dm' && !dmPeer, inDm = ME.role === 'admin' && chMode === 'dm' && dmPeer;
-  $('#dmList').classList.toggle('hide', !dmList); $('#msgs').classList.toggle('hide', dmList); $('#chatFoot').classList.toggle('hide', dmList || chMode === 'saved'); $('#fab').classList.toggle('hide', dmList);
-  $('#notes').classList.toggle('hide', chMode !== 'room'); renderPin(); renderNotes();
-  $('#chBack').classList.toggle('hide', !inDm); $('#chTabs').classList.toggle('hide', !!inDm);
-  $$('#chTabs button').forEach(b => b.classList.toggle('on', b.dataset.ct === chMode));
-  const t = $('#chTitle'), s = $('#chSub'), av = $('#chAv');
-  const avw = $('#chAvW'), setAv = (u, n) => { avw.innerHTML = avHTML(u, n); };
-  if (chMode === 'room') { t.textContent = 'غرفة الطلاب'; s.textContent = CFG.chatOpen === false ? '🔒 مقفولة، بس الأستاذ يكتب' : 'طلاب الكورس ويا الأستاذ'; avw.innerHTML = '<div class="av">👥</div>'; }
-  else if (chMode === 'saved') { t.textContent = 'المحفوظة'; s.textContent = 'رسائلك المهمة، بس إنت تشوفها'; avw.innerHTML = `<div class="av">${ico('bm')}</div>`; }
-  else if (ME.role === 'admin') { if (dmPeer) { t.textContent = dmPeer.name; s.textContent = 'محادثة خاصة 🔒'; setAv(dmPeer.uid, dmPeer.name); } else { t.textContent = 'الخاص'; s.textContent = 'رسائل الطلاب إلك'; avw.innerHTML = '<div class="av">✉</div>'; } }
-  else { t.textContent = ADMIN_NAME; s.textContent = 'الأستاذ · محادثة خاصة 🔒'; setAv(adminUid() || 'admin', ADMIN_NAME); }
-  renderChatLock();
+  const v = $('#chatWrap'); if (!v) return; v.classList.toggle('noconv', !CONV);
+  if (!CONV) { renderPin(); return; }
+  $('#chatFoot').classList.toggle('hide', cm() === 'saved');
+  const t = $('#chTitle'), s = $('#chSub'), avw = $('#chAvW');
+  if (cm() === 'room') { t.textContent = 'غرفة الطلاب'; s.textContent = CFG.chatOpen === false ? '🔒 مقفولة، بس الأستاذ يكتب' : 'طلاب الكورس ويا الأستاذ'; avw.innerHTML = '<span class="av grp">👥</span>'; }
+  else if (cm() === 'saved') { t.textContent = 'المحفوظة'; s.textContent = 'رسائلك المهمة، بس إنت تشوفها'; avw.innerHTML = `<span class="av grp sv">${ico('bm')}</span>`; }
+  else { const p = CONV.peer; t.textContent = p.name; s.textContent = (PROF[p.uid] && PROF[p.uid].role === 'admin' ? 'الأستاذ · ' : '') + 'محادثة خاصة 🔒'; avw.innerHTML = avHTML(p.uid, p.name); }
+  renderPin(); renderChatLock();
 }
-function renderDMList() {
-  const el = $('#dmList'); if (!el) return;
-  el.innerHTML = DMLIST.length ? DMLIST.map(t => { const un = t.from === 'student' && t.at > getSeen('dm_' + t.id); return `<div class="dmi" data-dm="${t.id}" data-nm="${esc(t.name || '')}">${avHTML(t.id, t.name, 50)}<div class="mn"><b>${esc(t.name || 'طالب')}</b><small>${t.from === 'admin' ? 'إنت: ' : ''}${esc((t.last || '').slice(0, 70))}</small></div><div class="dmr"><span class="num">${tstr(t.at)}</span>${un ? '<b class="nbadge">جديد</b>' : ''}</div></div>`; }).join('') : '<div class="dsep" style="position:static">ماكو رسائل خاصة لحد الآن</div>';
-}
-function resetView() { chRendered = new Set(); chInitial = true; fabN = 0; const i = $('#msgInner'); if (i) i.innerHTML = ''; }
-function openDM(uid2, name) {
-  dmPeer = { uid: uid2, name }; DMMSG = []; if (chMode === 'dm') resetView();
-  if (dmUnsub) { try { dmUnsub(); } catch (e) { } dmUnsub = null; }
-  dmUnsub = DB.watchDM(uid2, list => { DMMSG = list.slice().sort((a, b) => a.at - b.at); if (chMode === 'dm') { renderMsgs(); if (curPg === 'chat') chatSeenNow(); } chatBadge(); });
-  chatHeader(); if (chMode === 'dm') renderMsgs();
-}
-function setChMode(m) {
-  chMode = m; replyClear(); resetView();
-  if (m === 'dm' && ME.role === 'admin') { if (dmUnsub) { try { dmUnsub(); } catch (e) { } dmUnsub = null; } dmPeer = null; DMMSG = []; renderDMList(); }
-  if (m === 'dm' && ME.role === 'student') dmPeer = { uid: ME.uid, name: ME.name };
-  stopAudio();
-  chatHeader(); renderMsgs(); if (curPg === 'chat') chatSeenNow();
-}
-function onChat(list) {
-  CHAT = list.slice().sort((a, b) => a.at - b.at);
-  if (chMode === 'room') renderMsgs();
-  if (curPg === 'chat' && chMode === 'room') chatSeenNow(); else chatBadge();
-}
+function onChat(list) { CHAT = list.slice().sort((a, b) => a.at - b.at); if (cm() === 'room') renderMsgs(); chatSeenNow(); chatBadge(); }
 function renderChatLock() {
   const b = $('#chatLock'), open = CFG.chatOpen !== false;
-  if (b) { b.innerHTML = ico(open ? 'unlock' : 'lock'); b.title = open ? 'اقفل الغرفة' : 'افتح الغرفة'; b.classList.toggle('hide', chMode !== 'room'); }
-  const tx = $('#chatTx'); if (tx) { const can = chMode === 'dm' || open || ME.role === 'admin'; tx.disabled = !can; tx.placeholder = can ? 'اكتب رسالة…' : 'الأستاذ قافل الغرفة هسه'; $('#chatSend').disabled = !can; }
+  if (b) { b.innerHTML = ico(open ? 'unlock' : 'lock'); b.title = open ? 'اقفل الغرفة' : 'افتح الغرفة'; b.classList.toggle('hide', cm() !== 'room'); }
+  const tx = $('#chatTx'); if (tx) { const can = cm() !== 'room' || open || ME.role === 'admin'; tx.disabled = !can; tx.placeholder = can ? 'اكتب رسالة…' : 'الأستاذ قافل الغرفة هسه'; $('#chatSend').disabled = !can; }
 }
 function replyClear() { replyTo = null; const rb = $('#replyBar'); if (rb) rb.classList.add('hide'); }
 function replySet(m) {
-  replyTo = { id: m.id, uid: m.uid, name: m.name, text: (m.text || '').slice(0, 90) };
+  replyTo = { id: m.id, uid: m.uid, name: m.name, text: (m.text || (m.voice ? '🎤 بصمة' : '')).slice(0, 90) };
   $('#rbName').textContent = 'رد على ' + (m.uid === ME.uid ? 'نفسك' : m.name); $('#rbText').textContent = replyTo.text || '📷 صورة';
   $('#replyBar').classList.remove('hide'); $('#chatTx').focus();
 }
@@ -2971,7 +3231,7 @@ async function toggleReact(m, k) {
   const a = R[k] || []; R[k] = a.includes(ME.uid) ? a.filter(u => u !== ME.uid) : a.concat(ME.uid);
   Object.keys(R).forEach(x => { if (!R[x].length) delete R[x]; });
   m.reactions = R; renderMsgs();
-  try { if (chMode === 'room') await DB.reactChat(m.id, R); else await DB.reactDM(dmPeer.uid, m.id, R); } catch (e) { toast('ما انحفظ التفاعل', 'bad'); }
+  try { if (cm() === 'room') await DB.reactChat(m.id, R); else if (cm() === 'thr') await DB.reactThread(CONV.tid, m.id, R); } catch (e) { toast('ما انحفظ التفاعل', 'bad'); }
 }
 // قائمة الضغطة المطوّلة — نفس AM CHAT (الرسالة تطلع فوگ الضبابية + تفاعلات + قائمة)
 function holdMenu(el, m) {
@@ -2981,12 +3241,12 @@ function holdMenu(el, m) {
   cl.style.cssText = `left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px`; H.appendChild(cl);
   const R = m.reactions || {}, rx = document.createElement('div'); rx.className = 'rx';
   rx.innerHTML = Object.entries(REACT).map(([k, e]) => `<button data-hr="${k}" class="${(R[k] || []).includes(ME.uid) ? 'me' : ''}">${e}</button>`).join(''); H.appendChild(rx);
-  const canDel = chMode !== 'saved' && (m.uid === ME.uid || ME.role === 'admin');
+  const canDel = cm() !== 'saved' && (m.uid === ME.uid || ME.role === 'admin');
   const it = (a, ic, t, dg) => `<button class="it ${dg ? 'dg' : ''}" data-ha="${a}"><span>${t}</span>${ico(ic)}</button>`;
   const mn = document.createElement('div'); mn.className = 'mn';
-  if (chMode === 'saved') mn.innerHTML = (m.img ? it('open', 'eye', 'فتح الصورة') : '') + (m.text ? it('copy', 'copy', 'نسخ النص') : '') + '<div class="sep"></div>' + it('unsave', 'trash', 'شيلها من المحفوظة', 1);
-  else mn.innerHTML = it('reply', 'reply', 'رد') + (m.img ? it('open', 'eye', 'فتح الصورة') : '') + (m.text ? it('copy', 'copy', 'نسخ النص') : '') + it('save', 'bm', 'حفظ بالمحفوظة') + (ME.role === 'admin' && chMode === 'room' ? it('pin', 'pin', CFG.pin && CFG.pin.id === m.id ? 'شيل التثبيت' : 'تثبيت للكل') : '') + (canDel ? '<div class="sep"></div>' + it('del', 'trash', 'حذف', 1) : '');
-  if (chMode === 'saved') rx.remove();
+  if (cm() === 'saved') mn.innerHTML = (m.img ? it('open', 'eye', 'فتح الصورة') : '') + (m.text ? it('copy', 'copy', 'نسخ النص') : '') + '<div class="sep"></div>' + it('unsave', 'trash', 'شيلها من المحفوظة', 1);
+  else mn.innerHTML = it('reply', 'reply', 'رد') + (m.img ? it('open', 'eye', 'فتح الصورة') : '') + (m.text ? it('copy', 'copy', 'نسخ النص') : '') + it('save', 'bm', 'حفظ بالمحفوظة') + (ME.role === 'admin' && cm() === 'room' ? it('pin', 'pin', CFG.pin && CFG.pin.id === m.id ? 'شيل التثبيت' : 'تثبيت للكل') : '') + (canDel ? '<div class="sep"></div>' + it('del', 'trash', 'حذف', 1) : '');
+  if (cm() === 'saved') rx.remove();
   H.appendChild(mn);
   const W = innerWidth, HH = innerHeight, pad = 12, rxH = rx.offsetHeight + 10, mnH = mn.offsetHeight + 10;
   let sc = 1; if (rxH + r.height + mnH > HH - 2 * pad) sc = Math.max(.35, (HH - 2 * pad - rxH - mnH) / r.height);
@@ -3003,37 +3263,61 @@ function holdMenu(el, m) {
     if (a === 'reply') replySet(m);
     if (a === 'open') openViewer(m.img);
     if (a === 'copy') { try { await navigator.clipboard.writeText(m.text); toast('انسخ النص'); } catch (er) { toast('ما گدرت أنسخ', 'bad'); } }
-    if (a === 'del') { if (await ask('تحذف الرسالة؟', 'راح تنحذف عند الكل.', 'احذف', true)) (chMode === 'room' ? DB.delChat(m.id) : DB.delDM(dmPeer.uid, m.id)).catch(() => toast('ما انحذفت', 'bad')); }
-    if (a === 'save') { const c = Object.assign({}, m, { savedFrom: chMode, savedAt: Date.now(), oid: m.id }); delete c.id; delete c.reactions; DB.saveMsg(c).then(() => toast('🔖 انحفظت بالمحفوظة', 'ok')).catch(() => toast('ما انحفظت', 'bad')); }
+    if (a === 'del') { if (await ask('تحذف الرسالة؟', 'راح تنحذف عند الكل.', 'احذف', true)) { const where = cm() === 'room' ? 'غرفة الطلاب' : 'خاص: ' + (CONV.peer && CONV.peer.name || ''); (cm() === 'room' ? DB.delChat(m.id) : DB.delThreadMsg(CONV.tid, m.id)).then(() => DB.logDel({ kind: 'del', t: 'حذف رسالة', text: m.text || (m.voice ? '🎤 بصمة' : m.img ? '📷 صورة' : ''), author: m.name, where, by: ME.name, at: Date.now() }).catch(() => { })).catch(() => toast('ما انحذفت', 'bad')); } }
+    if (a === 'save') { const c = Object.assign({}, m, { savedFrom: cm() === 'room' ? 'room' : 'thr', savedAt: Date.now(), oid: m.id }); delete c.id; delete c.reactions; DB.saveMsg(c).then(() => toast('🔖 انحفظت بالمحفوظة', 'ok')).catch(() => toast('ما انحفظت', 'bad')); }
     if (a === 'unsave') DB.unsaveMsg(m.id).then(() => toast('انشالت')).catch(() => toast('ما انشالت', 'bad'));
     if (a === 'pin') { const on = CFG.pin && CFG.pin.id === m.id; DB.setConfig({ pin: on ? null : { id: m.id, name: m.name, text: m.text || (m.voice ? '🎤 بصمة' : '📷 صورة') } }).then(() => { toast(on ? 'انشال التثبيت' : '📌 انثبتت للكل'); }).catch(() => toast('ما انثبتت', 'bad')); }
   };
 }
+
 function closeHold() { const H = $('#hold'); if (!H || !H.classList.contains('on')) return; H.classList.remove('on'); const cl = H.querySelector('.clone'); if (cl) cl.style.transform = ''; setTimeout(() => { if (!H.classList.contains('on')) H.querySelectorAll('.clone,.rx,.mn').forEach(e => e.remove()); }, 260); }
 function renderEmoji(tab = 0) { $('#emoji').innerHTML = `<div class="tabs">${EMO.map((e, i) => `<button data-etab="${i}" class="${i === tab ? 'on' : ''}">${e[0]}</button>`).join('')}</div><div class="grid">${EMO[tab][1].split(' ').map(e => `<button data-emo="${e}">${e}</button>`).join('')}</div>`; }
+function delLogSheet() {
+  const a = LOGS.filter(x => x.kind === 'del');
+  modal(`<h2>سجل الرسائل المحذوفة<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>${a.length ? `<div class="list">${a.map(x => `<div class="li"><div class="mn"><b style="font-weight:700">${esc(x.text || '—')}</b><small>كتبها ${esc(x.author || '')} · حذفها ${esc(x.by || '')} · ${esc(x.where || '')} · ${ago(x.at)}</small></div></div>`).join('')}</div>` : '<div class="empty">ماكو رسائل محذوفة</div>'}<div class="faint" style="font-size:12px;margin-top:10px">رسائل الطالب ما تنحذف من الدردشة إذا حذفت حسابه، تبقى محفوظة بالسجل.</div>`);
+}
+function myAv() { const b = $('#myPhotoBtn'); if (b && ME) b.innerHTML = avHTML(ME.uid, ME.name, 40); }
+function setupSendBtn() {
+  const b = $('#chatSend'), tx = $('#chatTx'); let g = null;
+  const down = (x, y) => { if (REC && REC.locked) { g = { mode: 'stop' }; return; } if (tx.value.trim() || chImgData) { g = { mode: 'send' }; return; } g = { mode: 'rec', x, y, t: Date.now() }; RECH = true; recStart(); };
+  const move = (x, y) => {
+    if (!g || g.mode !== 'rec' || !REC || REC.locked) return; const dx = x - g.x, dy = y - g.y;
+    const sl = $('#recSlide'); sl.style.transform = `translateX(${Math.min(0, dx)}px)`; sl.style.opacity = String(1 - Math.min(1, Math.max(0, -dx) / 110));
+    $('#lockP').style.transform = `translateY(${Math.max(-60, Math.min(0, dy))}px)`;
+    if (dx < -110) { g = null; RECH = false; recStop(false); navigator.vibrate && navigator.vibrate(20); toast('انلغت البصمة'); }
+    else if (dy < -70) { REC.locked = true; $('#chatFoot').dataset.lock = '1'; resetRecUI(); navigator.vibrate && navigator.vibrate(15); g = null; RECH = false; }
+  };
+  const up = () => {
+    RECH = false; if (!g) return; const gg = g; g = null;
+    if (gg.mode === 'send') { send(); return; }
+    if (gg.mode === 'stop') { recStop(true); return; }
+    if (gg.mode === 'rec') { if (!REC) return; if (Date.now() - gg.t < 350) { REC.locked = true; $('#chatFoot').dataset.lock = '1'; toast('دا يسجّل… دوس ➤ للإرسال أو 🗑 للإلغاء'); } else recStop(true); resetRecUI(); }
+  };
+  b.addEventListener('touchstart', e => { e.preventDefault(); const t = e.touches[0]; down(t.clientX, t.clientY); }, { passive: false });
+  b.addEventListener('touchmove', e => { e.preventDefault(); const t = e.touches[0]; move(t.clientX, t.clientY); }, { passive: false });
+  b.addEventListener('touchend', e => { e.preventDefault(); up(); }, { passive: false });
+  b.addEventListener('touchcancel', () => { RECH = false; if (g && g.mode === 'rec' && REC && !REC.locked) { REC.locked = true; $('#chatFoot').dataset.lock = '1'; } g = null; resetRecUI(); });
+  b.addEventListener('mousedown', e => { if (e.button) return; e.preventDefault(); down(e.clientX, e.clientY); const mm = ev => move(ev.clientX, ev.clientY), mu = () => { removeEventListener('mousemove', mm); removeEventListener('mouseup', mu); up(); }; addEventListener('mousemove', mm); addEventListener('mouseup', mu); });
+  b.addEventListener('click', e => e.preventDefault());
+}
+function resetRecUI() { const s = $('#recSlide'); if (s) { s.style.transform = ''; s.style.opacity = ''; } const l = $('#lockP'); if (l) l.style.transform = ''; }
+let send = () => { };
 function initChat() {
   const tx = $('#chatTx'), box = $('#msgs'), comp = $('#chatFoot');
   const grow = () => { tx.style.height = '40px'; tx.style.height = Math.min(140, tx.scrollHeight) + 'px'; comp.dataset.has = tx.value.trim() || chImgData ? '1' : '0'; };
-  chGrow = grow;
-  tx.addEventListener('input', grow);
+  chGrow = grow; tx.addEventListener('input', grow);
   tx.addEventListener('focus', () => { if (matchMedia('(pointer:coarse)').matches) $('#emoji').classList.remove('on'); });
-  const send = async () => {
-    if (REC) return recStop(true);
-    const t = tx.value.trim(); if (!t && !chImgData) return recStart();
-    if (chMode === 'room' && CFG.chatOpen === false && ME.role !== 'admin') return toast('الغرفة مقفولة هسه', 'bad');
-    if (chMode === 'dm' && !dmPeer) return;
-    if (Date.now() - lastSend < 700) return; lastSend = Date.now();
+  send = async () => {
+    if (!CONV || cm() === 'saved') return;
+    const t = tx.value.trim(); if (!t && !chImgData) return;
+    if (cm() === 'room' && CFG.chatOpen === false && ME.role !== 'admin') return toast('الغرفة مقفولة هسه', 'bad');
+    if (Date.now() - lastSend < 350) return; lastSend = Date.now();
     const m = { uid: ME.uid, name: ME.name, role: ME.role, text: t.slice(0, 1000), at: Date.now() };
     if (replyTo) m.reply = replyTo; if (chImgData) m.img = chImgData;
     tx.value = ''; replyClear(); chImgData = null; $('#chImgPrev').classList.add('hide'); grow();
-    try { if (chMode === 'room') await DB.sendChat(m); else await DB.sendDM(dmPeer.uid, m, { name: ME.role === 'admin' ? dmPeer.name : ME.name, last: m.text || '📷 صورة', at: m.at, from: ME.role }); }
-    catch (e) { toast('ما وصلت الرسالة', 'bad'); tx.value = t; grow(); }
+    try { await convSend(m, m.text || '📷 صورة'); } catch (e) { toast('ما وصلت الرسالة', 'bad'); tx.value = t; grow(); }
   };
-  const sb = $('#chatSend');
-  sb.addEventListener('touchstart', e => { e.preventDefault(); }, { passive: false });   // الكيبورد يبقى مفتوح
-  sb.addEventListener('touchend', e => { e.preventDefault(); sb._t = Date.now(); send(); }, { passive: false });
-  sb.addEventListener('mousedown', e => e.preventDefault());
-  sb.addEventListener('click', () => { if (Date.now() - (sb._t || 0) > 700) send(); });
+  setupSendBtn();
   tx.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !matchMedia('(pointer:coarse)').matches) { e.preventDefault(); send(); } });
   $('#emoBtn').addEventListener('mousedown', e => e.preventDefault());
   $('#emoBtn').onclick = () => { const em = $('#emoji'); if (!em.innerHTML) renderEmoji(); em.classList.toggle('on'); if (em.classList.contains('on') && matchMedia('(pointer:coarse)').matches) tx.blur(); };
@@ -3045,20 +3329,19 @@ function initChat() {
   $('#chImg').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; try { chImgData = await compressImg(f, 1000, .72); const p = $('#chImgPrev'); p.querySelector('img').src = chImgData; p.classList.remove('hide'); grow(); } catch (er) { toast('الصورة ما انقرت', 'bad'); } };
   $('#chImgPrev').onclick = e => { if (e.target.closest('button')) { chImgData = null; $('#chImgPrev').classList.add('hide'); grow(); } };
   $('#rbX').onclick = replyClear;
-  $('#chTabs').onclick = e => { const b = e.target.closest('[data-ct]'); if (b) setChMode(b.dataset.ct); };
-  $('#chBack').onclick = () => setChMode('dm');
-  $('#dmList').onclick = e => { const it = e.target.closest('[data-dm]'); if (it) openDM(it.dataset.dm, it.dataset.nm); };
+  $('#chBack').onclick = closeConv;
+  $('#convList').onclick = e => { const it = e.target.closest('[data-open]'); if (it) openKey(it.dataset.open); };
+  $('#notes').onclick = e => { const nt = e.target.closest('[data-note]'); if (nt) nt.dataset.note === ME.uid ? noteSheet() : noteView(nt.dataset.note); };
+  $('#chSearch').oninput = e => { chQ = e.target.value; renderList(); };
   $('#fab').onclick = () => { box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' }); fabN = 0; updFab(); };
   box.addEventListener('scroll', updFab, { passive: true });
   box.addEventListener('click', e => {
     const pb = e.target.closest('[data-play]'); if (pb) return playVoice(pb.dataset.play);
     const sp = e.target.closest('[data-speed]'); if (sp) { chRate = chRate === 1 ? 1.5 : chRate === 1.5 ? 2 : 1; L.set('amg_rate', chRate); if (AUD) AUD.a.playbackRate = chRate; return syncVoice(); }
     const wv = e.target.closest('.wv'); if (wv) { const r = wv.getBoundingClientRect(); return playVoice(wv.closest('[data-voice]').dataset.voice, Math.max(0, Math.min(1, (r.right - e.clientX) / r.width))); }
-    const nt = e.target.closest('[data-note]'); if (nt) return nt.dataset.note === ME.uid ? noteSheet() : noteView(nt.dataset.note);
     const q = e.target.closest('[data-jump]'); if (q) return jumpTo(q.dataset.jump);
     const rb = e.target.closest('[data-react]'); if (rb) { const m = curList().find(x => x.id === rb.closest('.m').dataset.mid); if (m) toggleReact(m, rb.dataset.react); }
   });
-  // ضغطة مطوّلة + سحب للرد (موبايل)، وكلك يمين/دبل كلك (حاسبة)
   let lp = null, swEl = null, sx = 0, sy = 0, sw = 0, longFired = false;
   box.addEventListener('touchstart', e => {
     const el = e.target.closest('.m'); if (!el || e.target.closest('[data-react],[data-jump],a,.voice')) return; const t = e.touches[0]; sx = t.clientX; sy = t.clientY; sw = 0; swEl = null; longFired = false;
@@ -3069,6 +3352,7 @@ function initChat() {
   box.addEventListener('touchmove', e => {
     const t = e.touches[0], dx = t.clientX - sx, dy = t.clientY - sy, el = box._el; if (!el) return;
     if (lp && Math.hypot(dx, dy) > 8) { clearTimeout(lp); lp = null; el.classList.remove('press'); }
+    if (cm() === 'saved') return;
     if (!swEl && dx < -12 && Math.abs(dx) > Math.abs(dy) * 1.4) swEl = el;
     if (swEl) { sw = Math.max(-80, Math.min(0, dx)); const b = swEl.querySelector('.bub'); b.style.transition = 'none'; b.style.transform = `translateX(${sw}px)`; const ic = swEl.querySelector('.swipe-ic'); ic.style.opacity = Math.min(1, -sw / 55); ic.style.transform = `scale(${Math.min(1, .5 - sw / 110)})`; if (sw < -55 && !swEl._v) { swEl._v = 1; navigator.vibrate && navigator.vibrate(8); } }
   }, { passive: true });
@@ -3079,20 +3363,18 @@ function initChat() {
     box._el = null;
   }, { passive: false });
   box.addEventListener('contextmenu', e => { const el = e.target.closest('.m'); if (!el) return; e.preventDefault(); const m = curList().find(x => x.id === el.dataset.mid); if (m) holdMenu(el, m); });
-  box.addEventListener('dblclick', e => { if (matchMedia('(pointer:coarse)').matches) return; const el = e.target.closest('.m'); if (!el) return; const m = curList().find(x => x.id === el.dataset.mid); if (m) replySet(m); });
+  box.addEventListener('dblclick', e => { if (matchMedia('(pointer:coarse)').matches || cm() === 'saved') return; const el = e.target.closest('.m'); if (!el) return; const m = curList().find(x => x.id === el.dataset.mid); if (m) replySet(m); });
   $('#chatLock').onclick = async () => { const open = CFG.chatOpen !== false; try { await DB.setConfig({ chatOpen: !open }); CFG.chatOpen = !open; chatHeader(); DB.log(open ? 'قفل غرفة الطلاب' : 'فتح غرفة الطلاب'); toast(open ? '🔒 الطلاب ما يگدرون يكتبون بالغرفة هسه' : '🔓 الغرفة انفتحت'); } catch (e) { toast('ما تغيّر', 'bad'); } };
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHold(); });
   $('#recDel').onclick = () => recStop(false);
   $('#pinbar').onclick = e => { if (e.target.closest('#unpin')) { DB.setConfig({ pin: null }); return; } if (CFG.pin) jumpTo(CFG.pin.id); };
-  DB.watchSaved(l => { SAVED = l.map(x => Object.assign({}, x, { id: x.id })).sort((a, b) => a.at - b.at); if (chMode === 'saved') renderMsgs(); });
+  DB.watchSaved(l => { SAVED = l.map(x => Object.assign({}, x, { id: x.id })).sort((a, b) => a.at - b.at); if (cm() === 'saved') renderMsgs(); renderList(); });
   DB.watchNotes(l => { NOTES = l; renderNotes(); });
-  initKB();
-  if (ME.role === 'admin') DB.watchDMList(l => { DMLIST = l; if (chMode === 'dm' && !dmPeer) renderDMList(); chatBadge(); });
-  if (ME.role === 'student') openDM(ME.uid, ME.name);
-  chMode = 'room'; chatHeader(); renderMsgs();
+  DB.watchThreads(l => { THREADS = l; renderList(); chatBadge(); });
+  initKB(); myAv();
+  if (matchMedia('(min-width:901px)').matches) openConv({ k: 'room' }); else { CONV = null; $('#chatWrap').dataset.cv = 'list'; }
+  renderList(); chatHeader();
 }
-
-
 let chGrow = () => { };
 /* ---- البصمات الصوتية (مثل AM CHAT) ---- */
 const fmtDur = s => { s = Math.max(0, Math.round(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
@@ -3121,18 +3403,19 @@ function playVoice(mid, seek) {
   const loop = () => { if (!AUD || AUD.a !== a) return; syncVoice(); AUD.raf = requestAnimationFrame(loop); }; loop();
 }
 async function recStart() {
-  if (REC) return;
-  if (chMode === 'room' && CFG.chatOpen === false && ME.role !== 'admin') return toast('الغرفة مقفولة هسه', 'bad');
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) return toast('جهازك ما يدعم تسجيل الصوت', 'bad');
-  let st; try { st = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); } catch (e) { return toast('لازم تسمح بالمايك حتى تسجّل', 'bad'); }
+  if (REC || RECB) return; RECB = true;
+  if (cm() === 'room' && CFG.chatOpen === false && ME.role !== 'admin') return toast('الغرفة مقفولة هسه', 'bad');
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) { RECB = false; RECH = false; return toast('جهازك ما يدعم تسجيل الصوت', 'bad'); }
+  let st; try { st = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); } catch (e) { RECB = false; RECH = false; return toast('لازم تسمح بالمايك حتى تسجّل', 'bad'); }
+  RECB = false; if (!CONV) { st.getTracks().forEach(t => t.stop()); return; }
   const mime = ['audio/mp4;codecs=mp4a.40.2', 'audio/mp4', 'audio/aac', 'audio/webm;codecs=opus', 'audio/webm'].find(t => { try { return MediaRecorder.isTypeSupported(t); } catch (e) { return false; } }) || '';
   let rec; try { rec = new MediaRecorder(st, mime ? { mimeType: mime, audioBitsPerSecond: 24000 } : {}); } catch (e) { rec = new MediaRecorder(st); }
   const ch = []; rec.ondataavailable = e => { if (e.data && e.data.size) ch.push(e.data); };
   let ac, an; try { ac = new (window.AudioContext || window.webkitAudioContext)(); const src = ac.createMediaStreamSource(st); an = ac.createAnalyser(); an.fftSize = 1024; src.connect(an); } catch (e) { }
-  const R = REC = { rec, st, ch, ac, an, t0: Date.now(), peaks: [], send: false, mime: rec.mimeType || mime };
+  const R = REC = { rec, st, ch, ac, an, t0: Date.now(), peaks: [], send: false, mime: rec.mimeType || mime, locked: !RECH };
   rec.onstop = () => finishRec(R); try { rec.start(); } catch (e) { finishRec(R); return toast('ما گدرت أبدي التسجيل', 'bad'); }
   stopAudio(); navigator.vibrate && navigator.vibrate(15);
-  $('#chatFoot').dataset.rec = '1'; $('#recT').textContent = '0:00';
+  $('#chatFoot').dataset.rec = '1'; $('#chatFoot').dataset.lock = R.locked ? '1' : '0'; $('#recT').textContent = '0:00'; if (R.locked) toast('دا يسجّل… دوس ➤ للإرسال أو 🗑 للإلغاء');
   const buf = an ? new Uint8Array(an.fftSize) : null;
   R.iv = setInterval(() => {
     const s = (Date.now() - R.t0) / 1000; $('#recT').textContent = fmtDur(s); let lvl = .05;
@@ -3150,7 +3433,7 @@ function recStop(send) { const R = REC; if (!R) return; R.send = send; clearInte
 async function finishRec(R) {
   if (R.done) return; R.done = 1; clearInterval(R.iv);
   try { R.st.getTracks().forEach(t => t.stop()); } catch (e) { } try { R.ac && R.ac.close(); } catch (e) { }
-  if (REC === R) REC = null; $('#chatFoot').dataset.rec = '0'; chGrow();
+  if (REC === R) REC = null; $('#chatFoot').dataset.rec = '0'; $('#chatFoot').dataset.lock = '0'; resetRecUI(); chGrow();
   const dur = (Date.now() - R.t0) / 1000;
   if (!R.send) return; if (dur < 1) return toast('البصمة قصيرة، دوس وسجّل أكثر');
   const blob = new Blob(R.ch, { type: R.mime || 'audio/mp4' }); if (blob.size > 700000) return toast('البصمة كبيرة، خليها أقصر', 'bad');
@@ -3158,12 +3441,12 @@ async function finishRec(R) {
   const pk = R.peaks, wave = []; for (let i = 0; i < 30; i++) { const a = pk.slice(Math.floor(i * pk.length / 30), Math.floor((i + 1) * pk.length / 30)); wave.push(Math.max(12, Math.round(Math.min(1, (a.length ? Math.max(...a) : .05) * 1.2) * 100))); }
   const m = { uid: ME.uid, name: ME.name, role: ME.role, text: '', voice: data, dur: Math.round(dur), wave, at: Date.now() };
   if (replyTo) { m.reply = replyTo; replyClear(); }
-  try { if (chMode === 'room') await DB.sendChat(m); else await DB.sendDM(dmPeer.uid, m, { name: ME.role === 'admin' ? dmPeer.name : ME.name, last: '🎤 بصمة', at: m.at, from: ME.role }); }
+  try { await convSend(m, '🎤 بصمة'); }
   catch (e) { toast('ما وصلت البصمة', 'bad'); }
 }
 /* ---- رسالة مثبتة ---- */
 function renderPin() {
-  const pb = $('#pinbar'), on = chMode === 'room' && CFG.pin && CFG.pin.id;
+  const pb = $('#pinbar'), on = cm() === 'room' && CFG.pin && CFG.pin.id;
   pb.classList.toggle('hide', !on); $('#chatWrap').classList.toggle('pinned', !!on);
   if (on) $('#pinTxt').textContent = (CFG.pin.name ? CFG.pin.name + ': ' : '') + (CFG.pin.text || '');
 }
@@ -3189,15 +3472,20 @@ function noteView(uid) {
 }
 /* ---- صورة الحساب (إجبارية للطالب) ---- */
 function cropSquare(file, size = 256) {
-  return new Promise((res, rej) => { const fr = new FileReader(); fr.onerror = rej; fr.onload = () => { const im = new Image(); im.onerror = rej; im.onload = () => { const s = Math.min(im.width, im.height), c = document.createElement('canvas'); c.width = c.height = size; c.getContext('2d').drawImage(im, (im.width - s) / 2, (im.height - s) / 2, s, s, 0, 0, size, size); res(c.toDataURL('image/jpeg', .82)); }; im.src = fr.result; }; fr.readAsDataURL(file); });
+  return new Promise((res, rej) => { const fr = new FileReader(); fr.onerror = rej; fr.onload = () => { const im = new Image(); im.onerror = () => rej(new Error('img')); im.onload = () => { const s = Math.min(im.width, im.height), c = document.createElement('canvas'); c.width = c.height = size; c.getContext('2d').drawImage(im, (im.width - s) / 2, (im.height - s) / 2, s, s, 0, 0, size, size); res(c.toDataURL('image/jpeg', .82)); }; im.src = fr.result; }; fr.readAsDataURL(file); });
 }
 function photoSheet(force) {
   let data = (PROF[ME.uid] || {}).photo || null;
   const c = modal(`<div class="phgate"><h2 style="justify-content:center">${force ? 'ضيف صورتك' : 'صورتك'}</h2><p class="dim" style="font-size:14px">${force ? 'حتى تدخل للدردشة لازم تحط صورة إلك، حتى الأستاذ والطلاب يعرفوك.' : 'تطلع بالدردشة والملاحظات.'}</p><div id="phAv">${avHTML(ME.uid, ME.name, 120)}</div><label class="btn ghost blk" style="margin:6px 0 10px"><svg class="ic"><use href="#i-cam"/></svg>اختار صورة<input type="file" accept="image/*" id="phIn" hidden></label><button class="btn blk" id="phOk" ${data ? '' : 'disabled'}>احفظ</button>${force ? '' : '<button class="btn ghost blk" data-close style="margin-top:8px">رجوع</button>'}</div>`, (m, close) => {
     m.querySelector('#phIn').onchange = async e => { const f = e.target.files[0]; if (!f) return; try { data = await cropSquare(f); m.querySelector('#phAv').innerHTML = `<span class="av ph" style="width:120px;height:120px;margin:0 auto 10px"><img src="${data}"></span>`; m.querySelector('#phOk').disabled = false; } catch (er) { toast('الصورة ما انقرت', 'bad'); } };
-    m.querySelector('#phOk').onclick = async () => { if (!data) return; m.querySelector('#phOk').disabled = true; try { await DB.setProfile({ name: ME.name, role: ME.role, photo: data, at: Date.now() }); PROF[ME.uid] = Object.assign({}, PROF[ME.uid], { photo: data }); toast('انحفظت صورتك ✓', 'ok'); close(); renderMsgs(); renderNotes(); chatHeader(); } catch (e) { toast('ما انحفظت', 'bad'); m.querySelector('#phOk').disabled = false; } };
+    m.querySelector('#phOk').onclick = () => {
+      if (!data) return; PROF[ME.uid] = Object.assign({}, PROF[ME.uid], { name: ME.name, role: ME.role, photo: data });
+      close(); toast('انحفظت صورتك ✓', 'ok'); renderMsgs(); renderNotes(); renderList(); chatHeader(); myAv();
+      const w = DB.setProfile({ name: ME.name, role: ME.role, photo: data, at: Date.now() });
+      Promise.race([w, new Promise((_, r) => setTimeout(() => r(new Error('slow')), 15000))]).catch(e => { if (e.message !== 'slow') toast('ما انحفظت الصورة بالسيرفر: ' + (e.code === 'permission-denied' ? 'الصق الـ rules الجديدة' : 'جرّب مرة ثانية'), 'bad'); });
+    };
   });
-  if (force) { const ov = $$('.ov').pop(); ov && ov.addEventListener('click', e => e.stopImmediatePropagation(), true); ov.querySelector('.md').addEventListener('click', e => e.stopPropagation()); }
+  if (force) { const ov = $$('.ov').pop(); if (ov) ov.addEventListener('click', e => { if (e.target === ov) e.stopImmediatePropagation(); }, true); }
   return c;
 }
 function needPhoto() { return ME && ME.role === 'student' && profLoaded && !(PROF[ME.uid] || {}).photo; }
@@ -3212,16 +3500,161 @@ function initKB() {
     root.style.setProperty('--vvt', vv.offsetTop + 'px'); root.style.setProperty('--chh', Math.round(vv.height - bnH) + 'px');
     if (curPg === 'chat' && kb) { const b = $('#msgs'); if (b && b.scrollHeight - b.scrollTop - b.clientHeight < 200) b.scrollTop = b.scrollHeight; }
   };
-  const q = () => { if (!raf) raf = requestAnimationFrame(upd); };
+  const q = () => { if (!raf) raf = requestAnimationFrame(upd); }; window.kbUpd = q;
   vv.addEventListener('resize', q); vv.addEventListener('scroll', q); window.addEventListener('focusin', () => setTimeout(q, 50)); window.addEventListener('focusout', () => setTimeout(q, 80)); upd();
   $('#chatTx').addEventListener('focus', () => { if (matchMedia('(max-width:900px)').matches) setTimeout(() => window.scrollTo(0, 0), 30); });
 }
+
+/* ====== قناة التوصيات (مثل قنوات تيليگرام) ====== */
+let CHAN = [], chanFirst = true, chanMax = 0, chanImg = null, sigOn = false, sigSide = 'buy', SUBS = 0, chanIO = null;
+const devId = (() => { let d = L.get('amg_dev', ''); if (!d) { d = 'd' + uid() + Math.random().toString(36).slice(2, 8); L.set('amg_dev', d); } return d; })();
+const isSub = () => !!L.get('amg_sub', 0);
+const SIGST = { on: ['شغّالة', 'on'], tp1: ['ضرب الهدف 1', 'ok'], tp2: ['ضرب الهدف 2', 'ok'], tp3: ['ضرب الهدف 3', 'ok'], sl: ['ضرب الوقف', 'bad'], be: ['طلعنا تعادل', ''], close: ['تسكرت', ''], wait: ['ما تفعّلت', ''] };
+function sigHTML(s) {
+  const st = SIGST[s.st || 'on'] || SIGST.on, hit = n => ['tp1', 'tp2', 'tp3'].indexOf(s.st) >= n - 1 && /^tp/.test(s.st || '');
+  const tps = (s.tp || []).filter(x => x !== '' && x != null);
+  return `<div class="sig ${s.side}"><div class="sh"><span class="sgside">${s.side === 'buy' ? 'BUY' : 'SELL'}</span><span class="sym">XAUUSD</span><span class="st ${st[1]}">${st[0]}</span></div>
+   <div class="sl"><div><small>الدخول</small><b>${esc(s.entry || '—')}</b></div><div class="slb"><small>الوقف</small><b>${esc(s.sl || '—')}</b></div>${tps.map((t, i) => `<div class="${hit(i + 1) ? 'hit' : ''}"><small>الهدف ${i + 1}</small><b>${esc(t)}</b></div>`).join('')}</div></div>`;
+}
+function chanHTML(p) {
+  return `<div class="cpost ${p.pin ? 'pin' : ''}" data-cid="${p.id}">${p.img ? `<img class="cimg" src="${p.img}" data-view loading="lazy">` : ''}
+   <div class="cb">${p.sig ? sigHTML(p.sig) : ''}${p.text ? `<div class="ctx">${linkify(esc(p.text))}</div>` : ''}
+   <div class="cm">${p.pin ? '<span class="cpin">📌 مثبّت</span>' : ''}<span><svg class="ic"><use href="#i-eye"/></svg><span class="num">${fmt(p.views || 0)}</span></span><span class="num">${tstr(p.at)}</span></div></div>
+   ${ME.role === 'admin' ? `<div class="cadm">${p.sig ? '<button class="btn tint sm" data-ca="st">حالة التوصية</button>' : ''}<button class="btn ghost sm" data-ca="pin">${p.pin ? 'شيل التثبيت' : 'ثبّت'}</button><span class="sp"></span><button class="btn danger sm" data-ca="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button></div>` : ''}</div>`;
+}
+function renderChan() {
+  const el = $('#chanFeed'); if (!el) return;
+  const a = CHAN.slice().sort((x, y) => x.at - y.at), pins = a.filter(p => p.pin);
+  let h = '', lastD = '';
+  if (!a.length) h = `<div class="card cempty2">${ME.role === 'admin' ? 'القناة فارغة. اكتب أول توصية أو رسالة من جوّه 👇' : 'لحد الآن ماكو توصيات.<br>اشترك حتى يوصلك تنبيه من تنزل توصية جديدة 🔔'}</div>`;
+  if (pins.length && a.length > 3) h += pins.slice(-1).map(p => `<div class="pinbar gl" style="position:static;margin:0" data-jumpc="${p.id}"><div class="bar"></div><svg class="ic"><use href="#i-pin"/></svg><div class="x"><div class="t">مثبّت</div><div class="s">${esc(p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + (p.sig.entry || '') : (p.text || '📷 صورة').slice(0, 80))}</div></div></div>`).join('');
+  a.forEach(p => { const d = new Date(p.at).toDateString(); if (d !== lastD) { lastD = d; const td = new Date().toDateString(), yd = new Date(Date.now() - 864e5).toDateString(); h += `<div class="cday">${d === td ? 'اليوم' : d === yd ? 'البارحة' : DAYS[new Date(p.at).getDay()] + ' ' + dstr(p.at)}</div>`; } h += chanHTML(p); });
+  el.innerHTML = h; watchViews();
+}
+function watchViews() {
+  if (!('IntersectionObserver' in window)) return;
+  if (!chanIO) chanIO = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return; const id = e.target.dataset.cid; chanIO.unobserve(e.target);
+    if (ME.role === 'admin' || L.get('amg_admdev', 0)) return;
+    const seen = L.get('amg_cv', []); if (seen.includes(id)) return; seen.push(id); L.set('amg_cv', seen.slice(-400));
+    DB.viewChan(id).catch(() => { });
+  }), { threshold: .6 });
+  $$('#chanFeed .cpost').forEach(x => chanIO.observe(x));
+}
+function onChan(list) {
+  CHAN = list;
+  const mx = Math.max(0, ...CHAN.map(p => p.at || 0));
+  if (!chanFirst && mx > chanMax && ME.role !== 'admin' && isSub()) { const p = CHAN.find(x => x.at === mx); if (p) { beep('post'); toast('📣 توصيات AM GOLD: ' + (p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + (p.sig.entry || '') : (p.text || 'منشور جديد').slice(0, 60)), 'ok'); devNotify('توصيات AM GOLD', p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + 'الذهب ' + (p.sig.entry || '') : (p.text || 'منشور جديد').slice(0, 100)); } }
+  const wasBottom = (innerHeight + scrollY) >= document.body.scrollHeight - 140;
+  chanMax = Math.max(chanMax, mx); chanFirst = false; renderChan(); chanBadge();
+  if (curPg === 'signals' && wasBottom) setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 50);
+}
+function chanBadge() { const seen = L.get('amg_chseen', 0), n = curPg === 'signals' ? 0 : CHAN.filter(p => p.at > seen).length; $$('.sgbadge').forEach(b => { b.textContent = n > 99 ? '99+' : n; b.classList.toggle('hide', !n); }); }
+function renderSubs() { $('#chSubs').textContent = fmt(SUBS); const b = $('#subBtn'), on = isSub(); b.classList.toggle('on', on); b.querySelector('span').textContent = on ? 'مشترك ✓' : 'اشترك'; }
+function initChan() {
+  DB.watchChan(onChan);
+  DB.watchStat('channel', s => { SUBS = Math.max(0, (s && s.subs) || 0); renderSubs(); });
+  $('#subBtn').onclick = async () => {
+    const on = isSub();
+    if (on && !(await ask('تلغي الاشتراك؟', 'ما راح يوصلك تنبيه من تنزل توصية جديدة.', 'ألغي'))) return;
+    L.set('amg_sub', on ? 0 : 1); renderSubs();
+    try { await DB.setSub(!on); } catch (e) { }
+    if (!on) { toast('اشتركت بالتوصيات 🔔', 'ok'); if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission().then(p => { if (p === 'granted') { S.notif = true; saveS(); } }); }
+  };
+  $('#chanFeed').addEventListener('click', async e => {
+    const j = e.target.closest('[data-jumpc]'); if (j) { const el = $(`#chanFeed [data-cid="${j.dataset.jumpc}"]`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); } return; }
+    const b = e.target.closest('[data-ca]'); if (!b) return; const p = CHAN.find(x => x.id === b.closest('[data-cid]').dataset.cid); if (!p) return;
+    if (b.dataset.ca === 'pin') DB.updChan(p.id, { pin: !p.pin }).catch(() => toast('ما تغيّر', 'bad'));
+    if (b.dataset.ca === 'del') { if (await ask('تحذف المنشور من القناة؟', '', 'احذف', true)) DB.delChan(p.id).then(() => DB.log('حذف من التوصيات')).catch(() => toast('ما انحذف', 'bad')); }
+    if (b.dataset.ca === 'st') modal(`<h2>حالة التوصية<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>${Object.entries(SIGST).map(([k, v]) => `<button class="mi" data-sst="${k}">${v[0]}${(p.sig.st || 'on') === k ? '<span class="pill acc">هسه</span>' : ''}</button>`).join('')}<div class="faint" style="font-size:12px;margin-top:8px">من تغيّرها، المشتركين يشوفون الحالة الجديدة على التوصية.</div>`, (m, close) => { m.onclick = ev => { const x = ev.target.closest('[data-sst]'); if (!x) return; DB.updChan(p.id, { sig: Object.assign({}, p.sig, { st: x.dataset.sst }) }).then(() => toast('تحدّثت الحالة ✓', 'ok')).catch(() => toast('ما تحدّثت', 'bad')); close(); }; });
+  });
+  if (ME.role !== 'admin') return;
+  const tx = $('#chanTx'), grow = () => { tx.style.height = '42px'; tx.style.height = Math.min(160, tx.scrollHeight) + 'px'; };
+  tx.addEventListener('input', grow);
+  $('#sigTog').onclick = () => { sigOn = !sigOn; $('#sigF').classList.toggle('hide', !sigOn); $('#sigTog').className = 'btn sm ' + (sigOn ? '' : 'tint'); if (sigOn) setTimeout(() => $('#sgEn').focus(), 50); };
+  $('#sigX').onclick = () => { sigOn = false; $('#sigF').classList.add('hide'); $('#sigTog').className = 'btn tint sm'; };
+  $('#sigSide').onclick = e => { const b = e.target.closest('[data-sd]'); if (!b) return; sigSide = b.dataset.sd; $$('#sigSide button').forEach(x => x.classList.toggle('on', x === b)); };
+  $('#chanImg').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; try { chanImg = await compressImg(f, 1400, .78); const p = $('#chanImgPrev'); p.querySelector('img').src = chanImg; p.classList.remove('hide'); } catch (er) { toast('الصورة ما انقرت', 'bad'); } };
+  $('#chanImgPrev').onclick = e => { if (e.target.closest('button')) { chanImg = null; $('#chanImgPrev').classList.add('hide'); } };
+  $('#chanSend').onclick = async () => {
+    const t = tx.value.trim(), v = id => $(id).value.trim().replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+    let sig = null;
+    if (sigOn) { sig = { side: sigSide, entry: v('#sgEn'), sl: v('#sgSl'), tp: [v('#sgT1'), v('#sgT2'), v('#sgT3')].filter(Boolean), st: 'on' }; if (!sig.entry) return toast('اكتب سعر الدخول', 'bad'); }
+    if (!t && !chanImg && !sig) return toast('اكتب شي أول');
+    const p = { text: t.slice(0, 3000), img: chanImg || null, sig, at: Date.now(), views: 0, pin: false, by: ME.name };
+    $('#chanSend').disabled = true;
+    try {
+      await DB.addChan(p); beep('ok'); DB.log('نشر بالتوصيات' + (sig ? ': ' + (sig.side === 'buy' ? 'شراء ' : 'بيع ') + sig.entry : ''));
+      tx.value = ''; grow(); chanImg = null; $('#chanImgPrev').classList.add('hide'); ['#sgEn', '#sgSl', '#sgT1', '#sgT2', '#sgT3'].forEach(i => $(i).value = ''); if (sigOn) $('#sigX').click();
+      setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 120);
+    } catch (e) { toast('ما انتشر: ' + (e.code === 'permission-denied' ? 'الصق الـ rules الجديدة' : (e.message || 'خلل')), 'bad'); }
+    $('#chanSend').disabled = false;
+  };
+}
+/* ====== عدد الزيارات (بدون أجهزة الأدمن) ====== */
+const dayId = (t = Date.now()) => { const d = new Date(t); return d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate()); };
+function countVisit() {
+  if (ME.role === 'admin') { L.set('amg_admdev', 1); return; }
+  if (L.get('amg_admdev', 0) || ME.local) return;
+  const d = dayId(); if (L.get('amg_vday', '') === d) return;
+  DB.addVisit(d, !L.get('amg_vfirst', 0)).then(() => { L.set('amg_vday', d); L.set('amg_vfirst', 1); }).catch(() => { });
+}
+function initStats() {
+  if (ME.role !== 'admin') return;
+  const el = $('#vStats'); if (!el) return;
+  let V = {}, T = {}, C = {};
+  const r = () => { const today = V[dayId()] || 0, y = V[dayId(Date.now() - 864e5)] || 0, w = Object.entries(V).filter(([k]) => k >= dayId(Date.now() - 6 * 864e5)).reduce((s, [, n]) => s + n, 0); el.innerHTML = `<div><small>زيارات اليوم</small><b>${fmt(today)}</b></div><div><small>البارحة</small><b>${fmt(y)}</b></div><div><small>آخر 7 أيام</small><b>${fmt(w)}</b></div><div><small>كل الزيارات</small><b>${fmt(T.total || 0)}</b></div><div><small>أجهزة مختلفة</small><b>${fmt(T.devices || 0)}</b></div><div><small>مشتركين التوصيات</small><b>${fmt(Math.max(0, C.subs || 0))}</b></div>`; };
+  DB.watchVisits(v => { V = v || {}; r(); }); DB.watchStat('visits', s => { T = s || {}; r(); }); DB.watchStat('channel', s => { C = s || {}; r(); }); r();
+}
+/* ====== كلك يمين على الشارت ====== */
+function chartMenu(x, y, price, time) {
+  $$('.cmenu').forEach(m => m.remove());
+  const m = document.createElement('div'); m.className = 'cmenu';
+  const P = showP(price), I = n => `<svg class="ic"><use href="#i-${n}"/></svg>`;
+  m.innerHTML = `<div class="ttl">XAUUSD · ${P}</div>
+   <button data-cm="reset">${I('undo')}إعادة ضبط الشارت<kbd>Alt+R</kbd></button>
+   <button data-cm="last">${I('back')}روح لآخر شمعة</button>
+   <button data-cm="auto">${I('fs')}ضبط السعر تلقائي</button>
+   <button data-cm="zin">${I('plus')}كبّر</button>
+   <button data-cm="zout">${I('down')}صغّر</button>
+   <hr>
+   <button data-cm="hl">${I('hl')}خط أفقي على ${P}</button>
+   <button data-cm="al">${I('alert')}تنبيه على ${P}</button>
+   <button data-cm="cp">${I('copy')}انسخ السعر ${P}</button>
+   <hr>
+   <button data-cm="ind">${I('lay')}المؤشرات</button>
+   <button data-cm="ses">${I('cal')}الجلسات</button>
+   <button data-cm="cs">${I('set')}إعدادات الشارت</button>
+   <button data-cm="clr">${I('trash')}امسح رسوماتي</button>`;
+  document.body.appendChild(m);
+  const w = m.offsetWidth, h = m.offsetHeight; m.style.left = Math.max(8, Math.min(x, innerWidth - w - 8)) + 'px'; m.style.top = Math.max(8, Math.min(y, innerHeight - h - 8)) + 'px';
+  const close = () => { m.remove(); removeEventListener('pointerdown', out, true); removeEventListener('keydown', esc1); removeEventListener('blur', close); };
+  const out = e => { if (!m.contains(e.target)) close(); }, esc1 = e => { if (e.key === 'Escape') close(); };
+  setTimeout(() => { addEventListener('pointerdown', out, true); addEventListener('keydown', esc1); addEventListener('blur', close); }, 0);
+  m.onclick = e => {
+    const b = e.target.closest('[data-cm]'); if (!b) return; const k = b.dataset.cm; close();
+    if (k === 'reset') { CH.resetView(); toast('رجع الشارت لوضعه الطبيعي'); }
+    if (k === 'last') { CH.right = CH.c.length - 1 + Math.round(60 / CH.barW); CH.dirty = true; }
+    if (k === 'auto') CH.autoScale();
+    if (k === 'zin') CH.zoomBy(1.25);
+    if (k === 'zout') CH.zoomBy(.8);
+    if (k === 'hl') CH.add({ type: 'hline', pts: [{ t: time, p: price }] });
+    if (k === 'al') { const a = { id: CH.uid(), p: price, on: true }; CH.alerts.push(a); CH.cb.onAlerts(CH.alerts); CH.dirty = true; }
+    if (k === 'cp') { const t = P.replace(/,/g, ''); (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast('انسخ ' + t)).catch(() => toast(t)); }
+    if (k === 'ind') indSheet();
+    if (k === 'ses') csSheet('sess');
+    if (k === 'cs') csSheet();
+    if (k === 'clr') ask('تمسح رسوماتك؟', 'كل الخطوط والفيبو اللي رسمتها راح تنمسح.', 'امسحها', true).then(ok => ok && CH.clearMine());
+  };
+}
+document.addEventListener('keydown', e => { if (curPg === 'chart' && e.altKey && (e.key === 'r' || e.key === 'R' || e.code === 'KeyR')) { e.preventDefault(); CH.resetView(); } });
+
 /* ====== navigation ====== */
 let curPg = 'home';
 function anim(sel) { const p = $(sel); p.classList.remove('in'); $$('.card,.li', p).forEach((c, i) => c.style.setProperty('--i', Math.min(i, 12))); void p.offsetWidth; p.classList.add('in'); }
 function go(pg) {
   if (pg === 'students' && ME.role !== 'admin') pg = 'home';
-  if (ME.role === 'guest' && ['posts', 'chat', 'students'].includes(pg)) pg = 'home';
+  if (ME.role === 'guest' && ['chat', 'students'].includes(pg)) pg = 'home';
   const prev = curPg; curPg = pg; $('#app').dataset.pg = pg;
   $$('.pg').forEach(p => p.classList.toggle('hide', p.id !== 'pg-' + pg));
   $$('[data-go]').forEach(b => { if (b.closest('#snav') || b.closest('#bnav')) b.classList.toggle('on', b.dataset.go === pg); });
@@ -3239,12 +3672,16 @@ function go(pg) {
   if (pg === 'news') renderNews();
   if (pg === 'chat' && needPhoto()) setTimeout(() => photoSheet(true), 200);
   if (pg !== 'chat') { if (typeof REC !== 'undefined' && REC) recStop(false); stopAudio(); }
-  if (pg === 'chat') { chatSeenNow(); setTimeout(() => { const l = $('#msgs'); if (l) l.scrollTop = l.scrollHeight; }, 30); }
+  if (pg === 'chat') { chatSeenNow(); renderList(); setTimeout(() => window.kbUpd && kbUpd(), 0); setTimeout(() => { const l = $('#msgs'); if (l) l.scrollTop = l.scrollHeight; }, 30); }
+  if (prev === 'chat' && pg !== 'chat') { setTimeout(() => window.kbUpd && kbUpd(), 0); chQ = ''; const cs = $('#chSearch'); if (cs) cs.value = ''; if (matchMedia('(max-width:900px)').matches && CONV) closeConv(); }
+  if (pg === 'signals') { L.set('amg_chseen', Date.now()); chanBadge(); setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 60); }
+  else chanBadge();
   if (pg === 'home') renderSpark();
   $('.npanel') && $('.npanel').remove();
 }
 function moreSheet() {
   modal(`<h2>المزيد<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
+   <button class="mi" data-mo="posts"><svg class="ic"><use href="#i-news"/></svg>التحليلات والمنشورات</button>
    <button class="mi" data-mo="news"><svg class="ic"><use href="#i-cal"/></svg>الأخبار</button>
    ${ME.role !== 'guest' ? '<button class="mi" data-mo="tools"><svg class="ic"><use href="#i-tools"/></svg>الأدوات</button>' : ''}
    ${ME.role === 'admin' ? '<button class="mi" data-mo="students"><svg class="ic"><use href="#i-users"/></svg>الطلاب</button>' : ''}
@@ -3252,7 +3689,7 @@ function moreSheet() {
    <button class="mi" data-mo="snd"><svg class="ic"><use href="#i-snd"/></svg>الأصوات<span class="sw ${S.snd ? 'on' : ''}"></span></button>
    ${ME.role === 'guest' ? '<button class="mi" data-mo="login" style="color:var(--accent)"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>' : ME.local ? '' : '<button class="mi" data-mo="out" style="color:var(--bad)"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>'}
    <div class="credit" style="margin-top:12px"><span dir="ltr">by <b>Ali Malik</b></span></div>`, (m, close) => {
-    m.onclick = e => { const b = e.target.closest('[data-mo]'); if (!b) return; const k = b.dataset.mo; if (k === 'snd') { S.snd = !S.snd; saveS(); b.querySelector('.sw').classList.toggle('on', S.snd); $('#swSnd').classList.toggle('on', S.snd); return; } close(); if (k === 'out') logout(); else if (k === 'login') { L.set('amg_guest', 0); location.reload(); } else go(k); };
+    m.onclick = e => { const b = e.target.closest('[data-mo]'); if (!b) return; const k = b.dataset.mo; if (k === 'snd') { S.snd = !S.snd; saveS(); b.querySelector('.sw').classList.toggle('on', S.snd); $('#swSnd').classList.toggle('on', S.snd); return; } close(); if (k === 'out') logout(); else if (k === 'login') toLogin(); else go(k); };
   });
 }
 async function logout() { if (await ask('تطلع من الحساب؟', 'تگدر ترجع تدخل بنفس الرمز.', 'اطلع')) { if (auth) await auth.signOut(); location.reload(); } }
@@ -3276,7 +3713,7 @@ document.addEventListener('click', e => {
    3. أي رسم أو مؤشر تحطه ينحفظ بحسابك ويطلع بكل أجهزتك.<br><br>
    <b style="color:var(--ink)">حتى تدز تحليلك للأستاذ:</b> بـ TradingView دوس أيقونة الكاميرا 📷 ← "نسخ الرابط"، ودزه بالخاص.</div>
    <a class="btn blk" style="margin-top:14px" href="https://www.tradingview.com/chart/?symbol=OANDA%3AXAUUSD" target="_blank" rel="noopener">افتح بحسابي بـ TradingView</a>`);
-  if (k === 'tologin') { L.set('amg_guest', 0); location.reload(); }
+  if (k === 'tologin') toLogin();
   if (k === 'logout') logout();
 });
 
@@ -3296,14 +3733,14 @@ function start() {
   $('#hello').textContent = ME.role === 'guest' ? (h < 12 ? 'صباح الخير' : 'مساء الخير') : (h < 12 ? 'صباح الخير ' : 'مساء الخير ') + first;
   $$('#snav button').filter(b => getComputedStyle(b).display !== 'none').forEach((b, i) => b.querySelector('i').textContent = p2(i + 1));
   setMode(S.mode); initChart(); initPosts(); initTools(); initSettings();
-  if (ME.role === 'admin') { initStudents(); DB.watchStudents(l => { STUD = l; renderStud(); }); DB.watchLogs(l => { $('#logList').innerHTML = l.length ? l.slice(0, 20).map(x => `<div class="li"><div class="mn"><b style="font-weight:700;font-size:14px">${esc(x.t)}</b><small>${ago(x.at)} · ${esc(x.by || '')}</small></div></div>`).join('') : '<div class="empty">ماكو حركات</div>'; }); }
+  if (ME.role === 'admin') { initStudents(); DB.watchDelLog(l => { LOGS = l.map(x => Object.assign({ kind: 'del' }, x)); }); DB.watchStudents(l => { STUD = l; renderStud(); }); DB.watchLogs(l => { $('#logList').innerHTML = l.length ? l.slice(0, 20).map(x => `<div class="li"><div class="mn"><b style="font-weight:700;font-size:14px">${esc(x.t)}</b><small>${ago(x.at)} · ${esc(x.by || '')}</small></div></div>`).join('') : '<div class="empty">ماكو حركات</div>'; }); }
   DB.watchPosts(onPosts);
-  DB.watchConfig(c => { const old = CFG.newsUrl, oldPin = JSON.stringify(CFG.pin || null); CFG = c || {}; renderChatLock(); if (ME.role !== 'guest' && JSON.stringify(CFG.pin || null) !== oldPin) { renderPin(); renderMsgs(); } const si = $('#sNews'); if (si && document.activeElement !== si) si.value = CFG.newsUrl || ''; if (CFG.newsUrl !== old) loadNews(true); });
+  DB.watchConfig(c => { const old = CFG.newsUrl, oldPin = JSON.stringify(CFG.pin || null); CFG = c || {}; renderChatLock(); if (ME.role !== 'guest' && JSON.stringify(CFG.pin || null) !== oldPin) { renderPin(); if (CONV) renderMsgs(); } const si = $('#sNews'); if (si && document.activeElement !== si) si.value = CFG.newsUrl || ''; if (CFG.newsUrl !== old) loadNews(true); });
   if (ME.role !== 'guest') {
-    DB.watchProfiles(p => { PROF = p || {}; const first = !profLoaded; profLoaded = true; if (ME.role === 'admin' && !PROF[ME.uid]) DB.setProfile({ name: ME.name, role: 'admin', photo: '', at: Date.now() }).catch(() => { }); renderMsgs(); renderNotes(); renderDMList(); if (curPg === 'chat') chatHeader(); if (first && needPhoto()) setTimeout(() => photoSheet(true), 600); });
+    DB.watchProfiles(p => { PROF = p || {}; const first = !profLoaded; profLoaded = true; if (ME.role === 'admin' && !PROF[ME.uid]) DB.setProfile({ name: ME.name, role: 'admin', photo: '', at: Date.now() }).catch(() => { }); const mp = PROF[ME.uid]; if (ME.role === 'student' && (!mp || mp.name !== ME.name)) DB.setProfile(Object.assign({ photo: '' }, mp || {}, { name: ME.name, role: 'student', at: Date.now() })).catch(() => { }); if (CONV) renderMsgs(); renderNotes(); renderList(); myAv(); if (curPg === 'chat') chatHeader(); if (first && needPhoto()) setTimeout(() => photoSheet(true), 600); });
     DB.watchChat(onChat);
   }
-  initNews(); initChat(); setInterval(() => loadNews(), 10 * 6e4);
+  initNews(); if (ME.role !== 'guest') initChat(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
   DB.watchLive(v => { LIVE = v; setTeacher(); });
   if (ME.role === 'admin' && S.cast) castNow();
   setTeacher(); renderAlerts(); loadTicker().then(syncSpot); setInterval(loadTicker, 5 * 6e4); setInterval(syncSpot, 6e4);
