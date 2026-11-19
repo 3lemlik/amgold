@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-6">
+<meta name="app-build" content="2026.11.19-8">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -172,7 +172,7 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
 .selbar .c{width:22px;height:22px;border-radius:50%;border:2px solid var(--panel)}
 .selbar .c.on{box-shadow:0 0 0 2px var(--ink)}
 .status{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;color:var(--dim);font-weight:700;direction:rtl;text-align:center;padding:20px}
-.tvbox{height:calc(100dvh - 190px);min-height:380px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.tvbox{flex:1;min-width:0;width:100%;height:calc(100dvh - 190px);min-height:380px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
 .tvbox iframe,.tvbox>div{width:100%!important;height:100%!important}
 .calbox{height:520px;border-radius:12px;overflow:hidden}
 /* chart page fills the screen */
@@ -326,6 +326,7 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
  .tools::-webkit-scrollbar{display:none}
  .tools button{width:38px;height:36px;flex:none}
  .tools hr{border-top:0;border-right:1px solid var(--line);margin:4px 2px}
+ .tvbox{width:100%}
  .cbox,.tvbox{flex:none;height:calc(100dvh - 268px - var(--sat) - var(--sab));min-height:300px}
  .chartpg .phead{display:none}
  #app[data-pg=chart] .top{display:none}
@@ -338,6 +339,221 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
 }
 @media (max-width:380px){.bigp{font-size:31px}.krt .num{font-size:13px}main{padding-left:10px;padding-right:10px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* iOS: لازم cursor:pointer حتى الضغط يشتغل على العناصر */
+[data-go],[data-act],[data-view],[data-pa],[data-al],[data-dm],[data-goto],[data-mo],.ov,.viewer,.drop,label{cursor:pointer}
+.ov .md{cursor:auto}
+.tvhint{font-size:12px;color:var(--faint);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cbar{flex-wrap:nowrap}
+.drop{display:flex;flex-direction:column;align-items:center;gap:4px;padding:22px 14px;border:1.5px dashed var(--line2);border-radius:14px;background:var(--panel2);text-align:center;color:var(--dim);transition:.2s}
+.drop svg{width:28px;height:28px;color:var(--accent)}
+.drop b{color:var(--ink);font-family:var(--fd)}
+.drop small{font-size:12px}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.viewer{touch-action:none;overflow:hidden}
+.viewer img{transition:transform .05s;will-change:transform;touch-action:none;user-select:none;-webkit-user-drag:none}
+.viewer .vx{position:absolute;top:calc(14px + var(--sat));left:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:20px}
+/* chat (Telegram style) */
+.chatwrap{display:flex;flex-direction:column;height:calc(100dvh - 60px);background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;position:relative}
+.chathead{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--panel) 90%,transparent);backdrop-filter:blur(10px);min-width:0}
+.chathead .mn{min-width:0}.chathead .mn b{display:block;font-family:var(--fd);font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chathead .mn small{color:var(--dim);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.chathead .seg button{position:relative;padding:6px 10px}
+.chathead .seg .nbadge{position:absolute;top:-6px;left:-6px;margin:0}
+.chatlist{flex:1;overflow-y:auto;padding:12px 10px 6px;display:flex;flex-direction:column;gap:3px;overscroll-behavior:contain;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;background-image:var(--bgpat)}
+.cday{align-self:center;font-size:11.5px;color:var(--dim);background:color-mix(in srgb,var(--panel2) 85%,transparent);padding:3px 12px;border-radius:999px;margin:8px 0;backdrop-filter:blur(6px)}
+.msg{display:flex;max-width:100%;justify-content:flex-start}
+.msg.me{justify-content:flex-end}
+.msg .bub{position:relative;max-width:min(80%,520px);padding:6px 10px 18px;border-radius:16px 16px 16px 5px;background:var(--panel2);border:1px solid var(--line);line-height:1.6;transition:transform .15s}
+.msg.me .bub{background:linear-gradient(160deg,rgba(var(--acc-rgb),.24),rgba(var(--acc-rgb),.14));border-color:rgba(var(--acc-rgb),.28);border-radius:16px 16px 5px 16px}
+.msg.adm:not(.me) .bub{border-color:rgba(var(--acc-rgb),.55)}
+.msg.pressed .bub{transform:scale(.96)}
+.msg.flash .bub{box-shadow:0 0 0 3px var(--accent)}
+.msg .who{font-size:12.5px;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:6px;margin-bottom:1px}
+.msg .tag{font-size:10px;font-weight:700;background:var(--accent);color:var(--accent-ink);padding:0 6px;border-radius:6px}
+.msg .tx{white-space:pre-wrap;word-break:break-word;min-width:40px}
+.msg .tm{position:absolute;bottom:3px;left:9px;font-size:10.5px;color:var(--faint)}
+.msg.me .tm{color:var(--dim)}
+.msg img{display:block;max-width:100%;width:260px;border-radius:11px;margin:2px 0 4px;cursor:zoom-in}
+.rq{border-inline-start:3px solid var(--accent);background:rgba(var(--acc-rgb),.08);border-radius:7px;padding:3px 8px;margin:2px 0 4px;font-size:12.5px;cursor:pointer;max-width:100%}
+.rq b{display:block;color:var(--accent);font-size:12px}.rq span{display:block;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chatfoot{padding:8px 10px calc(8px);background:transparent}
+.pillin{display:flex;align-items:flex-end;gap:6px;padding:5px;border-radius:24px;background:var(--panel2);border:1px solid var(--line2);box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.pillin textarea{flex:1;min-width:0;border:0;outline:0;background:none;resize:none;padding:9px 6px;max-height:120px;line-height:1.5;font-size:16px}
+.pillin .cbtn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--dim);flex:none}
+.pillin .sendb{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);flex:none}
+.pillin .sendb:disabled{opacity:.4}
+.replybar,.imgprev{display:flex;align-items:center;gap:10px;margin:0 6px 6px;padding:6px 10px;border-radius:12px;background:var(--panel2);border-inline-start:3px solid var(--accent)}
+.replybar .mn{flex:1;min-width:0}.replybar b{display:block;color:var(--accent);font-size:12.5px}.replybar small{display:block;color:var(--dim);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.imgprev img{height:54px;border-radius:8px}.imgprev{justify-content:space-between}
+.dmlist{flex:1;overflow-y:auto;padding:6px}
+.dmi{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px}
+.dmi:hover{background:var(--panel2)}
+.dmi .mn{flex:1;min-width:0}.dmi .mn b{display:block}.dmi .mn small{display:block;color:var(--dim);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dmr{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:11px;color:var(--faint)}
+.mmenu{position:fixed;z-index:95;display:flex;flex-direction:column;min-width:150px;padding:6px;border-radius:14px;background:var(--panel3);border:1px solid var(--line2);box-shadow:0 14px 40px rgba(0,0,0,.45);animation:up .18s}
+.mmenu button{padding:10px 12px;border-radius:9px;text-align:right;font-weight:700}
+.mmenu button:hover{background:var(--panel2)}
+.mmenu .bad{color:var(--bad)}
+#app[data-pg=chat] main{padding-bottom:10px}
+#app[data-pg=chat] main>.credit,#app[data-pg=chat] #demoBar{display:none!important}
+@media (max-width:900px){
+ #app[data-pg=chat] .top{display:none}
+ #app[data-pg=chat] main{padding:calc(6px + var(--sat)) 6px 0}
+ .chatwrap{border-radius:16px}
+ .tvhint{display:none}
+}
+
+.msg{align-self:stretch;flex-direction:row;gap:0;max-width:100%}
+.msg .bub{white-space:normal}
+a.btn{text-decoration:none}
+
+/* ===== chat — نفس ستايل AM CHAT ===== */
+:root{--in-bg:var(--panel2);--msg-fs:15.5px;--shadow:0 10px 30px rgba(0,0,0,.35)}
+html[data-theme="light"]{--in-bg:#fff;--shadow:0 10px 30px rgba(16,22,34,.12)}
+.gl{position:relative;background:color-mix(in srgb,var(--panel) 58%,transparent);backdrop-filter:blur(22px) saturate(1.9);-webkit-backdrop-filter:blur(22px) saturate(1.9);border:.5px solid rgba(255,255,255,.13);box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 6px 22px rgba(0,0,0,.30)}
+html[data-theme="light"] .gl{background:rgba(255,255,255,.66);border-color:rgba(255,255,255,.75);box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 6px 22px rgba(16,22,34,.13)}
+.gl.hud::before{content:"";position:absolute;inset:-.5px;border-radius:inherit;padding:1px;background:linear-gradient(115deg,rgba(var(--acc-rgb),.85),rgba(var(--acc-rgb),0) 28%,rgba(var(--acc-rgb),0) 72%,rgba(var(--acc-rgb),.6));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:.75}
+.circ{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink);flex:none;transition:transform .15s}
+.circ:active{transform:scale(.9)}
+.circ svg{width:21px;height:21px}
+.pill{height:44px;border-radius:22px;display:flex;align-items:center;gap:6px;padding:0 14px;font-weight:700;color:var(--ink)}
+.gchat{position:relative;display:flex;flex-direction:column;height:calc(100dvh - 60px);border-radius:20px;overflow:hidden;border:1px solid var(--line);background:var(--void)}
+.gchat .wall{position:absolute;inset:0;background-image:radial-gradient(ellipse 60% 40% at 50% 0%,var(--accent-glow),transparent 70%),var(--bgpat);pointer-events:none}
+.gchat .chead{position:absolute;top:0;left:0;right:0;z-index:5;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:10px 12px 18px;background:linear-gradient(to bottom,color-mix(in srgb,var(--void) 75%,transparent),transparent)}
+.gchat .ch-av{justify-self:start}
+.gchat .ch-av .av{width:44px;height:44px;font-size:15px;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.gchat .who{height:46px;border-radius:23px;padding:0 20px;display:flex;align-items:center;justify-content:center;min-width:0;max-width:min(52vw,420px)}
+.gchat .who .x{text-align:center;min-width:0}
+.gchat .who .nm{font-family:var(--fd);font-weight:700;font-size:15.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gchat .who .st{font-size:12px;line-height:1.3;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gchat .ch-l{justify-self:end;display:flex;gap:8px;align-items:center}
+.seg2{display:flex;height:44px;border-radius:22px;padding:4px;gap:2px}
+.seg2 button{position:relative;padding:0 13px;border-radius:18px;font-weight:700;font-size:13.5px;color:var(--dim)}
+.seg2 button.on{background:var(--accent);color:var(--accent-ink)}
+.seg2 .nbadge{position:absolute;top:-8px;left:-6px;margin:0}
+#msgs{position:relative;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:76px 3% 8px;display:flex;flex-direction:column;touch-action:pan-y;overscroll-behavior:contain;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#msgs .inner{display:flex;flex-direction:column;gap:2px;margin-top:auto;max-width:820px;width:100%;margin-inline:auto}
+.dsep{align-self:center;margin:12px 0 8px;padding:3px 11px;border-radius:999px;background:color-mix(in srgb,var(--panel) 70%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:12.5px;color:var(--dim);font-weight:700;position:sticky;top:70px;z-index:2}
+.m{display:flex;align-items:flex-end;gap:7px;max-width:min(80%,560px);position:relative;align-self:flex-start;margin-top:1px}
+.m.out{align-self:flex-end;flex-direction:row-reverse}
+.m.first{margin-top:6px}
+.m .mav{width:34px;flex:none;visibility:hidden}
+.m.last .mav{visibility:visible}
+.m .mav .av{width:34px;height:34px;font-size:12px;border-width:0;background:hsl(var(--h) 55% 45% / .25);color:hsl(var(--h) 70% 65%)}
+.m .swipe-ic{position:absolute;right:6px;top:50%;width:30px;height:30px;margin-top:-15px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;opacity:0;transform:scale(.5);z-index:0}
+.m .swipe-ic svg{width:17px;height:17px}
+.m:has(>.mav) .swipe-ic{right:44px}
+.bub{position:relative;z-index:1;background:var(--in-bg);border:1px solid transparent;padding:6px 10px 6px;border-radius:17px;min-width:70px;max-width:100%;box-shadow:0 1px .5px rgba(0,0,0,.13);font-size:var(--msg-fs);line-height:1.45;overflow-wrap:anywhere;transition:transform .25s cubic-bezier(.2,.9,.3,1.2)}
+.m.in .bub{border-bottom-right-radius:6px;border-top-right-radius:6px}
+.m.in.first .bub{border-top-right-radius:17px}
+.m.in.last .bub{border-bottom-right-radius:4px}
+.m.out .bub{background:var(--accent);color:var(--accent-ink);border-bottom-left-radius:6px;border-top-left-radius:6px}
+.m.out.first .bub{border-top-left-radius:17px}
+.m.out.last .bub{border-bottom-left-radius:4px}
+.m.adm.in .bub{box-shadow:0 0 0 1px rgba(var(--acc-rgb),.45),0 1px .5px rgba(0,0,0,.13)}
+.m.press .bub{transform:scale(.965);transition:transform .35s ease-out}
+.m.flash .bub{animation:mflash 1.2s}
+@keyframes mflash{0%,60%{box-shadow:0 0 0 4px rgba(var(--acc-rgb),.5)}}
+.m.new{animation:mnew .32s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes mnew{from{opacity:0;transform:translateY(12px) scale(.96)}}
+.bub .from{font-size:14px;font-weight:700;color:hsl(var(--h) 70% 62%);margin-bottom:1px;display:flex;align-items:center;gap:6px}
+html[data-theme="light"] .bub .from{color:hsl(var(--h) 60% 40%)}
+.bub .from .tag{font-size:10px;font-weight:800;background:var(--accent);color:var(--accent-ink);padding:0 6px;border-radius:6px;line-height:16px}
+.bub .txt{white-space:pre-wrap}
+.bub .txt a{color:inherit;text-decoration:underline}
+.bub .meta{position:absolute;left:10px;bottom:5px;display:inline-flex;align-items:center;gap:3px;font-size:11.5px;opacity:.75;line-height:1;direction:ltr;white-space:nowrap}
+.m.out .bub .meta{opacity:.85}
+.bub .meta svg{width:15px;height:15px;stroke-width:2.2}
+.bub .sp{display:inline-block;height:12px;vertical-align:bottom}
+.bub.jumbo{background:none!important;box-shadow:none!important;padding:0 4px 18px}
+.bub.jumbo .txt{font-size:44px;line-height:1.2}.bub.jumbo .sp{display:none}
+.bub.jumbo .meta{background:color-mix(in srgb,var(--panel) 85%,transparent);color:var(--ink);padding:3px 7px;border-radius:999px;bottom:0;opacity:1}
+.quote{display:block;border-right:3px solid var(--accent);background:var(--accent-soft);border-radius:6px;padding:4px 9px;margin:2px 0 5px;font-size:14px;cursor:pointer;overflow:hidden}
+.m.out .quote{border-right-color:var(--accent-ink);background:rgba(255,255,255,.18)}
+.quote b{display:block;font-size:13px;color:var(--accent)}
+.m.out .quote b{color:inherit}
+.quote span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.85}
+.bub.media{padding:4px}
+.bub.media .txt,.bub.media .from,.bub.media .quote{margin-inline:7px}
+.bub img.ph{display:block;max-width:100%;width:300px;max-height:380px;object-fit:cover;border-radius:14px;cursor:zoom-in;background:var(--panel3)}
+.bub.media.only{padding:0;background:none!important;box-shadow:none!important}
+.bub.media.only img.ph{border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+.bub.media.only .meta{left:10px;bottom:10px;background:rgba(0,0,0,.45);color:#fff;padding:3px 7px;border-radius:999px;opacity:1}
+.bub.media .txt{padding:4px 0 2px}
+.reacts{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:5px}
+.reacts button{height:28px;padding:0 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:15px;display:flex;align-items:center;gap:4px;font-weight:700;border:1px solid transparent}
+.reacts button.me{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.m.out .reacts button{background:rgba(255,255,255,.2);color:var(--accent-ink)}
+.m.out .reacts button.me{background:var(--accent-ink);color:var(--accent)}
+.reacts .num{font-size:11.5px}
+.fab{position:absolute;left:16px;bottom:84px;z-index:4;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink);transform:scale(0);transition:transform .25s cubic-bezier(.2,.9,.3,1.3)}
+.fab.on{transform:scale(1)}
+.fab .nbadge{position:absolute;top:-6px;right:-4px;margin:0}
+.comp{position:relative;z-index:3;padding:6px 10px 10px;display:flex;flex-direction:column;gap:6px;background:linear-gradient(to top,color-mix(in srgb,var(--void) 70%,transparent),transparent)}
+.comp>*{max-width:820px;width:100%;margin-inline:auto}
+.rbar{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:18px}
+.rbar .lead{color:var(--accent)}
+.rbar .x{flex:1;min-width:0;border-right:3px solid var(--accent);padding-right:9px}
+.rbar .t{font-size:13.5px;font-weight:700;color:var(--accent)}
+.rbar .s{font-size:14px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rbar img{height:44px;width:44px;object-fit:cover;border-radius:9px}
+.rbar .ib{width:32px;height:32px;background:none}
+.cbar{display:flex;align-items:flex-end;gap:8px}
+.cbar .circ{width:46px;height:46px}
+.cbar .box{flex:1;min-width:0;display:flex;align-items:flex-end;gap:2px;border-radius:23px;padding:3px 4px}
+.cbar textarea{flex:1;min-width:0;border:0;outline:0;background:transparent;resize:none;padding:9px 8px;max-height:140px;line-height:1.45;font-size:17px;height:40px;color:var(--ink)}
+.cbar .tb{width:40px;height:40px;background:none;color:var(--dim)}
+.comp[data-has="1"] .sendb{background:var(--accent);color:var(--accent-ink);box-shadow:0 6px 18px var(--accent-glow);border-color:transparent}
+.sendb svg{transition:transform .25s}
+.comp[data-has="1"] .sendb svg{transform:rotate(0) scale(1.05)}
+.sendb:disabled{opacity:.45}
+.emoji{display:none;border-radius:18px;padding:8px}
+.emoji.on{display:block;animation:mnew .2s}
+.emoji .tabs{display:flex;gap:4px;margin-bottom:6px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.emoji .tabs button{height:32px;padding:0 10px;border-radius:9px;font-size:18px}
+.emoji .tabs button.on{background:var(--accent-soft)}
+.emoji .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));max-height:200px;overflow-y:auto}
+.emoji .grid button{height:40px;font-size:24px;border-radius:10px}
+.emoji .grid button:active{transform:scale(1.3)}
+.dmlist{position:relative;flex:1;overflow-y:auto;padding:76px 8px 10px}
+.dmi{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px}
+.dmi:hover{background:var(--panel2)}
+.dmi .av{width:50px;height:50px}
+.dmi .mn{flex:1;min-width:0}.dmi .mn b{display:block;font-weight:700}.dmi .mn small{display:block;color:var(--dim);font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dmr{display:flex;flex-direction:column;align-items:flex-end;gap:5px;font-size:11.5px;color:var(--faint)}
+/* hold menu (ضغطة مطوّلة) */
+#hold{position:fixed;inset:0;z-index:96;opacity:0;pointer-events:none;transition:opacity .2s}
+#hold.on{opacity:1;pointer-events:auto}
+#hold .bg{position:absolute;inset:0;background:rgba(5,6,9,.45);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2)}
+html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
+#hold .clone{position:absolute;margin:0;transition:transform .32s cubic-bezier(.2,.9,.3,1.15);pointer-events:none;max-width:none}
+#hold .clone .bub{box-shadow:0 18px 50px rgba(0,0,0,.45)}
+#hold .clone .swipe-ic{display:none}
+#hold .rx{position:absolute;display:flex;gap:2px;padding:5px 6px;border-radius:999px;background:var(--panel);border:1px solid var(--line2);box-shadow:var(--shadow);transform:scale(.6);opacity:0;transition:transform .32s cubic-bezier(.2,.9,.3,1.3),opacity .2s}
+#hold .rx button{width:40px;height:40px;font-size:25px;border-radius:50%;display:grid;place-items:center;transition:transform .15s}
+#hold .rx button:active,#hold .rx button:hover{transform:scale(1.3)}
+#hold .rx button.me{background:var(--accent-soft)}
+#hold .mn{position:absolute;min-width:220px;max-width:calc(100% - 24px);padding:6px;border-radius:16px;background:var(--panel);border:1px solid var(--line2);box-shadow:var(--shadow);transform:scale(.6);opacity:0;transition:transform .3s cubic-bezier(.2,.9,.3,1.15),opacity .2s}
+#hold.on .rx,#hold.on .mn{transform:none;opacity:1}
+#hold .it{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;height:44px;padding:0 14px;border-radius:10px;font-size:15px;font-weight:600}
+#hold .it:active,#hold .it:hover{background:var(--panel3)}
+#hold .it svg{width:19px;height:19px;color:var(--dim)}
+#hold .it.dg{color:var(--bad)}#hold .it.dg svg{color:var(--bad)}
+#hold .sep{height:1px;background:var(--line);margin:4px 8px}
+#app[data-pg=chat] main{padding-bottom:8px}
+#app[data-pg=chat] main>.credit,#app[data-pg=chat] #demoBar{display:none!important}
+@media (max-width:900px){
+ #app[data-pg=chat] .top{display:none}
+ #app[data-pg=chat] main{padding:calc(4px + var(--sat)) 0 0}
+ .gchat{border-radius:0;border:0}
+ .gchat .chead{padding:calc(6px + var(--sat)) 10px 18px}
+ #msgs{padding-top:calc(70px + var(--sat))}
+ .dmlist{padding-top:calc(70px + var(--sat))}
+ .dsep{top:calc(64px + var(--sat))}
+ .gchat .who{max-width:44vw;padding:0 14px}
+ .seg2 button{padding:0 10px;font-size:13px}
+}
 </style>
 </head>
 <body>
@@ -386,6 +602,13 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
  <symbol id="i-in" viewBox="0 0 24 24"><path d="M15 4h4v16h-4"/><path d="M10 17l5-5-5-5M15 12H4"/></symbol>
  <symbol id="i-fs" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
  <symbol id="i-fsx" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
+ <symbol id="i-back" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+ <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+ <symbol id="i-reply" viewBox="0 0 24 24"><path d="M10 8 5 12l5 4"/><path d="M5 12h9a5 5 0 0 1 5 5v1"/></symbol>
+ <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0"/><path d="M9 9.5h.01M15 9.5h.01"/></symbol>
+ <symbol id="i-check2" viewBox="0 0 24 24"><path d="M2 13l4 4L15 8"/><path d="M10 15.5l1.5 1.5L22 7"/></symbol>
+ <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+ <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
  <symbol id="i-ul" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 21h16"/></symbol>
 </svg>
@@ -482,7 +705,7 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
     </div>
     <div class="card br only-guest">
      <h2>تحليلات علي مالك</h2>
-     <div class="dim" style="font-size:13.5px;margin-bottom:12px">التحليلات اليومية، ورسم الأستاذ المباشر على الشارت، والدردشة ويا الطلاب. كلها للمشتركين بالكورس.</div>
+     <div class="dim" style="font-size:13.5px;margin-bottom:12px">التحليلات اليومية بالصور والشرح، والدردشة ويا الطلاب والأستاذ. كلها للمشتركين بالكورس.</div>
      <button class="btn blk" data-act="tologin"><svg class="ic"><use href="#i-in"/></svg>عندي حساب، سجّل دخول</button>
     </div>
     <div class="card br only-mem">
@@ -498,40 +721,17 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
 
   <!-- CHART -->
   <section class="pg chartpg hide" id="pg-chart">
-   <div class="phead"><div class="eyebrow">02 · LIVE CHART ── XAU</div></div>
    <div class="cbar">
-    <div class="tfs" id="tfs"></div>
+    <a class="btn tint sm" id="tvOpen" href="https://www.tradingview.com/chart/?symbol=OANDA%3AXAUUSD" target="_blank" rel="noopener"><svg class="ic" style="width:16px;height:16px"><use href="#i-in"/></svg>افتح بحسابي بـ TradingView</a>
+    <span class="tvhint">الرسم هنا ما ينحفظ. حتى ينحفظ رسمك وإعداداتك افتح الشارت بحسابك.</span>
     <span class="sp"></span>
-    <div class="seg" id="srcSeg"><button data-src="am" class="on">AM</button><button data-src="tv">TradingView</button></div>
+    <button class="ib" data-act="tvinfo" title="شلون أحفظ رسمي؟"><svg class="ic"><use href="#i-ai"/></svg></button>
     <button class="ib" data-act="fs" title="ملء الشاشة" id="fsBtn"><svg class="ic"><use href="#i-fs"/></svg></button>
-    <button class="ib" data-act="cset" title="ألوان الشارت"><svg class="ic"><use href="#i-pal"/></svg></button>
-    <button class="ib" data-act="ind" title="المؤشرات"><svg class="ic"><use href="#i-lay"/></svg></button>
    </div>
    <div class="cwrap" id="cwrap">
-    <div class="tools" id="tools">
-     <button data-tool="cursor" data-tip="تحريك" class="on"><svg class="ic"><use href="#i-cur"/></svg></button>
-     <button data-tool="trend" data-tip="خط ترند"><svg class="ic"><use href="#i-trend"/></svg></button>
-     <button data-tool="hline" data-tip="خط أفقي"><svg class="ic"><use href="#i-hl"/></svg></button>
-     <button data-tool="fib" data-tip="فيبوناتشي"><svg class="ic"><use href="#i-fib"/></svg></button>
-     <button data-tool="rect" data-tip="منطقة"><svg class="ic"><use href="#i-rect"/></svg></button>
-     <button data-tool="long" data-tip="صفقة شراء"><svg class="ic"><use href="#i-long"/></svg></button>
-     <button data-tool="short" data-tip="صفقة بيع"><svg class="ic"><use href="#i-short"/></svg></button>
-     <button data-tool="text" data-tip="كتابة"><svg class="ic"><use href="#i-text"/></svg></button>
-     <button data-tool="measure" data-tip="قياس"><svg class="ic"><use href="#i-meas"/></svg></button>
-     <button data-tool="alert" data-tip="تنبيه سعر"><svg class="ic"><use href="#i-alert"/></svg></button>
-     <hr>
-     <button data-act="autofib" data-tip="فيبو ذكي"><svg class="ic"><use href="#i-ai"/></svg></button>
-     <button data-act="mag" class="tg" data-tip="المغناطيس" id="magBtn"><svg class="ic"><use href="#i-mag"/></svg></button>
-     <button data-act="undo" data-tip="تراجع"><svg class="ic"><use href="#i-undo"/></svg></button>
-     <button data-act="share" data-tip="انشر التحليل" class="only-admin"><svg class="ic"><use href="#i-send"/></svg></button>
-     <button data-act="clear" data-tip="امسح رسوماتي"><svg class="ic"><use href="#i-trash"/></svg></button>
-    </div>
-    <div class="cbox" id="cbox">
-     <div class="chip-ov" id="chipOv"></div>
-     <div class="status hide" id="cStatus"></div>
-     <div class="selbar hide" id="selbar"></div>
-    </div>
-    <div class="tvbox hide" id="tvbox"></div>
+    <div class="tvbox" id="tvbox"></div>
+    <div class="cbox hide" id="cbox"><div class="chip-ov" id="chipOv"></div><div class="status hide" id="cStatus"></div><div class="selbar hide" id="selbar"></div></div>
+    <div class="hide"><div id="tfs"></div><div id="srcSeg"></div><div id="tools"><button id="magBtn"></button></div></div>
    </div>
   </section>
 
@@ -543,11 +743,12 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
     <div class="card br comp only-admin" id="comp">
      <div class="row" style="margin-bottom:10px"><div class="seg" id="ptype"><button data-pt="analysis" class="on">تحليل</button><button data-pt="post">منشور</button></div><span class="sp"></span><button class="btn ghost sm" id="pinTog"><svg class="ic" style="width:16px;height:16px"><use href="#i-pin"/></svg>تثبيت</button></div>
      <input class="inp" id="pTitle" placeholder="العنوان (مثلاً: الذهب اليوم — فريم 15)" style="margin-bottom:8px">
-     <textarea class="inp" id="pText" placeholder="اكتب تحليلك… وين الدخول، الهدف، الوقف، وشنو تتوقع"></textarea>
+     <div class="drop" id="pDrop"><svg class="ic"><use href="#i-img"/></svg><b>ضيف سكرين شوت التحليل</b><small>دوس هنا تختار صورة، أو الصقها (Ctrl+V)، أو اسحبها لهنا</small><input type="file" accept="image/*" multiple id="pImgs" hidden></div>
+     <div class="row" style="margin:8px 0"><input class="inp" id="pLink" dir="ltr" placeholder="أو الصق رابط سكرين TradingView: tradingview.com/x/…"><button class="btn ghost sm" id="pLinkAdd">ضيف</button></div>
+     <textarea class="inp" id="pText" placeholder="اكتب شرح التحليل: وين الدخول، الهدف، الوقف، وشنو تتوقع"></textarea>
      <div class="att" id="pAtt"></div>
      <div class="row wrap">
-      <label class="btn ghost sm"><svg class="ic" style="width:16px;height:16px"><use href="#i-img"/></svg>صور<input type="file" accept="image/*" multiple id="pImgs" hidden></label>
-      <button class="btn ghost sm" id="pSnap"><svg class="ic" style="width:16px;height:16px"><use href="#i-cam"/></svg>ارفق الشارت ورسوماتي</button>
+      <button class="hide" id="pSnap"></button>
       <span class="sp"></span>
       <button class="btn" id="pSend"><svg class="ic" style="width:16px;height:16px"><use href="#i-send"/></svg>انشر</button>
      </div>
@@ -573,10 +774,33 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
 
   <!-- CHAT -->
   <section class="pg hide" id="pg-chat">
-   <div class="row"><div style="min-width:0"><div class="eyebrow">CHAT · STUDENTS ROOM</div><h1 style="margin-bottom:10px">الدردشة</h1></div><span class="sp"></span><button class="btn ghost sm only-admin" id="chatLock"></button></div>
-   <div class="card chatbox">
-    <div id="chatList" class="chatlist"></div>
-    <div class="chatin"><textarea class="inp" id="chatTx" rows="1" placeholder="اكتب رسالة…" maxlength="1000"></textarea><button class="btn" id="chatSend"><svg class="ic"><use href="#i-send"/></svg></button></div>
+   <div class="gchat" id="chatWrap">
+    <div class="wall"></div>
+    <div class="chead">
+     <div class="ch-av"><div class="av" id="chAv">👥</div></div>
+     <div class="who gl hud"><div class="x"><div class="nm" id="chTitle">غرفة الطلاب</div><div class="st" id="chSub"></div></div></div>
+     <div class="ch-l">
+      <button class="gl pill back hide" id="chBack"><svg class="ic"><use href="#i-back"/></svg><span>رجوع</span></button>
+      <button class="gl circ only-admin" id="chatLock" title="قفل الغرفة"></button>
+      <div class="gl seg2" id="chTabs"><button data-ct="room" class="on">الغرفة<b class="nbadge rmbadge hide"></b></button><button data-ct="dm">الخاص<b class="nbadge dmbadge hide"></b></button></div>
+     </div>
+    </div>
+    <div id="dmList" class="dmlist hide"></div>
+    <div id="msgs"><div class="inner" id="msgInner"></div></div>
+    <button class="fab gl" id="fab"><svg class="ic"><use href="#i-down"/></svg><span class="nbadge hide" id="fabN"></span></button>
+    <div class="comp" id="chatFoot" data-has="0">
+     <div class="emoji gl" id="emoji"></div>
+     <div class="rbar gl hide" id="replyBar"><svg class="ic lead"><use href="#i-reply"/></svg><div class="x"><div class="t" id="rbName"></div><div class="s" id="rbText"></div></div><button class="ib" id="rbX"><svg class="ic"><use href="#i-x"/></svg></button></div>
+     <div class="rbar gl hide" id="chImgPrev"><img alt=""><div class="x"><div class="t">صورة</div><div class="s">تگدر تكتب وصف ويّاها</div></div><button class="ib"><svg class="ic"><use href="#i-x"/></svg></button></div>
+     <div class="cbar">
+      <button class="gl circ sendb" id="chatSend" title="إرسال"><svg class="ic"><use href="#i-send"/></svg></button>
+      <div class="box gl hud">
+       <textarea id="chatTx" rows="1" placeholder="اكتب رسالة…" maxlength="1000" enterkeyhint="send"></textarea>
+       <button class="ib tb" id="emoBtn" title="إيموجي"><svg class="ic"><use href="#i-smile"/></svg></button>
+      </div>
+      <label class="gl circ att" title="صورة"><svg class="ic"><use href="#i-img"/></svg><input type="file" accept="image/*" id="chImg" hidden></label>
+     </div>
+    </div>
    </div>
   </section>
 
@@ -646,15 +870,16 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
     </div>
     <div class="card br only-admin">
      <h2>مصدر الأخبار</h2>
-     <div class="fld"><label>رابط Google Apps Script</label><input class="inp num" id="sNews" placeholder="https://script.google.com/macros/s/…/exec" dir="ltr"></div>
+     <div class="dim" style="font-size:13px;margin-bottom:10px">الأخبار تجي من Forex Factory تلقائياً، ما تحتاج تحط أي رابط.</div>
+     <div class="fld"><label>رابط احتياطي (اختياري) — Google Apps Script</label><input class="inp num" id="sNews" placeholder="https://script.google.com/macros/s/…/exec" dir="ltr"></div>
      <button class="btn tint sm" id="sNewsSave">احفظ وجرّب</button>
-     <div class="faint" style="font-size:12px;margin-top:8px">Forex Factory ما يسمح للمواقع تسحب منه مباشرة، فهذا الرابط يجيب الأخبار من عندهم ويوصلها لموقعك.</div>
+     <div class="faint" style="font-size:12px;margin-top:8px">خلّيها فارغة. تحتاجها بس إذا يوم وگفت الأخبار.</div>
     </div>
     <div class="card br">
      <h2>الجهاز</h2>
      <button class="mi" data-tg="snd">الأصوات<span class="sw" id="swSnd"></span></button>
-     <button class="mi" data-tg="mag">المغناطيس بالرسم<small>يلصق الخط على أعلى وأدنى الشمعة</small><span class="sw" id="swMag"></span></button>
-     <button class="mi only-admin" data-tg="cast">بث رسوماتي للطلاب<small>أي خط ترسمه يطلع عدهم بالشارت مباشرة</small><span class="sw" id="swCast"></span></button>
+     <button class="mi hide" data-tg="mag">المغناطيس بالرسم<small>يلصق الخط على أعلى وأدنى الشمعة</small><span class="sw" id="swMag"></span></button>
+     <button class="mi hide" data-tg="cast">بث رسوماتي للطلاب<small>أي خط ترسمه يطلع عدهم بالشارت مباشرة</small><span class="sw" id="swCast"></span></button>
      <button class="mi" data-tg="notif">إشعارات الجهاز<small>للتنبيهات والتحليلات الجديدة</small><span class="sw" id="swNotif"></span></button>
     </div>
     <div class="card br">
@@ -667,7 +892,7 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
      <div class="kv"><span>الاسم</span><b id="setNm"></b></div>
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv"><span>قاعدة البيانات</span><b id="setDb"></b></div>
-     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-6</span></div>
+     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-8</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1421,7 +1646,13 @@ const LocalDB = {
   async sendChat(m) { const a = L.get('amg_chat', []); m.id = uid(); a.unshift(m); L.set('amg_chat', a.slice(0, 150)); this.ccb && this.ccb(a); },
   async delChat(id) { const a = L.get('amg_chat', []).filter(m => m.id !== id); L.set('amg_chat', a); this.ccb && this.ccb(a); },
   watchConfig(cb) { this.cfcb = cb; cb(L.get('amg_cfg', {})); },
-  async setConfig(x) { const c = Object.assign(L.get('amg_cfg', {}), x); L.set('amg_cfg', c); this.cfcb && this.cfcb(c); }
+  async setConfig(x) { const c = Object.assign(L.get('amg_cfg', {}), x); L.set('amg_cfg', c); this.cfcb && this.cfcb(c); },
+  watchDM(sid, cb) { this.dmcb = cb; this.dmsid = sid; cb(L.get('amg_dm_' + sid, [])); return () => { this.dmcb = null; }; },
+  async sendDM(sid, m, meta) { const a = L.get('amg_dm_' + sid, []); m.id = uid(); a.push(m); L.set('amg_dm_' + sid, a.slice(-200)); const ls = L.get('amg_dmlist', []).filter(t => t.id !== sid); ls.unshift(Object.assign({ id: sid }, meta)); L.set('amg_dmlist', ls); this.dmcb && this.dmsid === sid && this.dmcb(a); this.dlcb && this.dlcb(ls); },
+  async delDM(sid, id) { const a = L.get('amg_dm_' + sid, []).filter(m => m.id !== id); L.set('amg_dm_' + sid, a); this.dmcb && this.dmcb(a); },
+  watchDMList(cb) { this.dlcb = cb; cb(L.get('amg_dmlist', [])); },
+  async reactChat(id, R) { const a = L.get('amg_chat', []).map(m => m.id === id ? Object.assign(m, { reactions: R }) : m); L.set('amg_chat', a); this.ccb && this.ccb(a); },
+  async reactDM(sid, id, R) { const a = L.get('amg_dm_' + sid, []).map(m => m.id === id ? Object.assign(m, { reactions: R }) : m); L.set('amg_dm_' + sid, a); this.dmcb && this.dmcb(a); }
 };
 let fbApp, auth, fdb;
 const FireDB = {
@@ -1463,7 +1694,13 @@ const FireDB = {
   sendChat(m) { return fdb.collection('chat').add(m); },
   delChat(id) { return fdb.collection('chat').doc(id).delete(); },
   watchConfig(cb) { fdb.collection('config').doc('public').onSnapshot(d => cb(d.exists ? d.data() : {}), () => cb({})); },
-  setConfig(x) { return fdb.collection('config').doc('public').set(Object.assign({}, CFG, x)); }
+  setConfig(x) { return fdb.collection('config').doc('public').set(Object.assign({}, CFG, x)); },
+  watchDM(sid, cb) { return fdb.collection('dm').doc(sid).collection('msgs').orderBy('at', 'desc').limit(200).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => { }); },
+  async sendDM(sid, m, meta) { await fdb.collection('dm').doc(sid).collection('msgs').add(m); await fdb.collection('dm').doc(sid).set(meta); },
+  delDM(sid, id) { return fdb.collection('dm').doc(sid).collection('msgs').doc(id).delete(); },
+  watchDMList(cb) { fdb.collection('dm').orderBy('at', 'desc').limit(200).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => { }); },
+  reactChat(id, R) { return fdb.collection('chat').doc(id).update({ reactions: R }); },
+  reactDM(sid, id, R) { return fdb.collection('dm').doc(sid).collection('msgs').doc(id).update({ reactions: R }); }
 };
 const GuestDB = Object.assign({}, LocalDB, {
   kind: 'guest',
@@ -1573,6 +1810,14 @@ function onRaw(k) {
   if (!keepK(k, rms)) return;
   if (RAW[tf]) { const tail = build(tf).slice(-1)[0]; if (tail) CH.update(tail); } else CH.update(k);
 }
+function openTicker() {
+  if (ws && ws.readyState <= 1) return;
+  let s; try { s = new WebSocket(`${FWS}xauusdt@miniTicker`); } catch (e) { return; }
+  ws = s;
+  s.onopen = () => { wsTry = 0; syncState(true); };
+  s.onmessage = ev => { const m = JSON.parse(ev.data), d = m.data || m; if (d && d.e === '24hrMiniTicker') tick(+d.c); };
+  s.onclose = () => { if (ws !== s) return; syncState(false, 'انقطع السعر، دا يرجع يتصل…'); wsTry++; setTimeout(() => { if (ws === s) { ws = null; openTicker(); } }, Math.min(15000, 1500 * wsTry)); };
+}
 function openWS(tf) {
   const rtf = RAW[tf] || tf;
   if (ws && wsTf === rtf && ws.readyState <= 1) return;
@@ -1652,14 +1897,20 @@ document.addEventListener('click', e => {
 
 /* ====== chart ui ====== */
 let CH, OVER = null, LIVE = null, src = 'am', tvMade = null, calMade = null;
+function fitChat() {
+  if (curPg !== 'chat') return; const w = $('#chatWrap'); if (!w) return;
+  const bn = $('#bnav'), bnH = bn && getComputedStyle(bn).display !== 'none' ? bn.getBoundingClientRect().height + 6 : 10;
+  w.style.height = Math.max(320, Math.floor((window.visualViewport ? visualViewport.height : innerHeight) - w.getBoundingClientRect().top - bnH)) + 'px';
+}
+window.addEventListener('resize', () => setTimeout(fitChat, 60));
+if (window.visualViewport) visualViewport.addEventListener('resize', () => { fitChat(); const l = $('#msgs'); if (l && curPg === 'chat') l.scrollTop = l.scrollHeight; });
 function fitChart() {
   if (curPg !== 'chart') return;
-  const box = src === 'tv' ? $('#tvbox') : $('#cbox'); if (!box || box.classList.contains('hide')) return;
+  const box = $('#tvbox'); if (!box) return;
   const bn = $('#bnav'), bnH = bn && getComputedStyle(bn).display !== 'none' ? bn.getBoundingClientRect().height + 6 : 8;
   const top = box.getBoundingClientRect().top;
   const h = Math.max(240, Math.floor(window.innerHeight - top - bnH - 4));
   $('#cbox').style.height = h + 'px'; $('#tvbox').style.height = h + 'px';
-  if (CH) CH.resize();
 }
 window.addEventListener('resize', () => setTimeout(fitChart, 60));
 window.addEventListener('orientationchange', () => setTimeout(fitChart, 300));
@@ -1713,7 +1964,7 @@ function initChart() {
     if ((e.ctrlKey || e.metaKey) && e.key === 'z') CH.undo();
   });
   DB.loadMine().then(list => { CH.mine = list || []; CH.dirty = true; });
-  loadTF(S.tf);
+  src = 'tv'; openTicker();
 }
 function selbar(d) {
   const sb = $('#selbar');
@@ -1856,6 +2107,20 @@ function onPosts(list) {
   if (OVER) { const o = POSTS.find(p => p.id === OVER.id); if (!o) { OVER = null; setTeacher(); } }
 }
 function sortPosts(a) { return a.slice().sort((x, y) => (y.pin ? 1 : 0) - (x.pin ? 1 : 0) || y.at - x.at); }
+function openViewer(src0) {
+  const d = document.createElement('div'); d.className = 'viewer'; d.innerHTML = `<img src="${src0}" draggable="false"><button class="vx">✕</button>`; document.body.appendChild(d);
+  const img = d.querySelector('img'), P2 = new Map(); let sc = 1, tx = 0, ty = 0, st = null, lastTap = 0, moved = false;
+  const ap = () => img.style.transform = `translate(${tx}px,${ty}px) scale(${sc})`;
+  d.addEventListener('pointerdown', e => { d.setPointerCapture(e.pointerId); P2.set(e.pointerId, { x: e.clientX, y: e.clientY }); moved = false; const ps = [...P2.values()]; st = { sc, tx, ty, ps: ps.map(p => ({ ...p })), d: ps.length > 1 ? Math.hypot(ps[0].x - ps[1].x, ps[0].y - ps[1].y) : 0 }; });
+  d.addEventListener('pointermove', e => { if (!P2.has(e.pointerId)) return; P2.set(e.pointerId, { x: e.clientX, y: e.clientY }); const ps = [...P2.values()];
+    if (ps.length > 1 && st.d) { sc = Math.max(1, Math.min(6, st.sc * Math.hypot(ps[0].x - ps[1].x, ps[0].y - ps[1].y) / st.d)); moved = true; }
+    else if (sc > 1) { tx = st.tx + ps[0].x - st.ps[0].x; ty = st.ty + ps[0].y - st.ps[0].y; if (Math.abs(ps[0].x - st.ps[0].x) > 4) moved = true; }
+    ap(); });
+  d.addEventListener('pointerup', e => { P2.delete(e.pointerId); if (P2.size) { const ps = [...P2.values()]; st = { sc, tx, ty, ps: ps.map(p => ({ ...p })), d: 0 }; return; }
+    if (moved) return; if (e.target.closest('.vx')) { d.remove(); return; }
+    const now = Date.now(); if (now - lastTap < 280) { sc = sc > 1 ? 1 : 2.5; tx = ty = 0; ap(); lastTap = 0; } else { lastTap = now; setTimeout(() => { if (lastTap === now && sc === 1) d.remove(); }, 300); } });
+  d.addEventListener('wheel', e => { e.preventDefault(); sc = Math.max(1, Math.min(6, sc * Math.exp(-e.deltaY * .002))); if (sc === 1) tx = ty = 0; ap(); }, { passive: false });
+}
 function postHTML(p, short) {
   const imgs = (p.imgs || []).concat(p.snap ? [p.snap] : []);
   const txt = short && (p.text || '').length > 220 ? esc(p.text.slice(0, 220)) + '…' : esc(p.text || '');
@@ -1877,7 +2142,7 @@ function renderHomePost() {
   el.innerHTML = p ? `<div class="li" data-go="posts" style="cursor:pointer"><div class="av">${esc(initials(p.by || ADMIN_NAME))}</div><div class="mn"><b>${esc(p.title || (p.text || '').slice(0, 60))}</b><small>${ago(p.at)}${(p.draw || []).length ? ' · فيه رسم على الشارت' : ''}</small></div></div>` : '<div class="dim" style="font-size:13.5px">ماكو تحليلات لحد الآن.</div>';
 }
 document.addEventListener('click', async e => {
-  const v = e.target.closest('[data-view]'); if (v) { const d = document.createElement('div'); d.className = 'viewer'; d.innerHTML = `<img src="${v.src}">`; d.onclick = () => d.remove(); document.body.appendChild(d); return; }
+  const v = e.target.closest('[data-view]'); if (v) { openViewer(v.src); return; }
   const b = e.target.closest('[data-pa]'); if (!b) return;
   const p = POSTS.find(x => x.id === b.closest('[data-pid]').dataset.pid); if (!p) return;
   if (b.dataset.pa === 'show') { OVER = p; go('chart'); if (p.tf && p.tf !== S.tf) loadTF(p.tf); setTeacher(); toast('هذا تحليل الأستاذ على شارتك'); if ((p.draw || []).length) setTimeout(() => focusDraw(p.draw), 600); }
@@ -1887,6 +2152,12 @@ document.addEventListener('click', async e => {
 function focusDraw(list) {
   const ts = list.flatMap(d => d.pts.map(q => q.t)); if (!ts.length || !CH.c.length) return;
   const i = CH.iT(Math.max(...ts)); if (i < CH.iX(0) || i > CH.iX(CH.pw)) { CH.right = Math.min(CH.c.length - 1 + 10, i + 30); CH.dirty = true; }
+}
+function tvImg(u) {
+  u = (u || '').trim(); let m = u.match(/tradingview\.com\/x\/([A-Za-z0-9]{6,12})/);
+  if (m) return `https://s3.tradingview.com/snapshots/${m[1][0].toLowerCase()}/${m[1]}.png`;
+  if (/^https:\/\/\S+\.(png|jpe?g|webp|gif)(\?\S*)?$/i.test(u)) return u;
+  return null;
 }
 function compressImg(file, max = 1280, q = .74) {
   return new Promise((res, rej) => {
@@ -1909,11 +2180,26 @@ function initPosts() {
   $('#ptype').onclick = e => { const b = e.target.closest('[data-pt]'); if (!b) return; pType = b.dataset.pt; $$('#ptype button').forEach(x => x.classList.toggle('on', x === b)); };
   $('#pfilt').onclick = e => { const b = e.target.closest('[data-pf]'); if (!b) return; pFilt = b.dataset.pf; $$('#pfilt button').forEach(x => x.classList.toggle('on', x === b)); renderFeed(); };
   $('#pinTog').onclick = () => { pPin = !pPin; $('#pinTog').className = 'btn sm ' + (pPin ? 'tint' : 'ghost'); };
-  $('#pImgs').onchange = async e => {
-    const fs = [...e.target.files].slice(0, 4 - pImgs.length); if (e.target.files.length > fs.length) toast('أكثر شي 4 صور بالمنشور');
-    for (const f of fs) { try { pImgs.push(await compressImg(f)); } catch (er) { toast('صورة ما انقرت', 'bad'); } }
-    e.target.value = ''; renderAtt();
+  const addFiles = async files => {
+    const fs = [...files].filter(f => /^image\//.test(f.type)).slice(0, 4 - pImgs.length); if (files.length > fs.length) toast('أكثر شي 4 صور بالمنشور');
+    for (const f of fs) { try { pImgs.push(await compressImg(f, 1600, .8)); } catch (er) { toast('صورة ما انقرت', 'bad'); } }
+    renderAtt();
   };
+  $('#pImgs').onchange = async e => { await addFiles(e.target.files); e.target.value = ''; };
+  const dz = $('#pDrop');
+  dz.onclick = () => $('#pImgs').click();
+  ['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('over'); }));
+  dz.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+  document.addEventListener('paste', e => {
+    if (curPg !== 'posts' || ME.role !== 'admin') return;
+    const fs = [...(e.clipboardData || {}).items || []].filter(it => it.kind === 'file').map(it => it.getAsFile()).filter(Boolean);
+    if (fs.length) { e.preventDefault(); addFiles(fs); toast('انلصقت الصورة'); return; }
+    const t = (e.clipboardData.getData('text') || '').trim(); if (tvImg(t) && document.activeElement !== $('#pLink')) { e.preventDefault(); addLink(t); }
+  });
+  const addLink = u => { const img = tvImg(u); if (!img) return toast('هذا مو رابط سكرين. لازم يكون tradingview.com/x/… أو رابط صورة', 'bad'); if (pImgs.length >= 4) return toast('أكثر شي 4 صور'); pImgs.push(img); $('#pLink').value = ''; renderAtt(); toast('انضاف السكرين ✓', 'ok'); };
+  $('#pLinkAdd').onclick = () => addLink($('#pLink').value.trim());
+  $('#pLink').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); addLink($('#pLink').value.trim()); } };
   $('#pAtt').onclick = e => { const b = e.target.closest('[data-rm]'); if (!b) return; if (b.dataset.rm === 'snap') pSnap = null; else pImgs.splice(+b.dataset.rm, 1); renderAtt(); };
   $('#pSnap').onclick = () => { if (pSnap) { pSnap = null; renderAtt(); return; } if (!CH.c.length) return toast('انتظر الشارت يتحمل'); pSnap = { img: CH.snapshot(), draw: JSON.parse(JSON.stringify(CH.mine)), tf: S.tf }; renderAtt(); toast('انرفق الشارت ويا رسوماتك'); };
   $('#pSend').onclick = async () => {
@@ -2074,16 +2360,21 @@ const GLOSS = [
 function gloss(t) { for (const [re, ar, s] of GLOSS) if (re.test(t)) return { ar, s }; return { ar: '', s: t.split(' ')[0].slice(0, 7) }; }
 function left(ms) { if (ms <= 0) return 'هسه'; const m = Math.floor(ms / 6e4), h = Math.floor(m / 60), d = Math.floor(h / 24); return d ? d + 'ي ' + (h % 24) + 'س' : h ? h + 'س ' + (m % 60) + 'د' : m ? m + 'د' : 'أقل من دقيقة'; }
 const DAYS = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+const FF_JSON = 'https://nfs.faireconomy.media/ff_calendar_thisweek.json';
+const newsSources = () => { const u = (CFG.newsUrl || '').trim(), a = []; if (u && /script\.google/.test(u)) a.push(u + (u.includes('?') ? '&' : '?') + 'v=' + Math.floor(Date.now() / 6e5)); a.push('https://r.jina.ai/' + FF_JSON); return a; };
+function parseFF(t) { try { const a = JSON.parse(t); if (Array.isArray(a)) return a; } catch (e) { } const i = t.indexOf('[{'), j = t.lastIndexOf('}]'); if (i >= 0 && j > i) return JSON.parse(t.slice(i, j + 2)); throw new Error('bad'); }
 async function loadNews(force) {
-  if (newsBusy) return; const url = CFG.newsUrl;
-  if (!url || (!force && NEWS.list.length && Date.now() - NEWS.at < 30 * 6e4)) { renderNews(); return; }
-  newsBusy = true;
-  try {
-    const r = await fetch(url + (url.includes('?') ? '&' : '?') + 'v=' + Math.floor(Date.now() / 6e5)); const a = await r.json();
-    if (!Array.isArray(a)) throw new Error(a && a.error || 'bad');
-    NEWS = { at: Date.now(), list: a.map(e => ({ t: new Date(e.date).getTime(), title: e.title, cur: e.country, imp: e.impact, f: e.forecast || '', p: e.previous || '', a: e.actual || '' })).filter(e => !isNaN(e.t)).sort((x, y) => x.t - y.t) };
-    L.set('amg_news', NEWS); newsErr = '';
-  } catch (e) { newsErr = 'ما گدرت أجيب الأخبار هسه، راح أرجع أحاول.'; }
+  if (newsBusy) return;
+  if (!force && NEWS.list.length && Date.now() - NEWS.at < 30 * 6e4) { renderNews(); return; }
+  newsBusy = true; let ok = false;
+  for (const u of newsSources()) {
+    try {
+      const r = await fetch(u); if (!r.ok) throw new Error(r.status); const a = parseFF(await r.text());
+      NEWS = { at: Date.now(), list: a.map(e => ({ t: new Date(e.date).getTime(), title: e.title, cur: e.country, imp: e.impact, f: e.forecast || '', p: e.previous || '', a: e.actual || '' })).filter(e => !isNaN(e.t)).sort((x, y) => x.t - y.t) };
+      L.set('amg_news', NEWS); newsErr = ''; ok = true; break;
+    } catch (e) { }
+  }
+  if (!ok) newsErr = 'ما گدرت أجيب الأخبار هسه، راح أرجع أحاول.';
   newsBusy = false; renderNews();
 }
 const nFilt = (e, cur, imp) => (cur === 'all' || e.cur === cur) && (imp === 'all' || e.imp === 'High' || (imp === 'Medium' && e.imp === 'Medium'));
@@ -2099,7 +2390,7 @@ function renderNews() {
   else nn.innerHTML = `<div class="dim">${list.length ? 'ماكو أخبار قوية للدولار باقية هالأسبوع.' : 'لحد الآن ماكو أخبار.'}</div>`;
   // list
   const L2 = list.filter(e => nFilt(e, nCur, nImp)), nl = $('#nList');
-  const noSrc = !CFG.newsUrl && !list.length;
+  const noSrc = false;
   $('#calbox').classList.toggle('hide', !noSrc && !(newsErr && !list.length));
   if (noSrc || (newsErr && !list.length)) { nl.innerHTML = `<div class="card empty">${ME.role === 'admin' ? 'حتى تطلع أخبار Forex Factory هنا، حط رابط Apps Script من الإعدادات ← مصدر الأخبار.' : 'أخبار Forex Factory لحد الآن ما مربوطة. هسه تشوف تقويم TradingView بداله.'}</div>`; if (curPg === 'news') makeCal(); }
   else {
@@ -2128,57 +2419,248 @@ function initNews() {
   $('#nImp').onclick = e => { const b = e.target.closest('[data-ni]'); if (!b) return; nImp = b.dataset.ni; $$('#nImp button').forEach(x => x.classList.toggle('on', x === b)); renderNews(); };
   const si = $('#sNews'); if (si) {
     $('#sNewsSave').onclick = async () => {
-      const u = si.value.trim(); if (u && !/^https:\/\/script\.google(usercontent)?\.com\//.test(u)) return toast('الرابط لازم يكون من script.google.com', 'bad');
-      try { await DB.setConfig({ newsUrl: u }); CFG.newsUrl = u; toast('انحفظ، دا أجرّب أجيب الأخبار…'); NEWS.at = 0; await loadNews(true); toast(newsErr ? 'الرابط ما اشتغل، تأكد من خطوات النشر' : 'الأخبار اشتغلت ✓ (' + NEWS.list.length + ' خبر)', newsErr ? 'bad' : 'ok'); DB.log('غيّر مصدر الأخبار'); }
-      catch (e) { toast('ما انحفظ', 'bad'); }
+      let u = si.value.trim().replace(/\s+/g, '');
+      if (!u || /forexfactory|faireconomy/i.test(u)) u = '';
+      else if (/^AKfy[\w-]{20,}$/.test(u)) u = `https://script.google.com/macros/s/${u}/exec`;
+      else if (!/script\.google\.com\/macros\/s\/.+\/exec/.test(u)) return toast('هذا الرابط ما ينفع. خلّي الخانة فارغة، الأخبار تجي من Forex Factory تلقائياً', 'bad');
+      si.value = u;
+      try { await DB.setConfig({ newsUrl: u }); CFG.newsUrl = u; } catch (e) { return toast('ما انحفظ: ' + (e.code === 'permission-denied' ? 'لازم تلصق الـ rules الجديدة بالـ Firestore' : (e.message || 'خلل')), 'bad'); }
+      toast('دا أجيب الأخبار…'); NEWS.at = 0; await loadNews(true);
+      toast(newsErr ? newsErr : 'الأخبار اشتغلت ✓ (' + NEWS.list.length + ' خبر من Forex Factory)', newsErr ? 'bad' : 'ok');
     };
   }
-  renderNews();
+  loadNews();
+
 }
 
-/* ====== chat ====== */
-let CHAT = [], lastSend = 0;
-const chatKey = () => 'amg_chat_seen_' + (ME && ME.uid);
-function chatSeenNow() { L.set(chatKey(), Date.now()); chatBadge(); }
+/* ====== chat — نفس فكرة AM CHAT: غرفة الطلاب + خاص ويا الأستاذ ====== */
+let CHAT = [], DMMSG = [], DMLIST = [], lastSend = 0, chMode = 'room', dmPeer = null, dmUnsub = null, replyTo = null, chImgData = null, chRendered = new Set(), chInitial = true, fabN = 0;
+const REACT = { heart: '❤️', fire: '🔥', laugh: '😂', like: '👍', wow: '😮', clap: '👏' };
+const EMO = [['😀', '😀 😃 😄 😁 😆 😅 😂 🤣 😊 😇 🙂 🙃 😉 😌 😍 🥰 😘 😋 😛 😜 🤪 🤨 🧐 🤓 😎 🥳 😏 😒 😔 😟 🙁 😣 😫 😩 🥺 😢 😭 😤 😠 😡 🤯 😳 🥵 🥶 😱 😨 😰 😓 🤗 🤔 🤭 🤫 😶 😐 😑 😬 🙄 😮 😲 🥱 😴 🤤 😵 🤐 🥴 🤢 🤮 😷 🤒 🤕 😈 🤡 💀'],
+['👋', '👋 🤚 ✋ 🖖 👌 🤌 🤏 ✌️ 🤞 🤟 🤘 🤙 👈 👉 👆 👇 ☝️ 👍 👎 ✊ 👊 🤛 🤜 👏 🙌 👐 🤲 🤝 🙏 💪 🫶 👀 🧠'],
+['❤️', '❤️ 🧡 💛 💚 💙 💜 🖤 🤍 🤎 💔 ❣️ 💕 💞 💓 💗 💖 💘 💝 💯 💢 💥 💫 💦 🔥 ✨ ⭐ 🌟 ⚡ 🎉 🎊 🎁 🏆 🥇 🎯 ✅ ❌ ⚠️ ❓ ❗ 🆗 🔔'],
+['📈', '📈 📉 💰 💵 💸 🪙 🥇 🏦 💹 📊 🧾 💳 🕯️ ⏰ ⏳ 📅 📌 📍 🎯 🚀 🛑 ⛔ 🟢 🔴 🟡 🔼 🔽 ⬆️ ⬇️ ↗️ ↘️ 🐂 🐻 🧠 💎 🔒 🔓']];
+const hue = id => { let h = 0; for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h % 360; };
+const isJumbo = t => { if (!t || t.length > 16) return false; const s = t.replace(/\s/g, ''); return /^(\p{Extended_Pictographic}|\p{Emoji_Component}|‍|️)+$/u.test(s) && [...(window.Intl && Intl.Segmenter ? new Intl.Segmenter().segment(s) : s)].length <= 3; };
+const linkify = s => s.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+const ico = n => `<svg class="ic"><use href="#i-${n}"/></svg>`;
+const seenK = k => 'amg_seen_' + k + '_' + (ME && ME.uid);
+const getSeen = k => L.get(seenK(k), 0), setSeen = k => L.set(seenK(k), Date.now());
+const curList = () => chMode === 'room' ? CHAT : DMMSG;
+function chatSeenNow() { setSeen(chMode === 'room' ? 'room' : 'dm_' + (dmPeer && dmPeer.uid)); chatBadge(); }
 function chatBadge() {
-  const seen = L.get(chatKey(), 0), n = curPg === 'chat' ? 0 : CHAT.filter(m => m.at > seen && m.uid !== ME.uid).length;
+  const onRoom = curPg === 'chat' && chMode === 'room';
+  const nRoom = onRoom ? 0 : CHAT.filter(m => m.at > getSeen('room') && m.uid !== ME.uid).length;
+  let nDm = 0;
+  if (ME.role === 'admin') nDm = DMLIST.filter(t => t.from === 'student' && t.at > getSeen('dm_' + t.id) && !(curPg === 'chat' && chMode === 'dm' && dmPeer && dmPeer.uid === t.id)).length;
+  else if (ME.role === 'student') nDm = (curPg === 'chat' && chMode === 'dm') ? 0 : DMMSG.filter(m => m.at > getSeen('dm_' + ME.uid) && m.uid !== ME.uid).length;
+  const n = nRoom + nDm;
   $$('.cbadge').forEach(b => { b.textContent = n > 99 ? '99+' : n; b.classList.toggle('hide', !n); });
+  $$('.dmbadge').forEach(b => { b.textContent = nDm; b.classList.toggle('hide', !nDm); });
+  $$('.rmbadge').forEach(b => { b.textContent = nRoom; b.classList.toggle('hide', !nRoom); });
+}
+function msgItems() {
+  const list = curList(), out = []; let prev = null;
+  const dk = t => new Date(t).toDateString();
+  const same = (a, b) => a && b && a.uid === b.uid && dk(a.at) === dk(b.at) && Math.abs(b.at - a.at) < 300000;
+  list.forEach((m, i) => {
+    if (!prev || dk(prev.at) !== dk(m.at)) { const lab = dk(m.at) === new Date().toDateString() ? 'اليوم' : dk(m.at) === new Date(Date.now() - 864e5).toDateString() ? 'البارحة' : DAYS[new Date(m.at).getDay()] + ' ' + dstr(m.at); out.push({ key: 'd' + dk(m.at), sig: lab, html: `<div class="dsep">${lab}</div>` }); }
+    const next = list[i + 1], f = { first: !same(prev, m), last: !same(m, next), out: m.uid === ME.uid, group: chMode === 'room' };
+    out.push({ key: m.id, m, f, sig: [m.text, JSON.stringify(m.reactions || {}), f.first, f.last, (m.img || '').length].join('|') });
+    prev = m;
+  });
+  return out;
+}
+function msgHTML(m, f) {
+  const cls = ['m', f.out ? 'out' : 'in', f.first ? 'first' : '', f.last ? 'last' : '', m.role === 'admin' ? 'adm' : ''];
+  const jumbo = m.text && !m.reply && !m.img && isJumbo(m.text);
+  const hasR = Object.values(m.reactions || {}).some(a => a && a.length);
+  const sp = `<span class="sp" style="width:${f.out ? 58 : 40}px"></span>`;
+  let inner = '';
+  if (f.group && !f.out && f.first && !jumbo) inner += `<div class="from" style="--h:${hue(m.uid)}">${esc(m.name || '')}${m.role === 'admin' ? '<span class="tag">الأستاذ</span>' : ''}</div>`;
+  if (m.reply) inner += `<span class="quote" data-jump="${esc(m.reply.id)}"><b>${esc(m.reply.uid === ME.uid ? 'إنت' : m.reply.name || '')}</b><span>${esc(m.reply.text || '📷 صورة')}</span></span>`;
+  if (m.img) inner += `<img class="ph" src="${m.img}" data-view alt="" loading="lazy" draggable="false">`;
+  if (m.text) inner += `<div class="txt">${linkify(esc(m.text))}${hasR ? '' : sp}</div>`;
+  if (hasR) inner += `<div class="reacts">${Object.entries(m.reactions).filter(([k, a]) => a && a.length && REACT[k]).map(([k, a]) => `<button data-react="${k}" class="${a.includes(ME.uid) ? 'me' : ''}">${REACT[k]}${a.length > 1 ? `<span class="num">${a.length}</span>` : ''}</button>`).join('')}${sp}</div>`;
+  const meta = `<span class="meta"><span class="num">${tstr(m.at)}</span>${f.out ? ico('check2') : ''}</span>`;
+  const media = !!m.img, only = media && !m.text && !hasR && !(f.group && !f.out && f.first) && !m.reply;
+  const av = f.group && !f.out ? `<span class="mav"><span class="av" style="--h:${hue(m.uid)}">${esc(initials(m.name))}</span></span>` : '';
+  return `<div class="${cls.join(' ')}" data-mid="${m.id}">${av}<div class="bub ${media ? 'media' : ''} ${only ? 'only' : ''} ${jumbo ? 'jumbo' : ''}">${inner}${meta}</div><span class="swipe-ic">${ico('reply')}</span></div>`;
+}
+function renderMsgs() {
+  const box = $('#msgs'), inner = $('#msgInner'); if (!box) return;
+  const atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 90;
+  const items = msgItems(), old = {}; [...inner.children].forEach(el => old[el.dataset.key] = el);
+  let added = 0, mine = false;
+  items.forEach((it, i) => {
+    let el = old[it.key];
+    if (!el || el.dataset.sig !== it.sig) {
+      const t = document.createElement('div'); t.innerHTML = it.m ? msgHTML(it.m, it.f) : it.html; const n = t.firstElementChild; n.dataset.key = it.key; n.dataset.sig = it.sig;
+      if (it.m && !chRendered.has(it.key)) { chRendered.add(it.key); if (!chInitial) { n.classList.add('new'); added++; if (it.f.out) mine = true; } }
+      if (el) el.replaceWith(n); el = n;
+    }
+    delete old[it.key]; if (inner.children[i] !== el) inner.insertBefore(el, inner.children[i] || null);
+  });
+  Object.values(old).forEach(el => el.remove());
+  if (!items.length) inner.innerHTML = `<div class="dsep" style="position:static;margin:auto">${chMode === 'room' ? 'ماكو رسائل لحد الآن. ابدي السالفة 👋' : ME.role === 'admin' ? 'ابدي السالفة ويا الطالب' : 'هنا تسأل الأستاذ بالخاص، محد غيره يشوف 🔒'}</div>`;
+  if (chInitial) { chInitial = false; box.scrollTop = box.scrollHeight; }
+  else if (added) { if (atBottom || mine) box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' }); else { fabN += added; updFab(); } }
+}
+function updFab() { const box = $('#msgs'), far = box.scrollHeight - box.scrollTop - box.clientHeight > 300; $('#fab').classList.toggle('on', far); if (!far) fabN = 0; $('#fabN').textContent = fabN; $('#fabN').classList.toggle('hide', !fabN); }
+function chatHeader() {
+  const dmList = ME.role === 'admin' && chMode === 'dm' && !dmPeer, inDm = ME.role === 'admin' && chMode === 'dm' && dmPeer;
+  $('#dmList').classList.toggle('hide', !dmList); $('#msgs').classList.toggle('hide', dmList); $('#chatFoot').classList.toggle('hide', dmList); $('#fab').classList.toggle('hide', dmList);
+  $('#chBack').classList.toggle('hide', !inDm); $('#chTabs').classList.toggle('hide', !!inDm);
+  $$('#chTabs button').forEach(b => b.classList.toggle('on', b.dataset.ct === chMode));
+  const t = $('#chTitle'), s = $('#chSub'), av = $('#chAv');
+  if (chMode === 'room') { t.textContent = 'غرفة الطلاب'; s.textContent = CFG.chatOpen === false ? '🔒 مقفولة، بس الأستاذ يكتب' : 'طلاب الكورس ويا الأستاذ'; av.textContent = '👥'; av.style.removeProperty('--h'); }
+  else if (ME.role === 'admin') { if (dmPeer) { t.textContent = dmPeer.name; s.textContent = 'محادثة خاصة 🔒'; av.textContent = initials(dmPeer.name); } else { t.textContent = 'الخاص'; s.textContent = 'رسائل الطلاب إلك'; av.textContent = '✉'; } }
+  else { t.textContent = ADMIN_NAME; s.textContent = 'الأستاذ · محادثة خاصة 🔒'; av.textContent = initials(ADMIN_NAME); }
+  renderChatLock();
+}
+function renderDMList() {
+  const el = $('#dmList'); if (!el) return;
+  el.innerHTML = DMLIST.length ? DMLIST.map(t => { const un = t.from === 'student' && t.at > getSeen('dm_' + t.id); return `<div class="dmi" data-dm="${t.id}" data-nm="${esc(t.name || '')}"><div class="av" style="--h:${hue(t.id)}">${esc(initials(t.name))}</div><div class="mn"><b>${esc(t.name || 'طالب')}</b><small>${t.from === 'admin' ? 'إنت: ' : ''}${esc((t.last || '').slice(0, 70))}</small></div><div class="dmr"><span class="num">${tstr(t.at)}</span>${un ? '<b class="nbadge">جديد</b>' : ''}</div></div>`; }).join('') : '<div class="dsep" style="position:static">ماكو رسائل خاصة لحد الآن</div>';
+}
+function resetView() { chRendered = new Set(); chInitial = true; fabN = 0; const i = $('#msgInner'); if (i) i.innerHTML = ''; }
+function openDM(uid2, name) {
+  dmPeer = { uid: uid2, name }; DMMSG = []; if (chMode === 'dm') resetView();
+  if (dmUnsub) { try { dmUnsub(); } catch (e) { } dmUnsub = null; }
+  dmUnsub = DB.watchDM(uid2, list => { DMMSG = list.slice().sort((a, b) => a.at - b.at); if (chMode === 'dm') { renderMsgs(); if (curPg === 'chat') chatSeenNow(); } chatBadge(); });
+  chatHeader(); if (chMode === 'dm') renderMsgs();
+}
+function setChMode(m) {
+  chMode = m; replyClear(); resetView();
+  if (m === 'dm' && ME.role === 'admin') { if (dmUnsub) { try { dmUnsub(); } catch (e) { } dmUnsub = null; } dmPeer = null; DMMSG = []; renderDMList(); }
+  if (m === 'dm' && ME.role === 'student') dmPeer = { uid: ME.uid, name: ME.name };
+  chatHeader(); renderMsgs(); if (curPg === 'chat') chatSeenNow();
 }
 function onChat(list) {
-  const l = $('#chatList'), near = l.scrollHeight - l.scrollTop - l.clientHeight < 80;
   CHAT = list.slice().sort((a, b) => a.at - b.at);
-  let day = '', h = '';
-  CHAT.forEach(m => {
-    const ds = new Date(m.at).toDateString(); if (ds !== day) { day = ds; h += `<div class="cday">${ds === new Date().toDateString() ? 'اليوم' : DAYS[new Date(m.at).getDay()] + ' ' + dstr(m.at)}</div>`; }
-    const me = m.uid === ME.uid, adm = m.role === 'admin';
-    h += `<div class="msg ${me ? 'me' : ''} ${adm ? 'adm' : ''}">${me ? '' : `<div class="who">${esc(m.name || '')}${adm ? '<span class="pill acc" style="padding:0 7px;font-size:10.5px">الأستاذ</span>' : ''}</div>`}<div class="bub">${esc(m.text)}</div><div class="meta"><span class="num">${tstr(m.at)}</span>${me || ME.role === 'admin' ? `<button data-cdel="${m.id}">حذف</button>` : ''}</div></div>`;
-  });
-  l.innerHTML = h || `<div class="empty" style="margin:auto">ماكو رسائل لحد الآن. ابدي السالفة 👋</div>`;
-  if (near || curPg !== 'chat') l.scrollTop = l.scrollHeight;
-  if (curPg === 'chat') chatSeenNow(); else chatBadge();
+  if (chMode === 'room') renderMsgs();
+  if (curPg === 'chat' && chMode === 'room') chatSeenNow(); else chatBadge();
 }
 function renderChatLock() {
   const b = $('#chatLock'), open = CFG.chatOpen !== false;
-  if (b) b.textContent = open ? '🔒 اقفل الدردشة' : '🔓 افتح الدردشة';
-  const tx = $('#chatTx'); if (tx) { const can = open || ME.role === 'admin'; tx.disabled = !can; tx.placeholder = can ? 'اكتب رسالة…' : 'الأستاذ قافل الدردشة هسه'; $('#chatSend').disabled = !can; }
+  if (b) { b.innerHTML = ico(open ? 'unlock' : 'lock'); b.title = open ? 'اقفل الغرفة' : 'افتح الغرفة'; b.classList.toggle('hide', chMode !== 'room'); }
+  const tx = $('#chatTx'); if (tx) { const can = chMode === 'dm' || open || ME.role === 'admin'; tx.disabled = !can; tx.placeholder = can ? 'اكتب رسالة…' : 'الأستاذ قافل الغرفة هسه'; $('#chatSend').disabled = !can; }
 }
-function initChat() {
-  const tx = $('#chatTx');
-  const grow = () => { tx.style.height = 'auto'; tx.style.height = Math.min(120, tx.scrollHeight) + 'px'; };
-  tx.oninput = grow;
-  const send = async () => {
-    const t = tx.value.trim(); if (!t) return;
-    if (CFG.chatOpen === false && ME.role !== 'admin') return toast('الدردشة مقفولة هسه', 'bad');
-    if (Date.now() - lastSend < 1500) return toast('على كيفك، لحظة بين رسالة ورسالة');
-    lastSend = Date.now(); tx.value = ''; grow();
-    try { await DB.sendChat({ uid: ME.uid, name: ME.name, role: ME.role, text: t.slice(0, 1000), at: Date.now() }); }
-    catch (e) { toast('ما وصلت الرسالة', 'bad'); tx.value = t; }
+function replyClear() { replyTo = null; const rb = $('#replyBar'); if (rb) rb.classList.add('hide'); }
+function replySet(m) {
+  replyTo = { id: m.id, uid: m.uid, name: m.name, text: (m.text || '').slice(0, 90) };
+  $('#rbName').textContent = 'رد على ' + (m.uid === ME.uid ? 'نفسك' : m.name); $('#rbText').textContent = replyTo.text || '📷 صورة';
+  $('#replyBar').classList.remove('hide'); $('#chatTx').focus();
+}
+function jumpTo(id) { const el = $(`#msgInner [data-mid="${CSS.escape(id)}"]`); if (!el) return toast('الرسالة قديمة'); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+async function toggleReact(m, k) {
+  const R = JSON.parse(JSON.stringify(m.reactions || {}));
+  Object.keys(R).forEach(x => { if (x !== k) R[x] = (R[x] || []).filter(u => u !== ME.uid); });
+  const a = R[k] || []; R[k] = a.includes(ME.uid) ? a.filter(u => u !== ME.uid) : a.concat(ME.uid);
+  Object.keys(R).forEach(x => { if (!R[x].length) delete R[x]; });
+  m.reactions = R; renderMsgs();
+  try { if (chMode === 'room') await DB.reactChat(m.id, R); else await DB.reactDM(dmPeer.uid, m.id, R); } catch (e) { toast('ما انحفظ التفاعل', 'bad'); }
+}
+// قائمة الضغطة المطوّلة — نفس AM CHAT (الرسالة تطلع فوگ الضبابية + تفاعلات + قائمة)
+function holdMenu(el, m) {
+  let H = $('#hold'); if (!H) { H = document.createElement('div'); H.id = 'hold'; H.innerHTML = '<div class="bg"></div>'; document.body.appendChild(H); H.querySelector('.bg').onclick = closeHold; }
+  H.querySelectorAll('.clone,.rx,.mn').forEach(e => e.remove());
+  const r = el.getBoundingClientRect(), cl = el.cloneNode(true); cl.classList.add('clone'); cl.classList.remove('press', 'new', 'flash');
+  cl.style.cssText = `left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px`; H.appendChild(cl);
+  const R = m.reactions || {}, rx = document.createElement('div'); rx.className = 'rx';
+  rx.innerHTML = Object.entries(REACT).map(([k, e]) => `<button data-hr="${k}" class="${(R[k] || []).includes(ME.uid) ? 'me' : ''}">${e}</button>`).join(''); H.appendChild(rx);
+  const canDel = m.uid === ME.uid || ME.role === 'admin';
+  const it = (a, ic, t, dg) => `<button class="it ${dg ? 'dg' : ''}" data-ha="${a}"><span>${t}</span>${ico(ic)}</button>`;
+  const mn = document.createElement('div'); mn.className = 'mn';
+  mn.innerHTML = it('reply', 'reply', 'رد') + (m.img ? it('open', 'eye', 'فتح الصورة') : '') + (m.text ? it('copy', 'copy', 'نسخ النص') : '') + (canDel ? '<div class="sep"></div>' + it('del', 'trash', 'حذف', 1) : '');
+  H.appendChild(mn);
+  const W = innerWidth, HH = innerHeight, pad = 12, rxH = rx.offsetHeight + 10, mnH = mn.offsetHeight + 10;
+  let sc = 1; if (rxH + r.height + mnH > HH - 2 * pad) sc = Math.max(.35, (HH - 2 * pad - rxH - mnH) / r.height);
+  const bh = r.height * sc; let T = r.top; if (T < pad + rxH) T = pad + rxH; if (T + bh + mnH > HH - pad) T = Math.max(pad + rxH, HH - pad - mnH - bh);
+  const out = el.classList.contains('out'); cl.style.transformOrigin = `${out ? 'left' : 'right'} top`;
+  const place = (e, w, y) => { let Lx = out ? r.left : r.right - w; Lx = Math.max(pad, Math.min(W - w - pad, Lx)); e.style.left = Lx + 'px'; e.style.top = y + 'px'; e.style.transformOrigin = `${out ? 'left' : 'right'} ${y < T ? 'bottom' : 'top'}`; };
+  place(rx, rx.offsetWidth, T - rxH); place(mn, mn.offsetWidth, T + bh + 10);
+  requestAnimationFrame(() => { H.classList.add('on'); cl.style.transform = `translateY(${T - r.top}px) scale(${sc})`; });
+  navigator.vibrate && navigator.vibrate(12);
+  H.onclick = async e => {
+    const b = e.target.closest('[data-hr],[data-ha]'); if (!b) return; closeHold();
+    if (b.dataset.hr) return toggleReact(m, b.dataset.hr);
+    const a = b.dataset.ha;
+    if (a === 'reply') replySet(m);
+    if (a === 'open') openViewer(m.img);
+    if (a === 'copy') { try { await navigator.clipboard.writeText(m.text); toast('انسخ النص'); } catch (er) { toast('ما گدرت أنسخ', 'bad'); } }
+    if (a === 'del') { if (await ask('تحذف الرسالة؟', 'راح تنحذف عند الكل.', 'احذف', true)) (chMode === 'room' ? DB.delChat(m.id) : DB.delDM(dmPeer.uid, m.id)).catch(() => toast('ما انحذفت', 'bad')); }
   };
-  $('#chatSend').onclick = send;
-  tx.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey && !matchMedia('(pointer:coarse)').matches) { e.preventDefault(); send(); } };
-  $('#chatList').onclick = async e => { const b = e.target.closest('[data-cdel]'); if (!b) return; if (await ask('تحذف الرسالة؟', 'راح تنحذف عند الكل.', 'احذف', true)) DB.delChat(b.dataset.cdel).catch(() => toast('ما انحذفت', 'bad')); };
-  $('#chatLock').onclick = async () => { const open = CFG.chatOpen !== false; await DB.setConfig({ chatOpen: !open }); CFG.chatOpen = !open; renderChatLock(); DB.log(open ? 'قفل الدردشة' : 'فتح الدردشة'); toast(open ? 'الطلاب ما يگدرون يكتبون هسه' : 'الدردشة انفتحت'); };
-  renderChatLock();
+}
+function closeHold() { const H = $('#hold'); if (!H || !H.classList.contains('on')) return; H.classList.remove('on'); const cl = H.querySelector('.clone'); if (cl) cl.style.transform = ''; setTimeout(() => { if (!H.classList.contains('on')) H.querySelectorAll('.clone,.rx,.mn').forEach(e => e.remove()); }, 260); }
+function renderEmoji(tab = 0) { $('#emoji').innerHTML = `<div class="tabs">${EMO.map((e, i) => `<button data-etab="${i}" class="${i === tab ? 'on' : ''}">${e[0]}</button>`).join('')}</div><div class="grid">${EMO[tab][1].split(' ').map(e => `<button data-emo="${e}">${e}</button>`).join('')}</div>`; }
+function initChat() {
+  const tx = $('#chatTx'), box = $('#msgs'), comp = $('#chatFoot');
+  const grow = () => { tx.style.height = '40px'; tx.style.height = Math.min(140, tx.scrollHeight) + 'px'; comp.dataset.has = tx.value.trim() || chImgData ? '1' : '0'; };
+  tx.addEventListener('input', grow);
+  tx.addEventListener('focus', () => { if (matchMedia('(pointer:coarse)').matches) $('#emoji').classList.remove('on'); });
+  const send = async () => {
+    const t = tx.value.trim(); if (!t && !chImgData) return;
+    if (chMode === 'room' && CFG.chatOpen === false && ME.role !== 'admin') return toast('الغرفة مقفولة هسه', 'bad');
+    if (chMode === 'dm' && !dmPeer) return;
+    if (Date.now() - lastSend < 350) return; lastSend = Date.now();
+    const m = { uid: ME.uid, name: ME.name, role: ME.role, text: t.slice(0, 1000), at: Date.now() };
+    if (replyTo) m.reply = replyTo; if (chImgData) m.img = chImgData;
+    tx.value = ''; replyClear(); chImgData = null; $('#chImgPrev').classList.add('hide'); grow();
+    try { if (chMode === 'room') await DB.sendChat(m); else await DB.sendDM(dmPeer.uid, m, { name: ME.role === 'admin' ? dmPeer.name : ME.name, last: m.text || '📷 صورة', at: m.at, from: ME.role }); }
+    catch (e) { toast('ما وصلت الرسالة', 'bad'); tx.value = t; grow(); }
+  };
+  const sb = $('#chatSend');
+  sb.addEventListener('touchstart', e => { e.preventDefault(); }, { passive: false });   // الكيبورد يبقى مفتوح
+  sb.addEventListener('touchend', e => { e.preventDefault(); sb._t = Date.now(); send(); }, { passive: false });
+  sb.addEventListener('mousedown', e => e.preventDefault());
+  sb.addEventListener('click', () => { if (Date.now() - (sb._t || 0) > 700) send(); });
+  tx.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !matchMedia('(pointer:coarse)').matches) { e.preventDefault(); send(); } });
+  $('#emoBtn').addEventListener('mousedown', e => e.preventDefault());
+  $('#emoBtn').onclick = () => { const em = $('#emoji'); if (!em.innerHTML) renderEmoji(); em.classList.toggle('on'); if (em.classList.contains('on') && matchMedia('(pointer:coarse)').matches) tx.blur(); };
+  $('#emoji').onclick = e => {
+    const tb = e.target.closest('[data-etab]'); if (tb) return renderEmoji(+tb.dataset.etab);
+    const b = e.target.closest('[data-emo]'); if (!b) return;
+    const a = tx.selectionStart ?? tx.value.length, z = tx.selectionEnd ?? a; tx.value = tx.value.slice(0, a) + b.dataset.emo + tx.value.slice(z); tx.selectionStart = tx.selectionEnd = a + b.dataset.emo.length; grow();
+  };
+  $('#chImg').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; try { chImgData = await compressImg(f, 1000, .72); const p = $('#chImgPrev'); p.querySelector('img').src = chImgData; p.classList.remove('hide'); grow(); } catch (er) { toast('الصورة ما انقرت', 'bad'); } };
+  $('#chImgPrev').onclick = e => { if (e.target.closest('button')) { chImgData = null; $('#chImgPrev').classList.add('hide'); grow(); } };
+  $('#rbX').onclick = replyClear;
+  $('#chTabs').onclick = e => { const b = e.target.closest('[data-ct]'); if (b) setChMode(b.dataset.ct); };
+  $('#chBack').onclick = () => setChMode('dm');
+  $('#dmList').onclick = e => { const it = e.target.closest('[data-dm]'); if (it) openDM(it.dataset.dm, it.dataset.nm); };
+  $('#fab').onclick = () => { box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' }); fabN = 0; updFab(); };
+  box.addEventListener('scroll', updFab, { passive: true });
+  box.addEventListener('click', e => {
+    const q = e.target.closest('[data-jump]'); if (q) return jumpTo(q.dataset.jump);
+    const rb = e.target.closest('[data-react]'); if (rb) { const m = curList().find(x => x.id === rb.closest('.m').dataset.mid); if (m) toggleReact(m, rb.dataset.react); }
+  });
+  // ضغطة مطوّلة + سحب للرد (موبايل)، وكلك يمين/دبل كلك (حاسبة)
+  let lp = null, swEl = null, sx = 0, sy = 0, sw = 0, longFired = false;
+  box.addEventListener('touchstart', e => {
+    const el = e.target.closest('.m'); if (!el || e.target.closest('[data-react],[data-jump],a')) return; const t = e.touches[0]; sx = t.clientX; sy = t.clientY; sw = 0; swEl = null; longFired = false;
+    el.classList.add('press');
+    lp = setTimeout(() => { lp = null; longFired = true; el.classList.remove('press'); const m = curList().find(x => x.id === el.dataset.mid); if (m) holdMenu(el, m); }, 420);
+    box._el = el;
+  }, { passive: true });
+  box.addEventListener('touchmove', e => {
+    const t = e.touches[0], dx = t.clientX - sx, dy = t.clientY - sy, el = box._el; if (!el) return;
+    if (lp && Math.hypot(dx, dy) > 8) { clearTimeout(lp); lp = null; el.classList.remove('press'); }
+    if (!swEl && dx < -12 && Math.abs(dx) > Math.abs(dy) * 1.4) swEl = el;
+    if (swEl) { sw = Math.max(-80, Math.min(0, dx)); const b = swEl.querySelector('.bub'); b.style.transition = 'none'; b.style.transform = `translateX(${sw}px)`; const ic = swEl.querySelector('.swipe-ic'); ic.style.opacity = Math.min(1, -sw / 55); ic.style.transform = `scale(${Math.min(1, .5 - sw / 110)})`; if (sw < -55 && !swEl._v) { swEl._v = 1; navigator.vibrate && navigator.vibrate(8); } }
+  }, { passive: true });
+  box.addEventListener('touchend', e => {
+    if (longFired && e.cancelable) e.preventDefault();
+    clearTimeout(lp); lp = null; $$('#msgInner .m.press').forEach(x => x.classList.remove('press'));
+    if (swEl) { const b = swEl.querySelector('.bub'); b.style.transition = ''; b.style.transform = ''; const ic = swEl.querySelector('.swipe-ic'); ic.style.opacity = 0; ic.style.transform = ''; swEl._v = 0; if (sw < -55) { const m = curList().find(x => x.id === swEl.dataset.mid); if (m) replySet(m); } swEl = null; }
+    box._el = null;
+  }, { passive: false });
+  box.addEventListener('contextmenu', e => { const el = e.target.closest('.m'); if (!el) return; e.preventDefault(); const m = curList().find(x => x.id === el.dataset.mid); if (m) holdMenu(el, m); });
+  box.addEventListener('dblclick', e => { if (matchMedia('(pointer:coarse)').matches) return; const el = e.target.closest('.m'); if (!el) return; const m = curList().find(x => x.id === el.dataset.mid); if (m) replySet(m); });
+  $('#chatLock').onclick = async () => { const open = CFG.chatOpen !== false; try { await DB.setConfig({ chatOpen: !open }); CFG.chatOpen = !open; chatHeader(); DB.log(open ? 'قفل غرفة الطلاب' : 'فتح غرفة الطلاب'); toast(open ? '🔒 الطلاب ما يگدرون يكتبون بالغرفة هسه' : '🔓 الغرفة انفتحت'); } catch (e) { toast('ما تغيّر', 'bad'); } };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHold(); });
+  if (ME.role === 'admin') DB.watchDMList(l => { DMLIST = l; if (chMode === 'dm' && !dmPeer) renderDMList(); chatBadge(); });
+  if (ME.role === 'student') openDM(ME.uid, ME.name);
+  chMode = 'room'; chatHeader(); renderMsgs();
 }
 
 /* ====== navigation ====== */
@@ -2198,10 +2680,11 @@ function go(pg) {
     if (prev === 'students') { $('#stQ').value = ''; renderStud(); }
     if (prev === 'chart' && CH) { CH.setTool('cursor'); CH.sel = null; selbar(null); $$('#tools [data-tool]').forEach(x => x.classList.toggle('on', x.dataset.tool === 'cursor')); }
   }
-  if (pg === 'chart' && CH) { setTimeout(fitChart, 20); setTimeout(fitChart, 300); }
+  if (pg === 'chart') { makeTV(); setTimeout(fitChart, 20); setTimeout(fitChart, 300); }
+  if (pg === 'chat') { setTimeout(fitChat, 20); setTimeout(fitChat, 300); }
   if (pg !== 'chart' && $('#app').dataset.fs) toggleFS(false);
   if (pg === 'news') renderNews();
-  if (pg === 'chat') { chatSeenNow(); setTimeout(() => { const l = $('#chatList'); l.scrollTop = l.scrollHeight; }, 30); }
+  if (pg === 'chat') { chatSeenNow(); setTimeout(() => { const l = $('#msgs'); if (l) l.scrollTop = l.scrollHeight; }, 30); }
   if (pg === 'home') renderSpark();
   $('.npanel') && $('.npanel').remove();
 }
@@ -2229,6 +2712,14 @@ document.addEventListener('click', e => {
   if (k === 'ind') indSheet();
   if (k === 'cset') csSheet();
   if (k === 'fs') toggleFS();
+  if (k === 'tvinfo') modal(`<h2>شلون ينحفظ رسمي؟<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
+   <div class="dim" style="line-height:1.9;font-size:14px">TradingView ما يسمح يسجّلون دخول داخل الشارت اللي بالمواقع، لذلك الرسم هنا مؤقت ويروح من تطلع.<br><br>
+   <b style="color:var(--ink)">حتى ينحفظ رسمك وإعداداتك:</b><br>
+   1. دوس "افتح بحسابي بـ TradingView".<br>
+   2. سجّل دخول بحسابك (أو يفتح تطبيق TradingView إذا منزّل).<br>
+   3. أي رسم أو مؤشر تحطه ينحفظ بحسابك ويطلع بكل أجهزتك.<br><br>
+   <b style="color:var(--ink)">حتى تدز تحليلك للأستاذ:</b> بـ TradingView دوس أيقونة الكاميرا 📷 ← "نسخ الرابط"، ودزه بالخاص.</div>
+   <a class="btn blk" style="margin-top:14px" href="https://www.tradingview.com/chart/?symbol=OANDA%3AXAUUSD" target="_blank" rel="noopener">افتح بحسابي بـ TradingView</a>`);
   if (k === 'tologin') { L.set('amg_guest', 0); location.reload(); }
   if (k === 'logout') logout();
 });
@@ -2273,7 +2764,7 @@ function start() {
     if (location.protocol !== 'https:' || !navigator.onLine) return;
     try { const t = await (await fetch(location.pathname + '?b=' + Date.now(), { cache: 'no-store' })).text(); const m = t.match(/name="app-build" content="([^"]+)"/); if (m && m[1] !== myBuild) location.reload(); } catch (e) { }
   }
-  setInterval(chk, 6e4); document.addEventListener('visibilitychange', () => { if (!document.hidden) { chk(); if (ws && ws.readyState > 1) openWS(S.tf); } });
+  setInterval(chk, 6e4); document.addEventListener('visibilitychange', () => { if (!document.hidden) { chk(); if (!ws || ws.readyState > 1) { ws = null; openTicker(); } } });
   window.addEventListener('resize', () => renderSpark());
 })();
 initAuth();

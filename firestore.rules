@@ -22,6 +22,18 @@ service cloud.firestore {
         && request.resource.data.text is string && request.resource.data.text.size() <= 1000
         && (isAdmin() || chatOpen());
       allow delete: if isAdmin() || (signed() && resource.data.uid == request.auth.uid);
+      allow update: if member() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reactions']);
+    }
+    match /dm/{sid} {
+      allow read, write: if isAdmin() || (signed() && request.auth.uid == sid && member());
+      match /msgs/{id} {
+        allow read: if isAdmin() || (signed() && request.auth.uid == sid && member());
+        allow create: if (isAdmin() || (signed() && request.auth.uid == sid && member()))
+          && request.resource.data.uid == request.auth.uid && request.resource.data.text is string && request.resource.data.text.size() <= 1000;
+        allow delete: if isAdmin() || (signed() && resource.data.uid == request.auth.uid);
+        allow update: if (isAdmin() || (signed() && request.auth.uid == sid && member()))
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reactions']);
+      }
     }
     match /users/{uid}/{rest=**} { allow read, write: if signed() && request.auth.uid == uid && member(); }
     match /logs/{id}    { allow read, write: if isAdmin(); }
