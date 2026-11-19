@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.19-27">
+<meta name="app-build" content="2026.11.19-29">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -662,7 +662,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 @media (max-width:900px){
  #app[data-pg=chat]:not([data-conv]) .gchat{position:static;height:auto;min-height:calc(100dvh - 150px);border:0;border-radius:0;background:none;overflow:visible}
  #app[data-pg=chat]:not([data-conv]) .top{display:flex!important}
- #app[data-pg=chat]:not([data-conv]) main{padding:8px 0 calc(90px + var(--sab))!important}
+ #app[data-pg=chat]:not([data-conv]) main{padding:calc(62px + var(--sat)) 0 calc(96px + var(--sab))!important}
  #app[data-pg=chat]:not([data-conv]) .clist{background:none}
  #app[data-pg=chat]:not([data-conv]) .cscroll{overflow:visible}
  #app[data-pg=chat]:not([data-conv]) .clh{padding-top:4px}
@@ -990,6 +990,11 @@ html.lock body{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
 
 .pbell{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);flex:none;animation:bring 2.4s infinite}
 @keyframes bring{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(-12deg)}90%{transform:rotate(10deg)}95%{transform:rotate(-6deg)}}
+
+/* السحب للرجوع: القائمة تبين ورا المحادثة */
+.gchat.peek .clist{display:flex!important;position:absolute;inset:0;z-index:0;width:100%;background:var(--void)}
+.gchat.peek .cview{z-index:1;background:var(--void);box-shadow:8px 0 30px rgba(0,0,0,.45)}
+.gchat.peek .clist::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.25);pointer-events:none}
 </style>
 </head>
 <body>
@@ -1477,7 +1482,7 @@ html.lock body{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-27</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-29</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -3571,7 +3576,7 @@ function openConv(c) {
   if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; }
   CONV = c; TMSG = []; chRendered = new Set(); chInitial = true; fabN = 0; $('#msgInner').innerHTML = '';
   if (c.k === 'thr') tUnsub = DB.watchThread(c.tid, list => { if (!CONV || CONV.tid !== c.tid) return; TMSG = list.slice().sort((a, b) => a.at - b.at); renderMsgs(); chatSeenNow(); });
-  $('#chatWrap').dataset.cv = 'conv'; if (matchMedia('(max-width:900px)').matches) $('#app').dataset.conv = '1'; setTimeout(() => { window.kbUpd && kbUpd(); typeof scrollLock === 'function' && scrollLock(); }, 0);
+  $('#chatWrap').dataset.cv = 'conv'; if (matchMedia('(max-width:900px)').matches) { $('#app').dataset.conv = '1'; if (!(history.state && history.state.amg === 'conv')) navPush('conv'); } setTimeout(() => { window.kbUpd && kbUpd(); typeof scrollLock === 'function' && scrollLock(); }, 0);
   chatHeader(); renderMsgs(); renderList(); chatSeenNow();
   if (!matchMedia('(pointer:coarse)').matches && c.k !== 'saved') setTimeout(() => $('#chatTx').focus(), 50);
 }
@@ -3783,7 +3788,8 @@ function initChat() {
   $('#chImg').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; try { chImgData = await compressImg(f, 1000, .72); const p = $('#chImgPrev'); p.querySelector('img').src = chImgData; p.classList.remove('hide'); grow(); } catch (er) { toast('الصورة ما انقرت', 'bad'); } };
   $('#chImgPrev').onclick = e => { if (e.target.closest('button')) { chImgData = null; $('#chImgPrev').classList.add('hide'); grow(); } };
   $('#rbX').onclick = replyClear;
-  $('#chBack').onclick = closeConv;
+  $('#chBack').onclick = () => navBack();
+  edgeBack($('#chatWrap .cview'), () => navBack(), on => $('#chatWrap').classList.toggle('peek', on), () => !!CONV && matchMedia('(max-width:900px)').matches);
   $('#convList').onclick = e => { const it = e.target.closest('[data-open]'); if (it) openKey(it.dataset.open); };
   $('#notes').onclick = e => { const nt = e.target.closest('[data-note]'); if (nt) nt.dataset.note === ME.uid ? noteSheet() : noteView(nt.dataset.note); };
   $('#chSearch').oninput = e => { chQ = e.target.value; renderList(); };
@@ -3798,13 +3804,14 @@ function initChat() {
   });
   let lp = null, swEl = null, sx = 0, sy = 0, sw = 0, longFired = false;
   box.addEventListener('touchstart', e => {
+    if (window.__edge) return;
     const el = e.target.closest('.m'); if (!el || e.target.closest('[data-react],[data-jump],a,.voice')) return; const t = e.touches[0]; sx = t.clientX; sy = t.clientY; sw = 0; swEl = null; longFired = false;
     el.classList.add('press');
     lp = setTimeout(() => { lp = null; longFired = true; el.classList.remove('press'); const m = curList().find(x => x.id === el.dataset.mid); if (m) holdMenu(el, m); }, 420);
     box._el = el;
   }, { passive: true });
   box.addEventListener('touchmove', e => {
-    const t = e.touches[0], dx = t.clientX - sx, dy = t.clientY - sy, el = box._el; if (!el) return;
+    const t = e.touches[0], dx = t.clientX - sx, dy = t.clientY - sy, el = box._el; if (!el || window.__edge) return;
     if (lp && Math.hypot(dx, dy) > 8) { clearTimeout(lp); lp = null; el.classList.remove('press'); }
     if (cm() === 'saved') return;
     if (!swEl && dx < -12 && Math.abs(dx) > Math.abs(dy) * 1.4) swEl = el;
@@ -4143,7 +4150,7 @@ function openCmts(pid) {
   const p = CHAN.find(x => x.id === pid); if (!p) return;
   if (CMT.un) { try { CMT.un(); } catch (e) { } }
   CMT = { pid, list: [], un: null };
-  const v = $('#cmtV'); v.classList.add('on'); $('#cmtPost').innerHTML = chanHTML(p).replace(/<div class="cmt"[\s\S]*<\/div><\/div>$/, '</div>');
+  const v = $('#cmtV'); v.classList.add('on'); navPush('cmt'); $('#cmtPost').innerHTML = chanHTML(p).replace(/<div class="cmt"[\s\S]*<\/div><\/div>$/, '</div>');
   $('#cmtN').textContent = 'التعليقات';
   const can = ME.role !== 'guest'; $('#cmtFoot').classList.toggle('hide', !can); $('#cmtGuest').classList.toggle('hide', can);
   renderCmts(); CMT.un = DB.watchComments(pid, l => { if (CMT.pid !== pid) return; CMT.list = l.slice().sort((a, b) => a.at - b.at); renderCmts(true); });
@@ -4209,7 +4216,9 @@ function initChan() {
     const b = e.target.closest('.cpost'); if (!b) return; const p = CHAN.find(x => x.id === b.dataset.cid); if (p) chanMenu(p);
   });
   $('#chanFeed').addEventListener('contextmenu', e => { const b = e.target.closest('.cpost'); if (!b) return; e.preventDefault(); const p = CHAN.find(x => x.id === b.dataset.cid); if (p) chanMenu(p); });
-  $('#cmtBack').onclick = closeCmts;
+  $('#cmtBack').onclick = () => navBack();
+  edgeBack($('#cmtV'), () => navBack(), null, () => $('#cmtV').classList.contains('on'));
+  edgeBack($('#tgc'), () => go('home'), null, () => curPg === 'signals' && !$('#cmtV').classList.contains('on') && matchMedia('(max-width:900px)').matches);
   $('#cmtGo').onclick = sendCmt;
   $('#cmtTx').addEventListener('input', e => { const t = e.target; t.style.height = '40px'; t.style.height = Math.min(140, t.scrollHeight) + 'px'; });
   $('#cmtTx').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !matchMedia('(pointer:coarse)').matches) { e.preventDefault(); sendCmt(); } });
@@ -4439,6 +4448,43 @@ function initPush() {
   if (pushOK() && Notification.permission === 'granted') pushSync(false).catch(() => { });
   if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { const d = e.data || {}; if (d.go) go(d.go); });
   renderPush();
+}
+/* ====== رجوع بالسحب من اليمين لليسار + زر الرجوع بالاندرويد ====== */
+const isPhone = () => matchMedia('(max-width:900px)').matches;
+function navPush(k) { if (isPhone()) try { history.pushState({ amg: k }, ''); } catch (e) { } }
+function popNav() {
+  const cv = $('#cmtV'); if (cv && cv.classList.contains('on')) return closeCmts();
+  if (typeof CONV !== 'undefined' && CONV && curPg === 'chat' && isPhone()) return closeConv();
+}
+function navBack() { if (history.state && history.state.amg) history.back(); else popNav(); }
+addEventListener('popstate', popNav);
+function edgeBack(el, back, peek, when) {
+  if (!el) return; let s = null; const EDGE = 30;
+  el.addEventListener('touchstart', e => {
+    if (e.touches.length > 1 || (when && !when())) return; const t = e.touches[0];
+    if (t.clientX < innerWidth - EDGE) return;
+    s = { x: t.clientX, y: t.clientY, t: Date.now(), on: false, dx: 0 }; window.__edge = true;
+  }, { passive: true, capture: true });
+  el.addEventListener('touchmove', e => {
+    if (!s) return; const t = e.touches[0], dx = t.clientX - s.x, dy = t.clientY - s.y;
+    if (!s.on) {
+      if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { s = null; window.__edge = false; return; }
+      if (dx > -8) return; s.on = true; el.style.transition = 'none'; el.style.willChange = 'transform'; peek && peek(true);
+      const a = document.activeElement; if (a && /TEXTAREA|INPUT/.test(a.tagName)) a.blur();
+    }
+    if (e.cancelable) e.preventDefault(); s.dx = Math.min(0, dx); el.style.transform = `translateX(${s.dx}px)`;
+  }, { passive: false, capture: true });
+  const end = () => {
+    if (!s) return; const st = s; s = null; setTimeout(() => { window.__edge = false; }, 0); if (!st.on) return;
+    const W = el.offsetWidth || innerWidth, v = -st.dx / Math.max(1, Date.now() - st.t), ok = -st.dx > W * .3 || (v > .45 && -st.dx > 50);
+    el.style.transition = 'transform .24s cubic-bezier(.2,.8,.3,1)'; el.style.transform = ok ? `translateX(${-W}px)` : 'translateX(0)';
+    setTimeout(() => {
+      if (ok) { back(); navigator.vibrate && navigator.vibrate(6); }
+      el.style.transition = 'none'; el.style.transform = ''; el.style.willChange = ''; peek && peek(false);
+      requestAnimationFrame(() => { el.style.transition = ''; });
+    }, 240);
+  };
+  el.addEventListener('touchend', end, { capture: true }); el.addEventListener('touchcancel', end, { capture: true });
 }
 /* ====== start ====== */
 let started = false;
