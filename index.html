@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-23">
+<meta name="app-build" content="2026.11.19-25">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -973,6 +973,16 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
 .pww .inp{padding-left:46px}
 .pww .eye{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--faint);background:none}
 .pww .eye.on{color:var(--accent)}.pww .eye .ic{width:19px;height:19px}
+
+/* نتيجة الخبر داخل بطاقته */
+.ev .evr{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line2)}
+.ev .evr .chip{font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--panel3);color:var(--dim)}
+.ev .evr .chip.pos{background:rgba(60,207,130,.16);color:var(--ok)}.ev .evr .chip.neg{background:rgba(242,89,106,.16);color:var(--bad)}
+.ev .evr small{font-size:12px;color:var(--dim);margin-inline-start:auto}
+.ev .evr.pre small{margin:0;line-height:1.7}
+.ev.rup{box-shadow:inset -3px 0 0 var(--ok)}.ev.rdn{box-shadow:inset -3px 0 0 var(--bad)}
+.ev.rup .vals .act .num{color:var(--ok)}.ev.rdn .vals .act .num{color:var(--bad)}
+.ev.past.rup,.ev.past.rdn,.ev.past.req{opacity:1}
 </style>
 </head>
 <body>
@@ -1442,7 +1452,7 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-23</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-25</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -3384,7 +3394,8 @@ function renderNews() {
       const d = new Date(e.t), ds = d.toDateString();
       if (ds !== day) { day = ds; h2 += `<div class="nday ${ds === td ? 'today' : ''}">${ds === td ? 'اليوم' : ds === tm ? 'باچر' : DAYS[d.getDay()]} <span class="num" style="font-size:12px">${dstr(e.t)}</span></div>`; }
       const g = gloss(e.title), past = e.t < now - 6e4;
-      h2 += `<div class="ev ${past ? 'past' : ''} ${e === nxt ? 'next' : ''}"><div class="tm">${tstr(e.t)}${e === nxt ? `<small class="ncd" data-t="${e.t}">${left(e.t - now)}</small>` : ''}</div><div class="ti"><b><span class="imp ${e.imp}"></span><span class="cur">${esc(e.cur)}</span>${esc(g.ar || e.title)}</b>${g.ar ? `<small>${esc(e.title)}</small>` : ''}</div><div class="vals">${e.a ? `<span class="act">الفعلي <span class="num">${esc(e.a)}</span></span>` : past && e.cur === 'USD' && !SPK.test(e.title) && now - e.t < 3 * 36e5 ? '<span class="faint">بانتظار النتيجة…</span>' : ''}${e.f ? `<span>المتوقع <span class="num">${esc(e.f)}</span></span>` : ''}${e.p ? `<span>السابق <span class="num">${esc(e.p)}</span></span>` : ''}</div></div>${e.cur === 'USD' && e.imp !== 'Low' ? nBiasH(e) : ''}`;
+      const bb = e.cur === 'USD' && e.imp !== 'Low' ? nBias(e) : null, rc = bb && bb.k === 'res' ? (bb.d < 0 ? 'rup' : bb.d > 0 ? 'rdn' : 'req') : '';
+      h2 += `<div class="ev ${past ? 'past' : ''} ${e === nxt ? 'next' : ''} ${rc}"><div class="tm">${tstr(e.t)}${e === nxt ? `<small class="ncd" data-t="${e.t}">${left(e.t - now)}</small>` : ''}</div><div class="ti"><b><span class="imp ${e.imp}"></span><span class="cur">${esc(e.cur)}</span>${esc(g.ar || e.title)}</b>${g.ar ? `<small>${esc(e.title)}</small>` : ''}</div><div class="vals">${e.a ? `<span class="act">الفعلي <span class="num">${esc(e.a)}</span></span>` : past && e.cur === 'USD' && !SPK.test(e.title) && now - e.t < 3 * 36e5 ? '<span class="faint">بانتظار النتيجة…</span>' : ''}${e.f ? `<span>المتوقع <span class="num">${esc(e.f)}</span></span>` : ''}${e.p ? `<span>السابق <span class="num">${esc(e.p)}</span></span>` : ''}</div>${bb ? nBiasIn(e, bb) : ''}</div>`;
     });
     nl.innerHTML = h2 || '<div class="card empty">ماكو أخبار بهذا الفلتر</div>';
   }
@@ -3400,6 +3411,13 @@ function nBias(e) {
   if (a != null && (f != null || e.bw)) { const d = e.bw ? (e.bw > 0 ? 1 : -1) : dir(a, f); return { k: 'res', d, t: d > 0 ? 'طلع أفضل من المتوقع: إيجابي للدولار 🟢 وسلبي للذهب 🔴' : d < 0 ? 'طلع أسوأ من المتوقع: سلبي للدولار 🔴 وإيجابي للذهب 🟢' : 'طلع نفس المتوقع: تأثير محدود' }; }
   const d = dir(f, p); const rule = inv ? 'إذا طلع أقل من المتوقع ← 🟢 دولار 🔴 ذهب' : 'إذا طلع أعلى من المتوقع ← 🟢 دولار 🔴 ذهب';
   return { k: 'pre', d, t: (d > 0 ? 'التوقع أفضل من السابق: يميل إيجابي للدولار وسلبي للذهب. ' : d < 0 ? 'التوقع أسوأ من السابق: يميل سلبي للدولار وإيجابي للذهب. ' : '') + rule };
+}
+function nBiasIn(e, b) {
+  if (b.k === 'res') {
+    const up = b.d < 0, dn = b.d > 0;
+    return `<div class="evr"><span class="chip ${dn ? 'pos' : up ? 'neg' : ''}">💵 الدولار ${dn ? '▲' : up ? '▼' : '—'}</span><span class="chip ${up ? 'pos' : dn ? 'neg' : ''}">🥇 الذهب ${up ? '▲ إيجابي' : dn ? '▼ سلبي' : '— محايد'}</span><small>${dn ? 'أفضل من المتوقع' : up ? 'أسوأ من المتوقع' : 'نفس المتوقع تقريباً'}</small></div>`;
+  }
+  return `<div class="evr pre"><small>${esc(b.t)}</small></div>`;
 }
 const nBiasH = e => {
   const b = nBias(e); if (!b) return '';
@@ -3435,7 +3453,7 @@ function mergeActs() {
     if (e.a && !e.ax) return;
     const c = ACT.list.filter(x => x.cur === e.cur && Math.abs(x.t - e.t) <= 5 * 6e4); if (!c.length) return;
     const w = nWords(e.title); let best = null, bs = -1;
-    c.forEach(x => { let s = 0; const xw = nWords(x.title); s += w.filter(k => xw.includes(k)).length; if (near(nNum(x.p), nNum(e.p))) s += 3; if (near(nNum(x.f), nNum(e.f))) s += 2; if (/core/i.test(e.title) !== /core/i.test(x.title)) s -= 3; if (s > bs) { bs = s; best = x; } });
+    c.forEach(x => { let s = 0; const xw = nWords(x.title); s += w.filter(k => xw.includes(k)).length; if (near(nNum(x.p), nNum(e.p))) s += 3; if (near(nNum(x.f), nNum(e.f))) s += 2; if (/core/i.test(e.title) !== /core/i.test(x.title)) s -= 3; if (/4-week|average|continuing/i.test(x.title) && !/4-week|average|continuing/i.test(e.title)) s -= 3; if (/unemployment claims/i.test(e.title) && /initial jobless/i.test(x.title)) s += 3; if (s > bs) { bs = s; best = x; } });
     if (best && best.a && (bs >= 2 || c.length === 1) && e.a !== best.a) { e.a = best.a; e.ax = 1; ch = true; }
   });
   if (ch) L.set('amg_news', NEWS); return ch;
