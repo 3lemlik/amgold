@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-16">
+<meta name="app-build" content="2026.11.19-17">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -956,6 +956,18 @@ html[data-theme=light] .nb.usd{color:#2563eb}
 
 html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;height:100%}
 #msgs,.tgfeed,.cscroll{-webkit-overflow-scrolling:touch}
+
+.nres{grid-column:1/-1;margin-top:6px;padding:9px 11px;border-radius:12px;background:var(--panel2);border:1px solid var(--line2)}
+.nres.up{border-color:rgba(60,207,130,.45);background:linear-gradient(135deg,rgba(60,207,130,.1),transparent 70%)}
+.nres.dn{border-color:rgba(242,89,106,.45);background:linear-gradient(135deg,rgba(242,89,106,.1),transparent 70%)}
+.nres .nr1{display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;font-size:13px}
+.nres .nr1 b{font-size:17px;margin-inline-start:4px}
+.nres.up .nr1 b{color:var(--ok)}.nres.dn .nr1 b{color:var(--bad)}
+.nres .nr2{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0 5px}
+.nres .chip{font-size:12.5px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--panel3);color:var(--dim)}
+.nres .chip.pos{background:rgba(60,207,130,.16);color:var(--ok)}.nres .chip.neg{background:rgba(242,89,106,.16);color:var(--bad)}
+.nres .nr3{font-size:12.5px;color:var(--dim);line-height:1.7}
+.vals .act{color:var(--ink);font-weight:800}
 </style>
 </head>
 <body>
@@ -1426,7 +1438,7 @@ html.lock,html.lock body{overflow:hidden!important;overscroll-behavior:none;heig
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-16</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-17</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -3324,7 +3336,7 @@ function left(ms) { if (ms <= 0) return 'هسه'; const m = Math.floor(ms / 6e4)
 const DAYS = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 const FF_JSON = 'https://nfs.faireconomy.media/ff_calendar_thisweek.json';
 const newsSources = () => { const u = (CFG.newsUrl || '').trim(), a = []; if (u && /script\.google/.test(u)) a.push(u + (u.includes('?') ? '&' : '?') + 'v=' + Math.floor(Date.now() / 6e5)); a.push('https://r.jina.ai/' + FF_JSON); return a; };
-function parseFF(t) { try { const a = JSON.parse(t); if (Array.isArray(a)) return a; } catch (e) { } const i = t.indexOf('[{'), j = t.lastIndexOf('}]'); if (i >= 0 && j > i) return JSON.parse(t.slice(i, j + 2)); throw new Error('bad'); }
+function parseFF(t) { try { const a = JSON.parse(t); if (Array.isArray(a)) return a; if (a && Array.isArray(a.ff)) { if (Array.isArray(a.tv) && a.tv.length) { ACT = { at: Date.now(), list: parseTV(JSON.stringify(a.tv)) }; L.set('amg_act', ACT); } return a.ff; } } catch (e) { } const i = t.indexOf('[{'), j = t.lastIndexOf('}]'); if (i >= 0 && j > i) return JSON.parse(t.slice(i, j + 2)); throw new Error('bad'); }
 async function loadNews(force) {
   if (newsBusy) return;
   if (!force && NEWS.list.length && Date.now() - NEWS.at < 30 * 6e4) { renderNews(); return; }
@@ -3333,11 +3345,11 @@ async function loadNews(force) {
     try {
       const r = await fetch(u); if (!r.ok) throw new Error(r.status); const a = parseFF(await r.text());
       NEWS = { at: Date.now(), list: a.map(e => ({ t: new Date(e.date).getTime(), title: e.title, cur: e.country, imp: e.impact, f: e.forecast || '', p: e.previous || '', a: e.actual || '' })).filter(e => !isNaN(e.t)).sort((x, y) => x.t - y.t) };
-      L.set('amg_news', NEWS); newsErr = ''; ok = true; break;
+      mergeActs(); L.set('amg_news', NEWS); newsErr = ''; ok = true; break;
     } catch (e) { }
   }
   if (!ok) newsErr = 'ما گدرت أجيب الأخبار هسه، راح أرجع أحاول.';
-  newsBusy = false; renderNews();
+  newsBusy = false; renderNews(); loadActuals(force);
 }
 const nFilt = (e, cur, imp) => (cur === 'all' || e.cur === cur) && (imp === 'all' || e.imp === 'High' || (imp === 'Medium' && e.imp === 'Medium'));
 function renderNews() {
@@ -3362,7 +3374,7 @@ function renderNews() {
       const d = new Date(e.t), ds = d.toDateString();
       if (ds !== day) { day = ds; h2 += `<div class="nday ${ds === td ? 'today' : ''}">${ds === td ? 'اليوم' : ds === tm ? 'باچر' : DAYS[d.getDay()]} <span class="num" style="font-size:12px">${dstr(e.t)}</span></div>`; }
       const g = gloss(e.title), past = e.t < now - 6e4;
-      h2 += `<div class="ev ${past ? 'past' : ''} ${e === nxt ? 'next' : ''}"><div class="tm">${tstr(e.t)}${e === nxt ? `<small class="ncd" data-t="${e.t}">${left(e.t - now)}</small>` : ''}</div><div class="ti"><b><span class="imp ${e.imp}"></span><span class="cur">${esc(e.cur)}</span>${esc(g.ar || e.title)}</b>${g.ar ? `<small>${esc(e.title)}</small>` : ''}</div><div class="vals">${e.a ? `<span>الفعلي <span class="num">${esc(e.a)}</span></span>` : ''}${e.f ? `<span>المتوقع <span class="num">${esc(e.f)}</span></span>` : ''}${e.p ? `<span>السابق <span class="num">${esc(e.p)}</span></span>` : ''}</div></div>${e.cur === 'USD' && e.imp !== 'Low' ? nBiasH(e) : ''}`;
+      h2 += `<div class="ev ${past ? 'past' : ''} ${e === nxt ? 'next' : ''}"><div class="tm">${tstr(e.t)}${e === nxt ? `<small class="ncd" data-t="${e.t}">${left(e.t - now)}</small>` : ''}</div><div class="ti"><b><span class="imp ${e.imp}"></span><span class="cur">${esc(e.cur)}</span>${esc(g.ar || e.title)}</b>${g.ar ? `<small>${esc(e.title)}</small>` : ''}</div><div class="vals">${e.a ? `<span class="act">الفعلي <span class="num">${esc(e.a)}</span></span>` : past && e.cur === 'USD' && !SPK.test(e.title) && now - e.t < 3 * 36e5 ? '<span class="faint">بانتظار النتيجة…</span>' : ''}${e.f ? `<span>المتوقع <span class="num">${esc(e.f)}</span></span>` : ''}${e.p ? `<span>السابق <span class="num">${esc(e.p)}</span></span>` : ''}</div></div>${e.cur === 'USD' && e.imp !== 'Low' ? nBiasH(e) : ''}`;
     });
     nl.innerHTML = h2 || '<div class="card empty">ماكو أخبار بهذا الفلتر</div>';
   }
@@ -3379,11 +3391,51 @@ function nBias(e) {
   const d = dir(f, p); const rule = inv ? 'إذا طلع أقل من المتوقع ← 🟢 دولار 🔴 ذهب' : 'إذا طلع أعلى من المتوقع ← 🟢 دولار 🔴 ذهب';
   return { k: 'pre', d, t: (d > 0 ? 'التوقع أفضل من السابق: يميل إيجابي للدولار وسلبي للذهب. ' : d < 0 ? 'التوقع أسوأ من السابق: يميل سلبي للدولار وإيجابي للذهب. ' : '') + rule };
 }
-const nBiasH = e => { const b = nBias(e); if (!b) return ''; const cls = b.k === 'spk' ? '' : b.d > 0 ? 'usd' : b.d < 0 ? 'gold' : ''; return `<div class="nb ${cls}">${b.k === 'res' ? '<b>النتيجة:</b> ' : b.k === 'pre' ? '<b>التحليل:</b> ' : ''}${esc(b.t)}</div>`; };
+const nBiasH = e => {
+  const b = nBias(e); if (!b) return '';
+  if (b.k === 'res') {
+    const g = b.d < 0 ? 'up' : b.d > 0 ? 'dn' : 'eq';
+    return `<div class="nres ${g}"><div class="nr1"><span>النتيجة <b class="num">${esc(e.a)}</b></span>${e.f ? `<span class="faint">المتوقع <span class="num">${esc(e.f)}</span></span>` : ''}${e.p ? `<span class="faint">السابق <span class="num">${esc(e.p)}</span></span>` : ''}</div>
+     <div class="nr2"><span class="chip ${b.d > 0 ? 'pos' : b.d < 0 ? 'neg' : ''}">💵 الدولار ${b.d > 0 ? '▲ إيجابي' : b.d < 0 ? '▼ سلبي' : '— محايد'}</span><span class="chip ${b.d < 0 ? 'pos' : b.d > 0 ? 'neg' : ''}">🥇 الذهب ${b.d < 0 ? '▲ إيجابي' : b.d > 0 ? '▼ سلبي' : '— محايد'}</span></div>
+     <div class="nr3">${b.d > 0 ? 'طلع أفضل من المتوقع، يقوّي الدولار ويضغط على الذهب.' : b.d < 0 ? 'طلع أسوأ من المتوقع، يضعّف الدولار ويدعم الذهب.' : 'طلع قريب من المتوقع، التأثير محدود.'}</div></div>`;
+  }
+  return nBiasOld(e);
+};
+const nBiasOld = e => { const b = nBias(e); if (!b) return ''; const cls = b.k === 'spk' ? '' : b.d > 0 ? 'usd' : b.d < 0 ? 'gold' : ''; return `<div class="nb ${cls}">${b.k === 'res' ? '<b>النتيجة:</b> ' : b.k === 'pre' ? '<b>التحليل:</b> ' : ''}${esc(b.t)}</div>`; };
+/* النتيجة الفعلية: Forex Factory ما ينطيها، فناخذها من تقويم TradingView ونطابقها ويا الخبر */
+let ACT = L.get('amg_act', { at: 0, list: [] }), actBusy = false;
+const tvURL = () => { const n = Date.now(); return 'https://economic-calendar.tradingview.com/events?from=' + new Date(n - 8 * 864e5).toISOString() + '&to=' + new Date(n + 8 * 864e5).toISOString() + '&countries=US,EU,GB,JP,CN,CA,AU,NZ,CH'; };
+const TVCUR = { US: 'USD', EU: 'EUR', GB: 'GBP', JP: 'JPY', CN: 'CNY', CA: 'CAD', AU: 'AUD', NZ: 'NZD', CH: 'CHF' };
+function tvFmt(v, ev) { if (v == null || v === '') return ''; let n = +v; if (isNaN(n)) return String(v); const s = (ev.scale || ''), u = ev.unit === '%' ? '%' : ''; return (Math.abs(n) >= 100 ? String(+n.toFixed(1)) : String(+n.toFixed(2))) + s + u; }
+function parseTV(t) { let j; try { j = JSON.parse(t); } catch (e) { const i = t.indexOf('{'), k = t.lastIndexOf('}'); j = JSON.parse(t.slice(i, k + 1)); } const a = Array.isArray(j) ? j : (j.result || j.tv || []); return a.map(e => ({ t: new Date(e.date).getTime(), title: e.title || e.indicator || '', cur: TVCUR[e.country] || e.currency || e.country, a: tvFmt(e.actual, e), f: tvFmt(e.forecast, e), p: tvFmt(e.previous, e) })).filter(e => !isNaN(e.t)); }
+async function loadActuals(force) {
+  if (actBusy || (!force && Date.now() - ACT.at < 55e3)) return; actBusy = true;
+  const u = (CFG.newsUrl || '').trim(), srcs = [];
+  if (u && /script\.google/.test(u)) srcs.push(u + (u.includes('?') ? '&' : '?') + 'src=tv&v=' + Math.floor(Date.now() / 6e4));
+  srcs.push(tvURL(), 'https://r.jina.ai/' + tvURL());
+  for (const s of srcs) {
+    try { const r = await fetch(s); if (!r.ok) throw 0; const t = await r.text(); let list; if (/script\.google/.test(s)) { const j = JSON.parse(t); list = parseTV(JSON.stringify(j.tv || j.result || [])); } else list = parseTV(t); if (list.length) { ACT = { at: Date.now(), list }; L.set('amg_act', ACT); break; } } catch (e) { }
+  }
+  actBusy = false; if (mergeActs()) renderNews();
+}
+const nWords = s => String(s).toLowerCase().replace(/m\/m|y\/y|q\/q|mom|yoy|qoq/g, '').split(/[^a-z0-9]+/).filter(w => w.length > 2);
+function mergeActs() {
+  let ch = false; const near = (a, b) => a != null && b != null && Math.abs(a - b) < 1e-9;
+  NEWS.list.forEach(e => {
+    if (e.a && !e.ax) return;
+    const c = ACT.list.filter(x => x.cur === e.cur && Math.abs(x.t - e.t) <= 5 * 6e4); if (!c.length) return;
+    const w = nWords(e.title); let best = null, bs = -1;
+    c.forEach(x => { let s = 0; const xw = nWords(x.title); s += w.filter(k => xw.includes(k)).length; if (near(nNum(x.p), nNum(e.p))) s += 3; if (near(nNum(x.f), nNum(e.f))) s += 2; if (/core/i.test(e.title) !== /core/i.test(x.title)) s -= 3; if (s > bs) { bs = s; best = x; } });
+    if (best && best.a && (bs >= 2 || c.length === 1) && e.a !== best.a) { e.a = best.a; e.ax = 1; ch = true; }
+  });
+  if (ch) L.set('amg_news', NEWS); return ch;
+}
 function newsTick() {
   const now = Date.now();
   $$('.ncd').forEach(el => { el.textContent = left(+el.dataset.t - now); });
+  if (NEWS.list.some(e => e.cur === 'USD' && e.imp !== 'Low' && !e.a && !SPK.test(e.title) && now > e.t + 2e4 && now - e.t < 3 * 36e5)) loadActuals();
   NEWS.list.forEach(e => {
+    if (e.cur === 'USD' && e.imp === 'High' && e.a && e.ax === 1 && now - e.t < 36e5 && !NWARN['r' + e.t + e.title]) { NWARN['r' + e.t + e.title] = 1; L.set('amg_nwarn', NWARN); const b = nBias(e), g = gloss(e.title); if (b && b.k === 'res') { toast((b.d < 0 ? '🟢 ' : b.d > 0 ? '🔴 ' : '⚪ ') + (g.ar || e.title) + ': ' + e.a + ' — ' + (b.d < 0 ? 'إيجابي للذهب' : b.d > 0 ? 'سلبي للذهب' : 'تأثير محدود'), b.d < 0 ? 'ok' : b.d > 0 ? 'bad' : ''); beep('alert'); devNotify('AM GOLD · نتيجة ' + (g.ar || e.title), e.a + ' (المتوقع ' + (e.f || '—') + ') · ' + (b.d < 0 ? 'إيجابي للذهب 🟢' : b.d > 0 ? 'سلبي للذهب 🔴' : 'تأثير محدود')); } }
     if (e.cur !== 'USD' || e.imp !== 'High') return; const k = e.t + e.title, d = e.t - now;
     if (d > 0 && d <= 15 * 6e4 && !NWARN[k]) { NWARN[k] = 1; L.set('amg_nwarn', NWARN); const g = gloss(e.title); toast('⚠️ باقي ' + left(d) + ' على خبر ' + (g.ar || e.title), 'bad'); beep('alert'); devNotify('AM GOLD · خبر قوي', 'باقي ' + left(d) + ' على ' + (g.ar || e.title)); }
   });
