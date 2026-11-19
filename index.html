@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-13">
+<meta name="app-build" content="2026.11.19-14">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -655,11 +655,21 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .seg2 .ic{width:17px;height:17px}
 @media (max-width:900px){.seg2 .tl{display:none}.seg2 button{padding:0 11px}}
 
-/* ===== chat v3: سجل محادثات مثل تيليگرام + ملء الشاشة ===== */
-#app[data-pg=chat] .side,#app[data-pg=chat] .top,#app[data-pg=chat] .bnav,#app[data-pg=chat] main>.credit,#app[data-pg=chat] #demoBar{display:none!important}
-#app[data-pg=chat] main{padding:0!important;max-width:none!important;margin:0!important}
-#app[data-pg=chat] .gchat{position:fixed;left:0;right:0;top:var(--vvt,0px);height:var(--chh,100dvh);z-index:30;border-radius:0;border:0;flex-direction:row}
-.gchat{display:flex;height:100dvh}
+/* ===== chat v3: سجل محادثات مثل تيليگرام ===== */
+#app[data-pg=chat] main>.credit,#app[data-pg=chat] #demoBar{display:none!important}
+.gchat{display:flex;flex-direction:row;height:calc(100dvh - 40px)}
+@media (min-width:901px){#app[data-pg=chat] main{padding-bottom:16px}}
+@media (max-width:900px){
+ #app[data-pg=chat]:not([data-conv]) .gchat{position:static;height:auto;min-height:calc(100dvh - 150px);border:0;border-radius:0;background:none;overflow:visible}
+ #app[data-pg=chat]:not([data-conv]) .top{display:flex!important}
+ #app[data-pg=chat]:not([data-conv]) main{padding:8px 0 calc(90px + var(--sab))!important}
+ #app[data-pg=chat]:not([data-conv]) .clist{background:none}
+ #app[data-pg=chat]:not([data-conv]) .cscroll{overflow:visible}
+ #app[data-pg=chat]:not([data-conv]) .clh{padding-top:4px}
+ #app[data-pg=chat]:not([data-conv]) .clh [data-go=home]{visibility:hidden}
+ #app[data-conv] .top,#app[data-conv] .bnav{display:none!important}
+ #app[data-pg=chat][data-conv] .gchat{position:fixed;left:0;right:0;top:var(--vvt,0px);height:var(--chh,100dvh);z-index:30;border-radius:0;border:0}
+}
 .clist{position:relative;z-index:2;width:360px;flex:none;display:flex;flex-direction:column;border-left:1px solid var(--line);background:var(--panel);min-height:0}
 .cview{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .clh{display:flex;align-items:center;gap:10px;padding:calc(10px + var(--sat)) 12px 8px}
@@ -722,27 +732,38 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .comp[data-lock="0"] .rec .rslide{display:block}
 .comp[data-lock="0"] .rec canvas,.comp[data-lock="0"] .rec #recDel{display:none}
 
+.comp[data-rec="1"][data-lock="0"] .sendb{transition:transform .06s linear}
+
 /* ===== قناة التوصيات مثل تيليگرام ===== */
-.chan{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px;min-height:calc(100dvh - 140px)}
-.chh{display:flex;align-items:center;gap:12px;position:sticky;top:calc(64px + var(--sat));z-index:6;padding:12px 14px}
-@media (min-width:901px){.chh{top:10px}}
-.chh .cav{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 50% 40%,var(--accent-glow),var(--panel2));display:grid;place-items:center;flex:none;box-shadow:0 0 0 2px var(--accent-soft)}
-.chh .cav svg{width:32px;height:32px}
-.chh .cinf{flex:1;min-width:0}.chh .cinf b{display:block;font-family:var(--fd);font-size:16.5px;font-weight:800}.chh .cinf small{color:var(--dim);font-size:12.5px}
-#subBtn.on{background:var(--panel2);color:var(--ink);border:1px solid var(--line2)}
-.cfeed{display:flex;flex-direction:column;gap:12px;flex:1}
-.cday{align-self:center;padding:3px 12px;border-radius:999px;background:var(--panel2);font-size:12.5px;color:var(--dim);font-weight:700}
-.cpost{align-self:flex-start;width:min(560px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px 18px 18px 6px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.18);position:relative}
-.cpost.pin{box-shadow:0 0 0 1.5px rgba(var(--acc-rgb),.6),0 2px 10px rgba(0,0,0,.18)}
-.cpost .cimg{display:block;width:100%;max-height:420px;object-fit:cover;cursor:zoom-in;background:var(--panel2)}
-.cpost .cb{padding:10px 13px 8px}
-.cpost .ctx{white-space:pre-wrap;line-height:1.75;font-size:15px;overflow-wrap:anywhere}
+.tgc{position:relative;display:flex;flex-direction:column;height:calc(100dvh - 40px);border-radius:20px;overflow:hidden;border:1px solid var(--line);background:var(--void)}
+.tgc .wall{position:absolute;inset:0;background-image:radial-gradient(ellipse 70% 45% at 50% 0%,var(--accent-glow),transparent 70%),var(--bgpat);pointer-events:none}
+.tgh{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;gap:10px;padding:10px 12px 18px;background:linear-gradient(to bottom,color-mix(in srgb,var(--void) 75%,transparent),transparent)}
+.tgt{flex:1;min-width:0;height:52px;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;max-width:420px;margin:0 auto}
+.tgt b{font-family:var(--fd);font-size:17px;font-weight:800;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tgt small{font-size:12.5px;color:var(--dim)}
+.tgs{flex:1;min-width:0;height:48px;border-radius:24px;display:flex;align-items:center;gap:6px;padding:0 12px}
+.tgs input{flex:1;min-width:0;border:0;outline:0;background:none;color:var(--ink);font-size:16px;font-family:inherit}
+.tgs .ic{width:18px;height:18px;color:var(--dim)}.tgs .ib{width:32px;height:32px;background:none}
+.tgh .cav{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;flex:none}
+.tgh .cav svg{width:32px;height:32px}
+#chanPin{top:72px}
+.tgfeed{position:relative;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:80px 10px 10px;display:flex;flex-direction:column}
+#tgc.pinned .tgfeed{padding-top:132px}
+.tgin{margin-top:auto;display:flex;flex-direction:column;gap:10px;max-width:760px;width:100%;margin-inline:auto}
+.cday{align-self:center;padding:4px 12px;border-radius:999px;background:color-mix(in srgb,var(--panel) 70%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:12.5px;color:var(--dim);font-weight:700;margin:6px 0 2px}
+.cpost{align-self:flex-end;width:min(560px,88%);background:var(--in-bg,var(--panel));border-radius:18px 18px 18px 5px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.25);position:relative}
+html[data-theme="light"] .cpost{background:#fff}
+.cpost .cn{font-family:var(--fd);font-weight:800;font-size:14.5px;color:var(--accent);padding:9px 13px 0}
+.cpost .cimg{display:block;width:100%;max-height:440px;object-fit:cover;cursor:zoom-in;background:var(--panel2);margin-top:8px}
+.cpost .cb{padding:8px 13px 8px}
+.cpost .ctx{white-space:pre-wrap;line-height:1.75;font-size:16px;overflow-wrap:anywhere}
 .cpost .ctx a{color:var(--accent)}
-.cpost .cm{display:flex;align-items:center;gap:10px;justify-content:flex-end;font-size:12px;color:var(--faint);margin-top:6px}
+.cpost .cm{display:flex;align-items:center;gap:10px;justify-content:flex-end;font-size:12px;color:var(--faint);margin-top:4px;direction:ltr}
 .cpost .cm .ic{width:15px;height:15px}
 .cpost .cm span{display:inline-flex;align-items:center;gap:4px}
-.cpost .cpin{margin-inline-end:auto;font-size:11.5px;font-weight:800;color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:999px}
-.cpost .cadm{display:flex;gap:6px;flex-wrap:wrap;padding:0 13px 10px}
+.cpost .cpin{margin-right:auto;font-size:11.5px;font-weight:800;color:var(--accent);direction:rtl}
+.cpost .cadm{display:flex;gap:6px;flex-wrap:wrap;padding:8px 13px 10px;border-top:1px solid var(--line)}
+.cpost.flash{animation:mflash 1.2s}
 .sig{border-radius:14px;padding:11px 12px;margin-bottom:8px;border:1px solid var(--line2);background:var(--panel2)}
 .sig.buy{border-color:rgba(60,207,130,.45);background:linear-gradient(135deg,rgba(60,207,130,.13),transparent 70%)}
 .sig.sell{border-color:rgba(242,89,106,.45);background:linear-gradient(135deg,rgba(242,89,106,.13),transparent 70%)}
@@ -758,14 +779,35 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .sig .sl b{font:800 15px var(--fm);direction:ltr;display:block;text-align:right}
 .sig .sl .hit b{color:var(--ok)}.sig .sl .hit small::after{content:" ✓";color:var(--ok)}
 .sig .sl .slb b{color:var(--bad)}
-.ccomp{position:sticky;bottom:calc(76px + var(--sab));z-index:6;padding:10px}
-@media (min-width:901px){.ccomp{bottom:12px}}
-.cbar2{display:flex;align-items:flex-end;gap:8px}
-.cbar2 textarea{flex:1;min-width:0;resize:none;min-height:42px;max-height:160px;padding:9px 12px;line-height:1.5}
-.cbar2 .ib{flex:none;cursor:pointer}
+.tgfoot{position:relative;z-index:4;display:flex;align-items:center;gap:10px;padding:8px 12px calc(10px + var(--sab));background:linear-gradient(to top,color-mix(in srgb,var(--void) 75%,transparent),transparent)}
+.tgfoot .circ{width:52px;height:52px}
+.tgbig{flex:1;height:52px;border-radius:26px;font-family:var(--fd);font-weight:800;font-size:17px;color:var(--ink);max-width:420px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:8px}
+.tgbig.join{background:var(--accent);color:var(--accent-ink);border-color:transparent;box-shadow:0 8px 24px var(--accent-glow)}
+#app[data-admin] #chanFootU{display:none}
+.tgfoot.adm{display:block}
+.ccomp{border-radius:22px;padding:8px;max-width:760px;margin:0 auto}
+.cbar2{display:flex;align-items:flex-end;gap:6px}
+.cbar2 textarea{flex:1;min-width:0;resize:none;border:0;outline:0;background:none;color:var(--ink);font-size:16px;font-family:inherit;min-height:40px;max-height:160px;padding:9px 6px;line-height:1.45}
+.cbar2 .ib{flex:none;cursor:pointer;background:none;color:var(--dim)}.cbar2 .ib.on{color:var(--accent)}
+.sendc{width:42px;height:42px;background:var(--accent);color:var(--accent-ink)}
 .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(130px,100%),1fr));gap:8px;margin-bottom:8px}
 .sgrid .fld{margin:0}
-.cempty2{text-align:center;color:var(--dim);padding:40px 16px;line-height:1.9}
+.clock2{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:30px 20px;color:var(--dim);line-height:1.8}
+.clock2 .cav{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,var(--accent-glow),var(--panel2));box-shadow:0 0 0 3px var(--accent-soft),0 0 40px var(--accent-glow)}
+.clock2 .cav svg{width:58px;height:58px}
+.clock2 b{font-family:var(--fd);font-size:20px;color:var(--ink)}
+.clock2 .lk{display:flex;gap:16px;font-size:13px;margin-top:4px}
+.clock2 .lk span{display:flex;align-items:center;gap:5px}
+.ghost-post{align-self:flex-end;width:min(560px,88%);height:110px;border-radius:18px 18px 18px 5px;background:var(--panel);opacity:.35;filter:blur(1px)}
+@media (max-width:900px){
+ #app[data-pg=signals] .top,#app[data-pg=signals] .bnav,#app[data-pg=signals] main>.credit,#app[data-pg=signals] #demoBar{display:none!important}
+ #app[data-pg=signals] .tgc{position:fixed;left:0;right:0;top:var(--vvt,0px);height:var(--chh,100dvh);z-index:30;border-radius:0;border:0}
+ .tgh{padding-top:calc(8px + var(--sat))}
+ #chanPin{top:calc(70px + var(--sat))}
+ .tgfeed{padding-top:calc(78px + var(--sat))}
+ #tgc.pinned .tgfeed{padding-top:calc(130px + var(--sat))}
+}
+#app[data-pg=signals] main>.credit{display:none}
 /* زيارات الأدمن */
 .vstat{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(110px,100%),1fr));gap:8px}
 .vstat div{background:var(--panel2);border-radius:12px;padding:10px 12px}
@@ -785,6 +827,9 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .toplogin{height:36px;padding:0 12px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:13.5px;display:flex;align-items:center;gap:6px}
 .toplogin .ic{width:17px;height:17px}
 .cpost.flash{animation:mflash 1.2s}
+
+#toast{transform:translate(-50%,calc(-100% - 30px - var(--sat)));opacity:0;visibility:hidden;transition:transform .3s cubic-bezier(.2,.9,.3,1),opacity .25s,visibility 0s .3s;z-index:150}
+#toast.show{transform:translate(-50%,0);opacity:1;visibility:visible;transition:transform .3s cubic-bezier(.2,.9,.3,1),opacity .2s,visibility 0s}
 </style>
 </head>
 <body>
@@ -848,6 +893,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></symbol>
  <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></symbol>
  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+ <symbol id="i-move" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><path d="m9 6 3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></symbol>
  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol>
  <symbol id="i-sig" viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/></symbol>
  <symbol id="i-ul" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 21h16"/></symbol>
@@ -1003,6 +1049,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
      <hr>
      <button data-act="autofib" data-tip="فيبو ذكي"><svg class="ic"><use href="#i-ai"/></svg></button>
      <button data-act="mag" class="tg" data-tip="المغناطيس" id="magBtn"><svg class="ic"><use href="#i-mag"/></svg></button>
+     <button data-act="free" class="tg" data-tip="حركة حرة" id="freeBtn"><svg class="ic"><use href="#i-move"/></svg></button>
      <button data-act="undo" data-tip="تراجع"><svg class="ic"><use href="#i-undo"/></svg></button>
      <button data-act="share" data-tip="انشر التحليل" class="only-admin"><svg class="ic"><use href="#i-send"/></svg></button>
      <button data-act="clear" data-tip="امسح رسوماتي"><svg class="ic"><use href="#i-trash"/></svg></button>
@@ -1100,32 +1147,42 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     </div>
    </div>
   </section>
-  <!-- SIGNALS CHANNEL -->
+  <!-- SIGNALS CHANNEL (مثل قناة تيليگرام) -->
   <section class="pg hide" id="pg-signals">
-   <div class="chan">
-    <div class="chh card br">
-     <div class="cav"><svg><use href="#i-logo"/></svg></div>
-     <div class="cinf"><b>توصيات AM GOLD</b><small><span class="num" id="chSubs">0</span> مشترك · قناة علي مالك</small></div>
-     <button class="btn" id="subBtn"><svg class="ic"><use href="#i-bell"/></svg><span>اشترك</span></button>
+   <div class="tgc" id="tgc">
+    <div class="wall"></div>
+    <div class="tgh">
+     <button class="gl circ" data-go="home" title="رجوع"><svg class="ic"><use href="#i-back"/></svg></button>
+     <div class="gl tgt" id="chanInfo"><b>توصيات AM GOLD ⚡</b><small><span class="num" id="chSubs">0</span> مشترك</small></div>
+     <div class="tgs gl hide" id="chanSearchW"><svg class="ic"><use href="#i-search"/></svg><input id="chanQ" placeholder="دوّر بالتوصيات…" autocomplete="off"><button class="ib" id="chanQX"><svg class="ic"><use href="#i-x"/></svg></button></div>
+     <div class="cav gl"><svg><use href="#i-logo"/></svg></div>
     </div>
-    <div class="cfeed" id="chanFeed"></div>
-    <div class="ccomp card br only-admin" id="chanComp">
-     <div class="sigf hide" id="sigF">
-      <div class="row" style="gap:8px;margin-bottom:8px"><div class="seg" id="sigSide"><button data-sd="buy" class="on">شراء BUY</button><button data-sd="sell">بيع SELL</button></div><span class="sp"></span><button class="ib" id="sigX" title="بدون توصية"><svg class="ic"><use href="#i-x"/></svg></button></div>
-      <div class="sgrid">
-       <div class="fld"><label>الدخول</label><input class="inp num" id="sgEn" inputmode="decimal" placeholder="مثلاً 3650 أو 3648-3652"></div>
-       <div class="fld"><label>الوقف SL</label><input class="inp num" id="sgSl" inputmode="decimal"></div>
-       <div class="fld"><label>الهدف 1</label><input class="inp num" id="sgT1" inputmode="decimal"></div>
-       <div class="fld"><label>الهدف 2</label><input class="inp num" id="sgT2" inputmode="decimal"></div>
-       <div class="fld"><label>الهدف 3</label><input class="inp num" id="sgT3" inputmode="decimal"></div>
+    <div class="pinbar gl hide" id="chanPin"><div class="bar"></div><svg class="ic"><use href="#i-pin"/></svg><div class="x"><div class="t">الرسالة المثبتة</div><div class="s" id="chanPinTx"></div></div></div>
+    <div class="tgfeed" id="chanScroll"><div class="tgin" id="chanFeed"></div></div>
+    <div class="tgfoot" id="chanFootU">
+     <button class="gl circ" id="chanMore" title="المزيد"><svg class="ic"><use href="#i-more"/></svg></button>
+     <button class="gl tgbig" id="subBtn"><span>اشترك</span></button>
+     <button class="gl circ" id="chanSB" title="بحث"><svg class="ic"><use href="#i-search"/></svg></button>
+    </div>
+    <div class="tgfoot adm only-admin" id="chanComp">
+     <div class="ccomp gl">
+      <div class="sigf hide" id="sigF">
+       <div class="row" style="gap:8px;margin-bottom:8px"><div class="seg" id="sigSide"><button data-sd="buy" class="on">شراء BUY</button><button data-sd="sell">بيع SELL</button></div><span class="sp"></span><button class="ib" id="sigX" title="بدون توصية"><svg class="ic"><use href="#i-x"/></svg></button></div>
+       <div class="sgrid">
+        <div class="fld"><label>الدخول</label><input class="inp num" id="sgEn" inputmode="decimal" placeholder="3650 أو 3648-3652"></div>
+        <div class="fld"><label>الوقف SL</label><input class="inp num" id="sgSl" inputmode="decimal"></div>
+        <div class="fld"><label>الهدف 1</label><input class="inp num" id="sgT1" inputmode="decimal"></div>
+        <div class="fld"><label>الهدف 2</label><input class="inp num" id="sgT2" inputmode="decimal"></div>
+        <div class="fld"><label>الهدف 3</label><input class="inp num" id="sgT3" inputmode="decimal"></div>
+       </div>
       </div>
-     </div>
-     <div class="rbar hide" id="chanImgPrev" style="background:var(--panel2);margin-bottom:8px"><img alt=""><div class="x"><div class="t">صورة</div><div class="s">تنرسل ويا المنشور</div></div><button class="ib"><svg class="ic"><use href="#i-x"/></svg></button></div>
-     <div class="cbar2">
-      <button class="btn tint sm" id="sigTog"><svg class="ic" style="width:16px;height:16px"><use href="#i-long"/></svg>توصية</button>
-      <label class="ib" title="صورة"><svg class="ic"><use href="#i-img"/></svg><input type="file" accept="image/*" id="chanImg" hidden></label>
-      <textarea class="inp" id="chanTx" rows="1" placeholder="اكتب رسالة للقناة…"></textarea>
-      <button class="btn" id="chanSend"><svg class="ic" style="width:16px;height:16px"><use href="#i-send"/></svg></button>
+      <div class="rbar hide" id="chanImgPrev" style="margin-bottom:8px"><img alt=""><div class="x"><div class="t">صورة</div><div class="s">تنرسل ويا المنشور</div></div><button class="ib"><svg class="ic"><use href="#i-x"/></svg></button></div>
+      <div class="cbar2">
+       <button class="ib" id="sigTog" title="توصية"><svg class="ic"><use href="#i-long"/></svg></button>
+       <label class="ib" title="صورة"><svg class="ic"><use href="#i-img"/></svg><input type="file" accept="image/*" id="chanImg" hidden></label>
+       <textarea id="chanTx" rows="1" placeholder="رسالة للقناة…"></textarea>
+       <button class="circ sendc" id="chanSend"><svg class="ic"><use href="#i-send"/></svg></button>
+      </div>
      </div>
     </div>
    </div>
@@ -1220,7 +1277,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-mem" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-13</span></div>
+     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-14</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1419,6 +1476,7 @@ class GoldChart {
     if (!isFinite(lo)) { const k = this.c[n - 1]; lo = k ? k.l : 0; hi = k ? k.h : 1; }
     if (hi - lo < 1e-6) { hi += 1; lo -= 1; }
     const pad = (hi - lo) * .1; lo -= pad; hi += pad;
+    if (this.manualY) { if (!this.fix) this.fix = { lo, hi }; lo = this.fix.lo; hi = this.fix.hi; } else this.fix = null;
     const mid = (lo + hi) / 2 + this.yO, half = (hi - lo) / 2 * this.yS;
     this.lo = mid - half; this.hi = mid + half; this.i0 = i0; this.i1 = i1;
   }
@@ -1859,6 +1917,7 @@ class GoldChart {
     }
     if (this.sel) { this.sel = null; this.cb.onSelect && this.cb.onSelect(null); }
     if (this.measure) this.measure = null;
+    if (this.free && p.x <= this.pw && !this.manualY) { this.manualY = true; this.fix = { lo: this.lo, hi: this.hi }; this.yO = 0; this.yS = 1; }
     this.drag = { k: p.x > this.pw ? 'y' : 'pan', sx: p.x, sy: p.y, r: this.right, yS: this.yS, yO: this.yO, span: this.hi - this.lo };
     if (touch) { this.cross = null; this.lpT = setTimeout(() => { if (!this.moved && this.drag) { this.drag = { k: 'cross' }; this.cross = p; this.dirty = true; navigator.vibrate && navigator.vibrate(8); } }, 380); }
     this.dirty = true;
@@ -1880,7 +1939,7 @@ class GoldChart {
     if (D && this.ptrs.has(id)) {
       if (D.k === 'cross') { this.cross = p; this.dirty = true; return; }
       if (D.k === 'pan') { this.right = D.r - (p.x - D.sx) / this.barW; if (this.manualY) this.yO = D.yO + (p.y - D.sy) / this.ph * D.span; this.clampV(); const now = performance.now(); (D.hist = D.hist || []).push({ t: now, r: this.right }); while (D.hist.length > 2 && now - D.hist[0].t > 90) D.hist.shift(); }
-      else if (D.k === 'y') { this.manualY = true; this.yS = Math.max(.1, Math.min(10, D.yS * Math.exp((p.y - D.sy) * .006))); }
+      else if (D.k === 'y') { if (!this.manualY) { this.manualY = true; this.fix = { lo: this.lo, hi: this.hi }; this.yO = 0; D.yO = 0; D.yS = this.yS = 1; } this.yS = Math.max(.1, Math.min(10, D.yS * Math.exp((p.y - D.sy) * .006))); }
       else if (this.moved) {
         if (!D.pushed && !D.alert) { this.undoS.push(D.o.startsWith('[') ? JSON.stringify(this.mine) : JSON.stringify(this.mine)); D.pushed = true; }
         const di = this.iX(p.x) - D.i, dp = this.pY(p.y) - D.p, o = JSON.parse(D.o);
@@ -2455,7 +2514,7 @@ function initChart() {
   if (ME.role === 'guest') CH.ind.teach = false;
   CH.setCS(S.cs || {}); applySess();
   CH.alerts = ALERTS.filter(a => a.on);
-  $('#magBtn').classList.toggle('on', S.mag);
+  $('#magBtn').classList.toggle('on', S.mag); CH.free = !!S.free; $('#freeBtn').classList.toggle('on', !!S.free);
   $('#tfs').innerHTML = TFS.map(t => `<button data-tf="${t[0]}">${t[1]}</button>`).join('');
   $('#tfs').onclick = e => { const b = e.target.closest('[data-tf]'); if (b) loadTF(b.dataset.tf); };
   $('#tools').onclick = e => {
@@ -2465,6 +2524,7 @@ function initChart() {
     if (a === 'autofib') { const r = CH.autoFib(); toast(r === 'up' ? '✦ فيبو ذكي: الترند صاعد، من القاع للقمة' : '✦ فيبو ذكي: الترند نازل، من القمة للقاع', 'ok'); }
     if (a === 'mag') { S.mag = !S.mag; saveS(); CH.ind.mag = S.mag; b.classList.toggle('on', S.mag); $('#swMag').classList.toggle('on', S.mag); toast(S.mag ? 'المغناطيس شغّال' : 'المغناطيس طافي'); }
     if (a === 'undo') { if (!CH.undo()) toast('ماكو شي ترجعه'); }
+    if (a === 'free') { S.free = !S.free; saveS(); CH.free = S.free; b.classList.toggle('on', S.free); if (!S.free) CH.autoScale(); toast(S.free ? '✥ الحركة الحرة شغّالة: حرّك الشارت فوگ وجوّه ويمين ويسار' : 'رجع السعر يتظبط تلقائي'); }
     if (a === 'clear') ask('تمسح رسوماتك؟', 'كل الخطوط والفيبو اللي رسمتها راح تنمسح.', 'امسحها', true).then(ok => ok && CH.clearMine());
     if (a === 'share') shareSheet();
   };
@@ -3130,15 +3190,15 @@ function renderList() {
   el.innerHTML = rows.join('');
 }
 function openConv(c) {
-  stopAudio(); if (REC) recStop(false); replyClear();
+  stopAudio(); if (REC || RG) recCancel(); replyClear();
   if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; }
   CONV = c; TMSG = []; chRendered = new Set(); chInitial = true; fabN = 0; $('#msgInner').innerHTML = '';
   if (c.k === 'thr') tUnsub = DB.watchThread(c.tid, list => { if (!CONV || CONV.tid !== c.tid) return; TMSG = list.slice().sort((a, b) => a.at - b.at); renderMsgs(); chatSeenNow(); });
-  $('#chatWrap').dataset.cv = 'conv';
+  $('#chatWrap').dataset.cv = 'conv'; if (matchMedia('(max-width:900px)').matches) $('#app').dataset.conv = '1'; setTimeout(() => window.kbUpd && kbUpd(), 0);
   chatHeader(); renderMsgs(); renderList(); chatSeenNow();
   if (!matchMedia('(pointer:coarse)').matches && c.k !== 'saved') setTimeout(() => $('#chatTx').focus(), 50);
 }
-function closeConv() { stopAudio(); if (REC) recStop(false); if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; } CONV = null; $('#chatWrap').dataset.cv = 'list'; renderList(); chatHeader(); }
+function closeConv() { stopAudio(); if (REC || RG) recCancel(); if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; } CONV = null; $('#chatWrap').dataset.cv = 'list'; delete $('#app').dataset.conv; setTimeout(() => window.kbUpd && kbUpd(), 0); renderList(); chatHeader(); }
 function openKey(k) {
   if (k === 'room') return openConv({ k: 'room' });
   if (k === 'saved') return openConv({ k: 'saved' });
@@ -3277,30 +3337,47 @@ function delLogSheet() {
   modal(`<h2>سجل الرسائل المحذوفة<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>${a.length ? `<div class="list">${a.map(x => `<div class="li"><div class="mn"><b style="font-weight:700">${esc(x.text || '—')}</b><small>كتبها ${esc(x.author || '')} · حذفها ${esc(x.by || '')} · ${esc(x.where || '')} · ${ago(x.at)}</small></div></div>`).join('')}</div>` : '<div class="empty">ماكو رسائل محذوفة</div>'}<div class="faint" style="font-size:12px;margin-top:10px">رسائل الطالب ما تنحذف من الدردشة إذا حذفت حسابه، تبقى محفوظة بالسجل.</div>`);
 }
 function myAv() { const b = $('#myPhotoBtn'); if (b && ME) b.innerHTML = avHTML(ME.uid, ME.name, 40); }
+/* ---- زر البصمة: الواجهة تشتغل فوراً من تلمس، والمايك يلحگ وراها ---- */
+let RG = null;
+function recUI(on, lock) { const f = $('#chatFoot'); f.dataset.rec = on ? '1' : '0'; f.dataset.lock = lock ? '1' : '0'; if (!on) resetRecUI(); }
+function recLock() { if (!RG) return; RG.locked = true; recUI(true, true); resetRecUI(); navigator.vibrate && navigator.vibrate(12); }
+function recCancel(msg) { if (RG) RG.cancel = true; if (REC) recStop(false); else { recUI(false); clearInterval(recT0); } RG = null; if (msg) toast(msg); }
+let recT0 = 0;
 function setupSendBtn() {
-  const b = $('#chatSend'), tx = $('#chatTx'); let g = null;
-  const down = (x, y) => { if (REC && REC.locked) { g = { mode: 'stop' }; return; } if (tx.value.trim() || chImgData) { g = { mode: 'send' }; return; } g = { mode: 'rec', x, y, t: Date.now() }; RECH = true; recStart(); };
+  const b = $('#chatSend'), tx = $('#chatTx'), sl = $('#recSlide'), lk = $('#lockP'); let g = null, raf = 0, pend = null;
+  const paint = () => { raf = 0; if (!pend) return; const { dx, dy } = pend; sl.style.transform = `translateX(${Math.min(0, dx) * .8}px)`; sl.style.opacity = String(1 - Math.min(1, Math.max(0, -dx) / 120)); lk.style.transform = `translateY(${Math.max(-50, Math.min(0, dy)) * .6}px)`; b.style.transform = `translate(${Math.max(-60, Math.min(0, dx)) * .5}px,${Math.max(-60, Math.min(0, dy)) * .5}px) scale(1.35)`; };
+  const down = (x, y) => {
+    if (RG && RG.locked) { g = { mode: 'stop' }; return; }
+    if (tx.value.trim() || chImgData) { g = { mode: 'send' }; return; }
+    if (cm() === 'room' && CFG.chatOpen === false && ME.role !== 'admin') { g = null; return toast('الغرفة مقفولة هسه', 'bad'); }
+    g = { mode: 'rec', x, y, t: Date.now() }; RG = { locked: false, cancel: false, send: false, t: Date.now() };
+    recUI(true, false); $('#recT').textContent = '0:00'; navigator.vibrate && navigator.vibrate(10);
+    const rg = RG; clearInterval(recT0); recT0 = setInterval(() => { if (RG !== rg || REC) return clearInterval(recT0); $('#recT').textContent = fmtDur((Date.now() - rg.t) / 1000); }, 250);
+    recStart(rg);
+  };
   const move = (x, y) => {
-    if (!g || g.mode !== 'rec' || !REC || REC.locked) return; const dx = x - g.x, dy = y - g.y;
-    const sl = $('#recSlide'); sl.style.transform = `translateX(${Math.min(0, dx)}px)`; sl.style.opacity = String(1 - Math.min(1, Math.max(0, -dx) / 110));
-    $('#lockP').style.transform = `translateY(${Math.max(-60, Math.min(0, dy))}px)`;
-    if (dx < -110) { g = null; RECH = false; recStop(false); navigator.vibrate && navigator.vibrate(20); toast('انلغت البصمة'); }
-    else if (dy < -70) { REC.locked = true; $('#chatFoot').dataset.lock = '1'; resetRecUI(); navigator.vibrate && navigator.vibrate(15); g = null; RECH = false; }
+    if (!g || g.mode !== 'rec' || !RG || RG.locked) return; const dx = x - g.x, dy = y - g.y;
+    if (dx < -120) { g = null; pend = null; b.style.transform = ''; navigator.vibrate && navigator.vibrate(20); return recCancel('انلغت البصمة'); }
+    if (dy < -75) { g = null; pend = null; b.style.transform = ''; return recLock(); }
+    pend = { dx, dy }; if (!raf) raf = requestAnimationFrame(paint);
   };
   const up = () => {
-    RECH = false; if (!g) return; const gg = g; g = null;
+    b.style.transform = ''; pend = null; if (!g) return; const gg = g; g = null;
     if (gg.mode === 'send') { send(); return; }
-    if (gg.mode === 'stop') { recStop(true); return; }
-    if (gg.mode === 'rec') { if (!REC) return; if (Date.now() - gg.t < 350) { REC.locked = true; $('#chatFoot').dataset.lock = '1'; toast('دا يسجّل… دوس ➤ للإرسال أو 🗑 للإلغاء'); } else recStop(true); resetRecUI(); }
+    if (gg.mode === 'stop') { if (REC) recStop(true); else recCancel(); RG = null; return; }
+    if (!RG) return;
+    if (Date.now() - gg.t < 300) { recLock(); toast('دا يسجّل… دوس ➤ للإرسال أو 🗑 للإلغاء'); return; }
+    RG.send = true; if (REC) recStop(true); else { recCancel(); toast('اضغط مطوّل وسجّل شوية أكثر'); }
+    RG = null;
   };
   b.addEventListener('touchstart', e => { e.preventDefault(); const t = e.touches[0]; down(t.clientX, t.clientY); }, { passive: false });
   b.addEventListener('touchmove', e => { e.preventDefault(); const t = e.touches[0]; move(t.clientX, t.clientY); }, { passive: false });
   b.addEventListener('touchend', e => { e.preventDefault(); up(); }, { passive: false });
-  b.addEventListener('touchcancel', () => { RECH = false; if (g && g.mode === 'rec' && REC && !REC.locked) { REC.locked = true; $('#chatFoot').dataset.lock = '1'; } g = null; resetRecUI(); });
+  b.addEventListener('touchcancel', () => { b.style.transform = ''; if (g && g.mode === 'rec' && RG) recLock(); g = null; });
   b.addEventListener('mousedown', e => { if (e.button) return; e.preventDefault(); down(e.clientX, e.clientY); const mm = ev => move(ev.clientX, ev.clientY), mu = () => { removeEventListener('mousemove', mm); removeEventListener('mouseup', mu); up(); }; addEventListener('mousemove', mm); addEventListener('mouseup', mu); });
   b.addEventListener('click', e => e.preventDefault());
 }
-function resetRecUI() { const s = $('#recSlide'); if (s) { s.style.transform = ''; s.style.opacity = ''; } const l = $('#lockP'); if (l) l.style.transform = ''; }
+function resetRecUI() { const s = $('#recSlide'); if (s) { s.style.transform = ''; s.style.opacity = ''; } const l = $('#lockP'); if (l) l.style.transform = ''; const b = $('#chatSend'); if (b) b.style.transform = ''; }
 let send = () => { };
 function initChat() {
   const tx = $('#chatTx'), box = $('#msgs'), comp = $('#chatFoot');
@@ -3366,7 +3443,7 @@ function initChat() {
   box.addEventListener('dblclick', e => { if (matchMedia('(pointer:coarse)').matches || cm() === 'saved') return; const el = e.target.closest('.m'); if (!el) return; const m = curList().find(x => x.id === el.dataset.mid); if (m) replySet(m); });
   $('#chatLock').onclick = async () => { const open = CFG.chatOpen !== false; try { await DB.setConfig({ chatOpen: !open }); CFG.chatOpen = !open; chatHeader(); DB.log(open ? 'قفل غرفة الطلاب' : 'فتح غرفة الطلاب'); toast(open ? '🔒 الطلاب ما يگدرون يكتبون بالغرفة هسه' : '🔓 الغرفة انفتحت'); } catch (e) { toast('ما تغيّر', 'bad'); } };
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeHold(); });
-  $('#recDel').onclick = () => recStop(false);
+  $('#recDel').onclick = () => recCancel();
   $('#pinbar').onclick = e => { if (e.target.closest('#unpin')) { DB.setConfig({ pin: null }); return; } if (CFG.pin) jumpTo(CFG.pin.id); };
   DB.watchSaved(l => { SAVED = l.map(x => Object.assign({}, x, { id: x.id })).sort((a, b) => a.at - b.at); if (cm() === 'saved') renderMsgs(); renderList(); });
   DB.watchNotes(l => { NOTES = l; renderNotes(); });
@@ -3402,25 +3479,25 @@ function playVoice(mid, seek) {
   a.play().catch(() => toast('ما گدرت أشغّل البصمة', 'bad'));
   const loop = () => { if (!AUD || AUD.a !== a) return; syncVoice(); AUD.raf = requestAnimationFrame(loop); }; loop();
 }
-async function recStart() {
+async function recStart(rg) {
   if (REC || RECB) return; RECB = true;
-  if (cm() === 'room' && CFG.chatOpen === false && ME.role !== 'admin') return toast('الغرفة مقفولة هسه', 'bad');
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) { RECB = false; RECH = false; return toast('جهازك ما يدعم تسجيل الصوت', 'bad'); }
-  let st; try { st = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); } catch (e) { RECB = false; RECH = false; return toast('لازم تسمح بالمايك حتى تسجّل', 'bad'); }
-  RECB = false; if (!CONV) { st.getTracks().forEach(t => t.stop()); return; }
+  const fail = m => { RECB = false; if (RG === rg) { recUI(false); RG = null; } clearInterval(recT0); toast(m, 'bad'); };
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) return fail('جهازك ما يدعم تسجيل الصوت');
+  let st; try { st = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); } catch (e) { return fail('لازم تسمح بالمايك حتى تسجّل'); }
+  RECB = false;
+  if (!CONV || rg.cancel || rg.send || RG !== rg) { st.getTracks().forEach(t => t.stop()); return; }
   const mime = ['audio/mp4;codecs=mp4a.40.2', 'audio/mp4', 'audio/aac', 'audio/webm;codecs=opus', 'audio/webm'].find(t => { try { return MediaRecorder.isTypeSupported(t); } catch (e) { return false; } }) || '';
   let rec; try { rec = new MediaRecorder(st, mime ? { mimeType: mime, audioBitsPerSecond: 24000 } : {}); } catch (e) { rec = new MediaRecorder(st); }
   const ch = []; rec.ondataavailable = e => { if (e.data && e.data.size) ch.push(e.data); };
   let ac, an; try { ac = new (window.AudioContext || window.webkitAudioContext)(); const src = ac.createMediaStreamSource(st); an = ac.createAnalyser(); an.fftSize = 1024; src.connect(an); } catch (e) { }
-  const R = REC = { rec, st, ch, ac, an, t0: Date.now(), peaks: [], send: false, mime: rec.mimeType || mime, locked: !RECH };
+  const R = REC = { rec, st, ch, ac, an, t0: Date.now(), peaks: [], send: false, mime: rec.mimeType || mime, rg, get locked() { return rg.locked; } };
   rec.onstop = () => finishRec(R); try { rec.start(); } catch (e) { finishRec(R); return toast('ما گدرت أبدي التسجيل', 'bad'); }
-  stopAudio(); navigator.vibrate && navigator.vibrate(15);
-  $('#chatFoot').dataset.rec = '1'; $('#chatFoot').dataset.lock = R.locked ? '1' : '0'; $('#recT').textContent = '0:00'; if (R.locked) toast('دا يسجّل… دوس ➤ للإرسال أو 🗑 للإلغاء');
+  stopAudio(); clearInterval(recT0);
   const buf = an ? new Uint8Array(an.fftSize) : null;
   R.iv = setInterval(() => {
-    const s = (Date.now() - R.t0) / 1000; $('#recT').textContent = fmtDur(s); let lvl = .05;
+    const s = (Date.now() - rg.t) / 1000; $('#recT').textContent = fmtDur(s); let lvl = .05;
     if (an) { an.getByteTimeDomainData(buf); let sum = 0; for (let i = 0; i < buf.length; i++) { const v = (buf[i] - 128) / 128; sum += v * v; } lvl = Math.min(1, Math.sqrt(sum / buf.length) * 3.5); }
-    R.peaks.push(lvl); drawRecWave(R.peaks); if (s >= 180) { toast('وصلت الحد (3 دقايق)'); recStop(true); }
+    R.peaks.push(lvl); drawRecWave(R.peaks); if (s >= 180) { toast('وصلت الحد (3 دقايق)'); recStop(true); RG = null; }
   }, 70);
 }
 function drawRecWave(p) {
@@ -3433,7 +3510,7 @@ function recStop(send) { const R = REC; if (!R) return; R.send = send; clearInte
 async function finishRec(R) {
   if (R.done) return; R.done = 1; clearInterval(R.iv);
   try { R.st.getTracks().forEach(t => t.stop()); } catch (e) { } try { R.ac && R.ac.close(); } catch (e) { }
-  if (REC === R) REC = null; $('#chatFoot').dataset.rec = '0'; $('#chatFoot').dataset.lock = '0'; resetRecUI(); chGrow();
+  if (REC === R) REC = null; if (RG === R.rg || !RG) { RG = null; recUI(false); } chGrow();
   const dur = (Date.now() - R.t0) / 1000;
   if (!R.send) return; if (dur < 1) return toast('البصمة قصيرة، دوس وسجّل أكثر');
   const blob = new Blob(R.ch, { type: R.mime || 'audio/mp4' }); if (blob.size > 700000) return toast('البصمة كبيرة، خليها أقصر', 'bad');
@@ -3517,18 +3594,29 @@ function sigHTML(s) {
    <div class="sl"><div><small>الدخول</small><b>${esc(s.entry || '—')}</b></div><div class="slb"><small>الوقف</small><b>${esc(s.sl || '—')}</b></div>${tps.map((t, i) => `<div class="${hit(i + 1) ? 'hit' : ''}"><small>الهدف ${i + 1}</small><b>${esc(t)}</b></div>`).join('')}</div></div>`;
 }
 function chanHTML(p) {
-  return `<div class="cpost ${p.pin ? 'pin' : ''}" data-cid="${p.id}">${p.img ? `<img class="cimg" src="${p.img}" data-view loading="lazy">` : ''}
+  return `<div class="cpost ${p.pin ? 'pin' : ''}" data-cid="${p.id}"><div class="cn">AM GOLD ⚡</div>${p.img ? `<img class="cimg" src="${p.img}" data-view loading="lazy">` : ''}
    <div class="cb">${p.sig ? sigHTML(p.sig) : ''}${p.text ? `<div class="ctx">${linkify(esc(p.text))}</div>` : ''}
-   <div class="cm">${p.pin ? '<span class="cpin">📌 مثبّت</span>' : ''}<span><svg class="ic"><use href="#i-eye"/></svg><span class="num">${fmt(p.views || 0)}</span></span><span class="num">${tstr(p.at)}</span></div></div>
+   <div class="cm"><span><svg class="ic"><use href="#i-eye"/></svg><span class="num">${fmt(p.views || 0)}</span></span><span class="num">${tstr(p.at)}</span>${p.pin ? '<span class="cpin">📌 مثبّت</span>' : ''}</div></div>
    ${ME.role === 'admin' ? `<div class="cadm">${p.sig ? '<button class="btn tint sm" data-ca="st">حالة التوصية</button>' : ''}<button class="btn ghost sm" data-ca="pin">${p.pin ? 'شيل التثبيت' : 'ثبّت'}</button><span class="sp"></span><button class="btn danger sm" data-ca="del"><svg class="ic" style="width:16px;height:16px"><use href="#i-trash"/></svg></button></div>` : ''}</div>`;
 }
+const canSee = () => ME.role === 'admin' || isSub();
+const isMute = () => !!L.get('amg_mute', 0);
+let chanQ = '';
+function chanBottom(smooth) { const sc = $('#chanScroll'); if (sc) sc.scrollTo({ top: sc.scrollHeight, behavior: smooth ? 'smooth' : 'auto' }); }
 function renderChan() {
   const el = $('#chanFeed'); if (!el) return;
-  const a = CHAN.slice().sort((x, y) => x.at - y.at), pins = a.filter(p => p.pin);
+  const a = CHAN.slice().sort((x, y) => x.at - y.at), pin = a.filter(p => p.pin).pop();
+  const pb = $('#chanPin'), showPin = !!pin && canSee();
+  pb.classList.toggle('hide', !showPin); $('#tgc').classList.toggle('pinned', showPin);
+  if (showPin) { pb.dataset.jumpc = pin.id; $('#chanPinTx').textContent = pin.sig ? (pin.sig.side === 'buy' ? 'شراء ' : 'بيع ') + 'الذهب ' + (pin.sig.entry || '') + (pin.text ? ' · ' + pin.text : '') : (pin.text || '📷 صورة'); }
+  if (!canSee()) {
+    el.innerHTML = `<div class="ghost-post"></div><div class="ghost-post" style="height:160px"></div><div class="clock2"><div class="cav"><svg><use href="#i-logo"/></svg></div><b>توصيات AM GOLD ⚡</b><div>صفقات الذهب أول بأول: الدخول والوقف والأهداف، وتحديث كل صفقة لحد ما تتسكر.<br>اشترك حتى تنفتحلك القناة ويوصلك تنبيه بكل توصية جديدة.</div><div class="lk"><span>📣 <span class="num">${fmt(CHAN.length)}</span> منشور</span><span>👥 <span class="num">${fmt(SUBS)}</span> مشترك</span></div></div>`;
+    return;
+  }
+  const q = chanQ.trim(), list = q ? a.filter(p => (p.text || '').includes(q) || (p.sig && ((p.sig.entry || '') + (p.sig.side === 'buy' ? 'شراء buy' : 'بيع sell')).toLowerCase().includes(q.toLowerCase()))) : a;
   let h = '', lastD = '';
-  if (!a.length) h = `<div class="card cempty2">${ME.role === 'admin' ? 'القناة فارغة. اكتب أول توصية أو رسالة من جوّه 👇' : 'لحد الآن ماكو توصيات.<br>اشترك حتى يوصلك تنبيه من تنزل توصية جديدة 🔔'}</div>`;
-  if (pins.length && a.length > 3) h += pins.slice(-1).map(p => `<div class="pinbar gl" style="position:static;margin:0" data-jumpc="${p.id}"><div class="bar"></div><svg class="ic"><use href="#i-pin"/></svg><div class="x"><div class="t">مثبّت</div><div class="s">${esc(p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + (p.sig.entry || '') : (p.text || '📷 صورة').slice(0, 80))}</div></div></div>`).join('');
-  a.forEach(p => { const d = new Date(p.at).toDateString(); if (d !== lastD) { lastD = d; const td = new Date().toDateString(), yd = new Date(Date.now() - 864e5).toDateString(); h += `<div class="cday">${d === td ? 'اليوم' : d === yd ? 'البارحة' : DAYS[new Date(p.at).getDay()] + ' ' + dstr(p.at)}</div>`; } h += chanHTML(p); });
+  if (!list.length) h = `<div class="clock2"><div class="cav"><svg><use href="#i-logo"/></svg></div>${q ? 'ماكو شي بهالكلمة' : ME.role === 'admin' ? 'القناة فارغة. اكتب أول توصية أو رسالة من جوّه 👇' : 'لحد الآن ماكو توصيات، من تنزل وحدة يوصلك تنبيه 🔔'}</div>`;
+  list.forEach(p => { const d = new Date(p.at).toDateString(); if (d !== lastD) { lastD = d; const td = new Date().toDateString(), yd = new Date(Date.now() - 864e5).toDateString(); h += `<div class="cday">${d === td ? 'اليوم' : d === yd ? 'البارحة' : DAYS[new Date(p.at).getDay()] + ' ' + dstr(p.at)}</div>`; } h += chanHTML(p); });
   el.innerHTML = h; watchViews();
 }
 function watchViews() {
@@ -3542,37 +3630,53 @@ function watchViews() {
   $$('#chanFeed .cpost').forEach(x => chanIO.observe(x));
 }
 function onChan(list) {
+  const sc = $('#chanScroll'), wasBottom = !sc || sc.scrollHeight - sc.scrollTop - sc.clientHeight < 160;
   CHAN = list;
   const mx = Math.max(0, ...CHAN.map(p => p.at || 0));
-  if (!chanFirst && mx > chanMax && ME.role !== 'admin' && isSub()) { const p = CHAN.find(x => x.at === mx); if (p) { beep('post'); toast('📣 توصيات AM GOLD: ' + (p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + (p.sig.entry || '') : (p.text || 'منشور جديد').slice(0, 60)), 'ok'); devNotify('توصيات AM GOLD', p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + 'الذهب ' + (p.sig.entry || '') : (p.text || 'منشور جديد').slice(0, 100)); } }
-  const wasBottom = (innerHeight + scrollY) >= document.body.scrollHeight - 140;
+  if (!chanFirst && mx > chanMax && ME.role !== 'admin' && isSub() && !isMute()) { const p = CHAN.find(x => x.at === mx); if (p) { beep('post'); toast('📣 توصيات AM GOLD: ' + (p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + (p.sig.entry || '') : (p.text || 'منشور جديد').slice(0, 60)), 'ok'); devNotify('توصيات AM GOLD', p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + 'الذهب ' + (p.sig.entry || '') : (p.text || 'منشور جديد').slice(0, 100)); } }
   chanMax = Math.max(chanMax, mx); chanFirst = false; renderChan(); chanBadge();
-  if (curPg === 'signals' && wasBottom) setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 50);
+  if (wasBottom) setTimeout(() => chanBottom(true), 30);
 }
-function chanBadge() { const seen = L.get('amg_chseen', 0), n = curPg === 'signals' ? 0 : CHAN.filter(p => p.at > seen).length; $$('.sgbadge').forEach(b => { b.textContent = n > 99 ? '99+' : n; b.classList.toggle('hide', !n); }); }
-function renderSubs() { $('#chSubs').textContent = fmt(SUBS); const b = $('#subBtn'), on = isSub(); b.classList.toggle('on', on); b.querySelector('span').textContent = on ? 'مشترك ✓' : 'اشترك'; }
+function chanBadge() { const seen = L.get('amg_chseen', 0), n = curPg === 'signals' || !canSee() ? 0 : CHAN.filter(p => p.at > seen).length; $$('.sgbadge').forEach(b => { b.textContent = n > 99 ? '99+' : n; b.classList.toggle('hide', !n); }); }
+function renderSubs() {
+  $('#chSubs').textContent = fmt(SUBS); const b = $('#subBtn'), on = isSub();
+  b.classList.toggle('join', !on); b.innerHTML = !on ? '<span>اشترك</span>' : isMute() ? '<svg class="ic"><use href="#i-bell"/></svg><span>إلغاء الكتم</span>' : '<span>كتم</span>';
+}
+async function setSubbed(on) {
+  L.set('amg_sub', on ? 1 : 0); if (on) L.set('amg_mute', 0); SUBS = Math.max(0, SUBS + (on ? 1 : -1)); renderSubs(); renderChan(); chanBadge();
+  try { await DB.setSub(on); } catch (e) { }
+  if (on) { toast('اشتركت بالتوصيات 🔔', 'ok'); setTimeout(() => chanBottom(false), 40); if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission().then(p => { if (p === 'granted') { S.notif = true; saveS(); } }); }
+}
 function initChan() {
   DB.watchChan(onChan);
-  DB.watchStat('channel', s => { SUBS = Math.max(0, (s && s.subs) || 0); renderSubs(); });
-  $('#subBtn').onclick = async () => {
-    const on = isSub();
-    if (on && !(await ask('تلغي الاشتراك؟', 'ما راح يوصلك تنبيه من تنزل توصية جديدة.', 'ألغي'))) return;
-    L.set('amg_sub', on ? 0 : 1); renderSubs();
-    try { await DB.setSub(!on); } catch (e) { }
-    if (!on) { toast('اشتركت بالتوصيات 🔔', 'ok'); if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission().then(p => { if (p === 'granted') { S.notif = true; saveS(); } }); }
-  };
+  DB.watchStat('channel', s => { SUBS = Math.max(0, (s && s.subs) || 0); renderSubs(); if (!canSee()) renderChan(); });
+  $('#subBtn').onclick = () => { if (!isSub()) return setSubbed(true); L.set('amg_mute', isMute() ? 0 : 1); renderSubs(); toast(isMute() ? '🔕 انكتمت التنبيهات' : '🔔 رجعت التنبيهات'); };
+  const info = () => modal(`<div style="text-align:center"><div class="clock2" style="padding:6px 0 0"><div class="cav"><svg><use href="#i-logo"/></svg></div><b>توصيات AM GOLD ⚡</b><div><span class="num">${fmt(SUBS)}</span> مشترك · <span class="num">${fmt(CHAN.length)}</span> منشور</div></div></div>
+    ${isSub() ? `<button class="mi" data-ci="mute">${isMute() ? 'رجّع التنبيهات' : 'اكتم التنبيهات'}<span class="sw ${isMute() ? '' : 'on'}"></span></button><button class="mi" data-ci="leave" style="color:var(--bad)">إلغاء الاشتراك</button>` : ME.role === 'admin' ? '' : '<button class="btn blk" data-ci="join">اشترك</button>'}
+    <button class="btn ghost blk" data-close style="margin-top:10px">رجوع</button>`, (m, close) => {
+      m.onclick = async e => { const b = e.target.closest('[data-ci]'); if (!b) return; const k = b.dataset.ci; close();
+        if (k === 'join') setSubbed(true);
+        if (k === 'mute') { L.set('amg_mute', isMute() ? 0 : 1); renderSubs(); }
+        if (k === 'leave' && await ask('تلغي الاشتراك؟', 'القناة تنسد عليك وما يوصلك تنبيه من تنزل توصية جديدة.', 'ألغي', true)) setSubbed(false); };
+    });
+  $('#chanInfo').onclick = info; $('#chanMore').onclick = info;
+  const openS = on => { $('#chanSearchW').classList.toggle('hide', !on); $('#chanInfo').classList.toggle('hide', on); if (on) setTimeout(() => $('#chanQ').focus(), 30); else { chanQ = ''; $('#chanQ').value = ''; renderChan(); } };
+  $('#chanSB').onclick = () => { if (!canSee()) return toast('اشترك أول'); openS(true); };
+  $('#chanQX').onclick = () => openS(false);
+  $('#chanQ').oninput = e => { chanQ = e.target.value; renderChan(); };
+  $('#chanPin').onclick = () => { const id = $('#chanPin').dataset.jumpc, el = id && $(`#chanFeed [data-cid="${id}"]`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); } };
   $('#chanFeed').addEventListener('click', async e => {
-    const j = e.target.closest('[data-jumpc]'); if (j) { const el = $(`#chanFeed [data-cid="${j.dataset.jumpc}"]`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); } return; }
     const b = e.target.closest('[data-ca]'); if (!b) return; const p = CHAN.find(x => x.id === b.closest('[data-cid]').dataset.cid); if (!p) return;
     if (b.dataset.ca === 'pin') DB.updChan(p.id, { pin: !p.pin }).catch(() => toast('ما تغيّر', 'bad'));
     if (b.dataset.ca === 'del') { if (await ask('تحذف المنشور من القناة؟', '', 'احذف', true)) DB.delChan(p.id).then(() => DB.log('حذف من التوصيات')).catch(() => toast('ما انحذف', 'bad')); }
     if (b.dataset.ca === 'st') modal(`<h2>حالة التوصية<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>${Object.entries(SIGST).map(([k, v]) => `<button class="mi" data-sst="${k}">${v[0]}${(p.sig.st || 'on') === k ? '<span class="pill acc">هسه</span>' : ''}</button>`).join('')}<div class="faint" style="font-size:12px;margin-top:8px">من تغيّرها، المشتركين يشوفون الحالة الجديدة على التوصية.</div>`, (m, close) => { m.onclick = ev => { const x = ev.target.closest('[data-sst]'); if (!x) return; DB.updChan(p.id, { sig: Object.assign({}, p.sig, { st: x.dataset.sst }) }).then(() => toast('تحدّثت الحالة ✓', 'ok')).catch(() => toast('ما تحدّثت', 'bad')); close(); }; });
   });
   if (ME.role !== 'admin') return;
-  const tx = $('#chanTx'), grow = () => { tx.style.height = '42px'; tx.style.height = Math.min(160, tx.scrollHeight) + 'px'; };
+  const tx = $('#chanTx'), grow = () => { tx.style.height = '40px'; tx.style.height = Math.min(160, tx.scrollHeight) + 'px'; };
   tx.addEventListener('input', grow);
-  $('#sigTog').onclick = () => { sigOn = !sigOn; $('#sigF').classList.toggle('hide', !sigOn); $('#sigTog').className = 'btn sm ' + (sigOn ? '' : 'tint'); if (sigOn) setTimeout(() => $('#sgEn').focus(), 50); };
-  $('#sigX').onclick = () => { sigOn = false; $('#sigF').classList.add('hide'); $('#sigTog').className = 'btn tint sm'; };
+  const sigSet = on => { sigOn = on; $('#sigF').classList.toggle('hide', !on); $('#sigTog').classList.toggle('on', on); };
+  $('#sigTog').onclick = () => sigSet(!sigOn);
+  $('#sigX').onclick = () => sigSet(false);
   $('#sigSide').onclick = e => { const b = e.target.closest('[data-sd]'); if (!b) return; sigSide = b.dataset.sd; $$('#sigSide button').forEach(x => x.classList.toggle('on', x === b)); };
   $('#chanImg').onchange = async e => { const f = e.target.files[0]; e.target.value = ''; if (!f) return; try { chanImg = await compressImg(f, 1400, .78); const p = $('#chanImgPrev'); p.querySelector('img').src = chanImg; p.classList.remove('hide'); } catch (er) { toast('الصورة ما انقرت', 'bad'); } };
   $('#chanImgPrev').onclick = e => { if (e.target.closest('button')) { chanImg = null; $('#chanImgPrev').classList.add('hide'); } };
@@ -3585,8 +3689,8 @@ function initChan() {
     $('#chanSend').disabled = true;
     try {
       await DB.addChan(p); beep('ok'); DB.log('نشر بالتوصيات' + (sig ? ': ' + (sig.side === 'buy' ? 'شراء ' : 'بيع ') + sig.entry : ''));
-      tx.value = ''; grow(); chanImg = null; $('#chanImgPrev').classList.add('hide'); ['#sgEn', '#sgSl', '#sgT1', '#sgT2', '#sgT3'].forEach(i => $(i).value = ''); if (sigOn) $('#sigX').click();
-      setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 120);
+      tx.value = ''; grow(); chanImg = null; $('#chanImgPrev').classList.add('hide'); ['#sgEn', '#sgSl', '#sgT1', '#sgT2', '#sgT3'].forEach(i => $(i).value = ''); sigSet(false);
+      setTimeout(() => chanBottom(true), 60);
     } catch (e) { toast('ما انتشر: ' + (e.code === 'permission-denied' ? 'الصق الـ rules الجديدة' : (e.message || 'خلل')), 'bad'); }
     $('#chanSend').disabled = false;
   };
@@ -3615,6 +3719,7 @@ function chartMenu(x, y, price, time) {
    <button data-cm="reset">${I('undo')}إعادة ضبط الشارت<kbd>Alt+R</kbd></button>
    <button data-cm="last">${I('back')}روح لآخر شمعة</button>
    <button data-cm="auto">${I('fs')}ضبط السعر تلقائي</button>
+   <button data-cm="free">${I('move')}${S.free ? 'طفّي الحركة الحرة' : 'الحركة الحرة (فوگ وجوّه)'}</button>
    <button data-cm="zin">${I('plus')}كبّر</button>
    <button data-cm="zout">${I('down')}صغّر</button>
    <hr>
@@ -3635,7 +3740,8 @@ function chartMenu(x, y, price, time) {
     const b = e.target.closest('[data-cm]'); if (!b) return; const k = b.dataset.cm; close();
     if (k === 'reset') { CH.resetView(); toast('رجع الشارت لوضعه الطبيعي'); }
     if (k === 'last') { CH.right = CH.c.length - 1 + Math.round(60 / CH.barW); CH.dirty = true; }
-    if (k === 'auto') CH.autoScale();
+    if (k === 'auto') { CH.autoScale(); if (S.free) { S.free = false; saveS(); CH.free = false; $('#freeBtn').classList.remove('on'); } }
+    if (k === 'free') $('#freeBtn').click();
     if (k === 'zin') CH.zoomBy(1.25);
     if (k === 'zout') CH.zoomBy(.8);
     if (k === 'hl') CH.add({ type: 'hline', pts: [{ t: time, p: price }] });
@@ -3671,11 +3777,12 @@ function go(pg) {
   if (pg !== 'chart' && $('#app').dataset.fs) toggleFS(false);
   if (pg === 'news') renderNews();
   if (pg === 'chat' && needPhoto()) setTimeout(() => photoSheet(true), 200);
-  if (pg !== 'chat') { if (typeof REC !== 'undefined' && REC) recStop(false); stopAudio(); }
+  if (pg !== 'chat') { if (typeof REC !== 'undefined' && (REC || RG)) recCancel(); stopAudio(); }
   if (pg === 'chat') { chatSeenNow(); renderList(); setTimeout(() => window.kbUpd && kbUpd(), 0); setTimeout(() => { const l = $('#msgs'); if (l) l.scrollTop = l.scrollHeight; }, 30); }
   if (prev === 'chat' && pg !== 'chat') { setTimeout(() => window.kbUpd && kbUpd(), 0); chQ = ''; const cs = $('#chSearch'); if (cs) cs.value = ''; if (matchMedia('(max-width:900px)').matches && CONV) closeConv(); }
-  if (pg === 'signals') { L.set('amg_chseen', Date.now()); chanBadge(); setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 60); }
+  if (pg === 'signals') { L.set('amg_chseen', Date.now()); chanBadge(); setTimeout(() => chanBottom(false), 60); }
   else chanBadge();
+  setTimeout(() => window.kbUpd && kbUpd(), 0);
   if (pg === 'home') renderSpark();
   $('.npanel') && $('.npanel').remove();
 }
