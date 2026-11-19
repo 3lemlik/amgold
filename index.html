@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="app-build" content="2026.11.19-8">
+<meta name="app-build" content="2026.11.19-9">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -554,6 +554,11 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
  .gchat .who{max-width:44vw;padding:0 14px}
  .seg2 button{padding:0 10px;font-size:13px}
 }
+
+.chartpg[data-src=am] .tvonly,.chartpg[data-src=tv] .amonly{display:none!important}
+@media (min-width:901px){.cbox{flex:1}}
+.cbar .tfs{flex:1;min-width:0}
+@media (max-width:900px){.cbox{width:100%}.cbar #tvOpen{padding:7px 10px}#pg-chart .cbar{flex-wrap:wrap;row-gap:6px}#pg-chart .cbar .tfs{order:5;flex:1 1 100%}}
 </style>
 </head>
 <body>
@@ -722,16 +727,40 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
   <!-- CHART -->
   <section class="pg chartpg hide" id="pg-chart">
    <div class="cbar">
-    <a class="btn tint sm" id="tvOpen" href="https://www.tradingview.com/chart/?symbol=OANDA%3AXAUUSD" target="_blank" rel="noopener"><svg class="ic" style="width:16px;height:16px"><use href="#i-in"/></svg>افتح بحسابي بـ TradingView</a>
-    <span class="tvhint">الرسم هنا ما ينحفظ. حتى ينحفظ رسمك وإعداداتك افتح الشارت بحسابك.</span>
+    <div class="seg" id="srcSeg"><button data-src="am">AM GOLD</button><button data-src="tv">TradingView</button></div>
+    <div class="tfs amonly" id="tfs"></div>
+    <a class="btn tint sm tvonly" id="tvOpen" href="https://www.tradingview.com/chart/?symbol=OANDA%3AXAUUSD" target="_blank" rel="noopener"><svg class="ic" style="width:16px;height:16px"><use href="#i-in"/></svg>افتح بحسابي</a>
     <span class="sp"></span>
-    <button class="ib" data-act="tvinfo" title="شلون أحفظ رسمي؟"><svg class="ic"><use href="#i-ai"/></svg></button>
+    <button class="ib amonly" data-act="cset" title="ألوان الشارت"><svg class="ic"><use href="#i-pal"/></svg></button>
+    <button class="ib amonly" data-act="ind" title="المؤشرات"><svg class="ic"><use href="#i-lay"/></svg></button>
+    <button class="ib tvonly" data-act="tvinfo" title="شلون أحفظ رسمي؟"><svg class="ic"><use href="#i-ai"/></svg></button>
     <button class="ib" data-act="fs" title="ملء الشاشة" id="fsBtn"><svg class="ic"><use href="#i-fs"/></svg></button>
    </div>
    <div class="cwrap" id="cwrap">
-    <div class="tvbox" id="tvbox"></div>
-    <div class="cbox hide" id="cbox"><div class="chip-ov" id="chipOv"></div><div class="status hide" id="cStatus"></div><div class="selbar hide" id="selbar"></div></div>
-    <div class="hide"><div id="tfs"></div><div id="srcSeg"></div><div id="tools"><button id="magBtn"></button></div></div>
+    <div class="tools amonly" id="tools">
+     <button data-tool="cursor" data-tip="تحريك" class="on"><svg class="ic"><use href="#i-cur"/></svg></button>
+     <button data-tool="trend" data-tip="خط ترند"><svg class="ic"><use href="#i-trend"/></svg></button>
+     <button data-tool="hline" data-tip="خط أفقي"><svg class="ic"><use href="#i-hl"/></svg></button>
+     <button data-tool="fib" data-tip="فيبوناتشي"><svg class="ic"><use href="#i-fib"/></svg></button>
+     <button data-tool="rect" data-tip="منطقة"><svg class="ic"><use href="#i-rect"/></svg></button>
+     <button data-tool="long" data-tip="صفقة شراء"><svg class="ic"><use href="#i-long"/></svg></button>
+     <button data-tool="short" data-tip="صفقة بيع"><svg class="ic"><use href="#i-short"/></svg></button>
+     <button data-tool="text" data-tip="كتابة"><svg class="ic"><use href="#i-text"/></svg></button>
+     <button data-tool="measure" data-tip="قياس"><svg class="ic"><use href="#i-meas"/></svg></button>
+     <button data-tool="alert" data-tip="تنبيه سعر"><svg class="ic"><use href="#i-alert"/></svg></button>
+     <hr>
+     <button data-act="autofib" data-tip="فيبو ذكي"><svg class="ic"><use href="#i-ai"/></svg></button>
+     <button data-act="mag" class="tg" data-tip="المغناطيس" id="magBtn"><svg class="ic"><use href="#i-mag"/></svg></button>
+     <button data-act="undo" data-tip="تراجع"><svg class="ic"><use href="#i-undo"/></svg></button>
+     <button data-act="share" data-tip="انشر التحليل" class="only-admin"><svg class="ic"><use href="#i-send"/></svg></button>
+     <button data-act="clear" data-tip="امسح رسوماتي"><svg class="ic"><use href="#i-trash"/></svg></button>
+    </div>
+    <div class="cbox amonly" id="cbox">
+     <div class="chip-ov" id="chipOv"></div>
+     <div class="status hide" id="cStatus"></div>
+     <div class="selbar hide" id="selbar"></div>
+    </div>
+    <div class="tvbox tvonly" id="tvbox"></div>
    </div>
   </section>
 
@@ -748,7 +777,7 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
      <textarea class="inp" id="pText" placeholder="اكتب شرح التحليل: وين الدخول، الهدف، الوقف، وشنو تتوقع"></textarea>
      <div class="att" id="pAtt"></div>
      <div class="row wrap">
-      <button class="hide" id="pSnap"></button>
+      <button class="btn ghost sm" id="pSnap"><svg class="ic" style="width:16px;height:16px"><use href="#i-cam"/></svg>ارفق شارت AM ورسوماتي</button>
       <span class="sp"></span>
       <button class="btn" id="pSend"><svg class="ic" style="width:16px;height:16px"><use href="#i-send"/></svg>انشر</button>
      </div>
@@ -878,8 +907,8 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
     <div class="card br">
      <h2>الجهاز</h2>
      <button class="mi" data-tg="snd">الأصوات<span class="sw" id="swSnd"></span></button>
-     <button class="mi hide" data-tg="mag">المغناطيس بالرسم<small>يلصق الخط على أعلى وأدنى الشمعة</small><span class="sw" id="swMag"></span></button>
-     <button class="mi hide" data-tg="cast">بث رسوماتي للطلاب<small>أي خط ترسمه يطلع عدهم بالشارت مباشرة</small><span class="sw" id="swCast"></span></button>
+     <button class="mi" data-tg="mag">المغناطيس بالرسم<small>يلصق الخط على أعلى وأدنى الشمعة</small><span class="sw" id="swMag"></span></button>
+     <button class="mi only-admin" data-tg="cast">بث رسوماتي للطلاب<small>أي خط ترسمه يطلع عدهم بالشارت مباشرة</small><span class="sw" id="swCast"></span></button>
      <button class="mi" data-tg="notif">إشعارات الجهاز<small>للتنبيهات والتحليلات الجديدة</small><span class="sw" id="swNotif"></span></button>
     </div>
     <div class="card br">
@@ -892,7 +921,7 @@ html[data-theme="light"] #hold .bg{background:rgba(240,242,246,.45)}
      <div class="kv"><span>الاسم</span><b id="setNm"></b></div>
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv"><span>قاعدة البيانات</span><b id="setDb"></b></div>
-     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-8</span></div>
+     <div class="kv"><span>النسخة</span><span class="num faint">2026.11.19-9</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1790,7 +1819,7 @@ async function loadTF(tf) {
   try {
     const a = await api(`/klines?symbol=${SYM}&interval=${RAW[tf] || tf}&limit=1500`);
     if (S.tf !== tf) return;
-    rawK = a.map(mapK); CH.setData(build(tf), tf, T[2]); cStatus('');
+    rawK = a.map(mapK); CH.setData(build(tf), tf, T[2]); cStatus(''); fitChart();
   } catch (e) { cStatus('ماكو اتصال بمصدر السعر. تأكد من الانترنت وراح يرجع يحاول.'); setTimeout(() => S.tf === tf && loadTF(tf), 8000); }
   openWS(tf);
 }
@@ -1906,11 +1935,12 @@ window.addEventListener('resize', () => setTimeout(fitChat, 60));
 if (window.visualViewport) visualViewport.addEventListener('resize', () => { fitChat(); const l = $('#msgs'); if (l && curPg === 'chat') l.scrollTop = l.scrollHeight; });
 function fitChart() {
   if (curPg !== 'chart') return;
-  const box = $('#tvbox'); if (!box) return;
+  const box = src === 'am' ? $('#cbox') : $('#tvbox'); if (!box) return;
   const bn = $('#bnav'), bnH = bn && getComputedStyle(bn).display !== 'none' ? bn.getBoundingClientRect().height + 6 : 8;
   const top = box.getBoundingClientRect().top;
   const h = Math.max(240, Math.floor(window.innerHeight - top - bnH - 4));
   $('#cbox').style.height = h + 'px'; $('#tvbox').style.height = h + 'px';
+  if (CH) CH.resize();
 }
 window.addEventListener('resize', () => setTimeout(fitChart, 60));
 window.addEventListener('orientationchange', () => setTimeout(fitChart, 300));
@@ -1956,7 +1986,7 @@ function initChart() {
     if (a === 'clear') ask('تمسح رسوماتك؟', 'كل الخطوط والفيبو اللي رسمتها راح تنمسح.', 'امسحها', true).then(ok => ok && CH.clearMine());
     if (a === 'share') shareChart();
   };
-  $('#srcSeg').onclick = e => { const b = e.target.closest('[data-src]'); if (!b) return; src = b.dataset.src; $$('#srcSeg button').forEach(x => x.classList.toggle('on', x === b)); $('#cbox').classList.toggle('hide', src !== 'am'); $('#tools').classList.toggle('hide', src !== 'am'); $('#tvbox').classList.toggle('hide', src !== 'tv'); if (src === 'tv') makeTV(); setTimeout(fitChart, 30); };
+  $('#srcSeg').onclick = e => { const b = e.target.closest('[data-src]'); if (b) setSrc(b.dataset.src); };
   document.addEventListener('keydown', e => {
     if (curPg !== 'chart' || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
     if ((e.key === 'Delete' || e.key === 'Backspace') && CH.sel) { CH.deleteSel(); }
@@ -1964,7 +1994,15 @@ function initChart() {
     if ((e.ctrlKey || e.metaKey) && e.key === 'z') CH.undo();
   });
   DB.loadMine().then(list => { CH.mine = list || []; CH.dirty = true; });
-  src = 'tv'; openTicker();
+  setSrc(S.src || 'am', true);
+}
+function setSrc(v, init) {
+  src = v; S.src = v; saveS();
+  $('#pg-chart').dataset.src = v;
+  $$('#srcSeg button').forEach(x => x.classList.toggle('on', x.dataset.src === v));
+  if (v === 'am') { if (!CH.c.length) loadTF(S.tf); else openWS(S.tf); }
+  else { if (!init || curPg === 'chart') makeTV(); if (!ws) openTicker(); }
+  setTimeout(fitChart, 30);
 }
 function selbar(d) {
   const sb = $('#selbar');
@@ -2680,7 +2718,7 @@ function go(pg) {
     if (prev === 'students') { $('#stQ').value = ''; renderStud(); }
     if (prev === 'chart' && CH) { CH.setTool('cursor'); CH.sel = null; selbar(null); $$('#tools [data-tool]').forEach(x => x.classList.toggle('on', x.dataset.tool === 'cursor')); }
   }
-  if (pg === 'chart') { makeTV(); setTimeout(fitChart, 20); setTimeout(fitChart, 300); }
+  if (pg === 'chart') { if (src === 'tv') makeTV(); [20, 300, 800, 1600].forEach(t => setTimeout(fitChart, t)); }
   if (pg === 'chat') { setTimeout(fitChat, 20); setTimeout(fitChat, 300); }
   if (pg !== 'chart' && $('#app').dataset.fs) toggleFS(false);
   if (pg === 'news') renderNews();
@@ -2764,7 +2802,7 @@ function start() {
     if (location.protocol !== 'https:' || !navigator.onLine) return;
     try { const t = await (await fetch(location.pathname + '?b=' + Date.now(), { cache: 'no-store' })).text(); const m = t.match(/name="app-build" content="([^"]+)"/); if (m && m[1] !== myBuild) location.reload(); } catch (e) { }
   }
-  setInterval(chk, 6e4); document.addEventListener('visibilitychange', () => { if (!document.hidden) { chk(); if (!ws || ws.readyState > 1) { ws = null; openTicker(); } } });
+  setInterval(chk, 6e4); document.addEventListener('visibilitychange', () => { if (!document.hidden) { chk(); if (!ws || ws.readyState > 1) { ws = null; src === 'am' ? openWS(S.tf) : openTicker(); } } });
   window.addEventListener('resize', () => renderSpark());
 })();
 initAuth();
