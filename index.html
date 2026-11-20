@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-2">
+<meta name="app-build" content="2026.11.20-3">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1093,7 +1093,8 @@ html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
 #amcProbe{position:fixed;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);width:0;height:0}
 @media (max-width:900px){
  html.amcpg #app[data-pg] header.top{display:none!important}
- #app[data-amcfull] .bnav{display:none!important}
+ html.amcpg .bnav{transition:transform .28s cubic-bezier(.2,.8,.3,1),opacity .2s}
+ html.amcpg #app[data-amcfull] .bnav{transform:translateY(115%);opacity:0;pointer-events:none}
 }
 .crsCard{display:flex;align-items:center;gap:14px;text-align:start;cursor:pointer;padding:16px 18px;background:linear-gradient(110deg,var(--accent-soft),transparent 70%),var(--panel);font:inherit;color:var(--ink);width:100%}
 .crsCard:active{transform:scale(.985)}
@@ -1600,7 +1601,7 @@ html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-2</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-3</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -3428,9 +3429,11 @@ function studentForm(s) {
    ${s ? `<div class="fld"><label>الرمز</label><div class="row"><input class="inp num" value="${esc(s.pw || '')}" readonly><button class="btn ghost sm" data-cp="${esc(s.pw || '')}">انسخ</button></div></div>` : `<div class="fld"><label>الرمز السري (6 أو أكثر)</label><div class="row"><input class="inp num" id="fPw"><button class="btn ghost sm" id="fGen">ولّد</button></div></div>`}
    ${s ? `<div class="fld"><label>نوع الحساب</label><select class="inp" id="fRole"><option value="member" ${s.role === 'member' ? 'selected' : ''}>مشترك عادي</option><option value="student" ${s.role === 'student' ? 'selected' : ''}>طالب بالكورس</option></select></div>` : ''}
    ${s ? `<button class="mi" id="fRoom" style="padding-inline:0">يشوف غرفة الطلاب<small>إذا طفّيته تختفي الغرفة عنده</small><span class="sw ${s.room !== false ? 'on' : ''}"></span></button>` : ''}
+   ${s ? `<div class="fld"><label>محاضرات الكورس اللي يگدر يشوفها</label><div id="fLecs"><div class="dim" style="font-size:13px">ديحمّل…</div></div></div>` : ''}
    <div class="fld"><label>${s ? 'مدة الاشتراك من اليوم (يوم)' : 'مدة الاشتراك (يوم) — خليها فارغة بدون انتهاء'}</label><input class="inp num" id="fDays" inputmode="numeric" value="${s ? (s.exp ? Math.max(0, Math.ceil((s.exp - Date.now()) / 864e5)) : '') : 30}"></div>
    <div class="row"><button class="btn sp" id="fOk">${s ? 'احفظ' : 'ضيف'}</button>${s ? '<button class="btn danger sm" id="fDel">احذف</button>' : ''}</div>`, (m, close) => {
     const fr = m.querySelector('#fRoom'); if (fr) fr.onclick = () => fr.querySelector('.sw').classList.toggle('on');
+    if (s) lecPerms(m.querySelector('#fLecs'), s);
     const g = m.querySelector('#fGen'); if (g) g.onclick = () => { m.querySelector('#fPw').value = String(Math.floor(100000 + Math.random() * 900000)); };
     m.querySelectorAll('[data-cp]').forEach(b => b.onclick = () => { navigator.clipboard && navigator.clipboard.writeText(b.dataset.cp); toast('انسخ الرمز'); });
     m.querySelector('#fOk').onclick = async () => {
@@ -4826,19 +4829,23 @@ function amcShow(pg) {
   AMC_PG = pg; $('#amcWrap').classList.add('on'); amcLayout();
 }
 function amcFull() { return isPhone() && AMC_PG && (AMC_ST.open || AMC_ST.sheet || AMC_ST.lv || AMC_ST.lb); }
-let amcLastIns = '';
+let amcLastIns = '', amcFullT = 0;
 function amcLayout() {
   const w = $('#amcWrap'); if (!w || !w.classList.contains('on')) return;
   const app = $('#app'), full = amcFull(), vv = window.visualViewport;
   const kb = !!vv && innerHeight - vv.height > 110 && isPhone();
-  app.toggleAttribute('data-amcfull', !!(full || kb));
+  // الشريط السفلي يختفي فوراً من تفتح محادثة، ويرجع بهدوء بعد ما تطلع (بدون ما يتغيّر حجم الصفحة)
+  clearTimeout(amcFullT);
+  if (full || kb) app.setAttribute('data-amcfull', '');
+  else if (app.hasAttribute('data-amcfull')) amcFullT = setTimeout(() => { if (!amcFull()) app.removeAttribute('data-amcfull'); }, 260);
   let top = 0, h = innerHeight, right = 0;
-  if (isPhone()) {
-    if (kb) { top = Math.max(0, Math.round(vv.offsetTop)); h = Math.round(vv.height); }
-    else if (!full) { const bn = $('#bnav'), r = bn && getComputedStyle(bn).display !== 'none' ? bn.getBoundingClientRect() : null; h = r ? Math.round(r.top) : innerHeight; }
-  } else { const sd = $('.side'), r = sd && getComputedStyle(sd).display !== 'none' ? sd.getBoundingClientRect() : null; right = r ? Math.max(0, Math.round(innerWidth - r.left)) : 0; }
-  w.style.top = top + 'px'; w.style.height = h + 'px'; w.style.right = right + 'px';
-  const ins = amcInsets(), o = { sat: isPhone() && !kb ? ins.sat : 0, sab: isPhone() && (full && !kb) ? ins.sab : 0 }, sig = JSON.stringify(o);
+  if (isPhone()) { if (kb) { top = Math.max(0, Math.round(vv.offsetTop)); h = Math.round(vv.height); } }
+  else { const sd = $('.side'), r = sd && getComputedStyle(sd).display !== 'none' ? sd.getBoundingClientRect() : null; right = r ? Math.max(0, Math.round(innerWidth - r.left)) : 0; }
+  if (w.style.top !== top + 'px') w.style.top = top + 'px';
+  if (w.style.height !== h + 'px') w.style.height = h + 'px';
+  if (w.style.right !== right + 'px') w.style.right = right + 'px';
+  const ins = amcInsets(), bn = $('#bnav'), nav = isPhone() && bn ? Math.round(bn.offsetHeight || 0) : 0;
+  const o = { sat: isPhone() && !kb ? ins.sat : 0, sab: isPhone() && !kb ? ins.sab : 0, nav }, sig = JSON.stringify(o);
   if (sig !== amcLastIns) { amcLastIns = sig; amcPost({ insets: o }); }
 }
 addEventListener('resize', () => requestAnimationFrame(amcLayout));
@@ -4886,6 +4893,35 @@ async function sharePostChat(p, id) {
   else nudgePush();
 }
 (function () { const q = new URLSearchParams(location.search), pid = q.get('p'); if (!pid) return; let n = 0; const iv = setInterval(() => { const el = document.querySelector(`#feed [data-pid="${CSS.escape(pid)}"]`); if (el) { clearInterval(iv); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); } else if (++n > 40) clearInterval(iv); }, 300); })();
+
+/* ====== صلاحيات الكورس من صفحة الحسابات ====== */
+async function lecPerms(box, s) {
+  if (!box) return; if (DB.kind !== 'firebase') { box.innerHTML = '<div class="dim" style="font-size:13px">يحتاج Firebase</div>'; return; }
+  try {
+    const [ls, en] = await Promise.all([fdb.collection('lectures').get(), fdb.doc('enroll/' + s.uid).get()]);
+    const L = ls.docs.map(d => Object.assign({ id: d.id }, d.data())).sort((a, b) => (a.n || 0) - (b.n || 0)), E = (en.exists && en.data().lectures) || {};
+    if (!L.length) { box.innerHTML = '<div class="dim" style="font-size:13px">لحد الآن ماكو محاضرات — ضيفها من صفحة الكورس</div>'; return; }
+    const cnt = () => L.filter(l => E[l.id] === true).length;
+    const draw = () => {
+      box.innerHTML = `<div class="row" style="margin-bottom:6px"><span class="dim" style="font-size:12.5px">مفتوحله <b class="num">${cnt()}</b> من <span class="num">${L.length}</span></span><span class="sp"></span><button class="btn tint sm" data-la="1">افتح الكل</button><button class="btn ghost sm" data-la="0">اقفل الكل</button></div>` +
+        L.map(l => `<button class="mi" data-lec="${l.id}" style="padding-inline:0"><span class="num" style="color:var(--accent);font-weight:800;min-width:26px">${String(l.n || '').padStart(2, '0')}</span><span style="flex:1;min-width:0;text-align:start">${esc(l.title || 'محاضرة')}${l.ready ? '' : '<small>الفيديو بعده ما انرفع</small>'}</span><span class="sw ${E[l.id] === true ? 'on' : ''}"></span></button>`).join('');
+    };
+    const apply = async (ids, on) => {
+      const patch = {}; ids.forEach(i => { patch[i] = on; E[i] = on; }); draw();
+      try {
+        await fdb.doc('enroll/' + s.uid).set({ lectures: patch, at: Date.now(), by: ME.uid }, { merge: true });
+        if (on) {
+          const FV = firebase.firestore.FieldValue;
+          for (const id of ids) { const l = L.find(x => x.id === id); if (l) await fdb.doc(`activity/${s.uid}/items/unlock_${id}`).set({ type: 'unlock', from: 'amchat', ref: 'l:' + id, text: l.title || '', at: FV.serverTimestamp(), seen: false, ack: true }); }
+          if (CFG.worker) try { const t = await firebase.auth().currentUser.getIdToken(), nm = ids.length === 1 ? '"' + ((L.find(x => x.id === ids[0]) || {}).title || '') + '"' : ids.length + ' محاضرات'; fetch(CFG.worker, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + t }, body: JSON.stringify({ admin: { notice: { to: s.uid, title: 'انفتحتلك محاضرة جديدة 🎉', body: 'الأستاذ فتحلك ' + nm + ' — يلا ابدأ' } } }) }).catch(() => { }); } catch (e) { }
+        }
+        toast(on ? 'انفتحت ✓' : 'انقفلت', 'ok');
+      } catch (e) { ids.forEach(i => E[i] = !on); draw(); toast('ما انحفظ', 'bad'); }
+    };
+    box.onclick = e => { const b = e.target.closest('[data-lec]'); if (b) return apply([b.dataset.lec], E[b.dataset.lec] !== true); const a = e.target.closest('[data-la]'); if (a) apply(L.map(l => l.id), a.dataset.la === '1'); };
+    draw();
+  } catch (e) { box.innerHTML = '<div class="dim" style="font-size:13px">ما گدرنا نجيب المحاضرات</div>'; }
+}
 </script>
 </body>
 </html>

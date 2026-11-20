@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-2">
+<meta name="app-build" content="2026.11.20-3">
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1663,6 +1663,23 @@ html.embed,html.embed body{background:transparent}
  html.embed[data-embset=chats] #side .nav [data-nav]:not([data-nav=chats]):not([data-nav=contacts]):not([data-nav=saved]):not([data-nav=settings]):not([data-nav=admin]){display:none!important}
 }
 html.embed .tb-st{display:none!important}
+/* زر الرجوع بنفس جهة الخروج */
+@media (max-width:900px){
+ .chead .ch-l{order:-1}
+ .chead .ch-av{order:5}
+ .chead .back .i{transform:scaleX(-1)}
+}
+/* قفل البصمة فوق إصبعك (فوق زر المايك) */
+.comp .cbar .lockp{right:auto!important}
+/* تاريخ الدردشة: يبين وقت السحب بس، وبعدين يختفي إذا كان لازگ فوگ */
+#msgs .dsep{transition:opacity .25s}
+#msgs:not(.scrolling) .dsep.stuck{opacity:0}
+/* مسافة شريط AM GOLD السفلي */
+@media (max-width:900px){
+ html.embed .list,html.embed .feed,html.embed .prof2,html.embed .explore,html.embed .set,html.embed .crs,html.embed #actList,html.embed #admBody{padding-bottom:calc(20px + var(--amgnav,0px))!important}
+ html.embed #lecUp,html.embed #upl{bottom:calc(12px + var(--amgnav,0px))!important}
+}
+@media (max-width:900px){ .chead .ch-l{margin:0!important;justify-self:start!important} .chead .ch-av{justify-self:end!important} }
 
 </style>
 </head>
@@ -2235,7 +2252,11 @@ async function openChat(cid){if(!isPhone()&&!['chats','contacts','settings'].inc
  const c=S.chatMap[cid];S.unreadMark=unreadOf(c)>0?(c.reads&&c.reads[S.me]||0):null;
  cancelReply();$('#txt').value=S.drafts&&S.drafts[cid]||'';autosize();$('#emoji').classList.remove('on');
  watchMsgs(cid);renderHeader();renderChatList();if(!isTouch)setTimeout(()=>$('#txt').focus(),60);API.markRead(cid)}
-function watchMsgs(cid){if(S.msgUnsub)S.msgUnsub();S.msgUnsub=store.watchQuery(`chats/${cid}/messages`,{orderBy:['at','desc'],limit:S.msgLimit},list=>{if(cid!==S.open)return;S.hasMore=list.length>=S.msgLimit;S.msgs=list.reverse();renderMsgs()})}
+function watchMsgs(cid){S.mw=S.mw||{};S.mc=S.mc||{};if(S.msgUnsub){S.msgUnsub();S.msgUnsub=null}const lim=S.msgLimit;
+ if(S.mc[cid]&&S.mc[cid].length){S.msgs=S.mc[cid].slice();S.hasMore=S.mc[cid].length>=lim;renderMsgs()}
+ const w=S.mw[cid];if(w&&w.lim>=lim){w.t=now();return}if(w)w.u();
+ const u=store.watchQuery(`chats/${cid}/messages`,{orderBy:['at','desc'],limit:lim},list=>{const L=list.slice().reverse();S.mc[cid]=L;if(cid!==S.open)return;S.hasMore=list.length>=lim;S.msgs=L.slice();renderMsgs()});
+ S.mw[cid]={u,lim,t:now()};const ks=Object.keys(S.mw);if(ks.length>6)ks.sort((a,b)=>S.mw[a].t-S.mw[b].t).slice(0,ks.length-6).forEach(k=>{if(k!==cid){try{S.mw[k].u()}catch(e){}delete S.mw[k];delete S.mc[k]}})}
 function closeChat(){popNav('chat')}
 function doCloseChat(){saveDraft();S.open=null;delete $('#app').dataset.open;if(S.msgUnsub)S.msgUnsub();S.msgUnsub=null;stopAudio();if(S.recording)stopRec(false);doCloseInfo();renderChatList()}
 function saveDraft(){if(!S.open)return;S.drafts=S.drafts||{};S.drafts[S.open]=S.edit?'':$('#txt').value}
@@ -3535,7 +3556,7 @@ function initFirebase(){if(store&&auth)return Promise.resolve();if(fbIniting)ret
   if(!firebase.auth)await loadAny(urls,'firebase-auth-compat.js');
   if(!firebase.firestore)await loadAny(urls,'firebase-firestore-compat.js');
   if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
-  const fs=firebase.firestore();try{fs.settings({experimentalForceLongPolling:true,merge:true})}catch(e){}
+  const fs=firebase.firestore();try{fs.settings({experimentalForceLongPolling:true,merge:true})}catch(e){}try{fs.enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
   store=FireStore(fs);auth=FireAuth(firebase.auth());$('#fbErr')&&$('#fbErr').remove()})();
  fbIniting.catch(()=>{fbIniting=null});return fbIniting}
 function fbFail(e){let b=$('#fbErr');if(!b){b=document.createElement('div');b.id='fbErr';b.className='demo-note';b.style.color='var(--bad)';b.style.background='rgba(242,89,106,.1)';$('#login .box').insertBefore(b,$('#login .credit'))}
@@ -3612,7 +3633,7 @@ async function amgMigrate(me){toast('ديننقل الرسائل القديمة 
 /* التواصل ويّا AM GOLD */
 if(EMBED){
  addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==window.parent)return;const d=e.data||{};
-  if(d.insets){const r=document.documentElement.style;r.setProperty('--sat',(d.insets.sat||0)+'px');r.setProperty('--sab',(d.insets.sab||0)+'px')}
+  if(d.insets){const r=document.documentElement.style;r.setProperty('--sat',(d.insets.sat||0)+'px');r.setProperty('--sab',(d.insets.sab||0)+'px');r.setProperty('--amgnav',(d.insets.nav||0)+'px')}
   if(d.mode&&['dark','light','auto'].includes(d.mode)){try{setMode(d.mode)}catch(x){}}
   if(d.nav){EMB.base=d.nav==='course'?'course':'chats';document.documentElement.dataset.embset=EMB.base;AMG.start=EMB.base;if(S.me){if(EMB.base==='course'&&S.open&&isPhone())closeChat();setNav(EMB.base)}}
   if(d.open&&S.me){setNav('chats');openChat(d.open)}
@@ -3627,6 +3648,12 @@ if(EMBED){
 document.addEventListener('click',e=>{if(e.target.closest('[data-embback]')){e.preventDefault();e.stopPropagation();setNav(EMB.base)}},true);
 // المحادثة المفتوحة هسه — حتى ما يوصلك إشعار عنها وإنت داخلها
 let _amgOpen;setInterval(()=>{if(!S.me||!store)return;const o=document.hidden||(window.top&&window.top.document&&window.top.document.hidden)?'':(S.open||'');if(o!==_amgOpen){_amgOpen=o;try{firebase.firestore().doc('users/'+S.me).update({inChat:o,lastSeen:firebase.firestore.FieldValue.serverTimestamp()}).catch(()=>{})}catch(e){}}},1200);
+// تاريخ الدردشة اللازگ فوگ يختفي من توقف السحب (مثل تلگرام)
+(function(){let st;const upd=()=>{const box=$('#msgs');if(!box)return;const top=box.getBoundingClientRect().top;$$('#msgInner .dsep').forEach(d=>{const r=d.getBoundingClientRect(),cs=parseFloat(getComputedStyle(d).top)||0,n=d.nextElementSibling;d.classList.toggle('stuck',Math.abs(r.top-top-cs)<2&&!!n&&n.getBoundingClientRect().top<r.bottom-2)})};
+ document.addEventListener('scroll',e=>{if(e.target&&e.target.id==='msgs'){const b=e.target;b.classList.add('scrolling');upd();clearTimeout(st);st=setTimeout(()=>{b.classList.remove('scrolling');upd()},1100)}},true)})();
+// قفل البصمة يطلع فوق زر المايك نفسه (فوق إصبعك)
+(function(){const fix=()=>{const c=$('#comp'),l=$('#lockP'),b=$('#sendBtn');if(!c||!l||!b||!l.offsetParent)return;const pr=l.offsetParent.getBoundingClientRect(),br=b.getBoundingClientRect();l.style.setProperty('left',Math.round(br.left-pr.left+(br.width-l.offsetWidth)/2)+'px','important')};
+ const go=()=>{const c=$('#comp');if(!c)return setTimeout(go,500);new MutationObserver(()=>requestAnimationFrame(fix)).observe(c,{attributes:true,attributeFilter:['data-rec','data-lock']})};go()})();
 
 async function handleHash(h){if(h.startsWith('#nav=')){history.replaceState(null,'',location.pathname);return}if(h.startsWith('#c='))openChat(h.slice(3));else if(h.startsWith('#join='))joinFlow(h.slice(6));else if(h.startsWith('#u='))openUserByName(h.slice(3).toLowerCase());else if(h.startsWith('#r=')){const r=await store.get('reels/'+h.slice(3)).catch(()=>null);if(r&&r.ready)openReelViewer([{id:h.slice(3),...r}],0);else toast('هذا الريل انحذف')}}
 function sync(on){$$('[data-sync]').forEach(d=>d.classList.toggle('off',!on));$$('[data-synct]').forEach(d=>d.textContent=on?'متصل':'ماكو انترنت')}
