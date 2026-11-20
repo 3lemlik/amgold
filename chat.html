@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-3">
+<meta name="app-build" content="2026.11.20-4">
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1680,6 +1680,10 @@ html.embed .tb-st{display:none!important}
  html.embed #lecUp,html.embed #upl{bottom:calc(12px + var(--amgnav,0px))!important}
 }
 @media (max-width:900px){ .chead .ch-l{margin:0!important;justify-self:start!important} .chead .ch-av{justify-self:end!important} }
+.amg-lock{margin:30px auto;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:30px 20px}
+.amg-lock .ic{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.amg-lock .ic .i{width:26px;height:26px}
+.amg-lock b{font-size:18px;font-family:var(--f-d)}.amg-lock small{color:var(--dim);font-size:13.5px}
 
 </style>
 </head>
@@ -2621,7 +2625,7 @@ function bindStory(){const st=$('#story'),fr=$('#story .frame');let p=null,hold;
  st.addEventListener('contextmenu',e=>e.preventDefault())}
 
 /* ================= الإشعارات (حتى لو الموقع مسدود) ================= */
-const FB_BASE='https://www.gstatic.com/firebasejs/10.12.5/';
+const FB_BASE='https://www.gstatic.com/firebasejs/10.12.2/';
 const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 function pushState(){if(DEMO)return 'demo';if(!VAPID_KEY||!PUSH_URL)return 'nosetup';if(isIOS&&!isStandalone())return 'ios-home';if(!('Notification' in window)||!('serviceWorker' in navigator)||!('PushManager' in window))return 'unsupported';
@@ -2629,7 +2633,7 @@ function pushState(){if(DEMO)return 'demo';if(!VAPID_KEY||!PUSH_URL)return 'nose
 async function enablePush(){if(isIOS&&!isStandalone())return iosHomeSheet();if(!('Notification' in window))return toast('جهازك ما يدعم الإشعارات هنا','bad');
  let p;try{p=await Notification.requestPermission()}catch(e){}if(p!=='granted'){toast('ما سمحت بالإشعارات — تگدر تفعّلها من إعدادات الجهاز','bad');renderPushBan();return}
  toast('ديفعّل الإشعارات…');const ok=await registerPush();if(ok)toast('تفعّلت الإشعارات 🔔 هسه توصلك الرسائل حتى لو التطبيق مسدود');else{console.warn('push',S.pushErr);openSheet('ما تفعّلت الإشعارات',`<p style="color:var(--dim);line-height:1.9;margin:0">جهازك منع التطبيق من تفعيل الإشعارات. جرّب هالخطوات:</p><ol style="color:var(--dim);line-height:2;padding-right:20px;margin:6px 0 0"><li>إعدادات المتصفح › إعدادات المواقع › <b style="color:var(--ink)">بيانات الموقع على الجهاز</b>: مسموحة</li><li>إعدادات المواقع › <b style="color:var(--ink)">الإشعارات</b>: مسموحة</li><li>طفّي أي حاجب إعلانات أو VPN</li><li>سدّ التطبيق وافتحه ودوس تفعيل مرة ثانية</li></ol>${DEBUG?`<div class="num" style="direction:ltr;text-align:left;font-size:11px;color:var(--faint);margin-top:8px">${esc(S.pushErr||'')}</div>`:''}`,`<button class="btn pri block" data-act="closesheet">زين</button>`)}renderPushBan();renderSettings()}
-async function registerPush(){S.pushErr='';if(DEMO||!VAPID_KEY)return false;try{if(!firebase.messaging)await loadAny(FB_CDNS('10.12.5'),'firebase-messaging-compat.js');if(!(await firebase.messaging.isSupported())){S.pushErr='المتصفح ما يدعم الإشعارات';return false}
+async function registerPush(){S.pushErr='';if(DEMO||!VAPID_KEY)return false;try{if(!firebase.messaging)await loadAny(FB_CDNS('10.12.2'),'firebase-messaging-compat.js');if(!(await firebase.messaging.isSupported())){S.pushErr='المتصفح ما يدعم الإشعارات';return false}
  const reg=await navigator.serviceWorker.register('sw.js');await navigator.serviceWorker.ready;const tok=await firebase.messaging().getToken({vapidKey:VAPID_KEY,serviceWorkerRegistration:reg});if(!tok)return false;
  const old=ls.get('amc-push');const tokens={[tok]:now()};if(old&&old!==tok)tokens[old]=OP.del();await store.set('pushTokens/'+S.me,{tokens},{merge:true});ls.set('amc-push',tok);return true}catch(e){console.warn('push',e);S.pushErr=String(e&&(e.code||'')+' '+(e.message||e)).replace('messaging/','').slice(0,140);return false}}
 async function unregisterPush(){const t=ls.get('amc-push');if(!t||DEMO)return;try{await store.set('pushTokens/'+S.me,{tokens:{[t]:OP.del()}},{merge:true})}catch(e){}localStorage.removeItem('amc-push')}
@@ -3551,12 +3555,12 @@ const FB_CDNS=v=>[`https://www.gstatic.com/firebasejs/${v}/`,`https://cdn.jsdeli
 function loadAny(urls,file){return urls.reduce((p,u)=>p.catch(()=>loadScript(u+file)),Promise.reject())}
 let fbIniting=null;
 function initFirebase(){if(store&&auth)return Promise.resolve();if(fbIniting)return fbIniting;
- fbIniting=(async()=>{const urls=FB_CDNS('10.12.5');
+ fbIniting=(async()=>{const urls=FB_CDNS('10.12.2');
   if(!window.firebase||!firebase.initializeApp)await loadAny(urls,'firebase-app-compat.js');
   if(!firebase.auth)await loadAny(urls,'firebase-auth-compat.js');
   if(!firebase.firestore)await loadAny(urls,'firebase-firestore-compat.js');
   if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
-  const fs=firebase.firestore();try{fs.settings({experimentalForceLongPolling:true,merge:true})}catch(e){}try{fs.enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
+  const fs=firebase.firestore();try{fs.settings({experimentalForceLongPolling:true,merge:true})}catch(e){}
   store=FireStore(fs);auth=FireAuth(firebase.auth());$('#fbErr')&&$('#fbErr').remove()})();
  fbIniting.catch(()=>{fbIniting=null});return fbIniting}
 function fbFail(e){let b=$('#fbErr');if(!b){b=document.createElement('div');b.id='fbErr';b.className='demo-note';b.style.color='var(--bad)';b.style.background='rgba(242,89,106,.1)';$('#login .box').insertBefore(b,$('#login .credit'))}
@@ -3585,6 +3589,9 @@ async function amgBridge(uid){
  AMG.name=isA?'علي مالك':(lg.name||'مشترك');
  try{const c=await store.get('config/public');if(c){AMG.cfg=c;AMG.newsUrl=c.newsUrl||'';if(c.worker){PUSH_URL=String(c.worker).trim().replace(/\/$/,'');ls.set('amg_worker',PUSH_URL)}else{PUSH_URL='';localStorage.removeItem('amg_worker')}if(/^#[0-9a-f]{6}$/i.test(c.accent||'')&&c.accent!==S.accent){S.accent=c.accent;applyTheme(c.accent)}}}catch(e){}
  document.documentElement.dataset.amgrole=AMG.role;
+ AMG.course=isA||lg.course===true||(lg.course!==false&&AMG.role==='student');
+ if(!AMG.course){document.documentElement.dataset.nocourse='1';const lock=`<div class="amg-lock card br"><span class="ic">${ico('lock')}</span><b>الكورس مقفول عليك</b><small>تواصل ويّا الأستاذ حتى يفتحلك الكورس</small></div>`;
+  renderCourse=function(){const b=$('#course');if(b)b.innerHTML=lock};renderHW=function(){const b=$('#hwBox');if(b)b.innerHTML=lock};openLecture=function(){toast('الكورس مقفول عليك','bad')}}
  let md=null;try{md=await store.get('users/'+uid)}catch(e){}
  if(!md){
   let photo='';try{const p=await store.get('profiles/'+uid);if(p&&p.photo)photo=p.photo}catch(e){}

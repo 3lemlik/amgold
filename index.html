@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-3">
+<meta name="app-build" content="2026.11.20-4">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1086,7 +1086,8 @@ html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
 #amcWrap.on{display:block}
 #amcWrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:transparent;opacity:0;transition:opacity .25s}
 #amcWrap.ready iframe{opacity:1}
-#amcWrap .amc-load{position:absolute;inset:0;display:grid;place-items:center}
+#amcWrap .amc-load{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+#amcWrap .amc-slow{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--dim);font-size:13.5px}
 #amcWrap .amc-load .ic{width:46px;height:46px;animation:amcp 1.2s ease-in-out infinite}
 #amcWrap.ready .amc-load{display:none}
 @keyframes amcp{50%{opacity:.35;transform:scale(.92)}}
@@ -1601,7 +1602,7 @@ html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-3</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-4</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -3429,7 +3430,7 @@ function studentForm(s) {
    ${s ? `<div class="fld"><label>الرمز</label><div class="row"><input class="inp num" value="${esc(s.pw || '')}" readonly><button class="btn ghost sm" data-cp="${esc(s.pw || '')}">انسخ</button></div></div>` : `<div class="fld"><label>الرمز السري (6 أو أكثر)</label><div class="row"><input class="inp num" id="fPw"><button class="btn ghost sm" id="fGen">ولّد</button></div></div>`}
    ${s ? `<div class="fld"><label>نوع الحساب</label><select class="inp" id="fRole"><option value="member" ${s.role === 'member' ? 'selected' : ''}>مشترك عادي</option><option value="student" ${s.role === 'student' ? 'selected' : ''}>طالب بالكورس</option></select></div>` : ''}
    ${s ? `<button class="mi" id="fRoom" style="padding-inline:0">يشوف غرفة الطلاب<small>إذا طفّيته تختفي الغرفة عنده</small><span class="sw ${s.room !== false ? 'on' : ''}"></span></button>` : ''}
-   ${s ? `<div class="fld"><label>محاضرات الكورس اللي يگدر يشوفها</label><div id="fLecs"><div class="dim" style="font-size:13px">ديحمّل…</div></div></div>` : ''}
+   ${s ? `<div class="fld"><label>الكورس</label><div id="fLecs"><div class="dim" style="font-size:13px">ديحمّل…</div></div></div>` : ''}
    <div class="fld"><label>${s ? 'مدة الاشتراك من اليوم (يوم)' : 'مدة الاشتراك (يوم) — خليها فارغة بدون انتهاء'}</label><input class="inp num" id="fDays" inputmode="numeric" value="${s ? (s.exp ? Math.max(0, Math.ceil((s.exp - Date.now()) / 864e5)) : '') : 30}"></div>
    <div class="row"><button class="btn sp" id="fOk">${s ? 'احفظ' : 'ضيف'}</button>${s ? '<button class="btn danger sm" id="fDel">احذف</button>' : ''}</div>`, (m, close) => {
     const fr = m.querySelector('#fRoom'); if (fr) fr.onclick = () => fr.querySelector('.sw').classList.toggle('on');
@@ -4825,6 +4826,7 @@ function amcShow(pg) {
     document.body.appendChild(w); AMC = w.querySelector('iframe');
     AMC.src = 'chat.html?nav=' + (pg === 'course' ? 'course' : 'chats') + '&v=' + encodeURIComponent((document.querySelector('meta[name=app-build]') || {}).content || '');
     if (AMC_OPEN0) AMC_Q.push({ open: AMC_OPEN0 });
+    const wd = () => setTimeout(() => { if (AMC_READY) return; const l = w.querySelector('.amc-load'); if (l && !l.querySelector('button')) { l.insertAdjacentHTML('beforeend', '<div class="amc-slow"><span>دا يتأخر… تأكد من النت</span><button class="btn tint sm">حاول مرة ثانية</button></div>'); l.querySelector('button').onclick = () => { l.querySelector('.amc-slow').remove(); AMC.src = AMC.src; wd(); }; } }, 12000); wd();
   } else if (AMC_PG !== pg) amcPost({ nav: pg === 'course' ? 'course' : 'chats' });
   AMC_PG = pg; $('#amcWrap').classList.add('on'); amcLayout();
 }
@@ -4900,11 +4902,16 @@ async function lecPerms(box, s) {
   try {
     const [ls, en] = await Promise.all([fdb.collection('lectures').get(), fdb.doc('enroll/' + s.uid).get()]);
     const L = ls.docs.map(d => Object.assign({ id: d.id }, d.data())).sort((a, b) => (a.n || 0) - (b.n || 0)), E = (en.exists && en.data().lectures) || {};
-    if (!L.length) { box.innerHTML = '<div class="dim" style="font-size:13px">لحد الآن ماكو محاضرات — ضيفها من صفحة الكورس</div>'; return; }
+    const cOn = () => s.course === true || (s.course !== false && s.role === 'student');
+    const head = () => `<button class="mi" data-crs style="padding-inline:0">يدخل للكورس<small>إذا طفّيته الكورس كله يتسد عليه</small><span class="sw ${cOn() ? 'on' : ''}"></span></button>`;
+    if (!L.length) { box.innerHTML = head() + '<div class="dim" style="font-size:13px">لحد الآن ماكو محاضرات — ضيفها من صفحة الكورس</div>'; box.onclick = e => { if (e.target.closest('[data-crs]')) togC(); }; }
+    async function togC() { const v = !cOn(); try { await DB.updStudent(s.uid, { course: v }); s.course = v; toast(v ? 'انفتح الكورس عليه ✓' : 'انسد الكورس عليه', 'ok'); } catch (e) { toast('ما انحفظ', 'bad'); } if (L.length) draw(); else box.querySelector('[data-crs] .sw').classList.toggle('on', cOn()); }
+    if (!L.length) return;
+    if (false) { box.innerHTML = '<div class="dim" style="font-size:13px">لحد الآن ماكو محاضرات — ضيفها من صفحة الكورس</div>'; return; }
     const cnt = () => L.filter(l => E[l.id] === true).length;
     const draw = () => {
-      box.innerHTML = `<div class="row" style="margin-bottom:6px"><span class="dim" style="font-size:12.5px">مفتوحله <b class="num">${cnt()}</b> من <span class="num">${L.length}</span></span><span class="sp"></span><button class="btn tint sm" data-la="1">افتح الكل</button><button class="btn ghost sm" data-la="0">اقفل الكل</button></div>` +
-        L.map(l => `<button class="mi" data-lec="${l.id}" style="padding-inline:0"><span class="num" style="color:var(--accent);font-weight:800;min-width:26px">${String(l.n || '').padStart(2, '0')}</span><span style="flex:1;min-width:0;text-align:start">${esc(l.title || 'محاضرة')}${l.ready ? '' : '<small>الفيديو بعده ما انرفع</small>'}</span><span class="sw ${E[l.id] === true ? 'on' : ''}"></span></button>`).join('');
+      box.innerHTML = head() + (cOn() ? '' : '<div class="dim" style="font-size:12.5px;margin:4px 0 8px">الكورس مسدود عليه — المحاضرات تبقى محفوظة إذا رجعت فتحته</div>') + `<div class="row" style="margin-bottom:6px;${cOn() ? '' : 'opacity:.45;pointer-events:none'}"><span class="dim" style="font-size:12.5px">مفتوحله <b class="num">${cnt()}</b> من <span class="num">${L.length}</span></span><span class="sp"></span><button class="btn tint sm" data-la="1">افتح الكل</button><button class="btn ghost sm" data-la="0">اقفل الكل</button></div>` +
+        `<div style="${cOn() ? '' : 'opacity:.45;pointer-events:none'}">` + L.map(l => `<button class="mi" data-lec="${l.id}" style="padding-inline:0"><span class="num" style="color:var(--accent);font-weight:800;min-width:26px">${String(l.n || '').padStart(2, '0')}</span><span style="flex:1;min-width:0;text-align:start">${esc(l.title || 'محاضرة')}${l.ready ? '' : '<small>الفيديو بعده ما انرفع</small>'}</span><span class="sw ${E[l.id] === true ? 'on' : ''}"></span></button>`).join('') + '</div>';
     };
     const apply = async (ids, on) => {
       const patch = {}; ids.forEach(i => { patch[i] = on; E[i] = on; }); draw();
@@ -4918,7 +4925,7 @@ async function lecPerms(box, s) {
         toast(on ? 'انفتحت ✓' : 'انقفلت', 'ok');
       } catch (e) { ids.forEach(i => E[i] = !on); draw(); toast('ما انحفظ', 'bad'); }
     };
-    box.onclick = e => { const b = e.target.closest('[data-lec]'); if (b) return apply([b.dataset.lec], E[b.dataset.lec] !== true); const a = e.target.closest('[data-la]'); if (a) apply(L.map(l => l.id), a.dataset.la === '1'); };
+    box.onclick = e => { if (e.target.closest('[data-crs]')) return togC(); const b = e.target.closest('[data-lec]'); if (b) return apply([b.dataset.lec], E[b.dataset.lec] !== true); const a = e.target.closest('[data-la]'); if (a) apply(L.map(l => l.id), a.dataset.la === '1'); };
     draw();
   } catch (e) { box.innerHTML = '<div class="dim" style="font-size:13px">ما گدرنا نجيب المحاضرات</div>'; }
 }
