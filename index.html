@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded',function(){var pt=document.getEleme
 if(a<0||b<0)return;var src=t.slice(a+38,b).split('<\\/script').join('<'+'/script').split('<\\!--').join('<'+'!--');document.open();document.write(src);document.close()});
 document.write('<plaintext id="amcPT" style="display:none">')})()</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-11">
+<meta name="app-build" content="2026.11.20-12">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1085,7 +1085,8 @@ html.lock{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
 /* ====== الدردشة والكورس (AM CHAT داخل AM GOLD) ====== */
 #app[data-guest] .no-guest{display:none!important}
 #pg-chat>*{display:none!important}
-html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
+/* بصفحة الدردشة الصفحة نفسها ثابتة تماماً (مثل AM CHAT) حتى اللمس والسحب جوّة الدردشة ما يهز الصفحة */
+html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-behavior:none}
 #amcWrap{position:fixed;left:0;top:0;right:0;height:100%;z-index:30;display:block;background:var(--void)}
 #amcWrap:not(.on){visibility:hidden;pointer-events:none;z-index:-1}
 #amcWrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:transparent;opacity:0;transition:opacity .25s}
@@ -1562,7 +1563,7 @@ html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-11</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-12</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -4436,7 +4437,7 @@ async function lecPerms(box, s) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-11">
+<meta name="app-build" content="2026.11.20-12">
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -7107,10 +7108,10 @@ function bindLB(){const lb=$('#lightbox'),stg=$('#lightbox .stage');const P=new 
 function closeLBnav(){popNav('lb')}
 
 /* ================= السحب من الحافة للرجوع ================= */
-function bindEdgeBack(){const col=$('#chatCol');let e0=null;
- col.addEventListener('touchstart',e=>{if(!isPhone()||!S.open||S.info)return;const t=e.touches[0];if(t.clientX<26){e0={x:t.clientX,y:t.clientY,on:false}}},{passive:true});
- col.addEventListener('touchmove',e=>{if(!e0)return;const t=e.touches[0];const dx=t.clientX-e0.x,dy=t.clientY-e0.y;if(!e0.on){if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>10){e0=null;return}if(dx>8)e0.on=true}if(e0&&e0.on){col.style.transition='none';col.style.transform=`translateX(${Math.max(0,dx)}px)`}},{passive:true});
- col.addEventListener('touchend',e=>{if(!e0)return;const dx=e.changedTouches[0].clientX-e0.x;const on=e0.on;e0=null;col.style.transition='';if(!on){col.style.transform='';return}if(dx>innerWidth*.28){col.style.transform='translateX(100%)';setTimeout(()=>{closeChat();let n=0;const w=()=>{if($('#app').hasAttribute('data-open')&&n++<40)return setTimeout(w,25);setTimeout(()=>{col.style.transition='none';col.style.transform='';requestAnimationFrame(()=>col.style.transition='')},360)};w()},280)}else col.style.transform=''})}
+function bindEdgeBack(){const col=$('#chatCol');let e0=null;const EW=28;
+ col.addEventListener('touchstart',e=>{if(!isPhone()||!S.open||S.info)return;const t=e.touches[0];const sd=t.clientX<EW?1:t.clientX>innerWidth-EW?-1:0;if(sd){e0={x:t.clientX,y:t.clientY,on:false,sd};e.stopPropagation()}},{passive:true});
+ col.addEventListener('touchmove',e=>{if(!e0)return;e.stopPropagation();const t=e.touches[0];const dx=(t.clientX-e0.x)*e0.sd,dy=t.clientY-e0.y;if(!e0.on){if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>10){e0=null;return}if(dx>8)e0.on=true}if(e0&&e0.on){col.style.setProperty('transition','none','important');col.style.transform=`translateX(${Math.max(0,dx)*e0.sd}px)`}},{passive:true});
+ col.addEventListener('touchend',e=>{if(!e0)return;e.stopPropagation();const sd=e0.sd;const dx=(e.changedTouches[0].clientX-e0.x)*sd;const on=e0.on;e0=null;col.style.removeProperty('transition');if(!on){col.style.transform='';return}if(dx>innerWidth*.28){col.style.transform=`translateX(${sd*100}%)`;setTimeout(()=>{closeChat();let n=0;const w=()=>{if($('#app').hasAttribute('data-open')&&n++<40)return setTimeout(w,25);setTimeout(()=>{col.style.setProperty('transition','none','important');col.style.transform='';void col.offsetWidth;col.style.removeProperty('transition')},360)};w()},280)}else col.style.transform=''})}
 
 /* ================= المنشورات ================= */
 S.posts=[];S.reels=[];S.ucache={};S.reelMuted=true;
