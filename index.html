@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded',function(){var pt=document.getEleme
 if(a<0||b<0)return;var src=t.slice(a+38,b).split('<\\/script').join('<'+'/script').split('<\\!--').join('<'+'!--');document.open();document.write(src);document.close()});
 document.write('<plaintext id="amcPT" style="display:none">')})()</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-15">
+<meta name="app-build" content="2026.11.20-16">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1097,11 +1097,11 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
 #amcWrap .amc-load .ic{width:46px;height:46px;animation:amcp 1.2s ease-in-out infinite}
 #amcWrap.ready .amc-load{display:none}
 @keyframes amcp{50%{opacity:.35;transform:scale(.92)}}
-#amcProbe{position:fixed;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);width:0;height:0}
+#amcProbe{position:fixed;visibility:hidden;pointer-events:none;padding-top:var(--sat);padding-bottom:var(--sab);width:0;height:0}
 @media (max-width:900px){
  html.amcpg #app[data-pg] header.top{display:none!important}
  /* بصفحة الدردشة والكورس الشريط السفلي يشتغل من جوّة الدردشة نفسها */
- html.amcpg.amcready #app .bnav{visibility:hidden!important;pointer-events:none!important}
+ html.amcpg.amcready.amcnav #app .bnav{visibility:hidden!important;pointer-events:none!important}
 }
 .crsCard{display:flex;align-items:center;gap:14px;text-align:start;cursor:pointer;padding:16px 18px;background:linear-gradient(110deg,var(--accent-soft),transparent 70%),var(--panel);font:inherit;color:var(--ink);width:100%}
 .crsCard:active{transform:scale(.985)}
@@ -1564,7 +1564,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-15</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-16</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -4114,14 +4114,15 @@ function scrollLock() {
   const m = matchMedia('(max-width:900px)').matches, app = $('#app');
   const on = m && ((curPg === 'chat' && app.hasAttribute('data-conv')) || curPg === 'signals');
   const h = document.documentElement, was = h.classList.contains('lock'); if (was === on) return;
-  if (on) { scrollLock.y = window.scrollY; h.classList.add('lock'); }
-  else { h.classList.remove('lock'); const y = scrollLock.y || 0; window.scrollTo(0, y); requestAnimationFrame(() => window.scrollTo(0, y)); }
+  if (on) { scrollLock.y = window.scrollY; h.classList.add('lock'); document.addEventListener('touchmove', lockTM, { passive: false }); }
+  else { h.classList.remove('lock'); document.removeEventListener('touchmove', lockTM, { passive: false }); const y = scrollLock.y || 0; window.scrollTo(0, y); requestAnimationFrame(() => window.scrollTo(0, y)); }
 }
-document.addEventListener('touchmove', e => {
+/* السحب يتمنع بس وقت القفل، وباقي الوقت اللمس حر تماماً (مستمع غير passive على كل الصفحة يثگّل السحب بالآيفون) */
+function lockTM(e) {
   if (!document.documentElement.classList.contains('lock')) return;
   const sc = e.target.closest('#msgs,.cscroll,.tgfeed,.emoji .grid,textarea,.ov,.modal,.sheet,.npanel,.rxpick');
   if (!sc && e.cancelable) e.preventDefault();
-}, { passive: false });
+}
 /* ====== الإشعارات بالخلفية ====== */
 const PUSH = Object.assign({ news: true, sig: true, post: true }, L.get('amg_push', {}));
 const VAPID = () => (CFG.vapid || 'BMqtdc4HOOjwFnS9Ew3TmD8wR5-81BL4Vl3Ktj_z63WpHfwgB41NoXr3STcZN9K64WuBdiev_6I2EhLHxxNxRMs').trim();
@@ -4303,7 +4304,7 @@ function start() {
 initAuth();
 
 /* ====== الدردشة والكورس (محرك AM CHAT داخل AM GOLD) ====== */
-let AMC = null, AMC_READY = false, AMC_Q = [], AMC_ST = {}, AMC_PG = '';
+var AMC = null, AMC_READY = false, AMC_Q = [], AMC_ST = {}, AMC_PG = '';
 const AMC_OPEN0 = new URLSearchParams(location.search).get('c');
 function amcPost(o) { if (!AMC) { if (o.open) AMC_Q.push(o); return; } if (!AMC_READY) { AMC_Q.push(o); return; } try { AMC.contentWindow.postMessage(o, location.origin); } catch (e) { } }
 function amcInsets() {
@@ -4317,7 +4318,7 @@ function amcShow(pg) {
   amcEnsure(pg); if (AMC_PG !== pg) amcPost({ nav: pg === 'course' ? 'course' : 'chats' });
   AMC_PG = pg; $('#amcWrap').classList.add('on'); amcLayout();
 }
-let AMC_LOADNAV = '';
+var AMC_LOADNAV = '';
 /* الدردشة تتحمّل بالخلفية من يفتح الموقع، حتى من تدوس عليها تكون حاضرة */
 function amcEnsure(pg) {
   if (AMC) return;
@@ -4334,11 +4335,20 @@ function amcEnsure(pg) {
 function amcPreload() { if (AMC || ME.role === 'guest' || DB.kind !== 'firebase') return; const go2 = () => { amcEnsure('chat'); amcLayout2(); }; setTimeout(go2, 150); }
 function amcLayout2() { const w = $('#amcWrap'); if (w && !w.classList.contains('on')) { w.style.top = '0px'; w.style.height = innerHeight + 'px'; } }
 function amcFull() { return isPhone() && AMC_PG && (AMC_ST.open || AMC_ST.sheet || AMC_ST.lv || AMC_ST.lb); }
-let amcLastIns = '', amcFullT = 0;
-let AMC_KB = false;
+var amcLastIns = '', amcFullT = 0;
+var AMC_KB = false;
 window.amcKB = kb => { if (AMC_KB !== kb) { AMC_KB = kb; amcLayout(); } };
+function amcSendIns() {
+  // نفس مكان الشريط السفلي بالضبط (حتى شريط الدردشة ما يرتفع ولا ينزل ولا بكسل)
+  const ins = amcInsets(), bn = $('#bnav'), ph = isPhone();
+  let nav = 0, nb = -1;
+  if (ph && bn && getComputedStyle(bn).display !== 'none') { const r = bn.getBoundingClientRect(); nav = Math.round(r.height); if (r.height) nb = Math.round((innerHeight - r.bottom) * 10) / 10; }
+  const o = { sat: ph ? ins.sat : 0, sab: ph ? ins.sab : 0, nav, nb }, sig = JSON.stringify(o);
+  if (sig !== amcLastIns) { amcLastIns = sig; amcPost({ insets: o }); }
+}
 function amcLayout() {
-  const w = $('#amcWrap'); if (!w || !w.classList.contains('on')) return;
+  const w = $('#amcWrap'); if (!w) return;
+  if (!w.classList.contains('on')) { if (AMC_READY) amcSendIns(); return; }
   const app = $('#app'), full = amcFull(), kb = AMC_KB && isPhone();
   // الشريط السفلي يختفي فوراً من تفتح محادثة أو يطلع الكيبورد، ويرجع بهدوء بعدين — حجم الدردشة ما يتغيّر أبداً
   clearTimeout(amcFullT);
@@ -4349,9 +4359,7 @@ function amcLayout() {
   if (w.style.top !== '0px') w.style.top = '0px';
   const h = innerHeight + 'px'; if (w.style.height !== h) w.style.height = h;
   if (w.style.right !== right + 'px') w.style.right = right + 'px';
-  const ins = amcInsets(), bn = $('#bnav'), nav = isPhone() && bn ? Math.round(bn.offsetHeight || 0) : 0;
-  const o = { sat: isPhone() ? ins.sat : 0, sab: isPhone() ? ins.sab : 0, nav }, sig = JSON.stringify(o);
-  if (sig !== amcLastIns) { amcLastIns = sig; amcPost({ insets: o }); }
+  amcSendIns();
 }
 addEventListener('resize', () => requestAnimationFrame(amcLayout));
 
@@ -4361,6 +4369,7 @@ addEventListener('message', e => {
   if (d.ready) { AMC_READY = true; document.documentElement.classList.add('amcready'); amcLastIns = ''; $('#amcWrap').classList.add('ready'); amcPost({ mode: S.mode }); amcLayout(); const q = AMC_Q.splice(0); q.forEach(amcPost); if (AMC_PG) amcPost({ nav: AMC_PG === 'course' ? 'course' : 'chats' }); }
   if (d.state) { AMC_ST = d.state; if (typeof d.state.unread === 'number') { CHATS2 = d.state.unread; chatBadge(); } amcLayout(); }
   if (d.go) { go(document.getElementById('pg-' + d.go) ? d.go : 'home'); if (d.p) setTimeout(() => { const el = $(`#feed [data-pid="${CSS.escape(d.p)}"]`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); } }, 400); }
+  if (d.navok) document.documentElement.classList.add('amcnav');
   if (d.fail) $('#amcWrap').classList.add('ready');
 });
 { const _sm = setMode; setMode = function (m) { _sm(m); amcPost({ mode: m }); }; }
@@ -4438,7 +4447,7 @@ async function lecPerms(box, s) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-15">
+<meta name="app-build" content="2026.11.20-16">
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -6129,6 +6138,17 @@ html.embed #splash{display:none!important}
 }
 /* المحادثة المسدودة ما تستقبل أي لمسة (حتى لو بعدها دتطلع) */
 #app:not([data-open]) #chatCol,#app:not([data-open]) #chatCol *{pointer-events:none!important}
+/* سحب الخروج من المحادثة */
+@media (max-width:900px){
+ #chatCol.swb{will-change:transform;box-shadow:0 0 44px rgba(0,0,0,calc(.5 * (1 - var(--swp,0))))}
+ html.navinst #chatCol,html.navinst #chatCol *,html.navinst #listCol{transition:none!important;animation-duration:0s!important}
+}
+/* الضغط المطوّل: لا تحديد نص ولا قائمة الآيفون فوگ قائمتنا */
+@media (pointer:coarse){
+ #msgInner .m,.ci,.chead,#amgNav,.tabbar,.nav button,.ctx{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+ #msgInner img,#msgInner video,.ci img{-webkit-touch-callout:none;-webkit-user-drag:none}
+ #msgInner .m a{-webkit-touch-callout:none}
+}
 
 </style>
 </head>
@@ -6689,10 +6709,14 @@ function renderChatList(){const q=$('#chatSearch').value.trim();let list=sortedC
   <div class="r2"><span class="pv">${pv}</span>${un?`<span class="badge ${mu?'muted':''}">${un>99?'99+':un}</span>`:pin?ico('pin','i pin'):''}</div></div></div>`}).join('')}
 
 /* ================= فتح المحادثة ================= */
-function pushNav(k){try{history.pushState({k},'')}catch(e){}S.nav.push(k)}
+function pushNav(k){if(!S._noPush){try{history.pushState({k,d:S.nav.length+1},'')}catch(e){}}S.nav.push(k)}
+/* رجوع/تقدّم السفاري بالسحب: السفاري هو يسوي الحركة، فإحنا نسد/نفتح بدون حركة ثانية فوگها */
+function navInst(){const r=document.documentElement;r.classList.add('navinst');clearTimeout(S._niT);S._niT=setTimeout(()=>requestAnimationFrame(()=>requestAnimationFrame(()=>r.classList.remove('navinst'))),60)}
 const NAVF={rv:()=>doCloseRV(),chat:()=>doCloseChat(),info:()=>doCloseInfo(),story:()=>doCloseStory(),lb:()=>doCloseLB()};
 function popNav(k){if(S.nav[S.nav.length-1]===k){S.nav.pop();NAVF[k]&&NAVF[k]();S._ign=(S._ign||0)+1;history.back();setTimeout(()=>{S._ign=0},1500)}else{const i=S.nav.lastIndexOf(k);if(i>=0)S.nav.splice(i,1);NAVF[k]&&NAVF[k]()}}
-addEventListener('popstate',()=>{if(S._ign>0){S._ign--;return}const k=S.nav.pop();NAVF[k]&&NAVF[k]()});
+addEventListener('popstate',e=>{if(S._ign>0){S._ign--;return}const st=e.state||{},d=typeof st.d==='number'?st.d:0;if(isTouch)navInst();
+ if(d>S.nav.length){if(st.k==='chat'&&!S.open&&S.lastOpen&&S.chatMap[S.lastOpen]){S._noPush=1;try{openChat(S.lastOpen)}finally{S._noPush=0}}else{S._ign=(S._ign||0)+1;history.back();setTimeout(()=>{S._ign=0},1500)}return}
+ if(!S.nav.length)return;do{const k=S.nav.pop();NAVF[k]&&NAVF[k]()}while(S.nav.length>d)});
 async function openChat(cid){if(!isPhone()&&!['chats','contacts','settings'].includes($('#app').dataset.pane))setNav('chats');if(!S.chatMap[cid]){const c=await store.get('chats/'+cid);if(!c)return toast('المحادثة مو موجودة','bad');S.chatMap[cid]={id:cid,...c}}
  const was=S.open;if(was===cid){closeSheet();return}S.open=cid;if(!was&&isPhone())pushNav('chat');
  if(S.info&&S.info.type!=='chat'||S.info&&S.info.id!==cid){if(S.nav.includes('info'))S.nav.splice(S.nav.lastIndexOf('info'),1);doCloseInfo()}
@@ -6707,7 +6731,7 @@ function watchMsgs(cid){S.mw=S.mw||{};S.mc=S.mc||{};if(S.msgUnsub){S.msgUnsub();
  const u=store.watchQuery(`chats/${cid}/messages`,{orderBy:['at','desc'],limit:lim},list=>{const L=list.slice().reverse();S.mc[cid]=L;if(cid!==S.open)return;S.hasMore=list.length>=lim;S.msgs=L.slice();renderMsgs()});
  S.mw[cid]={u,lim,t:now()};const ks=Object.keys(S.mw);if(ks.length>6)ks.sort((a,b)=>S.mw[a].t-S.mw[b].t).slice(0,ks.length-6).forEach(k=>{if(k!==cid){try{S.mw[k].u()}catch(e){}delete S.mw[k];delete S.mc[k]}})}
 function closeChat(){popNav('chat')}
-function doCloseChat(){saveDraft();S.open=null;delete $('#app').dataset.open;if(S.msgUnsub)S.msgUnsub();S.msgUnsub=null;stopAudio();if(S.recording)stopRec(false);doCloseInfo();renderChatList()}
+function doCloseChat(){saveDraft();if(S.open)S.lastOpen=S.open;S.open=null;delete $('#app').dataset.open;if(S.msgUnsub)S.msgUnsub();S.msgUnsub=null;stopAudio();if(S.recording)stopRec(false);doCloseInfo();renderChatList()}
 function saveDraft(){if(!S.open)return;S.drafts=S.drafts||{};S.drafts[S.open]=S.edit?'':$('#txt').value}
 
 function renderHeader(){const c=S.chatMap[S.open];if(!c)return;const i=chatInfo(c);$('#chAv').innerHTML=chatAv(c,44);$('#chName').innerHTML=esc(i.title)+(i.verified?ico('vf','vf'):'')+(isMuted(c.id)?ico('mute','i mt'):'');
@@ -7111,14 +7135,33 @@ function bindLB(){const lb=$('#lightbox'),stg=$('#lightbox .stage');const P=new 
 function closeLBnav(){popNav('lb')}
 
 /* ================= السحب من الحافة للرجوع ================= */
-function bindEdgeBack(){const col=$('#chatCol');let e0=null;
- col.addEventListener('touchstart',e=>{e0=null;if(!isPhone()||!S.open||S.info||e.touches.length>1)return;if(e.target.closest('#comp,textarea,input,.wv,#hold,video,.vwrap'))return;const t=e.touches[0];if(t.clientX>30)return;e0={x:t.clientX,y:t.clientY,on:false,edge:true}},{passive:true});
- col.addEventListener('touchmove',e=>{if(!e0)return;const t=e.touches[0];const dx=t.clientX-e0.x,dy=t.clientY-e0.y;
-  if(!e0.on){if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){e0=null;return}if(dx<-10){e0=null;return}if(dx>(e0.edge?8:16)&&dx>Math.abs(dy)*1.3){e0.on=true;e0.x=t.clientX-1;$$('.m.press').forEach(x=>x.classList.remove('press'))}else return}
-  col.style.setProperty('transition','none','important');col.style.transform=`translateX(${Math.max(0,t.clientX-e0.x)}px)`},{passive:true});
- const end=e=>{if(!e0)return;const on=e0.on,x0=e0.x;e0=null;if(!on)return;const t=e.changedTouches&&e.changedTouches[0];const dx=t?t.clientX-x0:0;col.style.removeProperty('transition');
-  if(dx>innerWidth*.25){col.style.transform='translateX(100%)';setTimeout(()=>{closeChat();setTimeout(()=>{col.style.setProperty('transition','none','important');col.style.transform='';void col.offsetWidth;col.style.removeProperty('transition')},380)},250)}else col.style.transform=''};
- col.addEventListener('touchend',end,{passive:true});col.addEventListener('touchcancel',end,{passive:true})}
+function bindEdgeBack(){const col=$('#chatCol');let g=null,raf=0,pend=0;
+ // سحب للخروج من المحادثة: لليمين من أي مكان، أو لليسار من حافة اليمين. الصفحة تمشي ويّا إصبعك وتكمل بنفس الاتجاه بدون رجعة
+ const W=()=>col.offsetWidth||innerWidth;
+ const put=x=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{col.style.transform=x?`translate3d(${x}px,0,0)`:''})};
+ const clean=()=>{col.style.setProperty('transition','none','important');col.style.transform='';col.style.removeProperty('--swp');void col.offsetWidth;requestAnimationFrame(()=>{col.style.removeProperty('transition');col.classList.remove('swb');S.swb=0})};
+ const after=(ms,fn)=>{let ok=false;const f=()=>{if(ok)return;ok=true;col.removeEventListener('transitionend',te);clearTimeout(pend);fn()};const te=e=>{if(e.target===col&&e.propertyName==='transform')f()};col.addEventListener('transitionend',te);clearTimeout(pend);pend=setTimeout(f,ms+60)};
+ col.addEventListener('touchstart',e=>{g=null;if(!isPhone()||!S.open||S.info||S.swb||e.touches.length>1)return;
+  if(e.target.closest('#comp,textarea,input,.wv,#hold,video,.vwrap,#emoji,#lockP,#ctx,.hscroll'))return;
+  const t=e.touches[0],w=innerWidth,side=t.clientX<=28?'L':t.clientX>=w-26?'R':'M';
+  g={x:t.clientX,y:t.clientY,side,on:false,p:[[t.clientX,performance.now()]]}},{passive:true});
+ col.addEventListener('touchmove',e=>{if(!g)return;if(e.touches.length>1){g=null;return}const t=e.touches[0],dx=t.clientX-g.x,dy=t.clientY-g.y;
+  if(!g.on){if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){g=null;return}
+   let d=0;if(g.side!=='R'&&dx>(g.side==='L'?6:14)&&dx>Math.abs(dy)*1.4)d=1;else if(g.side==='R'&&dx<-6&&-dx>Math.abs(dy)*1.4)d=-1;else if(g.side!=='R'&&dx<-12){g=null;return}
+   if(!d)return;g.on=true;g.d=d;g.x=t.clientX;S.swb=1;col.classList.add('swb');col.style.setProperty('transition','none','important');$$('.m.press').forEach(x=>x.classList.remove('press'));
+   const ae=document.activeElement;if(ae&&ae.blur&&/INPUT|TEXTAREA/.test(ae.tagName))ae.blur()}
+  const off=g.d>0?Math.max(0,t.clientX-g.x):Math.min(0,t.clientX-g.x);g.p.push([t.clientX,performance.now()]);if(g.p.length>8)g.p.shift();
+  col.style.setProperty('--swp',Math.min(1,Math.abs(off)/W()).toFixed(3));put(off)},{passive:true});
+ const end=(e,cancel)=>{if(!g)return;const G=g;g=null;if(!G.on)return;cancelAnimationFrame(raf);
+  const t=e.changedTouches&&e.changedTouches[0],x=t?t.clientX:G.p[G.p.length-1][0],tn=performance.now();
+  const off=G.d>0?Math.max(0,x-G.x):Math.min(0,x-G.x),w=W(),prog=Math.abs(off)/w;
+  let i=G.p.length-1;while(i>0&&tn-G.p[i-1][1]<110)i--;const v=(x-G.p[i][0])/Math.max(16,tn-G.p[i][1])*G.d;
+  const go=!cancel&&S.open&&(prog>.38||(v>.3&&prog>.05))&&v>-.15;
+  if(go){const ms=Math.round(Math.max(150,Math.min(290,(1-prog)*w/Math.max(1.1,v))));
+   col.style.setProperty('transition',`transform ${ms}ms cubic-bezier(.25,.8,.35,1)`,'important');col.style.transform=`translate3d(${G.d*w}px,0,0)`;col.style.setProperty('--swp','1');
+   after(ms,()=>{col.style.setProperty('transition','none','important');if(S.open)closeChat();clean()})}
+  else{col.style.setProperty('transition','transform .22s cubic-bezier(.2,.9,.3,1)','important');col.style.transform='';col.style.setProperty('--swp','0');after(220,clean)}};
+ col.addEventListener('touchend',e=>end(e,false),{passive:true});col.addEventListener('touchcancel',e=>end(e,true),{passive:true})}
 
 /* ================= المنشورات ================= */
 S.posts=[];S.reels=[];S.ucache={};S.reelMuted=true;
@@ -7953,7 +7996,7 @@ function bindEvents(){
   if(!t.closest('#emoji')&&!t.closest('[data-act=emoji]')&&!t.closest('#txt')&&!t.closest('#sendBtn'))$('#emoji').classList.remove('on')});
  // أزرار ما تسد الكيبورد
  document.addEventListener('mousedown',e=>{if(e.target.closest('[data-keep],#emoji button'))e.preventDefault()});
- let kp=null;document.addEventListener('touchstart',e=>{const k=e.target.closest('[data-keep]');if(k){e.preventDefault();kp=k}},{passive:false});
+ let kp=null;$('#comp').addEventListener('touchstart',e=>{const k=e.target.closest('[data-keep]');if(k){e.preventDefault();kp=k}},{passive:false});
  document.addEventListener('touchend',e=>{if(kp){const k=kp;kp=null;if(e.target.closest('[data-keep]')===k||k.contains(e.target)){e.preventDefault();k.click()}}},{passive:false});
  $('#ctxBack').addEventListener('click',hideCtx);$('#ctxBack').addEventListener('contextmenu',e=>{e.preventDefault();hideCtx()});
  document.addEventListener('contextmenu',e=>{if(e.target.closest('input,textarea'))return;const m=e.target.closest('#msgInner .m');const c=e.target.closest('.ci[data-chat]');e.preventDefault();
@@ -7961,10 +8004,11 @@ function bindEvents(){
  // ضغطة مطوّلة + سحب للرد
  let lp,sx,sy,sw,swEl,dir;
  document.addEventListener('touchstart',e=>{const t=e.target;if(t.closest('.wv,[data-keep],#hold'))return;const m=t.closest('#msgInner .m'),c=t.closest('.ci[data-chat]');if(!m&&!c)return;const p=e.touches[0];sx=p.clientX;sy=p.clientY;dir=null;S.longFired=false;
-  if(m)m.classList.add('press');lp=setTimeout(()=>{lp=null;S.longFired=true;if(m){m.classList.remove('press');msgCtx(m.dataset.mid,sx,sy,m)}else chatCtx(c.dataset.chat,sx,sy,c);setTimeout(()=>S.longFired=false,500)},380);swEl=m&&!m.querySelector('.sys')?m:null;sw=0},{passive:true});
+  if(m)m.classList.add('press');lp=setTimeout(()=>{lp=null;if(S.swb)return;S.longFired=true;vib(10);if(m){m.classList.remove('press');msgCtx(m.dataset.mid,sx,sy,m)}else chatCtx(c.dataset.chat,sx,sy,c);setTimeout(()=>S.longFired=false,500)},380);swEl=m&&!m.querySelector('.sys')&&sx<innerWidth-26?m:null;sw=0},{passive:true});
  document.addEventListener('touchmove',e=>{if(lp==null&&!swEl)return;const p=e.touches[0],dx=p.clientX-sx,dy=p.clientY-sy;if(Math.abs(dx)>8||Math.abs(dy)>8){clearTimeout(lp);lp=null;$$('.m.press').forEach(x=>x.classList.remove('press'))}
-  if(!swEl)return;if(!dir&&(Math.abs(dx)>10||Math.abs(dy)>10))dir=Math.abs(dx)>Math.abs(dy)?'h':'v';if(dir!=='h')return;sw=Math.max(-80,Math.min(0,dx));const b=swEl.querySelector('.bub');b.style.transition='none';b.style.transform=`translateX(${sw}px)`;const ic=swEl.querySelector('.swipe-ic');ic.style.opacity=Math.min(1,-sw/55);ic.style.transform=`scale(${Math.min(1,.5-sw/110)})`;if(sw<-55&&!swEl._v){swEl._v=1;vib(8)}},{passive:true});
+  if(!swEl)return;if(S.swb){const b=swEl.querySelector('.bub');b.style.transition='';b.style.transform='';swEl.querySelector('.swipe-ic').style.opacity=0;swEl=null;return}if(!dir&&(Math.abs(dx)>10||Math.abs(dy)>10))dir=Math.abs(dx)>Math.abs(dy)*1.2&&dx<0?'h':'v';if(dir!=='h')return;sw=Math.max(-80,Math.min(0,dx));const b=swEl.querySelector('.bub');b.style.transition='none';b.style.transform=`translateX(${sw}px)`;const ic=swEl.querySelector('.swipe-ic');ic.style.opacity=Math.min(1,-sw/55);ic.style.transform=`scale(${Math.min(1,.5-sw/110)})`;if(sw<-55&&!swEl._v){swEl._v=1;vib(8)}},{passive:true});
  document.addEventListener('touchend',e=>{if(S.longFired&&e.cancelable)e.preventDefault();clearTimeout(lp);lp=null;$$('.m.press').forEach(x=>x.classList.remove('press'));if(swEl){const b=swEl.querySelector('.bub');b.style.transition='';b.style.transform='';const ic=swEl.querySelector('.swipe-ic');ic.style.opacity=0;swEl._v=0;if(sw<-55){const m=findMsg(swEl.dataset.mid);if(m&&!m.deleted)setReply(m)}swEl=null}},{passive:false});
+ document.addEventListener('touchcancel',()=>{clearTimeout(lp);lp=null;$$('.m.press').forEach(x=>x.classList.remove('press'));if(swEl){const b=swEl.querySelector('.bub');b.style.transition='';b.style.transform='';const ic=swEl.querySelector('.swipe-ic');if(ic)ic.style.opacity=0;swEl._v=0;swEl=null}},{passive:true});
  // سحب موجة البصمة
  let wvd=null;document.addEventListener('pointerdown',e=>{const wv=e.target.closest('#msgInner .wv');if(!wv)return;e.preventDefault();wvd=wv;playVoice(wv.closest('[data-voice]').dataset.voice,seekFrom(wv,e.clientX))});
  document.addEventListener('pointermove',e=>{if(!wvd||!S.audio)return;const a=S.audio.a,d=isFinite(a.duration)&&a.duration>0?a.duration:S.audio.dur;if(d)a.currentTime=seekFrom(wvd,e.clientX)*d;syncVoice()});
@@ -8105,7 +8149,7 @@ async function amgMigrate(me){toast('ديننقل الرسائل القديمة 
 /* التواصل ويّا AM GOLD */
 if(EMBED){
  addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==window.parent)return;const d=e.data||{};
-  if(d.insets){const r=document.documentElement.style;r.setProperty('--sat',(d.insets.sat||0)+'px');r.setProperty('--sab',(d.insets.sab||0)+'px');r.setProperty('--amgnav',(d.insets.nav||0)+'px')}
+  if(d.insets){const r=document.documentElement.style;r.setProperty('--sat',(d.insets.sat||0)+'px');r.setProperty('--sab',(d.insets.sab||0)+'px');r.setProperty('--amgnav',(d.insets.nav||0)+'px');const nb=d.insets.nb;if(typeof nb==='number'&&nb>=0){r.setProperty('--amgnb',nb+'px');document.documentElement.classList.add('amgnb')}else document.documentElement.classList.remove('amgnb')}
   if(d.mode&&['dark','light','auto'].includes(d.mode)){try{setMode(d.mode)}catch(x){}}
   if(d.nav){EMB.base=d.nav==='course'?'course':'chats';document.documentElement.dataset.embset=EMB.base;AMG.start=EMB.base;if(S.me){if(EMB.base==='course'&&S.open&&isPhone())closeChat();setNav(EMB.base)}}
   if(d.open&&S.me){setNav('chats');openChat(d.open)}
@@ -8130,10 +8174,10 @@ let _amgOpen;setInterval(()=>{if(!S.me||!store)return;const o=document.hidden||(
  const go=()=>{const c=$('#comp');if(!c)return setTimeout(go,500);new MutationObserver(()=>requestAnimationFrame(fix)).observe(c,{attributes:true,attributeFilter:['data-rec','data-lock']})};go()})();
 /* شريط AM GOLD السفلي جوّة الدردشة نفسها (تحت المحادثة) — حتى المحادثة تنزلق فوگه مثل تلگرام بدون أي حركة للشريط */
 (function(){if(!EMBED)return;let P;try{P=window.parent;if(!P.document)return}catch(e){return}
- let host,cssDone=false,mo=null,last='';
+ let host,cssDone=false,mo=null,last='',navOk=false;
  const vars=['--accent','--accent2','--accent-ink','--accent-glow','--accent-soft','--acc-rgb','--faint','--dim','--ink','--panel','--panel2','--void','--line','--line2'];
  const css=()=>{if(cssDone)return;cssDone=true;let out='';for(const sh of P.document.styleSheets){let rs;try{rs=sh.cssRules}catch(e){continue}const walk=(list,wrap)=>{for(const r of list){if(r.cssRules&&r.media){walk(r.cssRules,'@media '+r.media.mediaText);continue}const s=r.selectorText||'';if(!(/\.bnav|\.nbadge/.test(s)||/^(svg)?\.ic(\s|$|,|\.|:)/.test(s))||/#app|amcpg/.test(s))continue;const sel=s.split(',').map(x=>{x=x.trim();const m=/^(html\[[^\]]*\])\s*(.*)$/.exec(x);return m?m[1]+' #amgNav '+m[2]:'#amgNav '+x}).join(',');const body=r.cssText.slice(r.cssText.indexOf('{'));out+=wrap?wrap+'{'+sel+body+'}\n':sel+body+'\n'}};walk(rs,'')}
-  const st=document.createElement('style');st.id='amgNavCss';st.textContent=out+'#amgNav .bnav{z-index:6!important;display:grid!important}html.kb #amgNav{display:none}#app[data-open] #amgNav{pointer-events:none}@media (min-width:901px){#amgNav{display:none}}';document.head.appendChild(st)};
+  const st=document.createElement('style');st.id='amgNavCss';st.textContent=out+'#amgNav .bnav{z-index:6!important;display:grid!important;transition:none!important}html.amgnb #amgNav .bnav{bottom:var(--amgnb)!important}html.kb #amgNav{display:none}#app[data-open] #amgNav{pointer-events:none}@media (min-width:901px){#amgNav{display:none}}';document.head.appendChild(st)};
  const sync=()=>{const src=P.document.getElementById('bnav');if(!src)return;const app=$('#app');if(!app)return;css();
   if(!host){host=document.createElement('div');host.id='amgNav';const cc=$('#chatCol');app.insertBefore(host,cc||null)}
   const cs=P.getComputedStyle(P.document.documentElement);vars.forEach(v=>{const x=cs.getPropertyValue(v);if(x)host.style.setProperty(v,x.trim())});
@@ -8142,7 +8186,7 @@ let _amgOpen;setInterval(()=>{if(!S.me||!store)return;const o=document.hidden||(
   let sp=$('#amgNavSyms');if(!sp){sp=document.createElementNS('http://www.w3.org/2000/svg','svg');sp.id='amgNavSyms';sp.setAttribute('style','display:none');document.body.appendChild(sp)}
   ids.forEach(i=>{const k='amgsym-'+i;if(document.getElementById(k))return;const s=P.document.getElementById(i);if(!s)return;const c=s.cloneNode(true);c.id=k;sp.appendChild(c)});
   cl.querySelectorAll('use').forEach(u=>{const h=(u.getAttribute('href')||'').slice(1);if(h)u.setAttribute('href','#amgsym-'+h)});
-  const html=cl.outerHTML;if(html===last)return;last=html;host.innerHTML=html};
+  const html=cl.outerHTML;if(html===last)return;last=html;host.innerHTML=html;if(!navOk){navOk=true;try{amgPost({navok:1})}catch(e){}}};
  host=null;
  document.addEventListener('click',e=>{const b=e.target.closest('#amgNav button');if(!b)return;e.preventDefault();e.stopPropagation();const src=P.document.getElementById('bnav');const o=src&&src.children[+b.dataset.idx];if(o)o.click()},true);
  const start=()=>{if(!$('#app')||$('#app').classList.contains('hide'))return setTimeout(start,300);sync();const src=P.document.getElementById('bnav');if(src){mo=new P.MutationObserver(()=>requestAnimationFrame(sync));mo.observe(src,{subtree:true,attributes:true,childList:true,characterData:true})}
