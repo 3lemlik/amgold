@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded',function(){var pt=document.getEleme
 if(a<0||b<0)return;var src=t.slice(a+38,b).split('<\\/script').join('<'+'/script').split('<\\!--').join('<'+'!--');document.open();document.write(src);document.close()});
 document.write('<plaintext id="amcPT" style="display:none">')})()</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-9">
+<meta name="app-build" content="2026.11.20-10">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1562,7 +1562,7 @@ html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-9</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-10</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -4436,7 +4436,7 @@ async function lecPerms(box, s) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-9">
+<meta name="app-build" content="2026.11.20-10">
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -6105,8 +6105,10 @@ html.embed .tb-st{display:none!important}
 /* قفل البصمة فوق إصبعك (فوق زر المايك) */
 .comp .cbar .lockp{right:auto!important}
 /* تاريخ الدردشة: يبين وقت السحب بس، وبعدين يختفي إذا كان لازگ فوگ */
-#msgs .dsep{transition:opacity .25s}
-#msgs:not(.scrolling) .dsep.stuck{opacity:0}
+#msgs .dsep{position:relative!important;top:auto!important}
+#amgDate{position:absolute;left:50%;top:calc(var(--sat) + 72px);transform:translate(-50%,-6px);z-index:6;padding:3px 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--dim);background:color-mix(in srgb,var(--panel) 80%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+#amgDate.on{opacity:1;transform:translate(-50%,0)}
+@media (min-width:901px){#amgDate{top:78px}}
 /* مسافة شريط AM GOLD السفلي */
 @media (max-width:900px){
  html.embed .list,html.embed .feed,html.embed .prof2,html.embed .explore,html.embed .set,html.embed .crs,html.embed #actList,html.embed #admBody{padding-bottom:calc(20px + var(--amgnav,0px))!important}
@@ -8105,9 +8107,11 @@ if(EMBED){
 document.addEventListener('click',e=>{if(e.target.closest('[data-embback]')){e.preventDefault();e.stopPropagation();setNav(EMB.base)}},true);
 // المحادثة المفتوحة هسه — حتى ما يوصلك إشعار عنها وإنت داخلها
 let _amgOpen;setInterval(()=>{if(!S.me||!store)return;const o=document.hidden||(window.top&&window.top.document&&window.top.document.hidden)?'':(S.open||'');if(o!==_amgOpen){_amgOpen=o;try{firebase.firestore().doc('users/'+S.me).update({inChat:o,lastSeen:firebase.firestore.FieldValue.serverTimestamp()}).catch(()=>{})}catch(e){}}},1200);
-// تاريخ الدردشة اللازگ فوگ يختفي من توقف السحب (مثل تلگرام)
-(function(){let st;const upd=()=>{const box=$('#msgs');if(!box)return;const top=box.getBoundingClientRect().top;$$('#msgInner .dsep').forEach(d=>{const r=d.getBoundingClientRect(),cs=parseFloat(getComputedStyle(d).top)||0,n=d.nextElementSibling;d.classList.toggle('stuck',Math.abs(r.top-top-cs)<2&&!!n&&n.getBoundingClientRect().top<r.bottom-2)})};
- document.addEventListener('scroll',e=>{if(e.target&&e.target.id==='msgs'){const b=e.target;b.classList.add('scrolling');upd();clearTimeout(st);st=setTimeout(()=>{b.classList.remove('scrolling');upd()},1100)}},true)})();
+// تاريخ الدردشة: التواريخ تبقى بمكانها بين الرسائل، ووقت السحب بس يطلع تاريخ صغير فوگ (مثل تلگرام) ويختفي من توقف
+(function(){let st,fl;const mk=()=>{if(fl&&fl.isConnected)return fl;const col=$('#chatCol');if(!col)return null;fl=document.createElement('div');fl.id='amgDate';col.appendChild(fl);return fl};
+ const upd=()=>{const box=$('#msgs'),f=mk();if(!box||!f)return;const head=$('#chatView .chead'),lim=(head?head.getBoundingClientRect().bottom:box.getBoundingClientRect().top)+6;let cur=null;
+  $$('#msgInner .dsep').forEach(d=>{if(d.getBoundingClientRect().top<lim)cur=d});if(!cur){f.classList.remove('on');return}f.textContent=cur.textContent;f.classList.add('on')};
+ document.addEventListener('scroll',e=>{if(e.target&&e.target.id==='msgs'){upd();clearTimeout(st);st=setTimeout(()=>{fl&&fl.classList.remove('on')},1100)}},true)})();
 // قفل البصمة يطلع فوق زر المايك نفسه (فوق إصبعك)
 (function(){const fix=()=>{const c=$('#comp'),l=$('#lockP'),b=$('#sendBtn');if(!c||!l||!b||!l.offsetParent)return;const pr=l.offsetParent.getBoundingClientRect(),br=b.getBoundingClientRect();l.style.setProperty('left',Math.round(br.left-pr.left+(br.width-l.offsetWidth)/2)+'px','important')};
  const go=()=>{const c=$('#comp');if(!c)return setTimeout(go,500);new MutationObserver(()=>requestAnimationFrame(fix)).observe(c,{attributes:true,attributeFilter:['data-rec','data-lock']})};go()})();
