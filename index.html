@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.19-33">
+<meta name="app-build" content="2026.11.20-1">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1061,6 +1061,22 @@ html.lock body{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
 html.lock{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
 #pvfilt{margin-inline-start:auto}
 @media (max-width:520px){#pvfilt{margin-inline-start:0}}
+
+.gav{background:linear-gradient(135deg,hsl(var(--h) 55% 45%),hsl(calc(var(--h) + 40) 60% 35%))!important;color:#fff}
+.gemo{display:flex;flex-wrap:wrap;gap:6px}
+.gemo button{width:42px;height:42px;border-radius:12px;font-size:22px;background:var(--panel2);border:1px solid var(--line)}
+.gemo button.on{border-color:var(--accent);background:var(--accent-soft)}
+.glist{max-height:min(46vh,380px);overflow-y:auto;border:1px solid var(--line);border-radius:12px;padding:4px}
+.mi.gm{display:flex;align-items:center;gap:10px;padding:6px 8px}
+.mi.gm .gn{flex:1;min-width:0;display:flex;flex-direction:column;text-align:right}
+.mi.gm .gn small{font-size:12px;color:var(--dim)}
+.mi.gm .ck{width:24px;height:24px;border-radius:50%;border:2px solid var(--line2);display:grid;place-items:center;color:transparent;flex:none}
+.mi.gm .ck.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.mi.gm .ck .ic{width:14px;height:14px}
+#chatWrap .who{cursor:pointer}
+#app[data-sub][data-grp] .bnav [data-go=chat]{display:grid!important}
+#app[data-sub][data-grp] .side [data-go=chat]{display:flex!important}
+#app[data-sub][data-grp] .bnav [data-go=news]{display:none!important}
 </style>
 </head>
 <body>
@@ -1548,7 +1564,7 @@ html.lock{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.19-33</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-1</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -2424,6 +2440,15 @@ const LocalDB = {
   watchProfiles(cb) { this.pfcb = cb; cb(L.get('amg_prof', {})); },
   async setProfile(x) { const p = L.get('amg_prof', {}); p[ME.uid] = Object.assign({}, p[ME.uid], x); L.set('amg_prof', p); this.pfcb && this.pfcb(p); },
   watchNotes(cb) { this.ntcb = cb; cb(L.get('amg_notes', [])); },
+  watchGroups(cb) { this.grcb = cb; cb(L.get('amg_groups', []).filter(g => ME.role === 'admin' || (g.members || []).includes(ME.uid))); },
+  _gsave(a) { L.set('amg_groups', a); this.grcb && this.grcb(a.filter(g => ME.role === 'admin' || (g.members || []).includes(ME.uid))); },
+  async addGroup(g) { const a = L.get('amg_groups', []); g.id = uid(); a.push(g); this._gsave(a); return g.id; },
+  async updGroup(id, x) { this._gsave(L.get('amg_groups', []).map(g => g.id === id ? Object.assign(g, x) : g)); },
+  async delGroup(id) { this._gsave(L.get('amg_groups', []).filter(g => g.id !== id)); },
+  watchGroupMsgs(gid, cb) { this.gmcb = cb; this.gmid = gid; cb(L.get('amg_gm_' + gid, [])); return () => { this.gmcb = null; }; },
+  async sendGroup(gid, m, meta) { const a = L.get('amg_gm_' + gid, []); m.id = uid(); a.push(m); L.set('amg_gm_' + gid, a.slice(-300)); this.gmcb && this.gmid === gid && this.gmcb(a); await this.updGroup(gid, meta); },
+  async delGroupMsg(gid, id) { const a = L.get('amg_gm_' + gid, []).filter(m => m.id !== id); L.set('amg_gm_' + gid, a); this.gmcb && this.gmcb(a); },
+  async reactGroup(gid, id, R) { const a = L.get('amg_gm_' + gid, []).map(m => m.id === id ? Object.assign(m, { reactions: R }) : m); L.set('amg_gm_' + gid, a); this.gmcb && this.gmcb(a); },
   async setNote(x) { const a = L.get('amg_notes', []).filter(n => n.id !== ME.uid); a.push(Object.assign({ id: ME.uid }, x)); L.set('amg_notes', a); this.ntcb && this.ntcb(a); },
   async delNote() { const a = L.get('amg_notes', []).filter(n => n.id !== ME.uid); L.set('amg_notes', a); this.ntcb && this.ntcb(a); },
   watchSaved(cb) { this.svcb = cb; cb(L.get('amg_saved_' + ME.uid, [])); },
@@ -2501,6 +2526,14 @@ const FireDB = {
   watchProfiles(cb) { fdb.collection('profiles').onSnapshot(s => { const o = {}; s.docs.forEach(d => o[d.id] = d.data()); cb(o); }, () => cb({})); },
   setProfile(x) { return fdb.collection('profiles').doc(ME.uid).set(x); },
   watchNotes(cb) { fdb.collection('notes').onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => { }); },
+  watchGroups(cb) { const q = ME.role === 'admin' ? fdb.collection('groups') : fdb.collection('groups').where('members', 'array-contains', ME.uid); q.onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
+  async addGroup(g) { const r = await fdb.collection('groups').add(g); return r.id; },
+  updGroup(id, x) { return fdb.collection('groups').doc(id).update(x); },
+  delGroup(id) { return fdb.collection('groups').doc(id).delete(); },
+  watchGroupMsgs(gid, cb) { return fdb.collection('groups').doc(gid).collection('msgs').orderBy('at', 'desc').limit(100).onSnapshot(s => cb(s.docs.map(d => Object.assign({ id: d.id }, d.data()))), () => cb([])); },
+  async sendGroup(gid, m, meta) { const r = await fdb.collection('groups').doc(gid).collection('msgs').add(m); fdb.collection('groups').doc(gid).update(meta).catch(() => { }); return r; },
+  delGroupMsg(gid, id) { return fdb.collection('groups').doc(gid).collection('msgs').doc(id).delete(); },
+  reactGroup(gid, id, R) { return fdb.collection('groups').doc(gid).collection('msgs').doc(id).update({ reactions: R }); },
   setNote(x) { return fdb.collection('notes').doc(ME.uid).set(x); },
   delNote() { return fdb.collection('notes').doc(ME.uid).delete(); },
   watchSaved(cb) { fdb.collection('users').doc(ME.uid).collection('saved').orderBy('at', 'desc').limit(200).onSnapshot(s => cb(s.docs.map(d => Object.assign({}, d.data(), { id: d.id }))), () => { }); },
@@ -2612,9 +2645,9 @@ function initAuth() {
       if (!x || !x.active) { await auth.signOut(); return loginErr('حسابك مسدود، راجع الأستاذ'); }
       if (x.role === 'student' && x.exp && x.exp < Date.now()) { await fdb.collection('logins').doc(u.uid).update({ role: 'member' }).catch(() => { }); x.role = 'member'; toast('خلص اشتراك الطالب، رجع حسابك مشترك عادي'); }
       const role = x.role === 'student' ? 'student' : 'member';
-      ME = { uid: u.uid, role, name: x.name || (role === 'student' ? 'طالب' : 'مشترك'), exp: role === 'student' ? x.exp : null };
+      ME = { uid: u.uid, role, name: x.name || (role === 'student' ? 'طالب' : 'مشترك'), exp: role === 'student' ? x.exp : null, room: x.room !== false };
       if (role === 'member') DB = Object.assign({}, FireDB, { watchPosts: cb => GuestDB.watchPosts(cb), watchLive() { }, watchChat(cb) { cb([]); } });
-      fdb.collection('logins').doc(u.uid).onSnapshot(s => { const y = s.data(); if (!y || !y.active) { auth.signOut(); location.reload(); return; } if ((y.role === 'student' ? 'student' : 'member') !== ME.role) location.reload(); });
+      fdb.collection('logins').doc(u.uid).onSnapshot(s => { const y = s.data(); if (!y || !y.active) { auth.signOut(); location.reload(); return; } if ((y.role === 'student' ? 'student' : 'member') !== ME.role || (y.room !== false) !== (ME.room !== false)) location.reload(); });
       welcome();
     } catch (e) { await auth.signOut(); loginErr('صار خلل بالاتصال، جرّب مرة ثانية'); }
   });
@@ -3350,7 +3383,7 @@ function renderStud() {
   const q = ($('#stQ').value || '').trim(), a = STUD.filter(s => !s.pending && (!q || (s.name || '').includes(q))).sort((x, y) => y.at - x.at);
   const n = k => STUD.filter(s => !s.pending && stStatus(s)[0] === k).length;
   $('#stStats').innerHTML = [['المشتركين', STUD.filter(s => s.role === 'member').length, 'acc'], ['كل الطلاب', STUD.filter(s => !s.pending && s.role === 'student').length, ''], ['فعّال', n('فعّال'), 'ok'], ['قرب ينتهي', n('قرب ينتهي'), 'warn'], ['منتهي أو مسدود', n('منتهي') + n('مسدود'), 'bad']].map(([t, v, c]) => `<div class="card br stat"><small>${t}</small><span class="num ${c}" style="font-size:24px">${v}</span></div>`).join('');
-  $('#stList').innerHTML = a.length ? a.map(s => { const [t, c] = stStatus(s), mem = s.role === 'member', left = s.exp ? Math.ceil((s.exp - Date.now()) / 864e5) : null; return `<div class="li" data-sid="${s.uid}"><div class="av" style="border-color:var(--${c === 'acc' ? 'accent' : c})">${esc(initials(s.name))}</div><div class="mn"><b>${esc(s.name)}</b><small>${mem ? (s.phone ? '<span class="num">' + esc(s.phone) + '</span> · ' : '') + 'اتسجل ' + ago(s.at) : s.exp ? (left > 0 ? 'باقي <span class="num">' + left + '</span> يوم · لحد ' + dstr(s.exp) : 'خلص ' + dstr(s.exp)) : 'بدون انتهاء'}</small></div><span class="pill ${c}">${t}</span>${mem ? `<button class="btn sm" data-st="up">خليه طالب</button>` : `<button class="btn tint sm ico" data-st="ext" title="مدّد 30 يوم"><svg class="ic" style="width:16px;height:16px"><use href="#i-plus"/></svg></button>`}<button class="btn ghost sm ico" data-st="edit" title="تعديل"><svg class="ic" style="width:16px;height:16px"><use href="#i-edit"/></svg></button></div>`; }).join('') : '<div class="empty">ماكو أحد</div>';
+  $('#stList').innerHTML = a.length ? a.map(s => { const [t, c] = stStatus(s), mem = s.role === 'member', left = s.exp ? Math.ceil((s.exp - Date.now()) / 864e5) : null; return `<div class="li" data-sid="${s.uid}"><div class="av" style="border-color:var(--${c === 'acc' ? 'accent' : c})">${esc(initials(s.name))}</div><div class="mn"><b>${esc(s.name)}</b><small>${mem ? (s.phone ? '<span class="num">' + esc(s.phone) + '</span> · ' : '') + 'اتسجل ' + ago(s.at) : s.exp ? (left > 0 ? 'باقي <span class="num">' + left + '</span> يوم · لحد ' + dstr(s.exp) : 'خلص ' + dstr(s.exp)) : 'بدون انتهاء'}</small></div>${!mem && s.room === false ? '<span class="pill" title="الغرفة مخفية عنده">🚫👥</span>' : ''}<span class="pill ${c}">${t}</span>${mem ? `<button class="btn sm" data-st="up">خليه طالب</button>` : `<button class="btn tint sm ico" data-st="ext" title="مدّد 30 يوم"><svg class="ic" style="width:16px;height:16px"><use href="#i-plus"/></svg></button>`}<button class="btn ghost sm ico" data-st="edit" title="تعديل"><svg class="ic" style="width:16px;height:16px"><use href="#i-edit"/></svg></button></div>`; }).join('') : '<div class="empty">ماكو أحد</div>';
   if (curPg === 'students') anim('#pg-students');
 }
 function studentForm(s) {
@@ -3358,8 +3391,10 @@ function studentForm(s) {
    <div class="fld"><label>الاسم</label><input class="inp" id="fNm" value="${esc(s ? s.name : '')}"></div>
    ${s ? `<div class="fld"><label>الرمز</label><div class="row"><input class="inp num" value="${esc(s.pw || '')}" readonly><button class="btn ghost sm" data-cp="${esc(s.pw || '')}">انسخ</button></div></div>` : `<div class="fld"><label>الرمز السري (6 أو أكثر)</label><div class="row"><input class="inp num" id="fPw"><button class="btn ghost sm" id="fGen">ولّد</button></div></div>`}
    ${s ? `<div class="fld"><label>نوع الحساب</label><select class="inp" id="fRole"><option value="member" ${s.role === 'member' ? 'selected' : ''}>مشترك عادي</option><option value="student" ${s.role === 'student' ? 'selected' : ''}>طالب بالكورس</option></select></div>` : ''}
+   ${s ? `<button class="mi" id="fRoom" style="padding-inline:0">يشوف غرفة الطلاب<small>إذا طفّيته تختفي الغرفة عنده</small><span class="sw ${s.room !== false ? 'on' : ''}"></span></button>` : ''}
    <div class="fld"><label>${s ? 'مدة الاشتراك من اليوم (يوم)' : 'مدة الاشتراك (يوم) — خليها فارغة بدون انتهاء'}</label><input class="inp num" id="fDays" inputmode="numeric" value="${s ? (s.exp ? Math.max(0, Math.ceil((s.exp - Date.now()) / 864e5)) : '') : 30}"></div>
    <div class="row"><button class="btn sp" id="fOk">${s ? 'احفظ' : 'ضيف'}</button>${s ? '<button class="btn danger sm" id="fDel">احذف</button>' : ''}</div>`, (m, close) => {
+    const fr = m.querySelector('#fRoom'); if (fr) fr.onclick = () => fr.querySelector('.sw').classList.toggle('on');
     const g = m.querySelector('#fGen'); if (g) g.onclick = () => { m.querySelector('#fPw').value = String(Math.floor(100000 + Math.random() * 900000)); };
     m.querySelectorAll('[data-cp]').forEach(b => b.onclick = () => { navigator.clipboard && navigator.clipboard.writeText(b.dataset.cp); toast('انسخ الرمز'); });
     m.querySelector('#fOk').onclick = async () => {
@@ -3367,7 +3402,7 @@ function studentForm(s) {
       if (!name) return toast('اكتب الاسم', 'bad');
       const btn = m.querySelector('#fOk'); btn.disabled = true;
       try {
-        if (s) { const role = m.querySelector('#fRole') ? m.querySelector('#fRole').value : s.role; await DB.updStudent(s.uid, { name, role, exp: role === 'student' && days ? Date.now() + days * 864e5 : null }); DB.log('عدّل ' + name); }
+        if (s) { const role = m.querySelector('#fRole') ? m.querySelector('#fRole').value : s.role; await DB.updStudent(s.uid, { name, role, exp: role === 'student' && days ? Date.now() + days * 864e5 : null, room: fr ? fr.querySelector('.sw').classList.contains('on') : s.room !== false }); DB.log('عدّل ' + name); }
         else { const pw = m.querySelector('#fPw').value.trim(); await DB.addStudent(name, pw, days); DB.log('ضاف الطالب ' + name); }
         beep('ok'); toast(s ? 'انحفظ' : 'اتسجل الطالب ✓ — انطيه الرمز حتى يدخل', 'ok'); close();
       } catch (e) { toast(e.message || 'صار خلل', 'bad'); btn.disabled = false; }
@@ -3610,15 +3645,18 @@ const seenK = k => 'amg_seen_' + k + '_' + (ME && ME.uid);
 const getSeen = k => L.get(seenK(k), 0), setSeen = k => L.set(seenK(k), Date.now());
 const cm = () => CONV ? CONV.k : null;
 const curList = () => cm() === 'room' ? CHAT : cm() === 'saved' ? SAVED : TMSG;
+let GROUPS = [];
+const roomOK = () => ME.role === 'admin' || (isStu() && ME.room !== false);
 const tidOf = (a, b) => [a, b].sort().join('_');
 function avHTML(uid, name, size, cls = '') { const p = PROF[uid] && PROF[uid].photo; return `<span class="av ${p ? 'ph' : ''} ${cls}" style="--h:${hue(uid)};${size ? `width:${size}px;height:${size}px;font-size:${Math.round(size * .34)}px` : ''}">${p ? `<img src="${p}" alt="" draggable="false">` : esc(initials(name))}</span>`; }
 const adminUid = () => (Object.entries(PROF).find(([u, p]) => p.role === 'admin') || [])[0];
 const peerOf = t => { const u = (t.members || []).find(x => x !== ME.uid) || ME.uid; return { uid: u, name: (PROF[u] && PROF[u].name) || (t.names || {})[u] || 'مستخدم' }; };
-function chatSeenNow() { if (!CONV || curPg !== 'chat') return; if (cm() === 'room') setSeen('room'); if (cm() === 'thr') setSeen('t_' + CONV.tid); chatBadge(); }
-function unreadRoom() { return (curPg === 'chat' && cm() === 'room') ? 0 : CHAT.filter(m => m.at > getSeen('room') && m.uid !== ME.uid).length; }
+function chatSeenNow() { if (!CONV || curPg !== 'chat') return; if (cm() === 'room') setSeen('room'); if (cm() === 'thr') setSeen('t_' + CONV.tid); if (cm() === 'grp') setSeen('g_' + CONV.gid); chatBadge(); }
+function unreadGrp(g) { return g.from && g.from !== ME.uid && g.at > getSeen('g_' + g.id) && !(curPg === 'chat' && cm() === 'grp' && CONV.gid === g.id); }
+function unreadRoom() { return !roomOK() || (curPg === 'chat' && cm() === 'room') ? 0 : CHAT.filter(m => m.at > getSeen('room') && m.uid !== ME.uid).length; }
 function unreadThr(t) { return t.from !== ME.uid && t.at > getSeen('t_' + t.id) && !(curPg === 'chat' && cm() === 'thr' && CONV.tid === t.id); }
 function chatBadge() {
-  const n = unreadRoom() + THREADS.filter(unreadThr).length;
+  const n = unreadRoom() + THREADS.filter(unreadThr).length + GROUPS.filter(unreadGrp).length;
   $$('.cbadge').forEach(b => { b.textContent = n > 99 ? '99+' : n; b.classList.toggle('hide', !n); });
   if (curPg === 'chat') renderList();
 }
@@ -3630,17 +3668,19 @@ function renderList() {
   const item = (key, av, name, sub, time, badge, pin, on) => `<div class="ci ${on ? 'on' : ''}" data-open="${key}">${av}<div class="b"><div class="r1"><span class="nm">${name}</span><span class="tm num">${time || ''}</span></div><div class="r2"><span class="pv">${sub || ''}</span>${badge ? `<b class="nbadge">${badge}</b>` : pin ? `<span class="pinI">${ico('pin')}</span>` : ''}</div></div></div>`;
   const tm = t => !t ? '' : new Date(t).toDateString() === new Date().toDateString() ? tstr(t) : dstr(t).slice(0, 5);
   if (!q) {
-    rows.push(item('room', '<span class="av grp">👥</span>', 'غرفة الطلاب', lr ? `<b>${esc(lr.uid === ME.uid ? 'إنت' : (lr.name || '').split(' ')[0])}:</b> ${esc(lr.text)}` : 'كل طلاب الكورس ويا الأستاذ', lr && tm(lr.at), ur, true, cm() === 'room'));
+    if (roomOK()) rows.push(item('room', '<span class="av grp">👥</span>', 'غرفة الطلاب', lr ? `<b>${esc(lr.uid === ME.uid ? 'إنت' : (lr.name || '').split(' ')[0])}:</b> ${esc(lr.text)}` : 'كل طلاب الكورس ويا الأستاذ', lr && tm(lr.at), ur, true, cm() === 'room'));
     rows.push(item('saved', `<span class="av grp sv">${ico('bm')}</span>`, 'المحفوظة', SAVED.length ? SAVED.length + ' رسالة محفوظة' : 'احفظ الرسائل المهمة هنا', '', 0, false, cm() === 'saved'));
   }
-  const thr = THREADS.slice().sort((a, b) => b.at - a.at).filter(t => !q || peerOf(t).name.includes(q));
+  GROUPS.slice().sort((a, b) => (b.at || 0) - (a.at || 0)).filter(g => !q || (g.name || '').includes(q)).forEach(g => rows.push(item('g:' + g.id, grpAv(g, 52), esc(g.name || 'مجموعة'), g.last ? `${g.fromName ? '<b>' + esc(g.from === ME.uid ? 'إنت' : g.fromName.split(' ')[0]) + ':</b> ' : ''}${esc(g.last)}` : (g.members || []).length + ' عضو', tm(g.at), unreadGrp(g) ? '●' : 0, false, cm() === 'grp' && CONV.gid === g.id)));
+  if (ME.role === 'admin' && !q) rows.push(`<div class="ci sm" data-open="newgrp"><span class="av grp">＋</span><div class="b"><div class="r1"><span class="nm">مجموعة جديدة</span></div><div class="r2"><span class="pv">اختار الأعضاء وسمّي المجموعة</span></div></div></div>`);
+  const thr = (isStu() ? THREADS : []).slice().sort((a, b) => b.at - a.at).filter(t => !q || peerOf(t).name.includes(q));
   thr.forEach(t => { const p = peerOf(t); rows.push(item('t:' + t.id, avHTML(p.uid, p.name, 52), esc(p.name) + (PROF[p.uid] && PROF[p.uid].role === 'admin' ? ' <span class="tag">الأستاذ</span>' : ''), (t.from === ME.uid ? 'إنت: ' : '') + esc(t.last || ''), tm(t.at), unreadThr(t) ? '●' : 0, false, cm() === 'thr' && CONV.tid === t.id)); });
-  if (q) {
+  if (q && isStu()) {
     const have = new Set(thr.map(t => peerOf(t).uid));
     const ppl = Object.entries(PROF).filter(([u, p]) => u !== ME.uid && p.role !== 'guest' && (p.name || '').includes(q) && !have.has(u)).sort((a, b) => (b[1].role === 'admin') - (a[1].role === 'admin'));
     if (ppl.length) rows.push(`<div class="sec-t">أشخاص</div>` + ppl.map(([u, p]) => `<div class="ci" data-open="u:${u}">${avHTML(u, p.name, 52)}<div class="b"><div class="r1"><span class="nm">${esc(p.name)}${p.role === 'admin' ? ' <span class="tag">الأستاذ</span>' : ''}</span></div><div class="r2"><span class="pv">ابدي محادثة جديدة</span></div></div></div>`).join(''));
     if (!thr.length && !ppl.length) rows.push('<div class="empty">ماكو أحد بهذا الاسم</div>');
-  } else if (!THREADS.length) {
+  } else if (!THREADS.length && isStu()) {
     const a = adminUid();
     rows.push(`<div class="sec-t">ابدي محادثة</div><div class="hint">دوّر على اسم أي طالب${ME.role === 'student' ? ' أو الأستاذ' : ''} من فوگ حتى تراسله بالخاص.</div>` + (ME.role === 'student' && a ? `<div class="ci" data-open="u:${a}">${avHTML(a, ADMIN_NAME, 52)}<div class="b"><div class="r1"><span class="nm">${esc(ADMIN_NAME)} <span class="tag">الأستاذ</span></span></div><div class="r2"><span class="pv">راسل الأستاذ</span></div></div></div>` : ''));
   }
@@ -3651,6 +3691,7 @@ function openConv(c) {
   stopAudio(); if (REC || RG) recCancel(); replyClear();
   if (tUnsub) { try { tUnsub(); } catch (e) { } tUnsub = null; }
   CONV = c; TMSG = []; chRendered = new Set(); chInitial = true; fabN = 0; $('#msgInner').innerHTML = '';
+  if (c.k === 'grp') tUnsub = DB.watchGroupMsgs(c.gid, list => { if (!CONV || CONV.gid !== c.gid) return; TMSG = list.slice().sort((a, b) => a.at - b.at); renderMsgs(); chatSeenNow(); });
   if (c.k === 'thr') tUnsub = DB.watchThread(c.tid, list => { if (!CONV || CONV.tid !== c.tid) return; TMSG = list.slice().sort((a, b) => a.at - b.at); renderMsgs(); chatSeenNow(); });
   $('#chatWrap').dataset.cv = 'conv'; if (matchMedia('(max-width:900px)').matches) { $('#app').dataset.conv = '1'; if (!(history.state && history.state.amg === 'conv')) navPush('conv'); } setTimeout(() => { window.kbUpd && kbUpd(); typeof scrollLock === 'function' && scrollLock(); }, 0);
   chatHeader(); renderMsgs(); renderList(); chatSeenNow(); pushView();
@@ -3662,10 +3703,13 @@ function openKey(k) {
   if (k === 'room') return openConv({ k: 'room' });
   if (k === 'saved') return openConv({ k: 'saved' });
   if (k === 'dellog') return delLogSheet();
+  if (k === 'newgrp') return grpSheet();
+  if (k.startsWith('g:')) { const g = GROUPS.find(x => x.id === k.slice(2)); if (g) openConv({ k: 'grp', gid: g.id }); return; }
   if (k.startsWith('t:')) { const t = THREADS.find(x => x.id === k.slice(2)); if (t) openConv({ k: 'thr', tid: t.id, peer: peerOf(t) }); return; }
   if (k.startsWith('u:')) { const u = k.slice(2), p = PROF[u] || {}; chQ = ''; $('#chSearch').value = ''; openConv({ k: 'thr', tid: tidOf(ME.uid, u), peer: { uid: u, name: p.name || 'مستخدم' }, isNew: !THREADS.find(t => t.id === tidOf(ME.uid, u)) }); }
 }
 async function convSend(m, lastTxt) {
+  if (cm() === 'grp') return DB.sendGroup(CONV.gid, m, { last: (lastTxt || m.text || '').slice(0, 120), at: m.at, from: ME.uid, fromName: ME.name });
   if (cm() === 'room') { const r = await DB.sendChat(m); pushPing({ k: 'chat', id: r && r.id }); return r; }
   if (cm() === 'thr') { const tid = CONV.tid, u = CONV.peer.uid, names = { [ME.uid]: ME.name, [u]: CONV.peer.name }; const r = await DB.sendThread(tid, { members: [ME.uid, u].sort(), names, last: lastTxt || m.text, at: m.at, from: ME.uid }, m); pushPing({ k: 'thr', tid, id: r && r.id }); return r; }
 }
@@ -3733,6 +3777,7 @@ function chatHeader() {
   $('#chatFoot').classList.toggle('hide', cm() === 'saved');
   const t = $('#chTitle'), s = $('#chSub'), avw = $('#chAvW');
   if (cm() === 'room') { t.textContent = 'غرفة الطلاب'; s.textContent = CFG.chatOpen === false ? '🔒 مقفولة، بس الأستاذ يكتب' : 'طلاب الكورس ويا الأستاذ'; avw.innerHTML = '<span class="av grp">👥</span>'; }
+  else if (cm() === 'grp') { const g = GROUPS.find(x => x.id === CONV.gid) || {}; t.textContent = g.name || 'مجموعة'; s.textContent = (g.members || []).length + ' عضو' + (ME.role === 'admin' ? ' · دوس للتعديل' : ''); avw.innerHTML = grpAv(g); }
   else if (cm() === 'saved') { t.textContent = 'المحفوظة'; s.textContent = 'رسائلك المهمة، بس إنت تشوفها'; avw.innerHTML = `<span class="av grp sv">${ico('bm')}</span>`; }
   else { const p = CONV.peer; t.textContent = p.name; s.textContent = (PROF[p.uid] && PROF[p.uid].role === 'admin' ? 'الأستاذ · ' : '') + 'محادثة خاصة 🔒'; avw.innerHTML = avHTML(p.uid, p.name); }
   renderPin(); renderChatLock();
@@ -3756,7 +3801,7 @@ async function toggleReact(m, k) {
   const a = R[k] || []; R[k] = a.includes(ME.uid) ? a.filter(u => u !== ME.uid) : a.concat(ME.uid);
   Object.keys(R).forEach(x => { if (!R[x].length) delete R[x]; });
   m.reactions = R; renderMsgs();
-  try { if (cm() === 'room') await DB.reactChat(m.id, R); else if (cm() === 'thr') await DB.reactThread(CONV.tid, m.id, R); } catch (e) { toast('ما انحفظ التفاعل', 'bad'); }
+  try { if (cm() === 'room') await DB.reactChat(m.id, R); else if (cm() === 'thr') await DB.reactThread(CONV.tid, m.id, R); else if (cm() === 'grp') await DB.reactGroup(CONV.gid, m.id, R); } catch (e) { toast('ما انحفظ التفاعل', 'bad'); }
 }
 // قائمة الضغطة المطوّلة — نفس AM CHAT (الرسالة تطلع فوگ الضبابية + تفاعلات + قائمة)
 function holdMenu(el, m) {
@@ -3788,7 +3833,7 @@ function holdMenu(el, m) {
     if (a === 'reply') replySet(m);
     if (a === 'open') openViewer(m.img);
     if (a === 'copy') { try { await navigator.clipboard.writeText(m.text); toast('انسخ النص'); } catch (er) { toast('ما گدرت أنسخ', 'bad'); } }
-    if (a === 'del') { if (await ask('تحذف الرسالة؟', 'راح تنحذف عند الكل.', 'احذف', true)) { const where = cm() === 'room' ? 'غرفة الطلاب' : 'خاص: ' + (CONV.peer && CONV.peer.name || ''); (cm() === 'room' ? DB.delChat(m.id) : DB.delThreadMsg(CONV.tid, m.id)).then(() => DB.logDel({ kind: 'del', t: 'حذف رسالة', text: m.text || (m.voice ? '🎤 بصمة' : m.img ? '📷 صورة' : ''), author: m.name, where, by: ME.name, at: Date.now() }).catch(() => { })).catch(() => toast('ما انحذفت', 'bad')); } }
+    if (a === 'del') { if (await ask('تحذف الرسالة؟', 'راح تنحذف عند الكل.', 'احذف', true)) { const where = cm() === 'room' ? 'غرفة الطلاب' : cm() === 'grp' ? 'مجموعة: ' + ((GROUPS.find(x => x.id === CONV.gid) || {}).name || '') : 'خاص: ' + (CONV.peer && CONV.peer.name || ''); (cm() === 'room' ? DB.delChat(m.id) : cm() === 'grp' ? DB.delGroupMsg(CONV.gid, m.id) : DB.delThreadMsg(CONV.tid, m.id)).then(() => DB.logDel({ kind: 'del', t: 'حذف رسالة', text: m.text || (m.voice ? '🎤 بصمة' : m.img ? '📷 صورة' : ''), author: m.name, where, by: ME.name, at: Date.now() }).catch(() => { })).catch(() => toast('ما انحذفت', 'bad')); } }
     if (a === 'save') { const c = Object.assign({}, m, { savedFrom: cm() === 'room' ? 'room' : 'thr', savedAt: Date.now(), oid: m.id }); delete c.id; delete c.reactions; DB.saveMsg(c).then(() => toast('🔖 انحفظت بالمحفوظة', 'ok')).catch(() => toast('ما انحفظت', 'bad')); }
     if (a === 'unsave') DB.unsaveMsg(m.id).then(() => toast('انشالت')).catch(() => toast('ما انشالت', 'bad'));
     if (a === 'pin') { const on = CFG.pin && CFG.pin.id === m.id; DB.setConfig({ pin: on ? null : { id: m.id, name: m.name, text: m.text || (m.voice ? '🎤 بصمة' : '📷 صورة') } }).then(() => { toast(on ? 'انشال التثبيت' : '📌 انثبتت للكل'); }).catch(() => toast('ما انثبتت', 'bad')); }
@@ -3917,7 +3962,8 @@ function initChat() {
   DB.watchNotes(l => { NOTES = l; renderNotes(); });
   DB.watchThreads(l => { THREADS = l; renderList(); chatBadge(); });
   myAv();
-  if (matchMedia('(min-width:901px)').matches) openConv({ k: 'room' }); else { CONV = null; pushView(); $('#chatWrap').dataset.cv = 'list'; }
+  DB.watchGroups(l => { GROUPS = l; $('#app').toggleAttribute('data-grp', GROUPS.length > 0); if (CONV && cm() === 'grp' && !GROUPS.find(g => g.id === CONV.gid)) closeConv(); else if (CONV && cm() === 'grp') chatHeader(); renderList(); chatBadge(); });
+  if (matchMedia('(min-width:901px)').matches && roomOK()) openConv({ k: 'room' }); else { CONV = null; pushView(); $('#chatWrap').dataset.cv = 'list'; }
   renderList(); chatHeader();
 }
 let chGrow = () => { }, msgsAtEnd = true;
@@ -4406,7 +4452,7 @@ let curPg = 'home';
 function anim(sel) { const p = $(sel); p.classList.remove('in'); $$('.card,.li', p).forEach((c, i) => c.style.setProperty('--i', Math.min(i, 12))); void p.offsetWidth; p.classList.add('in'); }
 function go(pg) {
   if (pg === 'students' && ME.role !== 'admin') pg = 'home';
-  if (!isStu() && pg === 'chat') pg = 'home';
+  if (!isStu() && pg === 'chat' && !(ME.role === 'member' && typeof GROUPS !== 'undefined' && GROUPS.length)) pg = 'home';
   const prev = curPg; curPg = pg; $('#app').dataset.pg = pg; requestAnimationFrame(navInd);
   $$('.pg').forEach(p => p.classList.toggle('hide', p.id !== 'pg-' + pg));
   $$('[data-go]').forEach(b => { if (b.closest('#snav') || b.closest('#bnav')) b.classList.toggle('on', b.dataset.go === pg); });
@@ -4524,7 +4570,7 @@ async function pushSync(ask) {
   try {
     const tok = await pushToken(ask); if (!tok) return;
     const id = (await sha(tok)).slice(0, 40), old = L.get('amg_pid', '');
-    const doc = { token: tok, uid: ME ? ME.uid : 'guest', role: ME ? ME.role : 'guest', sub: !!(PUSH.sig && isSub() && !isMute()), stu: !!(PUSH.post && isStu()), news: !!PUSH.news, at: Date.now(), ua: /iPhone|iPad/.test(navigator.userAgent) ? 'ios' : /Android/.test(navigator.userAgent) ? 'android' : 'web' };
+    const doc = { token: tok, uid: ME ? ME.uid : 'guest', role: ME ? ME.role : 'guest', sub: !!(PUSH.sig && isSub() && !isMute()), stu: !!(PUSH.post && isStu()), news: !!PUSH.news, room: typeof roomOK === 'function' ? roomOK() : true, at: Date.now(), ua: /iPhone|iPad/.test(navigator.userAgent) ? 'ios' : /Android/.test(navigator.userAgent) ? 'android' : 'web' };
     await fdb.collection('push').doc(id).set(doc);
     if (old && old !== id) fdb.collection('push').doc(old).delete().catch(() => { });
     L.set('amg_ptok', tok); L.set('amg_pid', id);
@@ -4591,12 +4637,12 @@ function edgeBack(el, back, peek, when) {
 /* ====== إشعار فوري: بعد أي رسالة أو منشور نكلّم السكربت يدز بنفس اللحظة ====== */
 function nudgePush() { const u = (CFG.newsUrl || '').trim(); if (!/script\.google/.test(u)) return; try { fetch(u + (u.includes('?') ? '&' : '?') + 'a=tick&t=' + Date.now(), { mode: 'no-cors', keepalive: true }).catch(() => { }); } catch (e) { } }
 function pushPing() { }  // الإشعار الفوري يصير من wrapNudge
-function wrapNudge() { ['sendChat', 'sendThread', 'addChan', 'addPost'].forEach(k => { const f = DB[k]; if (!f || f.__n) return; const g = async function () { const r = await f.apply(this, arguments); setTimeout(nudgePush, 300); return r; }; g.__n = 1; DB[k] = g; }); }
+function wrapNudge() { ['sendChat', 'sendThread', 'addChan', 'addPost', 'sendGroup'].forEach(k => { const f = DB[k]; if (!f || f.__n) return; const g = async function () { const r = await f.apply(this, arguments); setTimeout(nudgePush, 300); return r; }; g.__n = 1; DB[k] = g; }); }
 /* المستخدم داخل المحادثة؟ حتى ما يوصله إشعار رسائلها */
 let hereT = 0;
 function pushView() {
   const id = L.get('amg_pid', ''); if (!id || !fdb || !HAS_FB) return;
-  const here = typeof CONV !== 'undefined' && CONV && curPg === 'chat' && !document.hidden ? (CONV.k === 'room' ? 'room' : CONV.k === 'thr' ? CONV.tid : '') : '';
+  const here = typeof CONV !== 'undefined' && CONV && curPg === 'chat' && !document.hidden ? (CONV.k === 'room' ? 'room' : CONV.k === 'thr' ? CONV.tid : CONV.k === 'grp' ? 'g:' + CONV.gid : '') : '';
   const w = () => fdb.collection('push').doc(id).set({ here, hereAt: Date.now() }, { merge: true }).catch(() => { });
   if (pushView.last === here && (!here || Date.now() - (pushView.at || 0) < 60000)) return;
   clearInterval(hereT); pushView.last = here; pushView.at = Date.now(); w(); if (here) hereT = setInterval(() => { pushView.at = Date.now(); w(); }, 90000);
@@ -4634,6 +4680,45 @@ function sendErr(e) {
   if (c === 'unavailable' || !navigator.onLine) return 'ما وصلت: ماكو انترنت، جرّب مرة ثانية';
   return 'ما وصلت الرسالة' + (c ? ' (' + c + ')' : '');
 }
+const GEMO = ['👥', '📈', '🥇', '💎', '🎯', '🔥', '📚', '🚀', '⚡', '🦁'];
+function grpAv(g, size) { return `<span class="av grp gav" style="--h:${hue(g.id || g.name || 'g')};${size ? `width:${size}px;height:${size}px;font-size:${Math.round(size * .45)}px` : ''}">${g.emoji || '👥'}</span>`; }
+function grpSheet(g) {
+  const ed = !!g; g = g || { name: '', emoji: '👥', members: [] };
+  const sel = new Set((g.members || []).filter(u => u !== ME.uid)); let emo = g.emoji || '👥', q = '';
+  const people = () => STUD.filter(s => s.active !== false && !s.pending).sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ar'));
+  const listH = () => people().filter(s => !q || (s.name || '').includes(q)).map(s => `<button class="mi gm" data-gu="${s.uid}">${avHTML(s.uid, s.name, 36)}<span class="gn">${esc(s.name)}<small>${s.role === 'student' ? 'طالب' : 'مشترك'}</small></span><span class="ck ${sel.has(s.uid) ? 'on' : ''}">${ico('check2')}</span></button>`).join('') || '<div class="empty">ماكو أحد</div>';
+  modal(`<h2>${ed ? 'تعديل المجموعة' : 'مجموعة جديدة'}<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>
+   <div class="row" style="gap:10px;align-items:center;margin-bottom:10px"><span id="gAv">${grpAv(Object.assign({}, g, { emoji: emo }), 56)}</span><input class="inp" id="gNm" maxlength="40" placeholder="اسم المجموعة" value="${esc(g.name || '')}" style="flex:1"></div>
+   <div class="gemo">${GEMO.map(e => `<button data-ge="${e}" class="${e === emo ? 'on' : ''}">${e}</button>`).join('')}</div>
+   <div class="row" style="margin:12px 0 6px"><b style="font-family:var(--fd)">الأعضاء</b><span class="pill acc num" id="gCnt">${sel.size}</span><span class="sp"></span><button class="btn ghost sm" id="gAll">الكل</button></div>
+   <input class="inp" id="gQ" placeholder="دوّر على اسم…" style="margin-bottom:6px">
+   <div class="glist" id="gList">${listH()}</div>
+   <div class="row" style="margin-top:12px"><button class="btn sp" id="gOk">${ed ? 'احفظ' : 'سوّي المجموعة'}</button>${ed ? '<button class="btn danger sm" id="gDel">احذف</button>' : ''}</div>`, (m, close) => {
+    const upd = () => { m.querySelector('#gList').innerHTML = listH(); m.querySelector('#gCnt').textContent = sel.size; };
+    m.querySelector('#gQ').oninput = e => { q = e.target.value.trim(); upd(); };
+    m.querySelector('.gemo').onclick = e => { const b = e.target.closest('[data-ge]'); if (!b) return; emo = b.dataset.ge; m.querySelectorAll('.gemo button').forEach(x => x.classList.toggle('on', x === b)); m.querySelector('#gAv').innerHTML = grpAv(Object.assign({}, g, { emoji: emo }), 56); };
+    m.querySelector('#gList').onclick = e => { const b = e.target.closest('[data-gu]'); if (!b) return; const u = b.dataset.gu; sel.has(u) ? sel.delete(u) : sel.add(u); b.querySelector('.ck').classList.toggle('on', sel.has(u)); m.querySelector('#gCnt').textContent = sel.size; };
+    m.querySelector('#gAll').onclick = () => { const all = people().filter(s => !q || (s.name || '').includes(q)); const on = all.every(s => sel.has(s.uid)); all.forEach(s => on ? sel.delete(s.uid) : sel.add(s.uid)); upd(); };
+    m.querySelector('#gOk').onclick = async () => {
+      const name = m.querySelector('#gNm').value.trim(); if (!name) return toast('اكتب اسم المجموعة', 'bad'); if (!sel.size) return toast('اختار عضو واحد على الأقل', 'bad');
+      const members = [ME.uid, ...sel], names = {}; members.forEach(u => { const s = STUD.find(x => x.uid === u); names[u] = u === ME.uid ? ME.name : (s && s.name) || ''; });
+      const b = m.querySelector('#gOk'); b.disabled = true;
+      try {
+        if (ed) { await DB.updGroup(g.id, { name, emoji: emo, members, names }); DB.log('عدّل المجموعة ' + name); toast('انحفظت ✓', 'ok'); }
+        else { const id = await DB.addGroup({ name, emoji: emo, members, names, at: Date.now(), last: '', from: '', fromName: '', by: ME.uid }); DB.log('سوّى مجموعة ' + name); toast('انسوّت المجموعة ✓', 'ok'); setTimeout(() => openConv({ k: 'grp', gid: id }), 300); }
+        close();
+      } catch (e) { b.disabled = false; toast('ما انحفظت: ' + (e.code === 'permission-denied' ? 'الصق الـ rules الجديدة' : (e.message || 'خلل')), 'bad'); }
+    };
+    const dl = m.querySelector('#gDel'); if (dl) dl.onclick = async () => { if (!(await ask('تحذف المجموعة ' + g.name + '؟', 'تختفي عند كل الأعضاء.', 'احذف', true))) return; close(); await DB.delGroup(g.id).catch(() => toast('ما انحذفت', 'bad')); DB.log('حذف المجموعة ' + g.name); };
+  });
+}
+function grpInfo(g) {
+  const ms = (g.members || []);
+  modal(`<div style="text-align:center">${grpAv(g, 80)}<h2 style="justify-content:center;margin:10px 0 2px">${esc(g.name)}</h2><div class="dim" style="font-size:13px">${ms.length} عضو</div></div>
+   <div class="list" style="margin-top:12px">${ms.map(u => { const n = (g.names || {})[u] || (PROF[u] || {}).name || 'عضو'; return `<div class="li">${avHTML(u, n, 36)}<div class="mn"><b>${esc(n)}</b>${(PROF[u] || {}).role === 'admin' || u === g.by ? '<small>الأستاذ</small>' : ''}</div></div>`; }).join('')}</div>
+   <button class="btn ghost blk" data-close style="margin-top:10px">رجوع</button>`);
+}
+document.addEventListener('click', e => { if (!e.target.closest('#chatWrap .who')) return; if (typeof CONV === 'undefined' || !CONV || CONV.k !== 'grp') return; const g = GROUPS.find(x => x.id === CONV.gid); if (!g) return; ME.role === 'admin' ? grpSheet(g) : grpInfo(g); });
 /* ====== start ====== */
 let started = false;
 function start() {
@@ -4659,7 +4744,7 @@ function start() {
     DB.watchProfiles(p => { PROF = p || {}; const first = !profLoaded; profLoaded = true; if (ME.role === 'admin' && !PROF[ME.uid]) DB.setProfile({ name: ME.name, role: 'admin', photo: '', at: Date.now() }).catch(() => { }); const mp = PROF[ME.uid]; if (ME.role === 'student' && (!mp || mp.name !== ME.name)) DB.setProfile(Object.assign({ photo: '' }, mp || {}, { name: ME.name, role: 'student', at: Date.now() })).catch(() => { }); if (CONV) renderMsgs(); renderNotes(); renderList(); myAv(); if (curPg === 'chat') chatHeader(); if (first && needPhoto()) setTimeout(() => photoSheet(true), 600); });
     DB.watchChat(onChat);
   }
-  wrapNudge(); initKB(); initNews(); setTimeout(askPushSheet, 2500); if (isStu()) initChat(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
+  wrapNudge(); initKB(); initNews(); setTimeout(askPushSheet, 2500); if (isStu() || ME.role === 'member') initChat(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
   DB.watchLive(v => { LIVE = v; setTeacher(); });
   if (ME.role === 'admin' && S.cast) castNow();
   setTeacher(); renderAlerts(); loadTicker().then(syncSpot); setInterval(loadTicker, 5 * 6e4); setInterval(syncSpot, 6e4);
