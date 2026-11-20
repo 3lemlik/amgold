@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded',function(){var pt=document.getEleme
 if(a<0||b<0)return;var src=t.slice(a+38,b).split('<\\/script').join('<'+'/script').split('<\\!--').join('<'+'!--');document.open();document.write(src);document.close()});
 document.write('<plaintext id="amcPT" style="display:none">')})()</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-10">
+<meta name="app-build" content="2026.11.20-11">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1098,8 +1098,8 @@ html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
 #amcProbe{position:fixed;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);width:0;height:0}
 @media (max-width:900px){
  html.amcpg #app[data-pg] header.top{display:none!important}
- html.amcpg .bnav{transition:transform .28s cubic-bezier(.2,.8,.3,1),opacity .2s}
- html.amcpg #app[data-amcfull] .bnav{transform:translateY(115%);opacity:0;pointer-events:none}
+ /* بصفحة الدردشة والكورس الشريط السفلي يشتغل من جوّة الدردشة نفسها */
+ html.amcpg.amcready #app .bnav{visibility:hidden!important;pointer-events:none!important}
 }
 .crsCard{display:flex;align-items:center;gap:14px;text-align:start;cursor:pointer;padding:16px 18px;background:linear-gradient(110deg,var(--accent-soft),transparent 70%),var(--panel);font:inherit;color:var(--ink);width:100%}
 .crsCard:active{transform:scale(.985)}
@@ -1562,7 +1562,7 @@ html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-10</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-11</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -4356,7 +4356,7 @@ addEventListener('resize', () => requestAnimationFrame(amcLayout));
 try { const sd = document.querySelector('.side'); if (sd && window.ResizeObserver) new ResizeObserver(() => amcLayout()).observe(sd); } catch (e) { }
 addEventListener('message', e => {
   if (e.origin !== location.origin || !AMC || e.source !== AMC.contentWindow) return; const d = e.data || {}; if (!d.amc) return;
-  if (d.ready) { AMC_READY = true; amcLastIns = ''; $('#amcWrap').classList.add('ready'); amcPost({ mode: S.mode }); amcLayout(); const q = AMC_Q.splice(0); q.forEach(amcPost); if (AMC_PG) amcPost({ nav: AMC_PG === 'course' ? 'course' : 'chats' }); }
+  if (d.ready) { AMC_READY = true; document.documentElement.classList.add('amcready'); amcLastIns = ''; $('#amcWrap').classList.add('ready'); amcPost({ mode: S.mode }); amcLayout(); const q = AMC_Q.splice(0); q.forEach(amcPost); if (AMC_PG) amcPost({ nav: AMC_PG === 'course' ? 'course' : 'chats' }); }
   if (d.state) { AMC_ST = d.state; if (typeof d.state.unread === 'number') { CHATS2 = d.state.unread; chatBadge(); } amcLayout(); }
   if (d.go) { go(document.getElementById('pg-' + d.go) ? d.go : 'home'); if (d.p) setTimeout(() => { const el = $(`#feed [data-pid="${CSS.escape(d.p)}"]`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); } }, 400); }
   if (d.fail) $('#amcWrap').classList.add('ready');
@@ -4436,7 +4436,7 @@ async function lecPerms(box, s) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-10">
+<meta name="app-build" content="2026.11.20-11">
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -6120,6 +6120,11 @@ html.embed .tb-st{display:none!important}
 .amg-lock .ic .i{width:26px;height:26px}
 .amg-lock b{font-size:18px;font-family:var(--f-d)}.amg-lock small{color:var(--dim);font-size:13.5px}
 html.embed #splash{display:none!important}
+/* الخروج من المحادثة ينزلق لبرّا بهدوء مثل تلگرام (چانت تختفي فجأة) */
+@media (max-width:900px){
+ #chatCol{transition:transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s linear .32s!important}
+ #app[data-open] #chatCol{transition:transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s linear 0s!important}
+}
 
 </style>
 </head>
@@ -8115,6 +8120,26 @@ let _amgOpen;setInterval(()=>{if(!S.me||!store)return;const o=document.hidden||(
 // قفل البصمة يطلع فوق زر المايك نفسه (فوق إصبعك)
 (function(){const fix=()=>{const c=$('#comp'),l=$('#lockP'),b=$('#sendBtn');if(!c||!l||!b||!l.offsetParent)return;const pr=l.offsetParent.getBoundingClientRect(),br=b.getBoundingClientRect();l.style.setProperty('left',Math.round(br.left-pr.left+(br.width-l.offsetWidth)/2)+'px','important')};
  const go=()=>{const c=$('#comp');if(!c)return setTimeout(go,500);new MutationObserver(()=>requestAnimationFrame(fix)).observe(c,{attributes:true,attributeFilter:['data-rec','data-lock']})};go()})();
+/* شريط AM GOLD السفلي جوّة الدردشة نفسها (تحت المحادثة) — حتى المحادثة تنزلق فوگه مثل تلگرام بدون أي حركة للشريط */
+(function(){if(!EMBED)return;let P;try{P=window.parent;if(!P.document)return}catch(e){return}
+ let host,cssDone=false,mo=null,last='';
+ const vars=['--accent','--accent2','--accent-ink','--accent-glow','--accent-soft','--acc-rgb','--faint','--dim','--ink','--panel','--panel2','--void','--line','--line2'];
+ const css=()=>{if(cssDone)return;cssDone=true;let out='';for(const sh of P.document.styleSheets){let rs;try{rs=sh.cssRules}catch(e){continue}const walk=(list,wrap)=>{for(const r of list){if(r.cssRules&&r.media){walk(r.cssRules,'@media '+r.media.mediaText);continue}const s=r.selectorText||'';if(!(/\.bnav|\.nbadge/.test(s)||/^(svg)?\.ic(\s|$|,|\.|:)/.test(s))||/#app|amcpg/.test(s))continue;const sel=s.split(',').map(x=>{x=x.trim();const m=/^(html\[[^\]]*\])\s*(.*)$/.exec(x);return m?m[1]+' #amgNav '+m[2]:'#amgNav '+x}).join(',');const body=r.cssText.slice(r.cssText.indexOf('{'));out+=wrap?wrap+'{'+sel+body+'}\n':sel+body+'\n'}};walk(rs,'')}
+  const st=document.createElement('style');st.id='amgNavCss';st.textContent=out+'#amgNav .bnav{z-index:6!important;display:grid!important}html.kb #amgNav{display:none}#app[data-open] #amgNav{pointer-events:none}@media (min-width:901px){#amgNav{display:none}}';document.head.appendChild(st)};
+ const sync=()=>{const src=P.document.getElementById('bnav');if(!src)return;const app=$('#app');if(!app)return;css();
+  if(!host){host=document.createElement('div');host.id='amgNav';const cc=$('#chatCol');app.insertBefore(host,cc||null)}
+  const cs=P.getComputedStyle(P.document.documentElement);vars.forEach(v=>{const x=cs.getPropertyValue(v);if(x)host.style.setProperty(v,x.trim())});
+  const cl=src.cloneNode(true);cl.removeAttribute('id');[...src.children].forEach((c,i)=>{const d=cl.children[i];if(!d)return;if(P.getComputedStyle(c).display==='none')d.style.setProperty('display','none','important');d.dataset.idx=i});
+  const ids=new Set();cl.querySelectorAll('use').forEach(u=>{const h=u.getAttribute('href')||u.getAttribute('xlink:href');if(h)ids.add(h.slice(1))});
+  let sp=$('#amgNavSyms');if(!sp){sp=document.createElementNS('http://www.w3.org/2000/svg','svg');sp.id='amgNavSyms';sp.setAttribute('style','display:none');document.body.appendChild(sp)}
+  ids.forEach(i=>{const k='amgsym-'+i;if(document.getElementById(k))return;const s=P.document.getElementById(i);if(!s)return;const c=s.cloneNode(true);c.id=k;sp.appendChild(c)});
+  cl.querySelectorAll('use').forEach(u=>{const h=(u.getAttribute('href')||'').slice(1);if(h)u.setAttribute('href','#amgsym-'+h)});
+  const html=cl.outerHTML;if(html===last)return;last=html;host.innerHTML=html};
+ host=null;
+ document.addEventListener('click',e=>{const b=e.target.closest('#amgNav button');if(!b)return;e.preventDefault();e.stopPropagation();const src=P.document.getElementById('bnav');const o=src&&src.children[+b.dataset.idx];if(o)o.click()},true);
+ const start=()=>{if(!$('#app')||$('#app').classList.contains('hide'))return setTimeout(start,300);sync();const src=P.document.getElementById('bnav');if(src){mo=new P.MutationObserver(()=>requestAnimationFrame(sync));mo.observe(src,{subtree:true,attributes:true,childList:true,characterData:true})}
+  new MutationObserver(()=>{last='';sync()}).observe(P.document.documentElement,{attributes:true,attributeFilter:['data-theme','style']});document.documentElement.classList.add('amgnav')};
+ start()})();
 
 async function handleHash(h){if(h.startsWith('#nav=')){history.replaceState(null,'',location.pathname);return}if(h.startsWith('#c='))openChat(h.slice(3));else if(h.startsWith('#join='))joinFlow(h.slice(6));else if(h.startsWith('#u='))openUserByName(h.slice(3).toLowerCase());else if(h.startsWith('#r=')){const r=await store.get('reels/'+h.slice(3)).catch(()=>null);if(r&&r.ready)openReelViewer([{id:h.slice(3),...r}],0);else toast('هذا الريل انحذف')}}
 function sync(on){$$('[data-sync]').forEach(d=>d.classList.toggle('off',!on));$$('[data-synct]').forEach(d=>d.textContent=on?'متصل':'ماكو انترنت')}
