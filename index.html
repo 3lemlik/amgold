@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded',function(){var pt=document.getEleme
 if(a<0||b<0)return;var src=t.slice(a+38,b).split('<\\/script').join('<'+'/script').split('<\\!--').join('<'+'!--');document.open();document.write(src);document.close()});
 document.write('<plaintext id="amcPT" style="display:none">')})()</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-8">
+<meta name="app-build" content="2026.11.20-9">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1562,7 +1562,7 @@ html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-8</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-9</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -4333,26 +4333,26 @@ function amcPreload() { if (AMC || ME.role === 'guest' || DB.kind !== 'firebase'
 function amcLayout2() { const w = $('#amcWrap'); if (w && !w.classList.contains('on')) { w.style.top = '0px'; w.style.height = innerHeight + 'px'; } }
 function amcFull() { return isPhone() && AMC_PG && (AMC_ST.open || AMC_ST.sheet || AMC_ST.lv || AMC_ST.lb); }
 let amcLastIns = '', amcFullT = 0;
+let AMC_KB = false;
+window.amcKB = kb => { if (AMC_KB !== kb) { AMC_KB = kb; amcLayout(); } };
 function amcLayout() {
   const w = $('#amcWrap'); if (!w || !w.classList.contains('on')) return;
-  const app = $('#app'), full = amcFull(), vv = window.visualViewport;
-  const kb = !!vv && innerHeight - vv.height > 110 && isPhone();
-  // الشريط السفلي يختفي فوراً من تفتح محادثة، ويرجع بهدوء بعد ما تطلع (بدون ما يتغيّر حجم الصفحة)
+  const app = $('#app'), full = amcFull(), kb = AMC_KB && isPhone();
+  // الشريط السفلي يختفي فوراً من تفتح محادثة أو يطلع الكيبورد، ويرجع بهدوء بعدين — حجم الدردشة ما يتغيّر أبداً
   clearTimeout(amcFullT);
   if (full || kb) app.setAttribute('data-amcfull', '');
-  else if (app.hasAttribute('data-amcfull')) amcFullT = setTimeout(() => { if (!amcFull()) app.removeAttribute('data-amcfull'); }, 260);
-  let top = 0, h = innerHeight, right = 0;
-  if (isPhone()) { if (kb) { top = Math.max(0, Math.round(vv.offsetTop)); h = Math.round(vv.height); } }
-  else { const sd = $('.side'), r = sd && getComputedStyle(sd).display !== 'none' ? sd.getBoundingClientRect() : null; right = r ? Math.max(0, Math.round(innerWidth - r.left)) : 0; }
-  if (w.style.top !== top + 'px') w.style.top = top + 'px';
-  if (w.style.height !== h + 'px') w.style.height = h + 'px';
+  else if (app.hasAttribute('data-amcfull')) amcFullT = setTimeout(() => { if (!amcFull() && !AMC_KB) app.removeAttribute('data-amcfull'); }, 260);
+  let right = 0;
+  if (!isPhone()) { const sd = $('.side'), r = sd && getComputedStyle(sd).display !== 'none' ? sd.getBoundingClientRect() : null; right = r ? Math.max(0, Math.round(innerWidth - r.left)) : 0; }
+  if (w.style.top !== '0px') w.style.top = '0px';
+  const h = innerHeight + 'px'; if (w.style.height !== h) w.style.height = h;
   if (w.style.right !== right + 'px') w.style.right = right + 'px';
   const ins = amcInsets(), bn = $('#bnav'), nav = isPhone() && bn ? Math.round(bn.offsetHeight || 0) : 0;
-  const o = { sat: isPhone() && !kb ? ins.sat : 0, sab: isPhone() && !kb ? ins.sab : 0, nav }, sig = JSON.stringify(o);
+  const o = { sat: isPhone() ? ins.sat : 0, sab: isPhone() ? ins.sab : 0, nav }, sig = JSON.stringify(o);
   if (sig !== amcLastIns) { amcLastIns = sig; amcPost({ insets: o }); }
 }
 addEventListener('resize', () => requestAnimationFrame(amcLayout));
-if (window.visualViewport) { visualViewport.addEventListener('resize', () => requestAnimationFrame(amcLayout)); visualViewport.addEventListener('scroll', () => requestAnimationFrame(amcLayout)); }
+
 try { const sd = document.querySelector('.side'); if (sd && window.ResizeObserver) new ResizeObserver(() => amcLayout()).observe(sd); } catch (e) { }
 addEventListener('message', e => {
   if (e.origin !== location.origin || !AMC || e.source !== AMC.contentWindow) return; const d = e.data || {}; if (!d.amc) return;
@@ -4436,7 +4436,7 @@ async function lecPerms(box, s) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-8">
+<meta name="app-build" content="2026.11.20-9">
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -7061,8 +7061,8 @@ function bindStory(){const st=$('#story'),fr=$('#story .frame');let p=null,hold;
 /* ================= الإشعارات (حتى لو الموقع مسدود) ================= */
 const FB_BASE='https://www.gstatic.com/firebasejs/10.12.2/';
 const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-function pushState(){if(DEMO)return 'demo';if(!VAPID_KEY||!PUSH_URL)return 'nosetup';if(isIOS&&!isStandalone())return 'ios-home';if(!('Notification' in window)||!('serviceWorker' in navigator)||!('PushManager' in window))return 'unsupported';
+const isStandalone=()=>{try{if(EMBED&&window.parent!==window){const P=window.parent;return P.matchMedia('(display-mode: standalone)').matches||P.navigator.standalone===true}}catch(e){}return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true};
+function pushState(){if(DEMO)return 'demo';if(!VAPID_KEY||(!PUSH_URL&&!EMBED))return 'nosetup';if(isIOS&&!isStandalone())return 'ios-home';if(!('Notification' in window)||!('serviceWorker' in navigator)||!('PushManager' in window))return 'unsupported';
  if(Notification.permission==='granted')return ls.get('amc-push')?'on':'granted';if(Notification.permission==='denied')return 'denied';return 'ask'}
 async function enablePush(){if(isIOS&&!isStandalone())return iosHomeSheet();if(!('Notification' in window))return toast('جهازك ما يدعم الإشعارات هنا','bad');
  let p;try{p=await Notification.requestPermission()}catch(e){}if(p!=='granted'){toast('ما سمحت بالإشعارات — تگدر تفعّلها من إعدادات الجهاز','bad');renderPushBan();return}
@@ -7970,10 +7970,10 @@ function bindEvents(){
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#lecV')){if($('#lecV').classList.contains('fs'))lvFS(false);else if(!$('#sheetWrap').classList.contains('on'))closeLecture();}hideCtx();closeSheet();if($('#lightbox').classList.contains('on'))closeLBnav();else if($('#story').classList.contains('on'))closeStory()}
   if($('#story').classList.contains('on')&&!e.target.closest('input')){if(e.key==='ArrowLeft')showStory(SV.i+1);if(e.key==='ArrowRight')showStory(SV.i-1)}});
  // الكيبورد: نخلي التطبيق دايماً بحجم الجزء الظاهر من الشاشة
- const vv=window.visualViewport;const root=document.documentElement;let vr;
- const vvFix=()=>{cancelAnimationFrame(vr);vr=requestAnimationFrame(()=>{const lh=root.clientHeight||innerHeight;const ae=document.activeElement;const typing=!!(ae&&ae.matches&&ae.matches('input:not([type=file]):not([type=range]):not([type=color]),textarea'));const kb=!EMBED&&!!vv&&isTouch&&typing&&lh-vv.height>100;
+ const vv=(EMBED&&window.parent&&window.parent.visualViewport)||window.visualViewport;const root=document.documentElement;let vr;
+ const vvFix=()=>{cancelAnimationFrame(vr);vr=requestAnimationFrame(()=>{const lh=root.clientHeight||innerHeight;const ae=document.activeElement;const typing=!!(ae&&ae.matches&&ae.matches('input:not([type=file]):not([type=range]):not([type=color]),textarea'));const kb=!!vv&&isTouch&&typing&&lh-vv.height>100;
   const t=kb?Math.max(0,Math.round(vv.offsetTop)):0,bt=kb?Math.max(0,Math.round(lh-vv.height-vv.offsetTop)):0;const b=$('#msgs');const near=S.open&&b.scrollHeight-b.scrollTop-b.clientHeight<160;
-  root.style.setProperty('--vvt',t+'px');root.style.setProperty('--vvb',bt+'px');root.classList.toggle('kb',kb);if(near)b.scrollTop=b.scrollHeight;if(window.scrollY||window.scrollX)window.scrollTo(0,0)})};
+  root.style.setProperty('--vvt',t+'px');root.style.setProperty('--vvb',bt+'px');root.classList.toggle('kb',kb);if(near)b.scrollTop=b.scrollHeight;if(window.scrollY||window.scrollX)window.scrollTo(0,0);if(EMBED){try{const P=window.parent;if(P.scrollY||P.scrollX)P.scrollTo(0,0);P.amcKB&&P.amcKB(kb)}catch(e){}}})};
  if(vv){vv.addEventListener('resize',vvFix);vv.addEventListener('scroll',vvFix)}addEventListener('resize',vvFix);addEventListener('orientationchange',()=>setTimeout(vvFix,300));vvFix();
  document.addEventListener('focusin',e=>{if(isTouch&&e.target.matches('input:not([type=file]):not([type=range]):not([type=color]),textarea'))root.classList.add('kb')});
  document.addEventListener('focusout',()=>setTimeout(()=>{const a=document.activeElement;if(!a||!a.matches||!a.matches('input,textarea'))root.classList.remove('kb');vvFix();setTimeout(vvFix,250)},30));
