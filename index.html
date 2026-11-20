@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded',function(){var pt=document.getEleme
 if(a<0||b<0)return;var src=t.slice(a+38,b).split('<\\/script').join('<'+'/script').split('<\\!--').join('<'+'!--');document.open();document.write(src);document.close()});
 document.write('<plaintext id="amcPT" style="display:none">')})()</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-7">
+<meta name="app-build" content="2026.11.20-8">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1562,7 +1562,7 @@ html.amcpg,html.amcpg body{overflow:hidden;overscroll-behavior:none}
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-7</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-8</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -4329,7 +4329,7 @@ function amcEnsure(pg) {
     AMC_LOADNAV = pg;
   }
 }
-function amcPreload() { if (AMC || ME.role === 'guest' || DB.kind !== 'firebase') return; const go2 = () => { amcEnsure('chat'); amcLayout2(); }; if (window.requestIdleCallback) requestIdleCallback(go2, { timeout: 4000 }); else setTimeout(go2, 1500); }
+function amcPreload() { if (AMC || ME.role === 'guest' || DB.kind !== 'firebase') return; const go2 = () => { amcEnsure('chat'); amcLayout2(); }; setTimeout(go2, 150); }
 function amcLayout2() { const w = $('#amcWrap'); if (w && !w.classList.contains('on')) { w.style.top = '0px'; w.style.height = innerHeight + 'px'; } }
 function amcFull() { return isPhone() && AMC_PG && (AMC_ST.open || AMC_ST.sheet || AMC_ST.lv || AMC_ST.lb); }
 let amcLastIns = '', amcFullT = 0;
@@ -4436,7 +4436,7 @@ async function lecPerms(box, s) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-7">
+<meta name="app-build" content="2026.11.20-8">
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -6117,6 +6117,7 @@ html.embed .tb-st{display:none!important}
 .amg-lock .ic{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
 .amg-lock .ic .i{width:26px;height:26px}
 .amg-lock b{font-size:18px;font-family:var(--f-d)}.amg-lock small{color:var(--dim);font-size:13.5px}
+html.embed #splash{display:none!important}
 
 </style>
 </head>
@@ -6631,7 +6632,7 @@ function setupLogin(){$('#lgWm').innerHTML=`${APP.w1}<em>${APP.w2}</em>`;if(DEBU
   finally{$('#lgProg').classList.remove('on');$('#lgBtn').disabled=false}}}
 
 /* ================= تشغيل التطبيق ================= */
-async function startApp(uid){S.me=uid;$('#login').classList.add('hide');$('#app').classList.remove('hide');
+async function startApp(uid){S.me=uid;amgCacheLoad(uid);$('#login').classList.add('hide');$('#app').classList.remove('hide');
  ['#sdWm','#tbWm'].forEach(s=>{const e=$(s);if(e)e.innerHTML=`${APP.w1}<em>${APP.w2}</em>`});
  S.unsub.push(store.watchDoc('users/'+uid,d=>{S.meDoc=d||{};S.users[uid]={id:uid,...S.meDoc};renderMe();schedule()}));
  S.unsub.push(store.watchDoc('prefs/'+uid,d=>{S.prefs=d||{};schedule()}));
@@ -7102,7 +7103,7 @@ function closeLBnav(){popNav('lb')}
 function bindEdgeBack(){const col=$('#chatCol');let e0=null;
  col.addEventListener('touchstart',e=>{if(!isPhone()||!S.open||S.info)return;const t=e.touches[0];if(t.clientX<26){e0={x:t.clientX,y:t.clientY,on:false}}},{passive:true});
  col.addEventListener('touchmove',e=>{if(!e0)return;const t=e.touches[0];const dx=t.clientX-e0.x,dy=t.clientY-e0.y;if(!e0.on){if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>10){e0=null;return}if(dx>8)e0.on=true}if(e0&&e0.on){col.style.transition='none';col.style.transform=`translateX(${Math.max(0,dx)}px)`}},{passive:true});
- col.addEventListener('touchend',e=>{if(!e0)return;const dx=e.changedTouches[0].clientX-e0.x;const on=e0.on;e0=null;col.style.transition='';if(!on){col.style.transform='';return}if(dx>innerWidth*.28){col.style.transform='translateX(100%)';setTimeout(()=>{closeChat();setTimeout(()=>col.style.transform='',60)},280)}else col.style.transform=''})}
+ col.addEventListener('touchend',e=>{if(!e0)return;const dx=e.changedTouches[0].clientX-e0.x;const on=e0.on;e0=null;col.style.transition='';if(!on){col.style.transform='';return}if(dx>innerWidth*.28){col.style.transform='translateX(100%)';setTimeout(()=>{closeChat();let n=0;const w=()=>{if($('#app').hasAttribute('data-open')&&n++<40)return setTimeout(w,25);setTimeout(()=>{col.style.transition='none';col.style.transform='';requestAnimationFrame(()=>col.style.transition='')},360)};w()},280)}else col.style.transform=''})}
 
 /* ================= المنشورات ================= */
 S.posts=[];S.reels=[];S.ucache={};S.reelMuted=true;
@@ -8016,25 +8017,41 @@ function amgFail(){const d=document.createElement('div');d.className='amg-fail';
 function amgTick(){const u=(AMG.newsUrl||'').trim();if(!/script\.google/.test(u))return;try{fetch(u+(u.includes('?')?'&':'?')+'a=tick&t='+now(),{mode:'no-cors',keepalive:true}).catch(()=>{})}catch(e){}}
 async function amgBridge(uid){
  const fu=firebase.auth().currentUser;const isA=!!fu&&fu.email===AMG_ADMIN;
- let lg=null;try{lg=await store.get('logins/'+uid)}catch(e){}
+ const tm=(p,ms)=>Promise.race([p.catch(()=>null),new Promise(r=>setTimeout(()=>r(undefined),ms))]);
+ // كلشي بنفس الوكت حتى ما ننتظر وحدة ورا وحدة
+ const [lg,c,md,ad]=await Promise.all([tm(store.get('logins/'+uid),9000),tm(store.get('config/public'),6000),tm(store.get('users/'+uid),9000),isA?tm(store.get('admins/'+uid),6000):Promise.resolve(1)]);
  if(!isA&&(!lg||lg.active!==true))return false;
  AMG.isA=isA;AMG.role=isA?'admin':(lg.role==='student'&&(!lg.exp||lg.exp>now())?'student':'member');
  AMG.name=isA?'علي مالك':(lg.name||'مشترك');
- try{const c=await store.get('config/public');if(c){AMG.cfg=c;AMG.newsUrl=c.newsUrl||'';if(c.worker){PUSH_URL=String(c.worker).trim().replace(/\/$/,'');ls.set('amg_worker',PUSH_URL)}else{PUSH_URL='';localStorage.removeItem('amg_worker')}if(/^#[0-9a-f]{6}$/i.test(c.accent||'')&&c.accent!==S.accent){S.accent=c.accent;applyTheme(c.accent)}}}catch(e){}
+ if(c){AMG.cfg=c;AMG.newsUrl=c.newsUrl||'';if(c.worker){PUSH_URL=String(c.worker).trim().replace(/\/$/,'');ls.set('amg_worker',PUSH_URL)}else{PUSH_URL='';localStorage.removeItem('amg_worker')}if(/^#[0-9a-f]{6}$/i.test(c.accent||'')&&c.accent!==S.accent){S.accent=c.accent;applyTheme(c.accent)}}
  document.documentElement.dataset.amgrole=AMG.role;
- AMG.course=isA||lg.course===true||(lg.course!==false&&AMG.role==='student');
+ AMG.course=isA||(lg&&lg.course===true)||(!!lg&&lg.course!==false&&AMG.role==='student');
  if(!AMG.course){document.documentElement.dataset.nocourse='1';const lock=`<div class="amg-lock card br"><span class="ic">${ico('lock')}</span><b>الكورس مقفول عليك</b><small>تواصل ويّا الأستاذ حتى يفتحلك الكورس</small></div>`;
   renderCourse=function(){const b=$('#course');if(b)b.innerHTML=lock};renderHW=function(){const b=$('#hwBox');if(b)b.innerHTML=lock};openLecture=function(){toast('الكورس مقفول عليك','bad')}}
- let md=null;try{md=await store.get('users/'+uid)}catch(e){}
- if(!md){
-  let photo='';try{const p=await store.get('profiles/'+uid);if(p&&p.photo)photo=p.photo}catch(e){}
+ if(md===null){
+  let photo='';try{const p=await tm(store.get('profiles/'+uid),4000);if(p&&p.photo)photo=p.photo}catch(e){}
   const un=await amgUname(uid,isA?'alimalik':null);
   await store.set('users/'+uid,{name:AMG.name,username:un,createdAt:OP.now(),lastSeen:OP.now(),online:true,bio:'',photo},{merge:true});
   store.set('usernames/'+un,{uid},{quiet:true});
   store.set('prefs/'+uid,{pins:[],muted:[],hidden:{}},{merge:true,quiet:true});
  }
- if(isA){let a=null;try{a=await store.get('admins/'+uid)}catch(e){}if(!a)await store.set('admins/'+uid,{at:now(),email:AMG_ADMIN},{quiet:true})}
+ if(isA&&ad===null)store.set('admins/'+uid,{at:now(),email:AMG_ADMIN},{quiet:true});
  return true}
+/* نسخة محفوظة بالجهاز: المحادثات والأسماء وآخر الرسائل تبين فوراً */
+function amgCacheLoad(uid){try{const c=JSON.parse(localStorage.getItem('amc_c_'+uid)||'null');if(!c)return;
+ if(Array.isArray(c.chats)){S.chats=c.chats;S.chatMap={};c.chats.forEach(x=>S.chatMap[x.id]=x)}
+ Object.keys(c.users||{}).forEach(k=>{if(!S.users[k])S.users[k]=c.users[k]});S.mc=Object.assign(S.mc||{},c.mc||{});if(c.me)S.meDoc=c.me;if(c.prefs)S.prefs=c.prefs}catch(e){}}
+let _amgCS='';
+function amgCacheSave(){if(!S.me||!S.chats||!S.chats.length)return;try{
+ const small=v=>typeof v==='string'&&v.length>40000?'':v;
+ const chats=S.chats.map(c=>{const o=Object.assign({},c);delete o.typing;if(o.photo)o.photo=small(o.photo);return o});
+ const ids=new Set([S.me]);chats.forEach(c=>(c.members||[]).slice(0,60).forEach(u=>ids.add(u)));
+ const users={};ids.forEach(u=>{const x=S.users[u];if(x&&!x.loading&&!x.gone)users[u]={id:u,name:x.name,username:x.username,photo:small(x.photo||''),verified:x.verified,bot:x.bot}});
+ const mc={};Object.keys(S.mc||{}).slice(0,8).forEach(k=>{mc[k]=(S.mc[k]||[]).slice(-30).map(m=>{const o=Object.assign({},m);if(o.media&&String(o.media).length>40000){o.media='data:image/gif;base64,R0lGODlhAQABAAAAACw=';o._lite=1}if(o.wave)o.wave=o.wave;return o})});
+ let out={chats,users,mc,me:Object.assign({},S.meDoc,{photo:small((S.meDoc||{}).photo||'')}),prefs:S.prefs,at:now()};let js=JSON.stringify(out);
+ while(js.length>1500000&&Object.keys(out.mc).length){delete out.mc[Object.keys(out.mc).pop()];js=JSON.stringify(out)}
+ if(js===_amgCS)return;_amgCS=js;localStorage.setItem('amc_c_'+S.me,js)}catch(e){}}
+setInterval(amgCacheSave,4000);addEventListener('pagehide',amgCacheSave);
 async function amgUname(uid,want){let un=want||('amg'+uid.replace(/[^a-z0-9]/gi,'').slice(0,6).toLowerCase());
  for(let i=0;i<6;i++){let ex=null;try{ex=await store.get('usernames/'+un)}catch(e){}if(!ex||ex.uid===uid)break;un=un.slice(0,12)+Math.floor(10+Math.random()*89)}return un}
 function amgAfterStart(uid){amgPost({ready:1});if(AMG.isA)setTimeout(()=>amgAdminSync(uid).catch(e=>console.warn('sync',e)),1500)}
