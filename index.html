@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded',function(){var pt=document.getEleme
 if(a<0||b<0)return;var src=t.slice(a+38,b).split('<\\/script').join('<'+'/script').split('<\\!--').join('<'+'!--');document.open();document.write(src);document.close()});
 document.write('<plaintext id="amcPT" style="display:none">')})()</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-12">
+<meta name="app-build" content="2026.11.20-13">
 <title>AM GOLD</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1088,7 +1088,8 @@ html.lock{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
 /* بصفحة الدردشة الصفحة نفسها ثابتة تماماً (مثل AM CHAT) حتى اللمس والسحب جوّة الدردشة ما يهز الصفحة */
 html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-behavior:none}
 #amcWrap{position:fixed;left:0;top:0;right:0;height:100%;z-index:30;display:block;background:var(--void)}
-#amcWrap:not(.on){visibility:hidden;pointer-events:none;z-index:-1}
+/* الدردشة وهي مخفية تنشال برّا الشاشة تماماً، حتى ما تاخذ لمس أو سحب الصفحة بالآيفون */
+#amcWrap:not(.on){visibility:hidden;pointer-events:none;z-index:-1;left:-300vw!important;right:auto!important;width:100vw}
 #amcWrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:transparent;opacity:0;transition:opacity .25s}
 #amcWrap.ready iframe{opacity:1}
 #amcWrap .amc-load{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
@@ -1563,7 +1564,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-12</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-13</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -4437,7 +4438,7 @@ async function lecPerms(box, s) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-12">
+<meta name="app-build" content="2026.11.20-13">
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -6688,8 +6689,8 @@ function renderChatList(){const q=$('#chatSearch').value.trim();let list=sortedC
 /* ================= فتح المحادثة ================= */
 function pushNav(k){try{history.pushState({k},'')}catch(e){}S.nav.push(k)}
 const NAVF={rv:()=>doCloseRV(),chat:()=>doCloseChat(),info:()=>doCloseInfo(),story:()=>doCloseStory(),lb:()=>doCloseLB()};
-function popNav(k){if(S.nav[S.nav.length-1]===k)history.back();else{const i=S.nav.lastIndexOf(k);if(i>=0)S.nav.splice(i,1);NAVF[k]&&NAVF[k]()}}
-addEventListener('popstate',()=>{const k=S.nav.pop();NAVF[k]&&NAVF[k]()});
+function popNav(k){if(S.nav[S.nav.length-1]===k){S.nav.pop();NAVF[k]&&NAVF[k]();S._ign=(S._ign||0)+1;history.back();setTimeout(()=>{S._ign=0},1500)}else{const i=S.nav.lastIndexOf(k);if(i>=0)S.nav.splice(i,1);NAVF[k]&&NAVF[k]()}}
+addEventListener('popstate',()=>{if(S._ign>0){S._ign--;return}const k=S.nav.pop();NAVF[k]&&NAVF[k]()});
 async function openChat(cid){if(!isPhone()&&!['chats','contacts','settings'].includes($('#app').dataset.pane))setNav('chats');if(!S.chatMap[cid]){const c=await store.get('chats/'+cid);if(!c)return toast('المحادثة مو موجودة','bad');S.chatMap[cid]={id:cid,...c}}
  const was=S.open;if(was===cid){closeSheet();return}S.open=cid;if(!was&&isPhone())pushNav('chat');
  if(S.info&&S.info.type!=='chat'||S.info&&S.info.id!==cid){if(S.nav.includes('info'))S.nav.splice(S.nav.lastIndexOf('info'),1);doCloseInfo()}
@@ -6748,7 +6749,7 @@ function renderMsgs(){const box=$('#msgs'),inner=$('#msgInner');const atBottom=b
    if(it.m&&!S.rendered.has(it.key)){S.rendered.add(it.key);if(!S.initial&&!S.loadingMore){n.classList.add('new');added++;if(it.f.out)mineAdded=true}}
    if(el){el.replaceWith(n);if(S.audio&&S.audio.mid===it.key)syncVoice()}el=n}delete old[it.key];if(inner.children[i]!==el)inner.insertBefore(el,inner.children[i]||null)});
  Object.values(old).forEach(el=>el.remove());
- if(S.initial){S.initial=false;const us=$('#unreadSep');if(us){box.scrollTop=us.offsetTop-80}else box.scrollTop=box.scrollHeight}
+ if(S.initial){S.initial=false;box.scrollTop=box.scrollHeight;S._pin=now()+2500}
  else if(S.loadingMore){S.loadingMore=false;box.scrollTop=prevTop+(box.scrollHeight-prevH)}
  else if(added){if(atBottom||mineAdded)box.scrollTo({top:box.scrollHeight,behavior:'smooth'});else{S.fabN+=added;updFab()}}
  if(!document.hidden&&(atBottom||S.fabN===0))API.markRead(S.open)}
@@ -7109,7 +7110,7 @@ function closeLBnav(){popNav('lb')}
 
 /* ================= السحب من الحافة للرجوع ================= */
 function bindEdgeBack(){const col=$('#chatCol');let e0=null;const EW=28;
- col.addEventListener('touchstart',e=>{if(!isPhone()||!S.open||S.info)return;const t=e.touches[0];const sd=t.clientX<EW?1:t.clientX>innerWidth-EW?-1:0;if(sd){e0={x:t.clientX,y:t.clientY,on:false,sd};e.stopPropagation()}},{passive:true});
+ col.addEventListener('touchstart',e=>{if(!isPhone()||!S.open||S.info)return;const t=e.touches[0];const sd=t.clientX<EW?1:0;if(t.clientX>innerWidth-EW){e.stopPropagation();return}if(sd){e0={x:t.clientX,y:t.clientY,on:false,sd};e.stopPropagation()}},{passive:true});
  col.addEventListener('touchmove',e=>{if(!e0)return;e.stopPropagation();const t=e.touches[0];const dx=(t.clientX-e0.x)*e0.sd,dy=t.clientY-e0.y;if(!e0.on){if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>10){e0=null;return}if(dx>8)e0.on=true}if(e0&&e0.on){col.style.setProperty('transition','none','important');col.style.transform=`translateX(${Math.max(0,dx)*e0.sd}px)`}},{passive:true});
  col.addEventListener('touchend',e=>{if(!e0)return;e.stopPropagation();const sd=e0.sd;const dx=(e.changedTouches[0].clientX-e0.x)*sd;const on=e0.on;e0=null;col.style.removeProperty('transition');if(!on){col.style.transform='';return}if(dx>innerWidth*.28){col.style.transform=`translateX(${sd*100}%)`;setTimeout(()=>{closeChat();let n=0;const w=()=>{if($('#app').hasAttribute('data-open')&&n++<40)return setTimeout(w,25);setTimeout(()=>{col.style.setProperty('transition','none','important');col.style.transform='';void col.offsetWidth;col.style.removeProperty('transition')},360)};w()},280)}else col.style.transform=''})}
 
@@ -7981,7 +7982,7 @@ function bindEvents(){
  const vv=(EMBED&&window.parent&&window.parent.visualViewport)||window.visualViewport;const root=document.documentElement;let vr;
  const vvFix=()=>{cancelAnimationFrame(vr);vr=requestAnimationFrame(()=>{const lh=root.clientHeight||innerHeight;const ae=document.activeElement;const typing=!!(ae&&ae.matches&&ae.matches('input:not([type=file]):not([type=range]):not([type=color]),textarea'));const kb=!!vv&&isTouch&&typing&&lh-vv.height>100;
   const t=kb?Math.max(0,Math.round(vv.offsetTop)):0,bt=kb?Math.max(0,Math.round(lh-vv.height-vv.offsetTop)):0;const b=$('#msgs');const near=S.open&&b.scrollHeight-b.scrollTop-b.clientHeight<160;
-  root.style.setProperty('--vvt',t+'px');root.style.setProperty('--vvb',bt+'px');root.classList.toggle('kb',kb);if(near)b.scrollTop=b.scrollHeight;if(window.scrollY||window.scrollX)window.scrollTo(0,0);if(EMBED){try{const P=window.parent;if(P.scrollY||P.scrollX)P.scrollTo(0,0);P.amcKB&&P.amcKB(kb)}catch(e){}}})};
+  root.style.setProperty('--vvt',t+'px');root.style.setProperty('--vvb',bt+'px');root.classList.toggle('kb',kb);if(near)b.scrollTop=b.scrollHeight;if(window.scrollY||window.scrollX)window.scrollTo(0,0);if(EMBED){try{const P=window.parent;if(P.document.documentElement.classList.contains('amcpg')){if(P.scrollY||P.scrollX)P.scrollTo(0,0);P.amcKB&&P.amcKB(kb)}}catch(e){}}})};
  if(vv){vv.addEventListener('resize',vvFix);vv.addEventListener('scroll',vvFix)}addEventListener('resize',vvFix);addEventListener('orientationchange',()=>setTimeout(vvFix,300));vvFix();
  document.addEventListener('focusin',e=>{if(isTouch&&e.target.matches('input:not([type=file]):not([type=range]):not([type=color]),textarea'))root.classList.add('kb')});
  document.addEventListener('focusout',()=>setTimeout(()=>{const a=document.activeElement;if(!a||!a.matches||!a.matches('input,textarea'))root.classList.remove('kb');vvFix();setTimeout(vvFix,250)},30));
@@ -8141,6 +8142,12 @@ let _amgOpen;setInterval(()=>{if(!S.me||!store)return;const o=document.hidden||(
  const start=()=>{if(!$('#app')||$('#app').classList.contains('hide'))return setTimeout(start,300);sync();const src=P.document.getElementById('bnav');if(src){mo=new P.MutationObserver(()=>requestAnimationFrame(sync));mo.observe(src,{subtree:true,attributes:true,childList:true,characterData:true})}
   new MutationObserver(()=>{last='';sync()}).observe(P.document.documentElement,{attributes:true,attributeFilter:['data-theme','style']});document.documentElement.classList.add('amgnav')};
  start()})();
+
+// يبقى على آخر رسالة لحد ما تكمل الصور تتحمّل (إلا إذا إنت سحبت)
+(function(){const go=()=>{const inner=$('#msgInner'),box=$('#msgs');if(!inner||!box)return setTimeout(go,400);
+ const pin=()=>{if(S._pin&&now()<S._pin)box.scrollTop=box.scrollHeight};
+ if(window.ResizeObserver)new ResizeObserver(pin).observe(inner);inner.addEventListener('load',pin,true);
+ ['touchstart','wheel'].forEach(ev=>box.addEventListener(ev,()=>{S._pin=0},{passive:true}))};go()})();
 
 async function handleHash(h){if(h.startsWith('#nav=')){history.replaceState(null,'',location.pathname);return}if(h.startsWith('#c='))openChat(h.slice(3));else if(h.startsWith('#join='))joinFlow(h.slice(6));else if(h.startsWith('#u='))openUserByName(h.slice(3).toLowerCase());else if(h.startsWith('#r=')){const r=await store.get('reels/'+h.slice(3)).catch(()=>null);if(r&&r.ready)openReelViewer([{id:h.slice(3),...r}],0);else toast('هذا الريل انحذف')}}
 function sync(on){$$('[data-sync]').forEach(d=>d.classList.toggle('off',!on));$$('[data-synct]').forEach(d=>d.textContent=on?'متصل':'ماكو انترنت')}
