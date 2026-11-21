@@ -7,17 +7,17 @@ document.addEventListener('DOMContentLoaded',function(){var pt=document.getEleme
 if(a<0||b<0)return;var src=t.slice(a+38,b).split('<\\/script').join('<'+'/script').split('<\\!--').join('<'+'!--');document.open();document.write(src);document.close()});
 document.write('<plaintext id="amcPT" style="display:none">')})()</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-16">
-<title>AM GOLD</title>
+<meta name="app-build" content="2026.11.21-2">
+<title>FX ALI</title>
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AM GOLD">
+<meta name="apple-mobile-web-app-title" content="FX ALI">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
-<script>(function(){try{var m='dark';try{m=JSON.parse(localStorage.getItem('amg_mode'))||'dark'}catch(x){m=localStorage.getItem('amg_mode')||'dark'};var d=m==='auto'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):m;document.documentElement.dataset.theme=d;var a=JSON.parse(localStorage.getItem('amg_acc')||'null');if(a)for(var k in a)document.documentElement.style.setProperty(k,a[k]);}catch(e){}})();</script>
+<script>(function(){try{try{var b0=localStorage.getItem('amg_brand');if(!b0){b0=(localStorage.getItem('amg_set')||localStorage.getItem('amg_mode'))?'old':'chat';localStorage.setItem('amg_brand',b0)}window.__brandOld=b0==='old'}catch(x){}var m='dark';try{m=JSON.parse(localStorage.getItem('amg_mode'))||'dark'}catch(x){m=localStorage.getItem('amg_mode')||'dark'};var d=m==='auto'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):m;document.documentElement.dataset.theme=d;var a=JSON.parse(localStorage.getItem('amg_acc')||'null');if(a)for(var k in a)document.documentElement.style.setProperty(k,a[k]);}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Almarai:wght@400;700;800&family=Orbitron:wght@700;800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>:root{--void:#0b0c10;--panel:#121319;--panel2:#171920;--panel3:#1e2029;--line:rgba(255,255,255,.065);--line2:rgba(255,255,255,.11);
@@ -38,7 +38,7 @@ button:active{transform:scale(.97)}
 .hide{display:none!important}
 svg.ic{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .wm{font-family:var(--fo);font-weight:800;letter-spacing:2px;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
-.wm em{font-style:normal;color:var(--accent)}
+.wm em{font-style:normal;color:var(--accent);margin-left:.34em}
 .eyebrow{font-family:var(--fo);font-size:10.5px;letter-spacing:2px;color:var(--accent);direction:ltr;text-align:right;opacity:.9}
 h1{font-family:var(--fd);font-weight:800;font-size:26px;margin:2px 0 14px;line-height:1.3}
 h2{font-family:var(--fd);font-weight:700;font-size:17px;margin:0 0 10px}
@@ -412,7 +412,7 @@ html[data-theme="light"] .sw::after{background:#fff;box-shadow:0 1px 3px rgba(0,
 .msg .bub{white-space:normal}
 a.btn{text-decoration:none}
 
-/* ===== chat — نفس ستايل AM CHAT ===== */
+/* ===== chat — نفس ستايل FX ALI ===== */
 :root{--in-bg:var(--panel2);--msg-fs:15.5px;--shadow:0 10px 30px rgba(0,0,0,.35)}
 html[data-theme="light"]{--in-bg:#fff;--shadow:0 10px 30px rgba(16,22,34,.12)}
 .gl{position:relative;background:color-mix(in srgb,var(--panel) 58%,transparent);backdrop-filter:blur(22px) saturate(1.9);-webkit-backdrop-filter:blur(22px) saturate(1.9);border:.5px solid rgba(255,255,255,.13);box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 6px 22px rgba(0,0,0,.30)}
@@ -1082,10 +1082,10 @@ html.lock{position:fixed;left:0;right:0;top:0;bottom:0;overflow:hidden}
 #app[data-sub][data-grp] .side [data-go=chat]{display:flex!important}
 #app[data-sub][data-grp] .bnav [data-go=news]{display:none!important}
 
-/* ====== الدردشة والكورس (AM CHAT داخل AM GOLD) ====== */
+/* ====== الدردشة والكورس (FX ALI داخل FX ALI) ====== */
 #app[data-guest] .no-guest{display:none!important}
 #pg-chat>*{display:none!important}
-/* بصفحة الدردشة الصفحة نفسها ثابتة تماماً (مثل AM CHAT) حتى اللمس والسحب جوّة الدردشة ما يهز الصفحة */
+/* بصفحة الدردشة الصفحة نفسها ثابتة تماماً (مثل FX ALI) حتى اللمس والسحب جوّة الدردشة ما يهز الصفحة */
 html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-behavior:none}
 #amcWrap{position:fixed;left:0;top:0;right:0;height:100%;z-index:30;display:block;background:var(--void)}
 /* الدردشة وهي مخفية تنشال برّا الشاشة تماماً، حتى ما تاخذ لمس أو سحب الصفحة بالآيفون */
@@ -1116,7 +1116,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute">
- <symbol id="i-logo" viewBox="0 0 48 48"><path d="M24 3 42 13.5v21L24 45 6 34.5v-21z" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linejoin="round"/><g stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round"><path d="M16 18v14"/><path d="M24 14v16"/><path d="M32 12v12"/></g><rect x="13.5" y="21" width="5" height="7" rx="1.2" fill="var(--ink)"/><rect x="21.5" y="18" width="5" height="8" rx="1.2" fill="var(--ink)"/><rect x="29.5" y="14" width="5" height="7" rx="1.2" fill="var(--accent)"/><circle cx="35" cy="33" r="2.6" fill="var(--accent)"/></symbol>
+ <symbol id="i-logo" viewBox="0 0 48 48"><path d="M24 3 42 13.5v21L24 45 6 34.5v-21z" fill="none" style="stroke:var(--accent)" stroke-width="2.6" stroke-linejoin="round"/><path d="M16.5 17h15a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-7.6l-4.4 3.6V30h-3a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3z" style="fill:var(--ink)"/><rect x="18.6" y="20.4" width="2" height="6.4" rx="1" style="fill:var(--void,#0b0c10)"/><rect x="22.6" y="19.2" width="2" height="8.8" rx="1" style="fill:var(--void,#0b0c10)"/><rect x="26.6" y="21.4" width="2" height="4.4" rx="1" style="fill:var(--accent)"/><circle cx="31" cy="34" r="2.2" style="fill:var(--accent)"/></symbol>
  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4"/><path d="M4 20h16"/><path d="M8 15v-4M12 15V7M16 15v-6"/><rect x="6.5" y="11" width="3" height="3"/><rect x="10.5" y="8" width="3" height="5"/><rect x="14.5" y="10" width="3" height="3"/></symbol>
  <symbol id="i-news" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/></symbol>
@@ -1200,7 +1200,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
 <div id="login" class="hide">
  <div class="box">
   <div class="core"><div class="g"></div><div class="r1"></div><div class="r2"></div><div class="r3"></div><svg><use href="#i-logo"/></svg></div>
-  <div class="wm" style="font-size:24px">AM<em>GOLD</em></div>
+  <div class="wm" style="font-size:24px">FX<em>ALI</em></div>
   <div class="dim" style="font-size:13.5px">منصّة متابعة وتحليل الذهب</div>
   <form class="card br" id="lgForm" autocomplete="off">
    <div class="fld"><label>الرمز السري</label><input class="inp num" id="lgPw" type="password" inputmode="text" placeholder="••••••" autocomplete="current-password"></div>
@@ -1225,7 +1225,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
 <div id="app" class="hide">
  <aside class="side">
   <button class="sbt" data-act="sbc" title="طي القائمة"><svg class="ic"><use href="#i-side"/></svg></button>
-  <div class="brand"><svg><use href="#i-logo"/></svg><span class="wm">AM<em>GOLD</em></span><button class="bell only-mem" data-act="bell"><svg class="ic"><use href="#i-bell"/></svg><b class="hide bcount"></b></button></div>
+  <div class="brand"><svg><use href="#i-logo"/></svg><span class="wm">FX<em>ALI</em></span><button class="bell only-mem" data-act="bell"><svg class="ic"><use href="#i-bell"/></svg><b class="hide bcount"></b></button></div>
   <button class="cta" data-go="chart"><svg class="ic"><use href="#i-chart"/></svg>افتح الشارت</button>
   <nav class="nav" id="snav">
    <button data-go="home"><i></i><svg class="ic"><use href="#i-home"/></svg>الرئيسية</button>
@@ -1249,7 +1249,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
  </aside>
 
  <header class="top">
-  <div class="brand"><svg><use href="#i-logo"/></svg><span class="wm">AM<em>GOLD</em></span></div>
+  <div class="brand"><svg><use href="#i-logo"/></svg><span class="wm">FX<em>ALI</em></span></div>
   <span class="dot" id="tDot"></span>
   <button class="bell only-mem" data-act="bell"><svg class="ic"><use href="#i-bell"/></svg><b class="hide bcount"></b></button>
   <button class="ib" data-act="mode"><svg class="ic"><use href="#i-sun"/></svg></button>
@@ -1262,7 +1262,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
 
   <!-- HOME -->
   <section class="pg" id="pg-home">
-   <div class="eyebrow">01 · GOLD DESK ── AM-GOLD</div>
+   <div class="eyebrow">01 · GOLD DESK ── FX-ALI</div>
    <h1 id="hello">هلا بيك</h1>
    <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))">
     <div class="card br hero" style="grid-column:1/-1">
@@ -1336,7 +1336,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
   <!-- CHART -->
   <section class="pg chartpg hide" id="pg-chart">
    <div class="cbar">
-    <div class="seg" id="srcSeg"><button data-src="am">AM GOLD</button><button data-src="tv">TradingView</button></div>
+    <div class="seg" id="srcSeg"><button data-src="am">FX ALI</button><button data-src="tv">TradingView</button></div>
     <div class="tfs amonly" id="tfs"></div>
     <a class="btn tint sm tvonly" id="tvOpen" title="افتح بحسابي بـ TradingView" href="https://www.tradingview.com/chart/?symbol=OANDA%3AXAUUSD" target="_blank" rel="noopener"><svg class="ic" style="width:16px;height:16px"><use href="#i-in"/></svg></a>
     <span class="sp"></span>
@@ -1377,7 +1377,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
 
   <!-- POSTS -->
   <section class="pg hide" id="pg-posts">
-   <div class="eyebrow">03 · ANALYSIS FEED ── AM-GOLD</div>
+   <div class="eyebrow">03 · ANALYSIS FEED ── FX-ALI</div>
    <h1>التحليلات والمنشورات</h1>
    <div class="feed">
     <div class="card br comp only-admin" id="comp">
@@ -1422,7 +1422,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
     <div class="wall"></div>
     <div class="tgh">
      <button class="gl circ" data-go="home" title="رجوع"><svg class="ic"><use href="#i-back"/></svg></button>
-     <div class="gl tgt" id="chanInfo"><b>توصيات AM GOLD ⚡</b><small><span class="num" id="chSubs">0</span> مشترك</small></div>
+     <div class="gl tgt" id="chanInfo"><b>توصيات FX ALI ⚡</b><small><span class="num" id="chSubs">0</span> مشترك</small></div>
      <div class="tgs gl hide" id="chanSearchW"><svg class="ic"><use href="#i-search"/></svg><input id="chanQ" placeholder="دوّر بالتوصيات…" autocomplete="off"><button class="ib" id="chanQX"><svg class="ic"><use href="#i-x"/></svg></button></div>
      <div class="cav gl" id="chanAv"><svg><use href="#i-logo"/></svg></div>
     </div>
@@ -1447,7 +1447,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
     </div>
     <div class="cmtv" id="cmtV">
      <div class="wall"></div>
-     <div class="tgh"><button class="gl circ" id="cmtBack" title="رجوع"><svg class="ic"><use href="#i-back"/></svg></button><div class="gl tgt"><b id="cmtN">التعليقات</b><small>توصيات AM GOLD ⚡</small></div><span style="width:52px;flex:none"></span></div>
+     <div class="tgh"><button class="gl circ" id="cmtBack" title="رجوع"><svg class="ic"><use href="#i-back"/></svg></button><div class="gl tgt"><b id="cmtN">التعليقات</b><small>توصيات FX ALI ⚡</small></div><span style="width:52px;flex:none"></span></div>
      <div class="tgfeed" id="cmtScroll"><div class="tgin"><div id="cmtPost"></div><div class="cmtl" id="cmtList"></div></div></div>
      <div class="tgfoot">
       <div class="ccomp gl" id="cmtFoot"><div class="cbar2"><textarea id="cmtTx" rows="1" maxlength="600" placeholder="اكتب تعليق…"></textarea><button class="circ sendc" id="cmtGo"><svg class="ic"><use href="#i-send"/></svg></button></div></div>
@@ -1459,7 +1459,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
 
   <!-- TOOLS -->
   <section class="pg hide" id="pg-tools">
-   <div class="eyebrow">04 · TRADER TOOLS ── AM-GOLD</div>
+   <div class="eyebrow">04 · TRADER TOOLS ── FX-ALI</div>
    <h1>الأدوات</h1>
    <div class="grid">
     <div class="card br">
@@ -1564,7 +1564,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
      <div class="kv"><span>النوع</span><b id="setRole"></b></div>
      <div class="kv only-admin"><span>قاعدة البيانات</span><b id="setDb"></b></div>
      <button class="btn tint blk only-stu" data-act="myphoto" style="margin-top:10px"><svg class="ic"><use href="#i-cam"/></svg>صورتي بالدردشة</button>
-     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.20-16</span></div>
+     <div class="kv only-admin"><span>النسخة</span><span class="num faint">2026.11.21-2</span></div>
      <button class="btn blk only-guest" data-act="tologin" style="margin-top:12px"><svg class="ic"><use href="#i-in"/></svg>سجّل دخول</button>
      <button class="btn danger blk only-mem" data-act="logout" style="margin-top:12px" id="outBtn"><svg class="ic"><use href="#i-out"/></svg>تسجيل خروج</button>
     </div>
@@ -1586,7 +1586,7 @@ html.amcpg,html.amcpg body{position:fixed;inset:0;overflow:hidden;overscroll-beh
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging-compat.js"></script>
-<script>/* ===== AM GOLD chart engine (canvas, no libs) ===== */
+<script>/* ===== FX ALI chart engine (canvas, no libs) ===== */
 const GU = (() => {
   const offCache = {};
   function tzOff(tz, ms) { // minutes east of UTC
@@ -2577,10 +2577,12 @@ if (HAS_FB) Object.assign(GuestDB, {
 let DB = LocalDB, ME = null;
 
 /* ====== login ====== */
+/* التطبيق القديم (AM GOLD) بالآيفون: اسمه وأيقونته ما يتبدلن إلا إذا انحذف وانضاف من جديد */
+const BRAND_OLD = window.__brandOld === true;
 const STANDALONE = navigator.standalone === true || ['standalone', 'fullscreen', 'minimal-ui'].some(m => matchMedia('(display-mode: ' + m + ')').matches);
 let installEvt = null;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; const b = $('#gInstall'); if (b) b.classList.remove('hide'); });
-window.addEventListener('appinstalled', () => { const g = $('#gate'); if (g) g.querySelector('.gbody').innerHTML = '<div class="gdone">✓ انثبّت</div><p>هسه افتح <b>AM GOLD</b> من الشاشة الرئيسية مالتك.</p>'; });
+window.addEventListener('appinstalled', () => { const g = $('#gate'); if (g) g.querySelector('.gbody').innerHTML = '<div class="gdone">✓ انثبّت</div><p>هسه افتح <b>FX ALI</b> من الشاشة الرئيسية مالتك.</p>'; });
 function showGate() {
   const ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
   const inApp = /Instagram|FBAN|FBAV|Telegram|Line\/|Snapchat|TikTok|musical_ly|WhatsApp/i.test(ua);
@@ -2588,12 +2590,12 @@ function showGate() {
   const share = '<svg class="ic"><use href="#i-share"/></svg>', add = '<svg class="ic"><use href="#i-addsq"/></svg>';
   let steps = '', arrow = '';
   if (inApp) steps = `<li><span>1</span>هذا متصفح داخل التطبيق وما يثبّت. دوس <b>⋯</b> فوگ واختار <b>${ios ? 'افتح بسفاري' : 'افتح بالمتصفح'}</b>.</li><li><span>2</span>وبعدين سوّي الخطوات اللي تطلعلك هناك.</li>`;
-  else if (ios) { steps = `<li><span>1</span>دوس زر المشاركة ${share} ${iosOther ? 'بالمتصفح' : 'بالشريط الجوّه'}.</li><li><span>2</span>انزل واختار <b>إضافة إلى الشاشة الرئيسية</b> ${add}</li><li><span>3</span>دوس <b>إضافة</b>، وافتح AM GOLD من شاشتك.</li>`; if (!iosOther && !/iPad/.test(ua)) arrow = '<div class="garrow">⬇</div>'; }
-  else if (android) steps = `<li><span>1</span>دوس <b>ثبّت هسه</b> جوّه.</li><li><span>2</span>إذا ما طلع الزر: دوس <b>⋮</b> فوگ ← <b>إضافة إلى الشاشة الرئيسية</b> أو <b>تثبيت التطبيق</b>.</li><li><span>3</span>افتح AM GOLD من شاشتك.</li>`;
-  else steps = `<li><span>1</span>دوس <b>ثبّت هسه</b> جوّه، أو أيقونة التثبيت ⊕ بشريط العنوان.</li><li><span>2</span>إذا متصفحك ما يدعم التثبيت، افتح الموقع بـ <b>Chrome</b> أو <b>Edge</b>.</li><li><span>3</span>افتح AM GOLD من سطح المكتب أو قائمة البرامج.</li>`;
+  else if (ios) { steps = `<li><span>1</span>دوس زر المشاركة ${share} ${iosOther ? 'بالمتصفح' : 'بالشريط الجوّه'}.</li><li><span>2</span>انزل واختار <b>إضافة إلى الشاشة الرئيسية</b> ${add}</li><li><span>3</span>دوس <b>إضافة</b>، وافتح FX ALI من شاشتك.</li>`; if (!iosOther && !/iPad/.test(ua)) arrow = '<div class="garrow">⬇</div>'; }
+  else if (android) steps = `<li><span>1</span>دوس <b>ثبّت هسه</b> جوّه.</li><li><span>2</span>إذا ما طلع الزر: دوس <b>⋮</b> فوگ ← <b>إضافة إلى الشاشة الرئيسية</b> أو <b>تثبيت التطبيق</b>.</li><li><span>3</span>افتح FX ALI من شاشتك.</li>`;
+  else steps = `<li><span>1</span>دوس <b>ثبّت هسه</b> جوّه، أو أيقونة التثبيت ⊕ بشريط العنوان.</li><li><span>2</span>إذا متصفحك ما يدعم التثبيت، افتح الموقع بـ <b>Chrome</b> أو <b>Edge</b>.</li><li><span>3</span>افتح FX ALI من سطح المكتب أو قائمة البرامج.</li>`;
   steps = steps.replace(/<li><span>(\d)<\/span>/g, '<li><span>$1</span><div>').replace(/<\/li>/g, '</div></li>');
   const g = $('#gate'); g.classList.remove('hide');
-  g.querySelector('.gbody').innerHTML = `<h2>ثبّت <span class="wm">AM<em>GOLD</em></span> على شاشتك</h2><p class="dim">الموقع يشتغل كتطبيق بس. ثبّته مرة وحدة وصير عندك أيقونته مثل باقي التطبيقات، وتوصلك إشعارات التحليلات والأخبار.</p><ol class="gsteps">${steps}</ol><button class="btn blk ${installEvt ? '' : 'hide'}" id="gInstall"><svg class="ic"><use href="#i-dl"/></svg>ثبّت هسه</button>`;
+  g.querySelector('.gbody').innerHTML = `<h2>ثبّت <span class="wm">FX<em>ALI</em></span> على شاشتك</h2><p class="dim">الموقع يشتغل كتطبيق بس. ثبّته مرة وحدة وصير عندك أيقونته مثل باقي التطبيقات، وتوصلك إشعارات التحليلات والأخبار.</p><ol class="gsteps">${steps}</ol><button class="btn blk ${installEvt ? '' : 'hide'}" id="gInstall"><svg class="ic"><use href="#i-dl"/></svg>ثبّت هسه</button>`;
   g.insertAdjacentHTML('beforeend', arrow);
   $('#gInstall').onclick = async () => { if (!installEvt) return toast('استخدم الخطوات اللي فوگ'); installEvt.prompt(); const r = await installEvt.userChoice; if (r.outcome !== 'accepted') toast('لازم تثبّته حتى تدخل'); installEvt = null; };
 }
@@ -2797,7 +2799,7 @@ function tick(c) {
   if (prev != null) checkAlerts(prev, c);
   if (P.spark.length) { P.spark[P.spark.length - 1] = c; }
   const now = Date.now(); if (now - lastHome > 700) { lastHome = now; renderPrice(); }
-  document.title = showP(c) + ' · AM GOLD';
+  document.title = showP(c) + ' · FX ALI';
 }
 function syncState(on, txt) {
   ['#sDot', '#tDot'].forEach(s => { const d = $(s); d.className = 'dot ' + (on ? 'on' : 'off'); });
@@ -2814,7 +2816,7 @@ function checkAlerts(a, b) {
     if (!x.on) return;
     if ((a < x.p && b >= x.p) || (a > x.p && b <= x.p)) {
       x.on = false; x.hit = Date.now(); hit = true;
-      toast('🔔 الذهب وصل ' + showP(x.p), 'ok'); beep('alert'); devNotify('AM GOLD · تنبيه', 'الذهب وصل ' + showP(x.p)); navigator.vibrate && navigator.vibrate([120, 60, 120]);
+      toast('🔔 الذهب وصل ' + showP(x.p), 'ok'); beep('alert'); devNotify('FX ALI · تنبيه', 'الذهب وصل ' + showP(x.p)); navigator.vibrate && navigator.vibrate([120, 60, 120]);
     }
   });
   if (hit) saveAlerts();
@@ -3174,7 +3176,7 @@ const visSeg = (id, v) => `<div class="seg" id="${id}"><button data-vis="public"
 function onPosts(list) {
   POSTS = list.slice();
   const mx = Math.max(0, ...POSTS.map(p => p.at || 0));
-  if (!firstPosts && mx > maxAt) { const p = POSTS.find(x => x.at === mx); if (p && ME.role !== 'admin') { beep('post'); toast('📢 ' + (p.type === 'analysis' ? 'تحليل جديد' : 'منشور جديد') + ': ' + (p.title || ''), 'ok'); devNotify('AM GOLD', (p.title || 'تحليل جديد')); $$('.bell').forEach(b => { b.classList.remove('ring'); void b.offsetWidth; b.classList.add('ring'); }); } }
+  if (!firstPosts && mx > maxAt) { const p = POSTS.find(x => x.at === mx); if (p && ME.role !== 'admin') { beep('post'); toast('📢 ' + (p.type === 'analysis' ? 'تحليل جديد' : 'منشور جديد') + ': ' + (p.title || ''), 'ok'); devNotify('FX ALI', (p.title || 'تحليل جديد')); $$('.bell').forEach(b => { b.classList.remove('ring'); void b.offsetWidth; b.classList.add('ring'); }); } }
   maxAt = Math.max(maxAt, mx); firstPosts = false;
   renderFeed(); renderBell(); renderHomePost();
   if (OVER) { const o = POSTS.find(p => p.id === OVER.id); if (!o) { OVER = null; setTeacher(); } }
@@ -3373,7 +3375,7 @@ function renderPend() {
   const P = STUD.filter(s => s.pending).sort((x, y) => y.at - x.at), el = $('#stPend');
   $$('.pdbadge').forEach(b => { b.textContent = P.length; b.classList.toggle('hide', !P.length); });
   const ids = P.map(s => s.uid);
-  if (pendKnown && ids.some(i => !pendKnown.includes(i))) { const s = P.find(x => !pendKnown.includes(x.uid)); beep('post'); toast('🆕 طلب تسجيل جديد: ' + s.name, 'ok'); devNotify('AM GOLD', 'طلب تسجيل جديد: ' + s.name); }
+  if (pendKnown && ids.some(i => !pendKnown.includes(i))) { const s = P.find(x => !pendKnown.includes(x.uid)); beep('post'); toast('🆕 طلب تسجيل جديد: ' + s.name, 'ok'); devNotify('FX ALI', 'طلب تسجيل جديد: ' + s.name); }
   pendKnown = ids;
   if (!el) return;
   el.innerHTML = P.length ? `<div class="card br pend"><div class="row"><h2 style="margin:0">طلبات التسجيل</h2><span class="pill warn num">${P.length}</span></div><div class="list" style="margin-top:10px">${P.map(s => `<div class="li" data-pid="${s.uid}"><div class="av">${esc(initials(s.name))}</div><div class="mn"><b>${esc(s.name)}</b><small><span class="num">${esc(s.phone || '')}</span> · ${ago(s.at)}</small></div>${s.phone ? `<a class="btn ghost sm ico" href="https://wa.me/${esc(String(s.phone).replace(/\D/g, '').replace(/^0/, '964'))}" target="_blank" rel="noopener" title="واتساب"><svg class="ic" style="width:16px;height:16px"><use href="#i-wa"/></svg></a>` : ''}<button class="btn sm" data-pa2="ok">وافق</button><button class="btn danger sm ico" data-pa2="no" title="ارفض"><svg class="ic" style="width:16px;height:16px"><use href="#i-x"/></svg></button></div>`).join('')}</div></div>` : '';
@@ -3474,7 +3476,7 @@ function initSettings() {
   $('#bkIn').onchange = async e => {
     const f = e.target.files[0]; if (!f) return;
     try { const d = JSON.parse(await f.text()); if (d.app !== 'amgold') throw 0; if (d.draw) { CH.mine = d.draw; CH.changed(); } if (d.alerts) { ALERTS = d.alerts; saveAlerts(); } if (d.set) { Object.assign(S, d.set, { cast: false }); saveS(); } toast('رجعت البيانات ✓', 'ok'); setTimeout(() => location.reload(), 900); }
-    catch (er) { toast('الملف مو نسخة AM GOLD', 'bad'); }
+    catch (er) { toast('الملف مو نسخة FX ALI', 'bad'); }
     e.target.value = '';
   };
 }
@@ -3607,9 +3609,9 @@ function newsTick() {
   $$('.ncd').forEach(el => { el.textContent = left(+el.dataset.t - now); });
   if (NEWS.list.some(e => e.cur === 'USD' && e.imp !== 'Low' && !e.a && !SPK.test(e.title) && now > e.t + 2e4 && now - e.t < 3 * 36e5)) loadActuals();
   NEWS.list.forEach(e => {
-    if (e.cur === 'USD' && e.imp === 'High' && e.a && e.ax === 1 && now - e.t < 36e5 && !NWARN['r' + e.t + e.title]) { NWARN['r' + e.t + e.title] = 1; L.set('amg_nwarn', NWARN); const b = nBias(e), g = gloss(e.title); if (b && b.k === 'res') { toast((b.d < 0 ? '🟢 ' : b.d > 0 ? '🔴 ' : '⚪ ') + (g.ar || e.title) + ': ' + e.a + ' — ' + (b.d < 0 ? 'إيجابي للذهب' : b.d > 0 ? 'سلبي للذهب' : 'تأثير محدود'), b.d < 0 ? 'ok' : b.d > 0 ? 'bad' : ''); beep('alert'); devNotify('AM GOLD · نتيجة ' + (g.ar || e.title), e.a + ' (المتوقع ' + (e.f || '—') + ') · ' + (b.d < 0 ? 'إيجابي للذهب 🟢' : b.d > 0 ? 'سلبي للذهب 🔴' : 'تأثير محدود')); } }
+    if (e.cur === 'USD' && e.imp === 'High' && e.a && e.ax === 1 && now - e.t < 36e5 && !NWARN['r' + e.t + e.title]) { NWARN['r' + e.t + e.title] = 1; L.set('amg_nwarn', NWARN); const b = nBias(e), g = gloss(e.title); if (b && b.k === 'res') { toast((b.d < 0 ? '🟢 ' : b.d > 0 ? '🔴 ' : '⚪ ') + (g.ar || e.title) + ': ' + e.a + ' — ' + (b.d < 0 ? 'إيجابي للذهب' : b.d > 0 ? 'سلبي للذهب' : 'تأثير محدود'), b.d < 0 ? 'ok' : b.d > 0 ? 'bad' : ''); beep('alert'); devNotify('FX ALI · نتيجة ' + (g.ar || e.title), e.a + ' (المتوقع ' + (e.f || '—') + ') · ' + (b.d < 0 ? 'إيجابي للذهب 🟢' : b.d > 0 ? 'سلبي للذهب 🔴' : 'تأثير محدود')); } }
     if (e.cur !== 'USD' || e.imp !== 'High') return; const k = e.t + e.title, d = e.t - now;
-    if (d > 0 && d <= 15 * 6e4 && !NWARN[k]) { NWARN[k] = 1; L.set('amg_nwarn', NWARN); const g = gloss(e.title); toast('⚠️ باقي ' + left(d) + ' على خبر ' + (g.ar || e.title), 'bad'); beep('alert'); devNotify('AM GOLD · خبر قوي', 'باقي ' + left(d) + ' على ' + (g.ar || e.title)); }
+    if (d > 0 && d <= 15 * 6e4 && !NWARN[k]) { NWARN[k] = 1; L.set('amg_nwarn', NWARN); const g = gloss(e.title); toast('⚠️ باقي ' + left(d) + ' على خبر ' + (g.ar || e.title), 'bad'); beep('alert'); devNotify('FX ALI · خبر قوي', 'باقي ' + left(d) + ' على ' + (g.ar || e.title)); }
   });
 }
 function initNews() {
@@ -3731,8 +3733,8 @@ const sigTxt = s => s ? (s.side === 'buy' ? 'شراء' : 'بيع') + ' الذه�
 const postTxt = p => (p.sig ? sigTxt(p.sig) + (p.text ? ' · ' : '') : '') + (p.text || (p.img && !p.sig ? '📷 صورة' : ''));
 function chanHTML(p) {
   const cn = p.cn || 0, cu = (p.cu || []).slice(-3);
-  return `<div class="cpost ${p.img && !p.text && !p.sig ? 'imgonly' : ''}" data-cid="${p.id}"><div class="cn">AM GOLD ⚡</div>
-   ${p.reply ? `<div class="quote" data-jumpc="${esc(p.reply.id)}"><b>AM GOLD ⚡</b><span>${esc(p.reply.text || '')}</span></div>` : ''}
+  return `<div class="cpost ${p.img && !p.text && !p.sig ? 'imgonly' : ''}" data-cid="${p.id}"><div class="cn">FX ALI ⚡</div>
+   ${p.reply ? `<div class="quote" data-jumpc="${esc(p.reply.id)}"><b>FX ALI ⚡</b><span>${esc(p.reply.text || '')}</span></div>` : ''}
    ${p.img ? `<img class="cimg" src="${p.img}" data-view loading="lazy">` : ''}
    <div class="cb">${p.sig ? sigLines(p.sig) : ''}${p.text ? `<div class="ctx">${linkify(esc(p.text))}</div>` : ''}
    ${rxRow('c', p.id, p.rx)}
@@ -3750,7 +3752,7 @@ function renderChan() {
   pb.classList.toggle('hide', !showPin); $('#tgc').classList.toggle('pinned', showPin);
   if (showPin) { pb.dataset.jumpc = pin.id; $('#chanPinTx').textContent = pin.sig ? (pin.sig.side === 'buy' ? 'شراء ' : 'بيع ') + 'الذهب ' + (pin.sig.entry || '') + (pin.text ? ' · ' + pin.text : '') : (pin.text || '📷 صورة'); }
   if (!canSee()) {
-    el.innerHTML = `<div class="ghost-post"></div><div class="ghost-post" style="height:160px"></div><div class="clock2"><div class="cav"><svg><use href="#i-logo"/></svg></div><b>توصيات AM GOLD ⚡</b><div>صفقات الذهب أول بأول: الدخول والوقف والأهداف، وتحديث كل صفقة لحد ما تتسكر.<br>اشترك حتى تنفتحلك القناة ويوصلك تنبيه بكل توصية جديدة.</div><div class="lk"><span>📣 <span class="num">${fmt(CHAN.length)}</span> منشور</span><span>👥 <span class="num">${fmt(SUBS)}</span> مشترك</span></div></div>`;
+    el.innerHTML = `<div class="ghost-post"></div><div class="ghost-post" style="height:160px"></div><div class="clock2"><div class="cav"><svg><use href="#i-logo"/></svg></div><b>توصيات FX ALI ⚡</b><div>صفقات الذهب أول بأول: الدخول والوقف والأهداف، وتحديث كل صفقة لحد ما تتسكر.<br>اشترك حتى تنفتحلك القناة ويوصلك تنبيه بكل توصية جديدة.</div><div class="lk"><span>📣 <span class="num">${fmt(CHAN.length)}</span> منشور</span><span>👥 <span class="num">${fmt(SUBS)}</span> مشترك</span></div></div>`;
     return;
   }
   const q = chanQ.trim(), list = q ? a.filter(p => (p.text || '').includes(q) || (p.sig && ((p.sig.entry || '') + (p.sig.side === 'buy' ? 'شراء buy' : 'بيع sell')).toLowerCase().includes(q.toLowerCase()))) : a;
@@ -3784,7 +3786,7 @@ function onChan(list) {
   const sc = $('#chanScroll'), wasBottom = !sc || sc.scrollHeight - sc.scrollTop - sc.clientHeight < 160;
   CHAN = list;
   const mx = Math.max(0, ...CHAN.map(p => p.at || 0));
-  if (!chanFirst && mx > chanMax && ME.role !== 'admin' && isSub() && !isMute()) { const p = CHAN.find(x => x.at === mx); if (p) { beep('post'); toast('📣 توصيات AM GOLD: ' + (p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + (p.sig.entry || '') : (p.text || 'منشور جديد').slice(0, 60)), 'ok'); devNotify('توصيات AM GOLD', p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + 'الذهب ' + (p.sig.entry || '') : (p.text || 'منشور جديد').slice(0, 100)); } }
+  if (!chanFirst && mx > chanMax && ME.role !== 'admin' && isSub() && !isMute()) { const p = CHAN.find(x => x.at === mx); if (p) { beep('post'); toast('📣 توصيات FX ALI: ' + (p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + (p.sig.entry || '') : (p.text || 'منشور جديد').slice(0, 60)), 'ok'); devNotify('توصيات FX ALI', p.sig ? (p.sig.side === 'buy' ? 'شراء ' : 'بيع ') + 'الذهب ' + (p.sig.entry || '') : (p.text || 'منشور جديد').slice(0, 100)); } }
   chanMax = Math.max(chanMax, mx); chanFirst = false; renderChan(); chanBadge();
   if (wasBottom) setTimeout(() => chanBottom(true), 30);
 }
@@ -3803,7 +3805,7 @@ const CT = [['wa', 'واتساب', 'wa', v => 'https://wa.me/' + v.replace(/\D/g
 function chanInfo() {
   const c = CFG.contacts || {}, about = CFG.about || 'توصيات الذهب أول بأول ويا علي مالك: الدخول والوقف والأهداف، وتحديث كل صفقة لحد ما تتسكر.';
   const links = CT.filter(([k]) => c[k]).map(([k, n, i, f]) => `<a class="ctl" href="${esc(f(c[k]))}" target="_blank" rel="noopener"><span class="ci2 ${k}"><svg class="ic"><use href="#i-${i}"/></svg></span><span class="x"><b>${n}</b><small class="num">${esc(c[k])}</small></span><svg class="ic ch"><use href="#i-back"/></svg></a>`).join('');
-  modal(`<div class="cinfo"><div class="cav"><svg><use href="#i-logo"/></svg></div><b>توصيات AM GOLD ⚡</b><small><span class="num">${fmt(SUBS)}</span> مشترك · <span class="num">${fmt(CHAN.length)}</span> منشور</small></div>
+  modal(`<div class="cinfo"><div class="cav"><svg><use href="#i-logo"/></svg></div><b>توصيات FX ALI ⚡</b><small><span class="num">${fmt(SUBS)}</span> مشترك · <span class="num">${fmt(CHAN.length)}</span> منشور</small></div>
     <div class="card" style="margin:12px 0;line-height:1.9;white-space:pre-wrap;font-size:14.5px">${linkify(esc(about))}</div>
     ${links ? `<div class="ctls">${links}</div>` : ME.role === 'admin' ? '<div class="faint" style="font-size:13px;text-align:center;margin-bottom:8px">ما حاط وسيلة تواصل لحد الآن</div>' : ''}
     ${ME.role === 'admin' ? '<button class="btn tint blk" data-ci="edit" style="margin-top:10px"><svg class="ic"><use href="#i-edit"/></svg>عدّل الوصف ووسائل التواصل</button>' : isSub() ? `<button class="mi" data-ci="mute">التنبيهات<span class="sw ${isMute() ? '' : 'on'}"></span></button><button class="mi" data-ci="leave" style="color:var(--bad)">إلغاء الاشتراك</button>` : '<button class="btn blk" data-ci="join" style="margin-top:10px">اشترك بالتوصيات</button>'}
@@ -3851,7 +3853,7 @@ function chanMenu(p) {
       if (k === 'reply') { chanReply = { id: p.id, text: postTxt(p).slice(0, 120) }; $('#chanRbTx').textContent = chanReply.text; $('#chanRb').classList.remove('hide'); $('#chanTx').focus(); }
       if (k === 'cmt') openCmts(p.id);
       if (k === 'copy') { const t = (p.sig ? sigPlain(p.sig) + '\n\n' : '') + (p.text || ''); (navigator.clipboard ? navigator.clipboard.writeText(t.trim()) : Promise.reject()).then(() => toast('انسخ ✓')).catch(() => toast('ما گدرت أنسخ', 'bad')); }
-      if (k === 'share') { const url = location.origin + location.pathname + '#c=' + p.id, t = 'توصيات AM GOLD ⚡\n' + postTxt(p); if (navigator.share) navigator.share({ title: 'AM GOLD', text: t, url }).catch(() => { }); else (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => toast('انسخ الرابط ✓')).catch(() => toast(url)); }
+      if (k === 'share') { const url = location.origin + location.pathname + '#c=' + p.id, t = 'توصيات FX ALI ⚡\n' + postTxt(p); if (navigator.share) navigator.share({ title: 'FX ALI', text: t, url }).catch(() => { }); else (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => toast('انسخ الرابط ✓')).catch(() => toast(url)); }
       if (k === 'pin') DB.updChan(p.id, { pin: !p.pin }).catch(() => toast('ما تغيّر', 'bad'));
       if (k === 'del') { if (await ask('تحذف المنشور من القناة؟', '', 'احذف', true)) DB.delChan(p.id).then(() => DB.log('حذف من التوصيات')).catch(() => toast('ما انحذف', 'bad')); }
       if (k === 'st') modal(`<h2>حالة التوصية<button class="ib" data-close><svg class="ic"><use href="#i-x"/></svg></button></h2>${Object.entries(SIGST).map(([k2, v]) => `<button class="mi" data-sst="${k2}">${v[0]}${(p.sig.st || 'on') === k2 ? '<span class="pill acc">هسه</span>' : ''}</button>`).join('')}`, (m2, close2) => { m2.onclick = ev => { const x = ev.target.closest('[data-sst]'); if (!x) return; DB.updChan(p.id, { sig: Object.assign({}, p.sig, { st: x.dataset.sst }) }).then(() => toast('تحدّثت الحالة ✓', 'ok')).catch(() => toast('ما تحدّثت', 'bad')); close2(); }; });
@@ -4150,12 +4152,12 @@ async function pushSync(ask) {
 }
 function pushErr(e) {
   const m = e && e.message;
-  toast(m === 'ios-install' ? 'بالايفون لازم تفتح AM GOLD من أيقونته بالشاشة الرئيسية' : m === 'denied' ? 'رفضت الإشعارات. فعّلها من إعدادات الجهاز ← AM GOLD ← الإشعارات' : m === 'novapid' ? 'الإشعارات لحد الآن ما مفعّلة من الأستاذ' : m === 'unsupported' ? 'جهازك أو متصفحك ما يدعم الإشعارات' : 'ما گدرت أفعّل الإشعارات، جرّب مرة ثانية', 'bad');
+  toast(m === 'ios-install' ? 'بالايفون لازم تفتح FX ALI من أيقونته بالشاشة الرئيسية' : m === 'denied' ? 'رفضت الإشعارات. فعّلها من إعدادات الجهاز ← FX ALI ← الإشعارات' : m === 'novapid' ? 'الإشعارات لحد الآن ما مفعّلة من الأستاذ' : m === 'unsupported' ? 'جهازك أو متصفحك ما يدعم الإشعارات' : 'ما گدرت أفعّل الإشعارات، جرّب مرة ثانية', 'bad');
 }
 function renderPush() {
   const on = pushOn(), c = $('#pushCard'); if (!c) return;
   $('#pushBtn').classList.toggle('hide', on); $('#pushOpts').classList.toggle('hide', !on);
-  $('#pushTx').textContent = on ? 'الإشعارات شغّالة على هذا الجهاز ✓' : window.Notification && Notification.permission === 'denied' ? 'الإشعارات مسدودة. فعّلها من إعدادات الجهاز ← AM GOLD ← الإشعارات.' : 'توصلك التوصيات والأخبار القوية حتى والتطبيق مسدود.';
+  $('#pushTx').textContent = on ? 'الإشعارات شغّالة على هذا الجهاز ✓' : window.Notification && Notification.permission === 'denied' ? 'الإشعارات مسدودة. فعّلها من إعدادات الجهاز ← FX ALI ← الإشعارات.' : 'توصلك التوصيات والأخبار القوية حتى والتطبيق مسدود.';
   $$('#pushOpts [data-pk]').forEach(b => b.querySelector('.sw').classList.toggle('on', !!PUSH[b.dataset.pk]));
   const h = $('#pushHome'); if (h) h.classList.toggle('hide', on || !pushOK() || L.get('amg_pushx', 0) > Date.now() || (window.Notification && Notification.permission === 'denied'));
 }
@@ -4221,6 +4223,13 @@ function pushView() {
 }
 document.addEventListener('visibilitychange', () => { if (typeof pushView === 'function') pushView(); });
 /* طلب السماح بالإشعارات من يفتح التطبيق */
+function brandSheet() {
+  if (!BRAND_OLD || navigator.standalone !== true || L.get('amg_bsnz', 0) > Date.now() || $('.ov')) return;
+  modal(`<div class="pask"><img src="apple-touch-icon.png" alt="" style="width:76px;height:76px;border-radius:18px;display:block;margin:0 auto;box-shadow:0 8px 26px rgba(0,0,0,.35)"><h2 style="justify-content:center;margin:14px 0 4px">التطبيق صار اسمه FX ALI</h2><p class="dim" style="font-size:14px;line-height:1.9;margin:0 0 12px">نفس حسابك ونفس رسائلك، بس الأيقونة اللي عندك قديمة. حتى تتبدّل:</p><ol class="gsteps" style="text-align:right;margin:0 0 14px"><li><span>1</span><div>اضغط مطوّل على الأيقونة القديمة بالشاشة واختار <b>حذف التطبيق</b>.</div></li><li><span>2</span><div>افتح الموقع بسفاري، دوس زر المشاركة واختار <b>إضافة إلى الشاشة الرئيسية</b>.</div></li><li><span>3</span><div>سجّل دخول بنفس حسابك، وكلشي يرجعلك.</div></li></ol><button class="btn blk" id="bsOk">زين</button><button class="btn ghost blk" id="bsNo" style="margin-top:8px">ذكرني بعدين</button></div>`, (m, close) => {
+    m.querySelector('#bsOk').onclick = () => { L.set('amg_bsnz', Date.now() + 6 * 36e5); close(); };
+    m.querySelector('#bsNo').onclick = () => { L.set('amg_bsnz', Date.now() + 3 * 864e5); close(); };
+  });
+}
 function askPushSheet() {
   if (!pushOK() || Notification.permission !== 'default' || L.get('amg_pask', 0) > Date.now() || $('.ov')) return;
   modal(`<div class="pask"><div class="pbell big"><svg class="ic"><use href="#i-bell"/></svg></div><h2 style="justify-content:center;margin:12px 0 4px">فعّل الإشعارات</h2><p class="dim" style="font-size:14px;line-height:1.8;margin:0 0 14px">حتى توصلك التوصيات والرسائل والأخبار القوية<br>حتى والتطبيق مسدود.</p><button class="btn blk" id="paOk"><svg class="ic"><use href="#i-bell"/></svg>فعّل هسه</button><button class="btn ghost blk" id="paNo" style="margin-top:8px">بعدين</button></div>`, (m, close) => {
@@ -4277,12 +4286,12 @@ function start() {
   if (isStu()) {
     DB.watchProfiles(p => { PROF = p || {}; const first = !profLoaded; profLoaded = true; if (ME.role === 'admin' && !PROF[ME.uid]) DB.setProfile({ name: ME.name, role: 'admin', photo: '', at: Date.now() }).catch(() => { }); const mp = PROF[ME.uid]; if (ME.role === 'student' && (!mp || mp.name !== ME.name)) DB.setProfile(Object.assign({ photo: '' }, mp || {}, { name: ME.name, role: 'student', at: Date.now() })).catch(() => { }); });
   }
-  wrapNudge(); initKB(); initNews(); setTimeout(askPushSheet, 2500); if (ME.role !== 'guest' && DB.kind === 'firebase') watchChats2(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
+  wrapNudge(); initKB(); initNews(); setTimeout(brandSheet, 1200); setTimeout(askPushSheet, 2500); if (ME.role !== 'guest' && DB.kind === 'firebase') watchChats2(); initChan(); initStats(); countVisit(); setInterval(() => loadNews(), 10 * 6e4);
   DB.watchLive(v => { LIVE = v; setTeacher(); });
   if (ME.role === 'admin' && S.cast) castNow();
   setTeacher(); renderAlerts(); loadTicker().then(syncSpot); setInterval(loadTicker, 5 * 6e4); setInterval(syncSpot, 6e4);
   clock(); setInterval(() => { clock(); newsTick(); }, 1000);
-  const gq = new URLSearchParams(location.search).get('go'); go(gq && document.getElementById('pg-' + gq) ? gq : 'home');
+  const gq = new URLSearchParams(location.search).get('go'); go(gq && document.getElementById('pg-' + gq) ? gq : (ME.role !== 'guest' && DB.kind === 'firebase' ? 'chat' : 'home'));
   if (gq) history.replaceState(null, '', location.pathname);
 }
 
@@ -4303,7 +4312,7 @@ function start() {
 })();
 initAuth();
 
-/* ====== الدردشة والكورس (محرك AM CHAT داخل AM GOLD) ====== */
+/* ====== الدردشة والكورس (محرك FX ALI داخل FX ALI) ====== */
 var AMC = null, AMC_READY = false, AMC_Q = [], AMC_ST = {}, AMC_PG = '';
 const AMC_OPEN0 = new URLSearchParams(location.search).get('c');
 function amcPost(o) { if (!AMC) { if (o.open) AMC_Q.push(o); return; } if (!AMC_READY) { AMC_Q.push(o); return; } try { AMC.contentWindow.postMessage(o, location.origin); } catch (e) { } }
@@ -4447,14 +4456,14 @@ async function lecPerms(box, s) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<meta name="app-build" content="2026.11.20-16">
+<meta name="app-build" content="2026.11.21-2">
 <meta name="theme-color" content="#0b0c10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="AM GOLD">
-<meta name="description" content="AM GOLD — المحادثات والكورس · تصميم وبرمجة علي مالك">
-<title>AM GOLD · المحادثات</title>
+<meta name="apple-mobile-web-app-title" content="FX ALI">
+<meta name="description" content="FX ALI — المحادثات والكورس · تصميم وبرمجة علي مالك">
+<title>FX ALI · المحادثات</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -4489,7 +4498,7 @@ svg.i{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-widt
 
 /* wordmark & logo */
 .wm{font-family:var(--f-o);font-weight:800;letter-spacing:2px;direction:ltr;unicode-bidi:isolate;color:var(--ink);white-space:nowrap}
-.wm em{font-style:normal;color:var(--accent)}
+.wm em{font-style:normal;color:var(--accent);margin-left:.34em}
 .eyebrow{font-family:var(--f-o);font-size:10.5px;letter-spacing:2px;color:var(--accent);direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .logo{width:34px;height:34px}
 .core{position:relative;width:150px;height:150px;display:grid;place-items:center;flex:none}
@@ -6081,7 +6090,7 @@ html[data-theme="light"] .av.sysav{background:linear-gradient(145deg,#fff,#f1f2f
 .vc-mid{direction:ltr}
 
 
-/* ===== AM GOLD ===== */
+/* ===== FX ALI ===== */
 .acc-lbl,#settings .sws{display:none!important}
 .embb,.embg{display:none!important}
 html.embed #bnav,html.embed #instCard,html.embed #login,html.embed #welcome{display:none!important}
@@ -6120,7 +6129,7 @@ html.embed .tb-st{display:none!important}
 #amgDate{position:absolute;left:50%;top:calc(var(--sat) + 72px);transform:translate(-50%,-6px);z-index:6;padding:3px 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--dim);background:color-mix(in srgb,var(--panel) 80%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
 #amgDate.on{opacity:1;transform:translate(-50%,0)}
 @media (min-width:901px){#amgDate{top:78px}}
-/* مسافة شريط AM GOLD السفلي */
+/* مسافة شريط FX ALI السفلي */
 @media (max-width:900px){
  html.embed .list,html.embed .feed,html.embed .prof2,html.embed .explore,html.embed .set,html.embed .crs,html.embed #actList,html.embed #admBody{padding-bottom:calc(20px + var(--amgnav,0px))!important}
  html.embed #lecUp,html.embed #upl{bottom:calc(12px + var(--amgnav,0px))!important}
@@ -6155,7 +6164,7 @@ html.embed #splash{display:none!important}
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <defs>
-<symbol id="i-logo" viewBox="0 0 48 48"><path d="M24 3 42 13.5v21L24 45 6 34.5v-21z" fill="none" style="stroke:var(--accent)" stroke-width="2.6" stroke-linejoin="round"/><g style="stroke:var(--ink)" stroke-width="2.2" stroke-linecap="round"><path d="M16 18v14"/><path d="M24 14v16"/><path d="M32 12v12"/></g><rect x="13.5" y="21" width="5" height="7" rx="1.2" style="fill:var(--ink)"/><rect x="21.5" y="18" width="5" height="8" rx="1.2" style="fill:var(--ink)"/><rect x="29.5" y="14" width="5" height="7" rx="1.2" style="fill:var(--accent)"/><circle cx="35" cy="33" r="2.6" style="fill:var(--accent)"/></symbol>
+<symbol id="i-logo" viewBox="0 0 48 48"><path d="M24 3 42 13.5v21L24 45 6 34.5v-21z" fill="none" style="stroke:var(--accent)" stroke-width="2.6" stroke-linejoin="round"/><path d="M16.5 17h15a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-7.6l-4.4 3.6V30h-3a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3z" style="fill:var(--ink)"/><rect x="18.6" y="20.4" width="2" height="6.4" rx="1" style="fill:var(--void,#0b0c10)"/><rect x="22.6" y="19.2" width="2" height="8.8" rx="1" style="fill:var(--void,#0b0c10)"/><rect x="26.6" y="21.4" width="2" height="4.4" rx="1" style="fill:var(--accent)"/><circle cx="31" cy="34" r="2.2" style="fill:var(--accent)"/></symbol>
 <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.2 7.5L3 20.5l1.6-5A8.5 8.5 0 1 1 21 11.5Z"/></symbol>
 <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
 <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
@@ -6217,7 +6226,7 @@ html.embed #splash{display:none!important}
 <symbol id="i-vf" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12 1.8l2.5 1.9 3.1-.2.9 3 2.6 1.7-1 2.9 1 2.9-2.6 1.7-.9 3-3.1-.2L12 22.2l-2.5-1.9-3.1.2-.9-3-2.6-1.7 1-2.9-1-2.9 2.6-1.7.9-3 3.1.2Z"/><path d="M8.3 12.2l2.5 2.5 4.9-5" stroke="#fff" stroke-width="2.2" fill="none"/></symbol>
 </defs>
 </svg>
-<div id="splash"><div><div class="core"><div class="glow"></div><div class="r1"></div><div class="r2"></div><div class="r3"></div><svg viewBox="0 0 48 48"><use href="#i-logo"/></svg></div><div class="wm">AM<em>CHAT</em></div></div></div>
+<div id="splash"><div><div class="core"><div class="glow"></div><div class="r1"></div><div class="r2"></div><div class="r3"></div><svg viewBox="0 0 48 48"><use href="#i-logo"/></svg></div><div class="wm">FX<em>ALI</em></div></div></div>
 <div id="warp"></div>
 <div id="toast"><i></i><span></span></div>
 
@@ -6316,7 +6325,7 @@ html.embed #splash{display:none!important}
    <div class="reels-top"><b>الريلز</b><button class="gl circ" data-act="newreel" title="ريل جديد"><svg class="i"><use href="#i-camera"/></svg></button></div></div>
   <div class="pane" id="pane-profile"><div class="scroll" style="flex:1;min-height:0"><div id="myProfile"></div></div></div>
   <div class="pane" id="pane-admin">
-   <div class="phead"><div class="row"><div style="min-width:0"><div class="eyebrow">MODERATION ── AM-CHAT</div><h1>لوحة الإدارة</h1></div></div></div>
+   <div class="phead"><div class="row"><div style="min-width:0"><div class="eyebrow">MODERATION ── FX-ALI</div><h1>لوحة الإدارة</h1></div></div></div>
    <div class="scroll" id="admBody" style="flex:1;min-height:0"></div>
   </div>
   <div class="pane" id="pane-settings">
@@ -6405,7 +6414,7 @@ const FIREBASE_CONFIG = {
 const VAPID_KEY = (()=>{try{return (JSON.parse(localStorage.getItem('amg_cfg')||'{}').vapid||'').trim()}catch(e){return ''}})()||'BMqtdc4HOOjwFnS9Ew3TmD8wR5-81BL4Vl3Ktj_z63WpHfwgB41NoXr3STcZN9K64WuBdiev_6I2EhLHxxNxRMs';
 let PUSH_URL = (localStorage.getItem('amg_worker')||'').trim();
 const APP = {w1:'AM', w2:'GOLD', build:document.querySelector('meta[name=app-build]').content, domain:'amgold.app'};
-// ===== ربط AM GOLD =====
+// ===== ربط FX ALI =====
 const AMG_ADMIN='aligold@amnet.com';const AMG={role:'member',name:'',start:'course'};
 function amgAcc(){try{const c=JSON.parse(localStorage.getItem('amg_cfg')||'{}');if(/^#[0-9a-f]{6}$/i.test(c.accent||''))return c.accent}catch(e){}
  try{const a=JSON.parse(localStorage.getItem('amg_acc')||'null');const m=a&&String(a['--acc-rgb']||'').split(',').map(Number);if(m&&m.length===3&&m.every(x=>x>=0))return '#'+m.map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){}return '#e8b130'}
@@ -6622,11 +6631,11 @@ const Bots={
 async function seedDemo(me){const T=now();const mk=async(id,u)=>{if(!await store.get('users/'+id)){await store.set('users/'+id,{createdAt:T-864e5*30,lastSeen:T,bio:'',...u,bot:true});await store.set('usernames/'+u.username,{uid:id})}};
  await mk('bot_sara',{name:'سارة أحمد',username:'sara_design',bio:'مصممة داخلية 🎨 · المرحلة الرابعة'});
  await mk('bot_mustafa',{name:'مصطفى كريم',username:'mustafa_k',bio:'معماري، أحب الماكيتات 🏗️'});
- await mk('bot_support',{name:'دعم AM CHAT',username:'amchat',bio:'الحساب الرسمي للمساعدة',verified:true});
+ await mk('bot_support',{name:'دعم FX ALI',username:'amchat',bio:'الحساب الرسمي للمساعدة',verified:true});
  const chat=async(id,d,msgs)=>{let t=T-msgs.length*60000-3600000;await store.set('chats/'+id,{...d,createdAt:t,unread:{[me]:msgs.filter(m=>m.from!==me&&m.type!=='system').length},reads:{}});let last;
   for(const m of msgs){t+=m.gap||60000;const mid=rid();await store.set(`chats/${id}/messages/${mid}`,{type:'text',text:'',...m,at:t});last={id:mid,from:m.from,type:m.type||'text',text:(m.text||'').slice(0,140),at:t,...(m.sys?{sys:m.sys}:{})}}
   await store.update('chats/'+id,{lastMsg:last,updatedAt:t})};
- await chat(dmId(me,'bot_support'),{type:'dm',members:[me,'bot_support']},[{from:'bot_support',text:'هلا بيك بـ AM CHAT 💬'},{from:'bot_support',text:'هاي نسخة تجريبية تشتغل على جهازك. جرّب:\n• دوس مطوّل (أو كلك يمين) على أي رسالة حتى تتفاعل وترد وتعدّل\n• اسحب الرسالة لليسار حتى ترد عليها\n• دز صورة أو بصمة صوت 🎤'}]);
+ await chat(dmId(me,'bot_support'),{type:'dm',members:[me,'bot_support']},[{from:'bot_support',text:'هلا بيك بـ FX ALI 💬'},{from:'bot_support',text:'هاي نسخة تجريبية تشتغل على جهازك. جرّب:\n• دوس مطوّل (أو كلك يمين) على أي رسالة حتى تتفاعل وترد وتعدّل\n• اسحب الرسالة لليسار حتى ترد عليها\n• دز صورة أو بصمة صوت 🎤'}]);
  await chat('grp_demo_'+me,{type:'group',title:'مشروع التخرج 🎓',members:[me,'bot_sara','bot_mustafa'],admins:['bot_sara'],owner:'bot_sara'},[{from:'bot_sara',type:'system',sys:'created',text:'مشروع التخرج 🎓'},{from:'bot_mustafa',text:'شباب منو خلص الماكيت؟'},{from:'bot_sara',text:'آني باقيلي الإضاءة بس 💡',reactions:{fire:['bot_mustafa']}},{from:'bot_mustafa',text:'زين، باچر نتجمع بالكلية الساعة 10'}]);
  await store.set('stories/st_s1_'+me,{uid:'bot_sara',type:'text',text:'مشروع التخرج قرّب يخلص ✨🛋️\nانتظروا الصور',bg:2,at:T-3600e3*2,exp:T+864e5-3600e3*2,views:{}});
  await store.set('stories/st_m1_'+me,{uid:'bot_mustafa',type:'text',text:'أول يوم بالموقع 🏗️',bg:4,at:T-3600e3*5,exp:T+864e5-3600e3*5,views:{}});
@@ -6689,7 +6698,7 @@ function onChats(){S.chats.forEach(c=>{const lm=c.lastMsg;if(!lm)return;const pr
   else if('Notification' in window&&Notification.permission==='granted'){try{const n=new Notification(inf.title,{body:who+previewOf(lm,c),tag:c.id,icon:'icon-192.png'});n.onclick=()=>{focus();openChat(c.id);n.close()}}catch(e){}}});
  S.firstChats=false}
 
-function renderUnread(){let n=0;S.chats.forEach(c=>{if(!isMuted(c.id)&&visible(c))n+=unreadOf(c)>0?1:0});$$('[data-unread]').forEach(e=>{e.textContent=n>99?'99+':n;e.classList.toggle('hide',!n)});document.title=(n?`(${n}) `:'')+'AM GOLD';try{navigator.setAppBadge&&(n?navigator.setAppBadge(n):navigator.clearAppBadge())}catch(e){}}
+function renderUnread(){let n=0;S.chats.forEach(c=>{if(!isMuted(c.id)&&visible(c))n+=unreadOf(c)>0?1:0});$$('[data-unread]').forEach(e=>{e.textContent=n>99?'99+':n;e.classList.toggle('hide',!n)});document.title=(n?`(${n}) `:'')+'FX ALI';try{navigator.setAppBadge&&(n?navigator.setAppBadge(n):navigator.clearAppBadge())}catch(e){}}
 
 /* ================= قائمة المحادثات ================= */
 function visible(c){if(c.type==='dm'&&(c.members||[]).some(u=>u!==S.me&&isBlocked(u)))return false;if(c.type==='dm'&&!c.lastMsg&&c.by!==S.me)return false;const h=S.prefs.hidden&&S.prefs.hidden[c.id];if(h&&(c.updatedAt||0)<=h)return false;return true}
@@ -7303,7 +7312,7 @@ function editProfileSheet(st){const m=S.meDoc;st=st||{photo:m.photo||'',name:m.n
  $('#epFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;grab();const d=await cropImage(f,{...AV_CROP,back:()=>editProfileSheet(st)});if(d)st.photo=d;editProfileSheet(st)};
  $('#epRmPh').onclick=()=>{grab();st.photo='';editProfileSheet(st)};
  $('#epOk').onclick=()=>{grab();const n=st.name.trim();if(n.length<2)return toast('الاسم قصير','bad');store.update('users/'+S.me,{name:n,bio:st.bio.trim(),link:st.link.trim(),photo:st.photo});closeSheet();toast('انحفظ ✓');S.ucache[S.me]&&(S.ucache[S.me].t=0);setTimeout(renderMyProfile,300)}}
-function shareProfile(un){const u=un||S.meDoc.username;const link=location.origin+location.pathname+'#u='+u;if(navigator.share)navigator.share({title:'AM GOLD',text:'تابعني على AM GOLD',url:link}).catch(()=>{});else copyText(link)}
+function shareProfile(un){const u=un||S.meDoc.username;const link=location.origin+location.pathname+'#u='+u;if(navigator.share)navigator.share({title:'FX ALI',text:'تابعني على FX ALI',url:link}).catch(()=>{});else copyText(link)}
 async function openUserByName(un){const d=await store.get('usernames/'+un).catch(()=>null);if(d&&d.uid)openInfo({type:'user',id:d.uid});else toast('ما لگيت هذا الحساب')}
 
 /* ================= إعدادات المجموعات ================= */
@@ -7734,7 +7743,7 @@ function renderInstallCard(){if(!S.me||!canInstall()||DEMO&&!S.bip&&!isIOS)retur
 
 /* ================= الإدارة والإشراف ================= */
 const SYS='amchat';
-const SYSU={id:SYS,name:'إدارة AM GOLD',username:'amchat',verified:true,sys:true};
+const SYSU={id:SYS,name:'إدارة FX ALI',username:'amchat',verified:true,sys:true};
 const REASONS=[['spam','سبام أو إعلانات','ban'],['abuse','إساءة أو تنمّر','cmt'],['nsfw','محتوى غير لائق','eye'],['fake','انتحال شخصية','user'],['hate','عنف أو كراهية','shield'],['other','شي ثاني','more']];
 const RTXT=Object.fromEntries(REASONS.map(r=>[r[0],r[1]]));
 const KTXT={user:'الحساب',post:'المنشور',reel:'الريل',comment:'التعليق',story:'القصة',msg:'الرسالة'};
@@ -7785,7 +7794,7 @@ function reportUser(uid){const u=U(uid);reportSheet({kind:'user',target:uid,owne
 /* ----- أدوات الإدارة ----- */
 async function adminCall(body){if(DEMO||!PUSH_URL)return {ok:false,demo:true};try{const t=await firebase.auth().currentUser.getIdToken();const r=await fetch(PUSH_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+t},body:JSON.stringify({admin:body})});return await r.json()}catch(e){return {ok:false,error:String(e)}}}
 async function sendNotice(uid,type,text,push=true){const id=type+'_'+store.newId('x');await store.set(`activity/${uid}/items/${id}`,{type,from:SYS,ref:'',text:String(text).slice(0,600),at:OP.now(),seen:false,ack:type==='rinfo'});
- if(push)adminCall({notice:{to:uid,title:type==='warn'?'⚠️ تنبيه من إدارة AM GOLD':'إدارة AM GOLD',body:String(text).slice(0,170)}})}
+ if(push)adminCall({notice:{to:uid,title:type==='warn'?'⚠️ تنبيه من إدارة FX ALI':'إدارة FX ALI',body:String(text).slice(0,170)}})}
 function modlog(action,target,extra){const id=store.newId('modlog');store.set('modlog/'+id,{by:S.me,action,target:target||'',at:OP.now(),...(extra||{})})}
 const LOGT={unlock:'فتح محاضرات لـ',lock:'قفل محاضرات على',newlec:'رفع محاضرة',rmlec:'حذف محاضرة',warn:'بعث تنبيه إلى',notice:'بعث رسالة إلى',restrict:'قيّد',ban:'أوقف',lift:'رفع القيود عن',verify:'وثّق',unverify:'شال التوثيق من',wipe:'حذف كل محتوى',delete:'حذف حساب',rmcontent:'حذف محتوى من',dismiss:'تجاهل بلاغ على',broadcast:'بعث رسالة لكل المستخدمين'};
 
@@ -7816,7 +7825,7 @@ async function admHome(){await admLoad();const us=S.admUsers||[],t0=new Date();t
  const W=['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
  const st=(i,v,t,c='')=>`<div class="adm-st card br ${c}"><span class="ic">${ico(i)}</span><span class="stx"><b class="num">${v==null?'—':fmtN(v)}</b><small>${t}</small></span></div>`;
  const reps=repGroups(S.reports||[]);
- admIn(`<div class="adm-eb">01 · CONTROL ROOM ── AM-CHAT</div>
+ admIn(`<div class="adm-eb">01 · CONTROL ROOM ── FX-ALI</div>
  <div class="adm-grid">${st('users',us.length,'المستخدمين')}${st('eye',online,'متصلين هسه','ok')}${st('uplus',today,'جدد اليوم')}${st('flag',reps.length,'بلاغات مفتوحة',reps.length?'bad':'')}${st('play',pc,'محاضرات')}${st('check2',stu,'طلاب مفتوحلهم')}${st('cmt',qa.length,'أسئلة بدون جواب',qa.length?'warn':'')}${st('clip',hw.filter(x=>!x.graded).length,'واجبات تنتظر',hw.some(x=>!x.graded)?'warn':'')}${st('lock',mods.filter(m=>m.state==='restrict').length,'مقيّدين','warn')}${st('ban',mods.filter(m=>m.state==='ban').length,'موقوفين','bad')}</div>
  <div class="card br adm-chart"><h4>${ico('uplus')} التسجيلات آخر 7 أيام</h4><div class="bars7">${days.map(x=>`<div class="b7"><span class="num">${x.n}</span><i style="--h:${Math.round(x.n/mx*100)}%"></i><small>${W[x.d.getDay()]}</small></div>`).join('')}</div></div>
  ${reps.length?`<div class="sec-t">آخر البلاغات</div>${reps.slice(0,3).map(repCard).join('')}<button class="btn tint block" data-admtab="reports">كل البلاغات (${reps.length})</button>`:''}
@@ -7909,7 +7918,7 @@ function noticeSheet(uid,type,all){const u=uid?U(uid):null;const warn=type==='wa
  openSheet(all?'رسالة لكل المستخدمين':(warn?'تنبيه إلى ':'رسالة إلى ')+u.name,`${warn?`<div class="folders adm-durs" style="flex-wrap:wrap">${WARN_T.map(t=>`<button data-wt="${esc(t)}">${t}</button>`).join('')}</div>`:''}<textarea class="inp" id="ntcT" rows="4" maxlength="600" placeholder="${warn?'اكتب التنبيه…':'اكتب الرسالة…'}" style="margin-top:10px"></textarea><p class="rp-f">${ico('bell','i')} ${all?'توصل لكل المستخدمين كإشعار ونافذة من الإدارة.':'توصله كإشعار، وتطلعله نافذة لازم يدوس "فهمت".'}</p>`,`<button class="btn ${warn?'danger':'pri'} block" id="ntcGo">${ico('send')} دز</button>`);
  $('#shB').onclick=e=>{const w=e.target.closest('[data-wt]');if(w){$('#ntcT').value=w.dataset.wt;$$('#shB [data-wt]').forEach(x=>x.classList.toggle('on',x===w))}};
  $('#ntcGo').onclick=async()=>{const t=$('#ntcT').value.trim();if(!t)return toast('اكتب الرسالة','bad');$('#ntcGo').disabled=true;
-  if(all){await admLoad();const ids=(S.admUsers||[]).map(x=>x.id).filter(x=>x!==S.me&&!U(x).bot);toast('ديدز لـ '+ids.length+' مستخدم…');for(const id of ids)await sendNotice(id,'notice',t,false);adminCall({broadcast:{title:'إدارة AM GOLD',body:t.slice(0,170)}});modlog('broadcast','',{text:t.slice(0,120)});closeSheet();toast('انبعثت لـ '+ids.length+' مستخدم ✓');return}
+  if(all){await admLoad();const ids=(S.admUsers||[]).map(x=>x.id).filter(x=>x!==S.me&&!U(x).bot);toast('ديدز لـ '+ids.length+' مستخدم…');for(const id of ids)await sendNotice(id,'notice',t,false);adminCall({broadcast:{title:'إدارة FX ALI',body:t.slice(0,170)}});modlog('broadcast','',{text:t.slice(0,120)});closeSheet();toast('انبعثت لـ '+ids.length+' مستخدم ✓');return}
   await sendNotice(uid,type,t);modlog(type,uid,{name:u.name,text:t.slice(0,120)});closeSheet();toast(warn?'انبعث التنبيه ⚠️':'انبعثت الرسالة ✓')}}
 
 async function wipeUser(uid){const q=c=>store.query(c,{where:[['uid','==',uid]]}).catch(()=>[]);const [posts,reels,stories]=await Promise.all([q('posts'),q('reels'),q('stories')]);
@@ -8068,7 +8077,7 @@ function fbFail(e){let b=$('#fbErr');if(!b){b=document.createElement('div');b.id
  catch(e){console.error(e);$('#login').classList.remove('hide');hideSplash();fbFail(e);return}
  if(DEMO)addEventListener('online',()=>sync(true));
  const uid=await auth.init();if(uid&&await amgBridge(uid).catch(e=>{console.warn(e);return false})){startApp(uid);setTimeout(hideSplash,700)}else if(EMBED){hideSplash();amgFail()}else location.replace('./')})();
-/* ===== جسر AM GOLD: نفس حساب الموقع، والصفحة تشتغل جوّة AM GOLD ===== */
+/* ===== جسر FX ALI: نفس حساب الموقع، والصفحة تشتغل جوّة FX ALI ===== */
 const EMB={base:'chats'};
 (function(){const q=(/nav=(\w+)/.exec(location.hash)||/nav=(\w+)/.exec(location.search)||[])[1];if(q==='course'){EMB.base='course';AMG.start='course'}else{EMB.base='chats';AMG.start='chats'}document.documentElement.dataset.embset=EMB.base})();
 function amgPost(o){try{if(EMBED)window.parent.postMessage(Object.assign({amc:1},o),location.origin)}catch(e){}}
@@ -8146,7 +8155,7 @@ async function amgMigrate(me){toast('ديننقل الرسائل القديمة 
   const ms=await store.query(`groups/${g.id}/msgs`,{orderBy:['at','desc'],limit:400}).catch(()=>[]);n+=ms.length;await copy(cid,ms)}}catch(e){console.warn(e)}
  toast('انتقلت '+n+' رسالة ✓')}
 
-/* التواصل ويّا AM GOLD */
+/* التواصل ويّا FX ALI */
 if(EMBED){
  addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==window.parent)return;const d=e.data||{};
   if(d.insets){const r=document.documentElement.style;r.setProperty('--sat',(d.insets.sat||0)+'px');r.setProperty('--sab',(d.insets.sab||0)+'px');r.setProperty('--amgnav',(d.insets.nav||0)+'px');const nb=d.insets.nb;if(typeof nb==='number'&&nb>=0){r.setProperty('--amgnb',nb+'px');document.documentElement.classList.add('amgnb')}else document.documentElement.classList.remove('amgnb')}
@@ -8157,7 +8166,7 @@ if(EMBED){
  });
  let sig='';const rep=()=>{const a=$('#app');if(!a)return;let un=0;try{un=S.chats.filter(c=>unreadOf(c)>0&&!isMuted(c.id)).length}catch(x){}const st={unread:un,open:!!(S.open&&a.hasAttribute('data-open')),pane:a.dataset.pane||'',sheet:$('#sheetWrap').classList.contains('on'),lv:!!$('#lecV'),lb:$('#lightbox').classList.contains('on')};const s2=JSON.stringify(st);if(s2!==sig){sig=s2;amgPost({state:st})}};
  setInterval(rep,120);
- // روابط AM GOLD داخل الرسائل تفتح بالموقع نفسه
+ // روابط FX ALI داخل الرسائل تفتح بالموقع نفسه
  document.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(!a)return;let u;try{u=new URL(a.href,location.href)}catch(x){return}
   if(u.origin===location.origin&&!/amc=1/.test(u.hash)&&(u.searchParams.has('go')||(u.pathname===location.pathname&&!u.hash))){e.preventDefault();e.stopPropagation();amgPost({go:u.searchParams.get('go')||'home',p:u.searchParams.get('p')||''})}},true);
 }
@@ -8172,7 +8181,7 @@ let _amgOpen;setInterval(()=>{if(!S.me||!store)return;const o=document.hidden||(
 // قفل البصمة يطلع فوق زر المايك نفسه (فوق إصبعك)
 (function(){const fix=()=>{const c=$('#comp'),l=$('#lockP'),b=$('#sendBtn');if(!c||!l||!b||!l.offsetParent)return;const pr=l.offsetParent.getBoundingClientRect(),br=b.getBoundingClientRect();l.style.setProperty('left',Math.round(br.left-pr.left+(br.width-l.offsetWidth)/2)+'px','important')};
  const go=()=>{const c=$('#comp');if(!c)return setTimeout(go,500);new MutationObserver(()=>requestAnimationFrame(fix)).observe(c,{attributes:true,attributeFilter:['data-rec','data-lock']})};go()})();
-/* شريط AM GOLD السفلي جوّة الدردشة نفسها (تحت المحادثة) — حتى المحادثة تنزلق فوگه مثل تلگرام بدون أي حركة للشريط */
+/* شريط FX ALI السفلي جوّة الدردشة نفسها (تحت المحادثة) — حتى المحادثة تنزلق فوگه مثل تلگرام بدون أي حركة للشريط */
 (function(){if(!EMBED)return;let P;try{P=window.parent;if(!P.document)return}catch(e){return}
  let host,cssDone=false,mo=null,last='',navOk=false;
  const vars=['--accent','--accent2','--accent-ink','--accent-glow','--accent-soft','--acc-rgb','--faint','--dim','--ink','--panel','--panel2','--void','--line','--line2'];
